@@ -7,6 +7,7 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import MainContent from "../../../components/MainContent";
 import { DataTable } from "../../../components/Table/DataTable";
 import { SearchBox } from "./components/SearchBox";
+import { ModalClient } from "./components/ModalClient";
 
 type Data = {
   id: number,
@@ -60,6 +61,7 @@ export function Cliente() {
           )) : ""}
         </DataTable>
       </SearchBox>
+      <ModalClient />
     </MainContent>
   )
 }

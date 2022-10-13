@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { SidebarProvider } from '../Contexts/SidebarContext';
 import { SidebarDrawerProvider } from '../Contexts/SidebarDrawerContext';
 import { SizeProvider } from '../Contexts/SizeContext';
+import { ModalClientProvider } from '../Contexts/Modal/ClientContext';
+import { ModalProductProvider } from '../Contexts/Modal/ProductContext';
 
 import { Cliente } from '../pages/Cadastro/Cliente';
 import { Home } from '../pages/Inicio';
@@ -18,14 +20,18 @@ export default function MainRoutes() {
             <SizeProvider>
                 <SidebarProvider>
                     <SidebarDrawerProvider>
-                        <Routes>
-                            <Route index element={<Login />} />
-                            <Route path="/app" element={<Home />} />
-                            <Route path="/app/cadastro/clientes" element={<Cliente />} />
-                            <Route path="/app/cadastro/produtos" element={<Produto />} />
-                            <Route path="/app/cadastro/servicos" element={<Servico />} />
-                            <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
-                        </Routes>
+                        <ModalClientProvider>
+                            <ModalProductProvider>
+                                <Routes>
+                                    <Route index element={<Login />} />
+                                    <Route path="/app" element={<Home />} />
+                                    <Route path="/app/cadastro/clientes" element={<Cliente />} />
+                                    <Route path="/app/cadastro/produtos" element={<Produto />} />
+                                    <Route path="/app/cadastro/servicos" element={<Servico />} />
+                                    <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
+                                </Routes>
+                            </ModalProductProvider>
+                        </ModalClientProvider>
                     </SidebarDrawerProvider>
                 </SidebarProvider>
             </SizeProvider>
