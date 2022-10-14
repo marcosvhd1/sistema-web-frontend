@@ -1,10 +1,11 @@
-import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Textarea } from "@chakra-ui/react";
 import { FiCheck, FiSlash } from "react-icons/fi";
-import { useModalClient } from "../../../../Contexts/Modal/ClientContext";
+import { useModalClient } from "../../../../../Contexts/Modal/ClientContext";
 import { Form } from "./Form";
 
 export function ModalClient() {
   const { isOpen, onClose } = useModalClient();
+
   return (
     <>
       <Modal
@@ -13,6 +14,7 @@ export function ModalClient() {
         closeOnOverlayClick={false}
         motionPreset='slideInBottom'
         isCentered
+        scrollBehavior="inside"
         size="5xl"
       >
         <ModalOverlay />
@@ -27,10 +29,10 @@ export function ModalClient() {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <Form/>
+                  <Form />
                 </TabPanel>
                 <TabPanel>
-                  <p>two!</p>
+                  <Textarea h="37rem" placeholder='Observações...' />
                 </TabPanel>
               </TabPanels>
             </Tabs>

@@ -8,7 +8,7 @@ interface FormContainerProps {
 
 export function FormContainer({ label, children }: FormContainerProps) {
   return (
-    <Flex direction="column">
+    <Flex direction="column"  mt="4">
       <FormLabel>{label}</FormLabel>
       {children}
     </Flex>
