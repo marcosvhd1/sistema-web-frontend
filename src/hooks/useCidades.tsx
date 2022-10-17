@@ -6,12 +6,16 @@ export interface Icidade {
   codigo_ibge: string;
 }
 
-export function useCidades({ uf }:{ uf: string}) {
+export function useCidades({ uf }: { uf: string }) {
   const [cidades, setCidades] = useState<Icidade[]>([]);
-  
-  useEffect(() => {
-    axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
+
+  async function getCities() {
+    await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
       .then((response) => setCidades(response.data))
+  }
+
+  useEffect(() => {
+    getCities()
   }, [uf])
 
   return {

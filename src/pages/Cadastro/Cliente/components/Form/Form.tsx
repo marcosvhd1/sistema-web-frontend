@@ -1,10 +1,14 @@
-import { Button, Divider, Flex, FormLabel, Heading, Icon, IconButton, Input, Select, Stack, Text, Tooltip } from "@chakra-ui/react";
-import { FiCircle, FiPlusCircle } from "react-icons/fi";
+import { Button, Divider, Flex, FormControl, Icon, Input, Select, Stack, Text, Tooltip } from "@chakra-ui/react";
+import { useForm, useFormContext, FormProvider } from "react-hook-form";
+import { FiPlusCircle } from "react-icons/fi";
 import { FormContainer } from "../../../../../components/Form/FormContainer";
 import { Adress } from "./Adress";
 import { Contact } from "./Contact";
 
 export function Form() {
+
+  const { register } = useFormContext();
+  
   return (
     <Flex w="100%" h="40rem" direction="column" justify="space-between">
       <Flex w="100%" >
@@ -12,12 +16,12 @@ export function Form() {
         <Flex direction="column" w="50%">
           <Flex justify="space-between">
             <FormContainer label="Código">
-              <Input name="id" id="id" type="text" w="20" isDisabled value={"00001"} />
+              <Input id="id" type="text" w="20" isDisabled value={"00001"} {...register('id')} />
             </FormContainer>
             <FormContainer label="Tipo">
               <Select w="20">
-                <option value='option1'>F</option>
-                <option value='option2'>J</option>
+                <option value='f'>F</option>
+                <option value='j'>J</option>
               </Select>
             </FormContainer>
             <FormContainer label="Categoria" >
@@ -33,7 +37,7 @@ export function Form() {
           </Flex>
           <Flex direction="column">
             <FormContainer label="Nome / Razão Social">
-              <Input name="nome" id="id" type="text" />
+              <Input id="id" type="text" {...register('nome')} />
             </FormContainer>
             <FormContainer label="Nome Fantasia">
               <Input name="fantasia" id="fantasia" type="text" />
@@ -82,6 +86,7 @@ export function Form() {
           </Tooltip>
         </Flex>
         <Divider />
+        <Contact />
       </Stack>
       {/*Área Endereço*/}
 

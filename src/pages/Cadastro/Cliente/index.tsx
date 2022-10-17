@@ -9,6 +9,8 @@ import { DataTable } from "../../../components/Table/DataTable";
 import { SearchBox } from "./components/SearchBox";
 import { ModalClient } from "./components/Form/ModalClient";
 
+import { useForm, FormProvider } from "react-hook-form";
+
 type Data = {
   id: number,
   nome: string,
@@ -23,13 +25,16 @@ type Data = {
 export function Cliente() {
   const [data, setData] = useState<Data[]>()
 
-  async function getClientes() {
-    const response = await axios.get('http://192.168.15.124:3333/api/clients')
 
-    const cliente = response.data
 
-    setData(cliente)
-  }
+
+  // async function getClientes() {
+  //   const response = await axios.get('http://192.168.15.124:3333/api/clients')
+
+  //   const cliente = response.data
+
+  //   setData(cliente)
+  // }
 
   const headers: { key: string, label: string }[] = [
     { key: "id", label: "Código" },

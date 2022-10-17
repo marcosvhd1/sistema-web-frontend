@@ -17,9 +17,14 @@ export interface IEstado {
 export function useEstados() {
   const [estados, setEstados] = useState<IEstado[]>([]);
 
+  async function getStates() {
+    await axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados')
+    .then((response) => setEstados(response.data))
+  }
+  
+
   useEffect(() => {
-    axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados')
-      .then((response) => setEstados(response.data))
+    getStates()
   }, [])
 
   return {
