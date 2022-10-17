@@ -7,7 +7,7 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import MainContent from "../../../components/MainContent";
 import { DataTable } from "../../../components/Table/DataTable";
 import { SearchBox } from "./components/SearchBox";
-import { ModalClient } from "./components/Form/ModalClient";
+import { FormModal } from "./components/Form/FormModal";
 
 import { useForm, FormProvider } from "react-hook-form";
 
@@ -66,7 +66,7 @@ export function Cliente() {
           )) : ""}
         </DataTable>
       </SearchBox>
-      <ModalClient />
+      <FormModal />
     </MainContent>
   )
 }
