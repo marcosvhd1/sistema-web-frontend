@@ -6,11 +6,13 @@ interface FormContainerProps {
   label: string;
   children: ReactNode;
   error?: FieldError;
+  isRequired?: boolean
+  width?: string
 }
 
-export function FormContainer({ label, children, error }: FormContainerProps) {
+export function FormContainer({ label, children, error, width = "100%", isRequired = false }: FormContainerProps) {
   return (
-    <FormControl isInvalid={!!error}>
+    <FormControl isInvalid={!!error} isRequired={isRequired} w={`${width}`}>
       <Flex direction="column" mt="4">
         <FormLabel>{label}</FormLabel>
         {children}

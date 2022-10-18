@@ -14,35 +14,35 @@ export function Adress() {
 
 
   return (
-    <Flex w="100%" justify="space-between">
-      <Flex direction="column">
-        <Flex>
-          <FormContainer label="Rua">
-            <Input id="rua" type="text" w="25rem" mr="3" {...register('rua')}/>
+    <Flex>
+      <Flex w="50%" direction="column">
+        <Flex justify="space-between">
+          <FormContainer label="Rua" width="21.5rem">
+            <Input id="rua" type="text" {...register('rua')} width="21.5rem"/>
           </FormContainer>
-          <FormContainer label="N°">
-            <Input id="numero" type="text" w="20" {...register('numero')}/>
+          <FormContainer label="N°" width="6rem">
+            <Input id="numero" type="text" {...register('numero')} width="6rem"/>
           </FormContainer>
         </Flex>
-        <Flex>
-          <FormContainer label="Bairro">
-            <Input id="bairro" type="text" w="20rem" mr="3" {...register('bairro')}/>
+        <Flex justify="space-between">
+          <FormContainer label="Bairro" width="17.5rem">
+            <Input id="bairro" type="text" {...register('bairro')} width="17.5rem"/>
           </FormContainer>
-          <FormContainer label="CEP">
+          <FormContainer label="CEP" width="10rem">
             <Input id="cep" type="number" w="10rem" {...register('cep')}/>
           </FormContainer>
         </Flex>
       </Flex>
-      <Flex direction="column">
-        <Flex>
-          <FormContainer label="UF">
-            <Select {...register('uf')} w="20" mr="3" value={selectedEstado} onChange={(event) => setSelectedEstado(event.target.value)}>
+      <Flex direction="column" w="50%"  ml="6">
+        <Flex justify="space-between">
+          <FormContainer label="UF" width="5rem">
+            <Select {...register('uf')} w="5rem" value={selectedEstado} onChange={(event) => setSelectedEstado(event.target.value)}>
               <option value={""}></option>
               {estados.map(estado => <option key={estado.id} value={estado.sigla}>{estado.sigla}</option>)}
             </Select>
           </FormContainer>
-          <FormContainer label="Cidade">
-            <Select {...register('cidade')} w="19.2rem">
+          <FormContainer label="Cidade" width="22.5rem">
+            <Select {...register('cidade')} w="22.5rem">
               {cidades.map(cidade => <option key={cidade.codigo_ibge}>{cidade.nome}</option>)}
             </Select>
           </FormContainer>
