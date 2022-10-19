@@ -5,21 +5,20 @@ import { FormFields } from "./FormFields";
 import { useForm, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as zod from "zod"
+import axios from "axios";
 
 export const newClientFormValidationSchema = zod.object({
-  id: zod.string(),
   tipo: zod.string(),
   categoria: zod.string(),
-  cadastrado: zod.string(),
-  nome: zod.string(),
+  razao: zod.string(),
   fantasia: zod.string(),
   cnpjcpf: zod.string(),
   rg: zod.string(),
   ie: zod.string(),
   im: zod.string(),
   suframa: zod.string(),
-  contribuinte: zod.string(),
-  rua: zod.string(),
+  tipo_contribuinte: zod.string(),
+  logradouro: zod.string(),
   numero: zod.string(),
   bairro: zod.string(),
   cep: zod.string(),
@@ -27,18 +26,34 @@ export const newClientFormValidationSchema = zod.object({
   cidade: zod.string(),
   complemento: zod.string(),
   observacao: zod.string(),
+  tipo_telefone1: zod.string(),
+  tipo_telefone2: zod.string(),
+  tipo_telefone3: zod.string(),
+  telefone1: zod.string(),
+  telefone2: zod.string(),
+  telefone3: zod.string(),
+  email1: zod.string(),
+  email2: zod.string(),
+  site: zod.string(),
 })
 
 type FormModalProps = zod.infer<typeof newClientFormValidationSchema>
 
-export function FormModal() {
+interface ModalProps {
+  closeModal: () => void
+}
+
+export function FormModal({closeModal}: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useForm<FormModalProps>({
     resolver: zodResolver(newClientFormValidationSchema),
   });
 
-  function handleCreateNewClient(data: any) {
-    console.log(data)
+  async function handleCreateNewClient(data: FormModalProps) {
+    await axios.post('http://192.168.15.121:3333/api/clientes', data).then( () => {
+      onClose()
+      closeModal()
+    })
   }
 
   return (

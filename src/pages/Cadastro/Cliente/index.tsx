@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 import { Icon, Td, Tr } from "@chakra-ui/react";
@@ -13,34 +13,33 @@ import { useForm, FormProvider } from "react-hook-form";
 
 type Data = {
   id: number,
-  nome: string,
+  razao: string,
   fantasia: string,
   cidade: string,
   uf: string,
   bairro: string,
   categoria: string,
-  cnpjEcpf: string,
+  cnpjcpf: string,
 }
+
 
 export function Cliente() {
   const [data, setData] = useState<Data[]>()
 
+  const getClientes = async () => {
+    const response = await axios.get('http://192.168.15.121:3333/api/clientes')
+  
+    const cliente = response.data
+  
+    setData(cliente)
+  }
 
-
-
-  // async function getClientes() {
-  //   const response = await axios.get('http://192.168.15.124:3333/api/clients')
-
-  //   const cliente = response.data
-
-  //   setData(cliente)
-  // }
 
   const headers: { key: string, label: string }[] = [
     { key: "id", label: "Código" },
-    { key: "nome", label: "Nome / Razão Social" },
+    { key: "razao", label: "Nome / Razão Social" },
     { key: "fantasia", label: "Nome Fantasia" },
-    { key: "cnpjEcpf", label: "CPF / CNPJ" },
+    { key: "cnpjcpf", label: "CPF / CNPJ" },
     { key: "bairro", label: "Bairro" },
     { key: "cidade", label: "Cidade" },
     { key: "uf", label: "UF" },
@@ -49,14 +48,14 @@ export function Cliente() {
 
   return (
     <MainContent>
-      <SearchBox>
+      <SearchBox getCliente={getClientes}>
         <DataTable headers={headers}>
           {data != undefined ? data.map((d) => (
             <Tr key={d.id}>
               <Td>{d.id}</Td>
-              <Td>{d.nome}</Td>
+              <Td>{d.razao}</Td>
               <Td>{d.fantasia}</Td>
-              <Td>{d.cnpjEcpf}</Td>
+              <Td>{d.cnpjcpf}</Td>
               <Td>{d.bairro}</Td>
               <Td>{d.cidade}</Td>
               <Td>{d.uf}</Td>
@@ -66,7 +65,7 @@ export function Cliente() {
           )) : ""}
         </DataTable>
       </SearchBox>
-      <FormModal />
+      <FormModal closeModal={getClientes}/>
     </MainContent>
   )
 }

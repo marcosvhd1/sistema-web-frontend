@@ -20,10 +20,6 @@ import { Contact } from "./Contact/Contact";
 
 type FormFieldsProps = zod.infer<typeof newClientFormValidationSchema>
 
-interface FormFields {
-  nome: string
-}
-
 
 export function FormFields() {
   const { register, formState: { errors } } = useFormContext<FormFieldsProps>();
@@ -35,7 +31,7 @@ export function FormFields() {
         <Flex direction="column" w="50%">
           <Flex w="100%" justify="space-between">
             <FormContainer label="Código" width="5rem">
-              <Input id="id" type="text" w="5rem" isReadOnly value={"00001"} {...register('id')} />
+              <Input id="id" type="text" w="5rem" isReadOnly value={"00001"} />
             </FormContainer>
             <FormContainer label="Tipo" width="4rem">
               <Select w="4rem" {...register('tipo')}>
@@ -51,12 +47,12 @@ export function FormFields() {
               </Select>
             </FormContainer>
             <FormContainer width="8rem" label="Cadastrado" >
-              <Input id="cadastrado" type="text" w="8rem" isReadOnly value={"14/10/2022"} {...register('cadastrado')} />
+              <Input id="cadastrado" type="text" w="8rem" isReadOnly value={"14/10/2022"} />
             </FormContainer>
           </Flex>
           <Flex direction="column">
-            <FormContainer label="Nome / Razão Social" error={errors.nome} isRequired={true}>
-              <Input id="nome" type="text" {...register('nome')} />
+            <FormContainer label="Nome / Razão Social" error={errors.razao} isRequired={true}>
+              <Input id="nome" type="text" {...register('razao')} />
             </FormContainer>
             <FormContainer label="Nome Fantasia" error={errors.fantasia}>
               <Input id="fantasia" type="text" {...register('fantasia')} />
@@ -87,7 +83,7 @@ export function FormFields() {
               <Input id="suframa" type="text" w="14rem" {...register('suframa')} mr="3" />
             </FormContainer>
             <FormContainer label="Tipo de Contribuinte">
-              <Select w="14rem" {...register('contribuinte')}>
+              <Select w="14rem" {...register('tipo_contribuinte')}>
                 <option value=''></option>
                 <option value='contribuinteICMS'>Contribuinte ICMS</option>
                 <option value='isento'>Contribuinte ISENTO</option>

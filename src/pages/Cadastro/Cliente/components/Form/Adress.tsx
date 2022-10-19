@@ -18,7 +18,7 @@ export function Adress() {
       <Flex w="50%" direction="column">
         <Flex justify="space-between">
           <FormContainer label="Rua" width="21.5rem">
-            <Input id="rua" type="text" {...register('rua')} width="21.5rem"/>
+            <Input id="rua" type="text" {...register('logradouro')} width="21.5rem"/>
           </FormContainer>
           <FormContainer label="N°" width="6rem">
             <Input id="numero" type="text" {...register('numero')} width="6rem"/>

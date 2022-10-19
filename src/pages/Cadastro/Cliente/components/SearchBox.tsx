@@ -7,9 +7,10 @@ import { useModalClient } from "../../../../Contexts/Modal/ClientContext";
 
 interface SearchBoxProps {
   children: ReactNode;
+  getCliente: () => void
 }
 
-export function SearchBox({ children }: SearchBoxProps) {
+export function SearchBox({ children, getCliente }: SearchBoxProps) {
   const { onOpen } = useModalClient();
   
   return (
@@ -23,7 +24,7 @@ export function SearchBox({ children }: SearchBoxProps) {
             <option value='option1'>CPF / CNPJ</option>
           </Select>
           <Input placeholder="Localizar..." w="60%" type="text" mr="3" />
-          <Button onClick={() => {}}><Icon as={FiSearch} /></Button>
+          <Button onClick={getCliente}><Icon as={FiSearch} /></Button>
         </Flex>
         <Button variant="outline" onClick={onOpen} colorScheme="green">Cadastrar</Button>
       </Flex>

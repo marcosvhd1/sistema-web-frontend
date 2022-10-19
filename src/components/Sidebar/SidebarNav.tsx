@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { Flex } from "@chakra-ui/react"
 
-import { FcBusinessman, FcDocument, FcHome, FcInTransit, FcLock, FcSearch, FcSettings, FcSupport } from "react-icons/fc";
+import { FcBusinessman, FcDocument, FcHome, FcInTransit, FcLock, FcPackage, FcSearch, FcSettings, FcSupport } from "react-icons/fc";
 import { FiPackage } from "react-icons/fi";
 import { LogoCubo } from "../Images/LogoCubo"
 
@@ -39,7 +39,7 @@ export function SidebarNav() {
         <NavItem icon={FcHome} title="Início" rota="/app" />
         <NavSection title="CADASTRO">
           <NavItem icon={FcBusinessman} title="Clientes" rota="/app/cadastro/clientes" />
-          <NavItem icon={FiPackage} title="Produtos" rota="/app/cadastro/produtos" />
+          <NavItem icon={FcPackage} title="Produtos" rota="/app/cadastro/produtos" />
           <NavItem icon={FcSupport} title="Serviços" rota="/app/cadastro/servicos" />
           <NavItem icon={FcInTransit} title="Transportadora" rota="/app/cadastro/transportadora" />
         </NavSection>
