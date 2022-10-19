@@ -12,17 +12,12 @@ import { useFormContext } from "react-hook-form";
 import { FormContainer } from "../../../../../components/Form/FormContainer";
 import { Adress } from "./Adress";
 
-import * as zod from "zod"
-
-import { newClientFormValidationSchema } from "./FormModal"
-
 import { Contact } from "./Contact/Contact";
 
-type FormFieldsProps = zod.infer<typeof newClientFormValidationSchema>
-
+import { IClient } from "../../../../../services/api/clientes/ClientService"
 
 export function FormFields() {
-  const { register, formState: { errors } } = useFormContext<FormFieldsProps>();
+  const { register, formState: { errors } } = useFormContext<IClient>();
 
   return (
     <Flex w="58rem" h="40rem" direction="column" justify="space-between">

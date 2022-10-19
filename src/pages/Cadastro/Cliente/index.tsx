@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 
-import { Icon, Td, Tr } from "@chakra-ui/react";
+import { Button, Icon, Td, Tr, useDisclosure } from "@chakra-ui/react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 import MainContent from "../../../components/MainContent";
@@ -9,34 +8,34 @@ import { DataTable } from "../../../components/Table/DataTable";
 import { SearchBox } from "./components/SearchBox";
 import { FormModal } from "./components/Form/FormModal";
 
-import { useForm, FormProvider } from "react-hook-form";
-
-type Data = {
-  id: number,
-  razao: string,
-  fantasia: string,
-  cidade: string,
-  uf: string,
-  bairro: string,
-  categoria: string,
-  cnpjcpf: string,
-}
+import { IClient, ClientService } from "../../../services/api/clientes/ClientService"
+import { ApiException } from "../../../services/api/ApiException";
+import { DeleteAlertDialog } from "../../../components/Utils/DeleteAlertDialog";
+import { useAlertClientContext } from "../../../Contexts/AlertDialog/AlertClientContext";
 
 
 export function Cliente() {
-  const [data, setData] = useState<Data[]>()
+  const [data, setData] = useState<IClient[]>([])
+  const [id, setId] = useState<number>(0)
+  const { onOpen } = useAlertClientContext()
 
-  const getClientes = async () => {
-    const response = await axios.get('http://192.168.15.121:3333/api/clientes')
-  
-    const cliente = response.data
-  
-    setData(cliente)
+  const handleGetClients = async () => {
+    ClientService.getAll()
+      .then((result) => {
+        if (result instanceof ApiException) {
+          alert(result.message);
+        } else {
+          setData(result)
+        }
+      })
   }
 
-
+  const handleOpenDialog = (id: number) => {
+    onOpen()
+    setId(id)
+  }
   const headers: { key: string, label: string }[] = [
-    { key: "id", label: "Código" },
+    { key: "cod", label: "Código" },
     { key: "razao", label: "Nome / Razão Social" },
     { key: "fantasia", label: "Nome Fantasia" },
     { key: "cnpjcpf", label: "CPF / CNPJ" },
@@ -48,24 +47,33 @@ export function Cliente() {
 
   return (
     <MainContent>
-      <SearchBox getCliente={getClientes}>
+      <SearchBox getClients={handleGetClients}>
         <DataTable headers={headers}>
-          {data != undefined ? data.map((d) => (
-            <Tr key={d.id}>
-              <Td>{d.id}</Td>
-              <Td>{d.razao}</Td>
-              <Td>{d.fantasia}</Td>
-              <Td>{d.cnpjcpf}</Td>
-              <Td>{d.bairro}</Td>
-              <Td>{d.cidade}</Td>
-              <Td>{d.uf}</Td>
-              <Td>{d.categoria}</Td>
-              <Td><Icon color="#F5DEB3" as={FiEdit} /> <Icon as={FiTrash2} color="#A52A2A" /></Td>
+          {data != undefined ? data.map((data) => (
+            <Tr key={data.id}>
+              <Td>{data.cod}</Td>
+              <Td>{data.razao}</Td>
+              <Td>{data.fantasia}</Td>
+              <Td>{data.cnpjcpf}</Td>
+              <Td>{data.bairro}</Td>
+              <Td>{data.cidade}</Td>
+              <Td>{data.uf}</Td>
+              <Td>{data.categoria}</Td>
+              <Td>
+                <Button variant="ghost" colorScheme="orange">
+                  <Icon color="orange.300" as={FiEdit} />
+                </Button>
+                <Button variant="ghost" colorScheme="red" onClick={() => handleOpenDialog(data.id)}>
+                  <Icon as={FiTrash2} color="red.400" />
+                </Button>
+              </Td>
             </Tr>
           )) : ""}
         </DataTable>
       </SearchBox>
-      <FormModal closeModal={getClientes}/>
+      <FormModal getClients={handleGetClients} />
+      <DeleteAlertDialog id={id} getClients={handleGetClients} />
+
     </MainContent>
   )
 }

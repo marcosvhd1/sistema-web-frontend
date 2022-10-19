@@ -6,8 +6,9 @@ import { useForm, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as zod from "zod"
 import axios from "axios";
+import { useEffect } from "react";
 
-export const newClientFormValidationSchema = zod.object({
+const newClientFormValidationSchema = zod.object({
   tipo: zod.string(),
   categoria: zod.string(),
   razao: zod.string(),
@@ -40,19 +41,21 @@ export const newClientFormValidationSchema = zod.object({
 type FormModalProps = zod.infer<typeof newClientFormValidationSchema>
 
 interface ModalProps {
-  closeModal: () => void
+  getClients: () => void
 }
 
-export function FormModal({closeModal}: ModalProps) {
+export function FormModal({ getClients }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useForm<FormModalProps>({
     resolver: zodResolver(newClientFormValidationSchema),
   });
 
+
   async function handleCreateNewClient(data: FormModalProps) {
-    await axios.post('http://192.168.15.121:3333/api/clientes', data).then( () => {
+    await axios.post('http://127.0.0.1:3333/api/clientes', data).then(() => {
       onClose()
-      closeModal()
+      getClients()
+      methods.reset()
     })
   }
 
