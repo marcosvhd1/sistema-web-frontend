@@ -9,7 +9,7 @@ interface DataTableProps {
 export function DataTable({ children, headers }: DataTableProps) {
   return (
     <Flex w="100%" justify="center" mt="10">
-      <TableContainer w="90%" borderRadius={8}>
+      <TableContainer w="90%" borderRadius={8} >
         <Table variant='simple'>
           <Thead bg="whiteAlpha.100">
             <Tr>

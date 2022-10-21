@@ -24,6 +24,7 @@ export function LoginForm() {
             focusBorderColor="orange.400"
             type="text"
             placeholder="Usuário"
+            color="black"
           />
         </InputGroup>
         <InputGroup
@@ -34,6 +35,7 @@ export function LoginForm() {
             borderColor="blackAlpha.500"
             type="password"
             placeholder="Senha"
+            color="black"
           />
         </InputGroup>
         <Button as="a" size="md" colorScheme="messenger" href="/app">

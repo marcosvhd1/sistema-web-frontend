@@ -1,17 +1,24 @@
-import { ReactNode } from "react"
+import { ReactNode } from "react";
 
 import { Button, Flex, Icon, Input, Select, Text } from "@chakra-ui/react";
 
 import { FiSearch } from "react-icons/fi";
 import { useModalClient } from "../../../../Contexts/Modal/ClientContext";
 
+
 interface SearchBoxProps {
   children: ReactNode;
-  getClients: () => void
+  getClients: () => void;
+  changeEdit: () => void;
 }
 
-export function SearchBox({ children, getClients }: SearchBoxProps) {
+export function SearchBox({ children, changeEdit, getClients }: SearchBoxProps) {
   const { onOpen } = useModalClient();
+
+  const openModal = () => {
+    onOpen()
+    changeEdit()
+  }
   
   return (
     <Flex w="100%" justify="center" align="center" mt="10" direction="column" >
@@ -26,7 +33,7 @@ export function SearchBox({ children, getClients }: SearchBoxProps) {
           <Input placeholder="Localizar..." w="60%" type="text" mr="3" />
           <Button onClick={getClients}><Icon as={FiSearch} /></Button>
         </Flex>
-        <Button variant="outline" onClick={onOpen} colorScheme="green">Cadastrar</Button>
+        <Button variant="outline" onClick={() => openModal()} colorScheme="green">Cadastrar</Button>
       </Flex>
       {children}
     </Flex>

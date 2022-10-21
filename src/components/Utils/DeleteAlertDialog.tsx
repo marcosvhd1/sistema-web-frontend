@@ -1,4 +1,4 @@
-import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Icon, useDisclosure, useToast } from "@chakra-ui/react"
+import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Flex, Icon, useDisclosure, useToast } from "@chakra-ui/react"
 import { useEffect, useRef } from "react"
 import { FcHighPriority } from "react-icons/fc";
 import { useAlertClientContext } from "../../Contexts/AlertDialog/AlertClientContext"
@@ -53,12 +53,14 @@ export function DeleteAlertDialog({ id, getClients }: AlertDialogProps) {
 
           </AlertDialogBody>
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              Não, cancelar
-            </Button>
-            <Button onClick={() => HandleDeleteClient(id)} colorScheme='red' ml={3}>
-              Sim, Excluir o cliente
-            </Button>
+            <Flex justify="space-between" w="100%">
+              <Button onClick={() => HandleDeleteClient(id)} colorScheme='red'>
+                Sim, Excluir o cliente
+              </Button>
+              <Button ref={cancelRef} onClick={onClose} ml={3}>
+                Não, cancelar
+              </Button>
+            </Flex>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

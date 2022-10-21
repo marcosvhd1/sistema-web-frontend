@@ -1,6 +1,32 @@
-import { Box, Button, Stack } from "@chakra-ui/react";
+import { useState, useEffect, ReactNode } from "react"
+import { Box, Button, Icon, Stack } from "@chakra-ui/react";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { Api } from "../../services/api/ApiConfig";
+import { IClient } from "../../services/api/clientes/ClientService";
 
-export function Pagination() {
+interface IPagination {
+  children: ReactNode
+}
+
+export function Pagination({children}: IPagination) {
+  const [totalClients, setTotalClients] = useState<number>(0)
+  const [limitRegistros, setLimitRegistros] = useState(5)
+  const [pages, setPages] = useState<number[]>([])
+  const [currentPage, setCurrantPage] = useState<number>(1)
+
+  useEffect(() => {
+    async function loadClients() {
+      const response = await Api().get(`/clientes?page=${currentPage}&limit=${limitRegistros}`)
+      setTotalClients(parseInt(response.headers["qtd"]!))
+      const totalPages = Math.ceil(totalClients / limitRegistros)
+      const arrayPages = []
+      for (let i = 1; i <= totalPages; i++) {
+        arrayPages.push(i)
+      }
+      setPages(arrayPages);
+    }
+    loadClients()
+  }, [totalClients, limitRegistros])
 
 
   return (
@@ -8,41 +34,15 @@ export function Pagination() {
       direction="row"
       spacing="6"
       mt="8"
-      justify="space-between"
+      justify="flex-end"
       align="center"
+      w="90%"
     >
       <Box>
-        <strong>0</strong> - <strong>10</strong> de <strong>100</strong>
+        <strong>0</strong> - <strong>10</strong> de <strong>{totalClients}</strong>
       </Box>
-      <Stack direction="row" spacing="2">
-        <Button
-          size="sm"
-          fontSize="xs"
-          width="4"
-          colorScheme="pink"
-          disabled
-          _disabled={{ cursor: "default" }}
-        >
-          1
-        </Button>
-        <Button
-          size="sm"
-          fontSize="xs"
-          width="4"
-          bg="gray.700"
-          _hover={{ bg: "gray.500" }}
-        >
-          2
-        </Button>
-        <Button
-          size="sm"
-          fontSize="xs"
-          width="4"
-          bg="gray.700"
-          _hover={{ bg: "gray.500" }}
-        >
-          3
-        </Button>
+      <Stack direction="row" spacing="2" align="center">
+        {children}
       </Stack>
     </Stack>
   )

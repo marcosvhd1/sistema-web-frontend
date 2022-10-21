@@ -1,14 +1,35 @@
-import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Textarea } from "@chakra-ui/react";
+import { 
+  Button, 
+  Flex, 
+  Icon, 
+  Modal, 
+  ModalBody, 
+  ModalCloseButton, 
+  ModalContent, 
+  ModalFooter, 
+  ModalHeader, 
+  ModalOverlay, 
+  Tab, 
+  TabList, 
+  TabPanel, 
+  TabPanels, 
+  Tabs, 
+  Textarea 
+} from "@chakra-ui/react";
+import * as zod from "zod";
+import { useFormContext } from "react-hook-form";
 import { FiCheck, FiSlash } from "react-icons/fi";
-import { useModalClient } from "../../../../../Contexts/Modal/ClientContext";
+
 import { FormFields } from "./FormFields";
-import { useForm, FormProvider } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as zod from "zod"
-import axios from "axios";
-import { useEffect } from "react";
+
+import { useModalClient } from "../../../../../Contexts/Modal/ClientContext";
+
+import { ApiException } from "../../../../../services/api/ApiException";
+import { ClientService } from "../../../../../services/api/clientes/ClientService";
 
 const newClientFormValidationSchema = zod.object({
+  id: zod.number(),
+  cod: zod.number(),
   tipo: zod.string(),
   categoria: zod.string(),
   razao: zod.string(),
@@ -42,65 +63,120 @@ type FormModalProps = zod.infer<typeof newClientFormValidationSchema>
 
 interface ModalProps {
   getClients: () => void
+  changeEdit: () => void
+  isEditing: boolean
+  id: number
 }
 
-export function FormModal({ getClients }: ModalProps) {
+export function FormModal({ getClients, isEditing, id }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
-  const methods = useForm<FormModalProps>({
-    resolver: zodResolver(newClientFormValidationSchema),
-  });
+  const methods = useFormContext<FormModalProps>();
 
-
-  async function handleCreateNewClient(data: FormModalProps) {
-    await axios.post('http://127.0.0.1:3333/api/clientes', data).then(() => {
-      onClose()
-      getClients()
-      methods.reset()
+  const clearForm = () => {
+    onClose()
+    getClients()
+    methods.reset({
+      razao: '',
+      fantasia: '',
+      bairro: '',
+      categoria:"cliente",
+      cep: '',
+      cidade: '',
+      cnpjcpf: '',
+      complemento: '',
+      email1: '',
+      email2: '',
+      ie: '',
+      im: '',
+      logradouro: '',
+      numero: '',
+      observacao: '',
+      rg: '',
+      site: '',
+      suframa: '',
+      telefone1: '',
+      telefone2: '',
+      telefone3: '',
+      tipo:"j",
+      tipo_contribuinte: '',
+      tipo_telefone1: '',
+      tipo_telefone2: '',
+      tipo_telefone3: '',
+      uf: '',
     })
   }
 
-  return (
-    <FormProvider {...methods}>
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        closeOnOverlayClick={false}
-        motionPreset='slideInBottom'
-        isCentered
-        scrollBehavior="inside"
-        size="5xl"
-      >
-        <ModalOverlay />
-        <form onSubmit={methods.handleSubmit(handleCreateNewClient)}>
-          <ModalContent>
-            <ModalHeader>Cadastro Clientes / Fornecedores</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Tabs variant='enclosed' colorScheme="gray">
-                <TabList>
-                  <Tab>1. Dados Principais</Tab>
-                  <Tab>2. Observações</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel>
-                    <FormFields />
-                  </TabPanel>
-                  <TabPanel>
-                    <Textarea h="37rem" placeholder='Observações...' {...methods.register('observacao')} />
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </ModalBody>
-            <ModalFooter>
-              <Flex w="100%" justify="space-between">
-                <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} /> Cadastrar</Button>
-                <Button colorScheme='red' variant="outline" mr={3} onClick={onClose}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
-              </Flex>
-            </ModalFooter>
-          </ModalContent>
-        </form>
-      </Modal>
-    </FormProvider>
+  const handleUpdateClient = (data: FormModalProps) => {
+    console.log(data)
+    ClientService.updateById(id, data)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          alert(result.message)
+        } else {
+          clearForm()
+        }
+      })
+  }
+  
+  const handleCreateNewClient = async (data: FormModalProps) => {
+    console.log(data)
 
+    ClientService.create(data)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          alert(result.message);
+        } else {
+          clearForm()
+        }
+      })
+  }
+
+  const submitData = (data: FormModalProps) => {
+    if (isEditing)
+      handleUpdateClient(data)
+    else
+      handleCreateNewClient(data)
+  }
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      closeOnOverlayClick={false}
+      motionPreset='slideInBottom'
+      isCentered
+      scrollBehavior="inside"
+      size="5xl"
+    >
+      <ModalOverlay />
+      <form onSubmit={methods.handleSubmit(submitData)}>
+        <ModalContent>
+          <ModalHeader>Cadastro Clientes / Fornecedores</ModalHeader>
+          <ModalCloseButton onClick={() => clearForm()} />
+          <ModalBody>
+            <Tabs variant='enclosed' colorScheme="gray">
+              <TabList>
+                <Tab>1. Dados Principais</Tab>
+                <Tab>2. Observações</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <FormFields />
+                </TabPanel>
+                <TabPanel>
+                  <Textarea h="37rem" placeholder='Observações...' {...methods.register('observacao')} />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </ModalBody>
+          <ModalFooter>
+            <Flex w="100%" justify="space-between">
+              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} /> Cadastrar</Button>
+              <Button colorScheme='red' variant="outline" mr={3} onClick={() => clearForm()}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+            </Flex>
+          </ModalFooter>
+        </ModalContent>
+      </form>
+    </Modal>
   )
 }

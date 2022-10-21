@@ -2,8 +2,8 @@ import { ApiException } from "../ApiException";
 import { Api } from "../ApiConfig"
 
 export interface IClient {
-  id: number;
-  cod: number;
+  id?: number;
+  cod?: number;
   tipo: string;
   categoria: string;
   razao: string;
@@ -33,9 +33,14 @@ export interface IClient {
   site: string;
 }
 
-const getAll = async (): Promise<IClient[] | ApiException> => {
+interface IPage {
+  currentPage?: number
+  limit?: number
+}
+
+const getAll = async ({currentPage, limit}: IPage): Promise<IClient[] | ApiException> => {
   try {
-    const { data } = await Api().get('/clientes')
+    const { data } = await Api().get(`/clientes?page=${currentPage}&limit=${limit}`)
     return data;
   } catch (error: any) {
     return new ApiException(error.message || 'Erro ao buscar os registros.')

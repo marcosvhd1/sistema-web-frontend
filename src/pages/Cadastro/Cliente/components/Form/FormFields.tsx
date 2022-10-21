@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import {
   Divider,
   Flex,
@@ -11,10 +12,9 @@ import { useFormContext } from "react-hook-form";
 
 import { FormContainer } from "../../../../../components/Form/FormContainer";
 import { Adress } from "./Adress";
-
 import { Contact } from "./Contact/Contact";
 
-import { IClient } from "../../../../../services/api/clientes/ClientService"
+import { ClientService, IClient } from "../../../../../services/api/clientes/ClientService"
 
 export function FormFields() {
   const { register, formState: { errors } } = useFormContext<IClient>();
@@ -26,7 +26,7 @@ export function FormFields() {
         <Flex direction="column" w="50%">
           <Flex w="100%" justify="space-between">
             <FormContainer label="Código" width="5rem">
-              <Input id="id" type="text" w="5rem" isReadOnly value={"00001"} />
+              <Input id="id" type="text" w="5rem" isReadOnly {...register('cod')} />
             </FormContainer>
             <FormContainer label="Tipo" width="4rem">
               <Select w="4rem" {...register('tipo')}>
