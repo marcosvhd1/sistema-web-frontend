@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import * as zod from "zod";
+import { useNavigate } from "react-router-dom";
 
 import { Button, Icon, Td, Tr } from "@chakra-ui/react";
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from "react-icons/fi";
@@ -66,6 +67,7 @@ export function Cliente() {
   const [limitRegistros, setLimitRegistros] = useState(5)
   const [pages, setPages] = useState<number[]>([])
   const [currentPage, setCurrantPage] = useState<number>(1)
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function loadClients() {
@@ -79,12 +81,31 @@ export function Cliente() {
       setPages(arrayPages);
       setData(response.data)
     }
+    navigate(`?page=${currentPage}&limit=${limitRegistros}`)
     loadClients()
   }, [totalClients, limitRegistros, currentPage])
+
+
+
+/*
+$fim = ($pagina $totalPagina); //Multiplicamos a página atual pela quantidade de itens por página: P=4 I= 5 | 4 5 = 20;
+
+$inicio = ($fim - $totalPagina); //Subtraimos o total de páginas pela quantidade final a ser exibido: FIM = 20 Tot. Pag. = 5 | 20 - 5 = 15
+
+ta ai a logica
+
+só dale
+
+ali onde começa o negrito
+
+é *
+
+pagina x totalpagina
+*/
+
+
   ////////////////////////////////////////////////////////////////
-
-
-
+  
 
   const changeEdit = () => {
     setIsEditing(false)
@@ -151,8 +172,10 @@ export function Cliente() {
               </Tr>
             )) : ""}
           </DataTable>
-          <Pagination>
-            <Button variant="ghost" size="sm" fontSize="2xl" width="4"><Icon as={FiChevronLeft} /></Button>
+          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients}>
+            {currentPage > 1 && (
+              <Button variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrantPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
+            )}
             {pages.map(page => (
               <Button
                 key={page}
@@ -161,11 +184,14 @@ export function Cliente() {
                 width="4"
                 colorScheme="purple"
                 onClick={() => setCurrantPage(page)}
+                isActive={currentPage === page}
               >
                 {page}
               </Button>
             ))}
-            <Button variant="ghost" size="sm" fontSize="2xl" width="4"><Icon as={FiChevronRight} /></Button>
+            {currentPage < pages.length && (
+            <Button variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrantPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
+            )}
           </Pagination>
         </SearchBox>
         <FormModal getClients={handleGetClients} isEditing={isEditing} changeEdit={changeEdit} id={id} />
