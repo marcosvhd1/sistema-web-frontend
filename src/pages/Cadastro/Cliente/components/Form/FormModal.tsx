@@ -66,9 +66,10 @@ interface ModalProps {
   changeEdit: () => void
   isEditing: boolean
   id: number
+  lastCod: number
 }
 
-export function FormModal({ getClients, isEditing, id }: ModalProps) {
+export function FormModal({ getClients, isEditing, id, lastCod }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useFormContext<FormModalProps>();
 
@@ -161,7 +162,7 @@ export function FormModal({ getClients, isEditing, id }: ModalProps) {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <FormFields />
+                  <FormFields lastCod={lastCod}/>
                 </TabPanel>
                 <TabPanel>
                   <Textarea h="37rem" placeholder='Observações...' {...methods.register('observacao')} />

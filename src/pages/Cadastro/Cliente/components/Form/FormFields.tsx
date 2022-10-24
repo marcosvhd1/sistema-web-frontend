@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import {
   Divider,
   Flex,
@@ -14,9 +13,12 @@ import { FormContainer } from "../../../../../components/Form/FormContainer";
 import { Adress } from "./Adress";
 import { Contact } from "./Contact/Contact";
 
-import { ClientService, IClient } from "../../../../../services/api/clientes/ClientService"
+import { IClient } from "../../../../../services/api/clientes/ClientService";
 
-export function FormFields() {
+interface IFormFields {
+  lastCod: number
+}
+export function FormFields({ lastCod }: IFormFields) {
   const { register, formState: { errors } } = useFormContext<IClient>();
 
   return (
@@ -26,7 +28,7 @@ export function FormFields() {
         <Flex direction="column" w="50%">
           <Flex w="100%" justify="space-between">
             <FormContainer label="Código" width="5rem">
-              <Input id="id" type="text" w="5rem" isReadOnly {...register('cod')} />
+              <Input id="id" type="text" w="5rem" isReadOnly value={("0000" + lastCod).slice(-4)} {...register('cod')} />
             </FormContainer>
             <FormContainer label="Tipo" width="4rem">
               <Select w="4rem" {...register('tipo')}>

@@ -38,7 +38,15 @@ interface IPage {
   limit?: number
 }
 
-const getAll = async ({currentPage, limit}: IPage): Promise<IClient[] | ApiException> => {
+const getAll = async (): Promise<IClient[] | ApiException> => {
+  try {
+    const { data } = await Api().get(`/clientes`)
+    return data;
+  } catch (error: any) {
+    return new ApiException(error.message || 'Erro ao buscar os registros.')
+  }
+};
+const getAllPerPage = async ({ currentPage, limit }: IPage): Promise<IClient[] | ApiException> => {
   try {
     const { data } = await Api().get(`/clientes?page=${currentPage}&limit=${limit}`)
     return data;
@@ -85,6 +93,7 @@ const deleteById = async (id: number): Promise<undefined | ApiException> => {
 
 export const ClientService = {
   getAll,
+  getAllPerPage,
   getById,
   create,
   updateById,

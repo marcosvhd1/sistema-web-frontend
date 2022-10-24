@@ -23,6 +23,7 @@ export function DeleteAlertDialog({ id, getClients }: AlertDialogProps) {
           alert(result.message);
         } else {
           toast({
+            position: 'top',
             title: 'Operação concluída.',
             description: "Cliente excluido com sucesso.",
             status: 'success',

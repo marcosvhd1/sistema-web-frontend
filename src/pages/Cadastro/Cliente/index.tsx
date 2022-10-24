@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import * as zod from "zod";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Icon, Td, Tr } from "@chakra-ui/react";
+import { Button, Icon, Select, Td, Tr } from "@chakra-ui/react";
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from "react-icons/fi";
 
 import MainContent from "../../../components/MainContent";
@@ -59,10 +59,18 @@ export function Cliente() {
   const [isEditing, setIsEditing] = useState(false)
   const { onOpen } = useAlertClientContext()
   const { onOpen: open } = useModalClient()
+  const [lastCod, setLastCod] = useState<number>(1)
   const methods = useForm<IClient>({
     resolver: zodResolver(newClientFormValidationSchema)
   })
+
+  const getLastCod = async () => {
+    const response = await  await Api().get('/cod/clientes')
+    const { max } = response.data.rows[0];
+    setLastCod(max)
+  }
   ////////////////////////////////////////////////////////////////
+
   const [totalClients, setTotalClients] = useState<number>(0)
   const [limitRegistros, setLimitRegistros] = useState(5)
   const [pages, setPages] = useState<number[]>([])
@@ -83,25 +91,8 @@ export function Cliente() {
     }
     navigate(`?page=${currentPage}&limit=${limitRegistros}`)
     loadClients()
+    // getLastCod()
   }, [totalClients, limitRegistros, currentPage])
-
-
-
-/*
-$fim = ($pagina $totalPagina); //Multiplicamos a página atual pela quantidade de itens por página: P=4 I= 5 | 4 5 = 20;
-
-$inicio = ($fim - $totalPagina); //Subtraimos o total de páginas pela quantidade final a ser exibido: FIM = 20 Tot. Pag. = 5 | 20 - 5 = 15
-
-ta ai a logica
-
-só dale
-
-ali onde começa o negrito
-
-é *
-
-pagina x totalpagina
-*/
 
 
   ////////////////////////////////////////////////////////////////
@@ -112,7 +103,7 @@ pagina x totalpagina
   }
 
   const handleGetClients = () => {
-    ClientService.getAll({currentPage, limit: limitRegistros})
+    ClientService.getAllPerPage({currentPage, limit: limitRegistros})
       .then((result) => {
         if (result instanceof ApiException) {
           alert(result.message);
@@ -149,7 +140,7 @@ pagina x totalpagina
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox getClients={handleGetClients} changeEdit={changeEdit}>
+        <SearchBox getClients={handleGetClients} changeEdit={changeEdit} getLastCod={getLastCod}>
           <DataTable headers={headers}>
             {data != undefined ? data.map((data) => (
               <Tr key={data.id}>
@@ -194,7 +185,7 @@ pagina x totalpagina
             )}
           </Pagination>
         </SearchBox>
-        <FormModal getClients={handleGetClients} isEditing={isEditing} changeEdit={changeEdit} id={id} />
+        <FormModal lastCod={lastCod} getClients={handleGetClients} isEditing={isEditing} changeEdit={changeEdit} id={id} />
         <DeleteAlertDialog id={id} getClients={handleGetClients} />
       </MainContent>
     </FormProvider>

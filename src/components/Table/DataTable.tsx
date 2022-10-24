@@ -14,9 +14,9 @@ export function DataTable({ children, headers }: DataTableProps) {
           <Thead bg="whiteAlpha.100">
             <Tr>
               {headers.map((row) => {
-                return (<Th key={row.key} onClick={() => {}}>{row.label}</Th>)
+                return (<Th fontSize="0.7rem"  key={row.key} onClick={() => {}}>{row.label}</Th>)
               })}
-              <Th>Ações</Th>
+              <Th fontSize="0.7rem">Ações</Th>
             </Tr>
           </Thead>
           <Tbody>

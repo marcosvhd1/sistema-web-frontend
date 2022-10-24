@@ -10,14 +10,16 @@ interface SearchBoxProps {
   children: ReactNode;
   getClients: () => void;
   changeEdit: () => void;
+  getLastCod: () => void;
 }
 
-export function SearchBox({ children, changeEdit, getClients }: SearchBoxProps) {
+export function SearchBox({ children, changeEdit, getClients, getLastCod }: SearchBoxProps) {
   const { onOpen } = useModalClient();
 
   const openModal = () => {
     onOpen()
     changeEdit()
+    getLastCod()
   }
   
   return (
