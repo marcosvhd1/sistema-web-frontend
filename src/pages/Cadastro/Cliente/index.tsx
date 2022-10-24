@@ -91,13 +91,16 @@ export function Cliente() {
     }
     navigate(`?page=${currentPage}&limit=${limitRegistros}`)
     loadClients()
-    // getLastCod()
   }, [totalClients, limitRegistros, currentPage])
 
 
   ////////////////////////////////////////////////////////////////
   
 
+  const changeLimitRegister = (value: number) => {
+    setLimitRegistros(value)
+    console.log(value)
+  }
   const changeEdit = () => {
     setIsEditing(false)
   }
@@ -163,7 +166,7 @@ export function Cliente() {
               </Tr>
             )) : ""}
           </DataTable>
-          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients}>
+          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={changeLimitRegister}>
             {currentPage > 1 && (
               <Button variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrantPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
             )}

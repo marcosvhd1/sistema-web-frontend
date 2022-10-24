@@ -1,14 +1,17 @@
-import { Box, Flex, FormLabel, Select, Stack, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
+import { useForm } from "react-hook-form"
+import { Box, Flex, FormLabel, Select, Stack, Text } from "@chakra-ui/react";
+import { IClient } from "../../services/api/clientes/ClientService";
 
 interface IPagination {
   children: ReactNode
   limitRegistros: number
   currentPage: number
   totalClients: number
+  changeLimitRegister: (value: number) => void
 }
 
-export function Pagination({ children, limitRegistros, currentPage, totalClients }: IPagination) {
+export function Pagination({ children, limitRegistros, currentPage, totalClients, changeLimitRegister }: IPagination) {
 
   return (
     <Stack
@@ -29,7 +32,7 @@ export function Pagination({ children, limitRegistros, currentPage, totalClients
           align="center"
           gap="2"
         >
-          <Select>
+          <Select onChange={(e) => changeLimitRegister(parseInt(e.target.value))} >
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
