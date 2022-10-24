@@ -14,6 +14,7 @@ import { Adress } from "./Adress";
 import { Contact } from "./Contact/Contact";
 
 import { IClient } from "../../../../../services/api/clientes/ClientService";
+import moment from "moment";
 
 interface IFormFields {
   lastCod: number
@@ -44,7 +45,7 @@ export function FormFields({ lastCod }: IFormFields) {
               </Select>
             </FormContainer>
             <FormContainer width="8rem" label="Cadastrado" >
-              <Input id="cadastrado" type="text" w="8rem" isReadOnly value={"14/10/2022"} />
+              <Input id="cadastrado" type="text" w="8rem" isReadOnly value={moment().format("DD/MM/YYYY")} />
             </FormContainer>
           </Flex>
           <Flex direction="column">

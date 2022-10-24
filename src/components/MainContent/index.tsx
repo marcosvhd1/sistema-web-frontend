@@ -34,7 +34,7 @@ export default function MainContent({ children }: MainContentProps) {
      <GridItem area={'nav'}>
         <Sidebar />
      </GridItem>
-     <GridItem area={'main'} boxShadow="0 0 12px 1px rgba(0, 0, 0, 0.15) inset">
+     <GridItem area={'main'} boxShadow="0 0 12px 1px rgba(0, 0, 0, 0.15) inset" overflowY="auto">
       {children}
      </GridItem>
      <GridItem area={'footer'}>
