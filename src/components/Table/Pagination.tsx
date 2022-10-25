@@ -38,7 +38,7 @@ export function Pagination({ children, limitRegistros, currentPage, totalClients
             <option value="25">25</option>
             <option value="50">50</option>
           </Select>
-          <Text>{limitRegistros * (currentPage - 1) + 1}</Text> - <Text>{limitRegistros * currentPage > totalClients ? totalClients : limitRegistros * currentPage}</Text> de <Text  fontWeight="semibold">{totalClients}</Text>
+          <Text>{limitRegistros * (currentPage - 1) + 1}</Text> - <Text>{limitRegistros * currentPage > totalClients ? totalClients : limitRegistros * currentPage}</Text> de <Text  fontWeight="semibold">{totalClients ? totalClients : 0}</Text>
         </Flex>
       </Flex>
       <Stack direction="row" spacing="2" align="center">

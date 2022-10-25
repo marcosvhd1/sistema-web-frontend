@@ -65,7 +65,7 @@ export function Cliente() {
   })
 
   const getLastCod = async () => {
-    const response = await  await Api().get('/cod/clientes')
+    const response = await Api().get('/cod/clientes')
     const { max } = response.data.rows[0];
     setLastCod(max)
   }
@@ -95,18 +95,17 @@ export function Cliente() {
 
 
   ////////////////////////////////////////////////////////////////
-  
+
 
   const changeLimitRegister = (value: number) => {
     setLimitRegistros(value)
-    console.log(value)
   }
   const changeEdit = () => {
     setIsEditing(false)
   }
 
   const handleGetClients = () => {
-    ClientService.getAllPerPage({currentPage, limit: limitRegistros})
+    ClientService.getAllPerPage({ currentPage, limit: limitRegistros })
       .then((result) => {
         if (result instanceof ApiException) {
           alert(result.message);
@@ -129,6 +128,18 @@ export function Cliente() {
     setIsEditing(true)
   }
 
+  const getClientsByFilter = async (param: string, description: string) => {
+    await Api().get(`/cadastro/clientes?page=${currentPage}&limit=${limitRegistros}&filter=${param}&description=${description}`)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          alert(result.message);
+        } else {
+          setData(result.data)
+        }
+      })
+  }
+
+
   const headers: { key: string, label: string }[] = [
     { key: "cod", label: "Código" },
     { key: "razao", label: "Nome / Razão Social" },
@@ -143,7 +154,7 @@ export function Cliente() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox getClients={handleGetClients} changeEdit={changeEdit} getLastCod={getLastCod}>
+        <SearchBox getClientsByFilter={getClientsByFilter} changeEdit={changeEdit} getLastCod={getLastCod}>
           <DataTable headers={headers}>
             {data != undefined ? data.map((data) => (
               <Tr key={data.id}>
@@ -184,7 +195,7 @@ export function Cliente() {
               </Button>
             ))}
             {currentPage < pages.length && (
-            <Button variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrantPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
+              <Button variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrantPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
             )}
           </Pagination>
         </SearchBox>
