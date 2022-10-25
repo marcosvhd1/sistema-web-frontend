@@ -10,26 +10,26 @@ import { useModalClient } from "../../../../Contexts/Modal/ClientContext";
 
 interface SearchBoxProps {
   children: ReactNode;
-  getClientsByFilter: (description: string, param: string) => void;
-  changeEdit: () => void;
+  onSubmit: () => void;
+  changeEdit: (value: React.SetStateAction<any>) => void;
   getLastCod: () => void;
+  stateFilter: (value: React.SetStateAction<any>) => void;
+  stateDescription: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ children, changeEdit, getClientsByFilter, getLastCod }: SearchBoxProps) {
+export function SearchBox({ children, changeEdit, onSubmit, getLastCod , stateFilter, stateDescription}: SearchBoxProps) {
   const { onOpen } = useModalClient();
-  const [filter, setFilter] = useState<string>('razao');
   const { register, handleSubmit, reset } = useForm()
 
   const openModal = () => {
     onOpen()
-    changeEdit()
+    changeEdit(false)
     getLastCod()
   }
 
   const HandlegetClientsByFilter = (data: FieldValues) => {
     const { description } = data
-    getClientsByFilter(filter, description)
-    reset()
+    stateDescription(description);
   }
 
   
@@ -40,7 +40,7 @@ export function SearchBox({ children, changeEdit, getClientsByFilter, getLastCod
         <Flex w="90%" m="4" align="center" justify="space-between">
           <Flex w="60%" justify="center" align="center">
             <Text w="8rem">Buscar por </Text>
-            <Select w="40%" mr="3" onChange={(e) => setFilter(e.target.value)}>
+            <Select w="40%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
               <option value='razao'>Nome / Razão Social</option>
               <option value='fantasia'>Nome Fantasia</option>
               <option value='cnpjcpf'>CPF / CNPJ</option>

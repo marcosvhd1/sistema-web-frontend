@@ -7,10 +7,9 @@ import { ClientService } from "../../services/api/clientes/ClientService";
 
 interface AlertDialogProps {
   id: number;
-  getClients: () => void;
 }
 
-export function DeleteAlertDialog({ id, getClients }: AlertDialogProps) {
+export function DeleteAlertDialog({ id }: AlertDialogProps) {
   const { isOpen, onClose } = useAlertClientContext()
   const cancelRef = useRef<HTMLButtonElement>(null)
   const toast = useToast()
@@ -30,7 +29,6 @@ export function DeleteAlertDialog({ id, getClients }: AlertDialogProps) {
             duration: 2000,
             isClosable: true,
           })
-          getClients()
         }
       })
     onClose()

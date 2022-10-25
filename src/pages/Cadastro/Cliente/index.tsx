@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react";
-import * as zod from "zod";
 import { useNavigate } from "react-router-dom";
+import * as zod from "zod";
 
-import { Button, Icon, Select, Td, Tr } from "@chakra-ui/react";
+import { Button, Icon, Td, Tr } from "@chakra-ui/react";
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from "react-icons/fi";
 
 import MainContent from "../../../components/MainContent";
 import { DataTable } from "../../../components/Table/DataTable";
+import { DeleteAlertDialog } from "../../../components/Utils/DeleteAlertDialog";
 import { FormModal } from "./components/Form/FormModal";
 import { SearchBox } from "./components/SearchBox";
-import { DeleteAlertDialog } from "../../../components/Utils/DeleteAlertDialog";
 
 import { ApiException } from "../../../services/api/ApiException";
 
 import { useAlertClientContext } from "../../../Contexts/AlertDialog/AlertClientContext";
-import { ClientService, IClient } from "../../../services/api/clientes/ClientService";
+import { IClient } from "../../../services/api/clientes/ClientService";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
+import { Pagination } from "../../../components/Table/Pagination";
 import { useModalClient } from "../../../Contexts/Modal/ClientContext";
 import { Api } from "../../../services/api/ApiConfig";
-import { Pagination } from "../../../components/Table/Pagination";
 
 
 const newClientFormValidationSchema = zod.object({
@@ -70,6 +70,8 @@ export function Cliente() {
     setLastCod(max)
   }
   ////////////////////////////////////////////////////////////////
+  const [filter, setFilter] = useState<string>('razao');
+  const [description, setDescription] = useState<string>('');
 
   const [totalClients, setTotalClients] = useState<number>(0)
   const [limitRegistros, setLimitRegistros] = useState(5)
@@ -78,41 +80,42 @@ export function Cliente() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    async function loadClients() {
-      const response = await Api().get(`/clientes?page=${currentPage}&limit=${limitRegistros}`)
-      setTotalClients(parseInt(response.headers["qtd"]!))
-      const totalPages = Math.ceil(totalClients / limitRegistros)
-      const arrayPages = []
-      for (let i = 1; i <= totalPages; i++) {
-        arrayPages.push(i)
-      }
-      setPages(arrayPages);
-      setData(response.data)
-    }
+    getClientsByFilter();
     navigate(`?page=${currentPage}&limit=${limitRegistros}`)
-    loadClients()
-  }, [totalClients, limitRegistros, currentPage])
+  }, [currentPage, description, limitRegistros]);
+
+  useEffect(()=>{
+    handleChangePage();
+  },[totalClients]);
+
 
 
   ////////////////////////////////////////////////////////////////
 
-
-  const changeLimitRegister = (value: number) => {
-    setLimitRegistros(value)
+  function handleChangePage(){
+    const totalPages = Math.ceil(totalClients / limitRegistros)
+    const arrayPages = []
+    for (let i = 1; i <= totalPages; i++) {
+      arrayPages.push(i)
+    }
+    setPages(arrayPages);
   }
-  const changeEdit = () => {
-    setIsEditing(false)
-  }
 
-  const handleGetClients = () => {
-    ClientService.getAllPerPage({ currentPage, limit: limitRegistros })
+
+  const getClientsByFilter = async () => {
+    await Api().get(`/cadastro/clientes?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`)
       .then((result) => {
         if (result instanceof ApiException) {
           alert(result.message);
         } else {
-          setData(result)
+          setData(result.data)
+          setTotalClients(parseInt(result.headers["qtd"]!))
         }
       })
+  }
+
+  const changeLimitRegister = (value: number) => {
+    setLimitRegistros(value)
   }
 
   const handleOpenDialog = (id: number) => {
@@ -128,18 +131,6 @@ export function Cliente() {
     setIsEditing(true)
   }
 
-  const getClientsByFilter = async (param: string, description: string) => {
-    await Api().get(`/cadastro/clientes?page=${currentPage}&limit=${limitRegistros}&filter=${param}&description=${description}`)
-      .then((result) => {
-        if (result instanceof ApiException) {
-          alert(result.message);
-        } else {
-          setData(result.data)
-        }
-      })
-  }
-
-
   const headers: { key: string, label: string }[] = [
     { key: "cod", label: "Código" },
     { key: "razao", label: "Nome / Razão Social" },
@@ -154,7 +145,7 @@ export function Cliente() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox getClientsByFilter={getClientsByFilter} changeEdit={changeEdit} getLastCod={getLastCod}>
+        <SearchBox onSubmit={getClientsByFilter} changeEdit={setIsEditing} getLastCod={getLastCod} stateDescription={setDescription} stateFilter={setFilter}>
           <DataTable headers={headers}>
             {data != undefined ? data.map((data) => (
               <Tr key={data.id}>
@@ -188,7 +179,9 @@ export function Cliente() {
                 fontSize="xs"
                 width="4"
                 colorScheme="purple"
-                onClick={() => setCurrantPage(page)}
+                onClick={() => {
+                  setCurrantPage(page)
+                }}
                 isActive={currentPage === page}
               >
                 {page}
@@ -199,8 +192,8 @@ export function Cliente() {
             )}
           </Pagination>
         </SearchBox>
-        <FormModal lastCod={lastCod} getClients={handleGetClients} isEditing={isEditing} changeEdit={changeEdit} id={id} />
-        <DeleteAlertDialog id={id} getClients={handleGetClients} />
+        <FormModal lastCod={lastCod} isEditing={isEditing} changeEdit={setIsEditing} id={id} />
+        <DeleteAlertDialog id={id} />
       </MainContent>
     </FormProvider>
   )

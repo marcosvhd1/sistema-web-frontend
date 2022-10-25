@@ -62,20 +62,18 @@ const newClientFormValidationSchema = zod.object({
 type FormModalProps = zod.infer<typeof newClientFormValidationSchema>
 
 interface ModalProps {
-  getClients: () => void
-  changeEdit: () => void
+  changeEdit: (value: React.SetStateAction<any>) => void;
   isEditing: boolean
   id: number
   lastCod: number
 }
 
-export function FormModal({ getClients, isEditing, id, lastCod }: ModalProps) {
+export function FormModal({ isEditing, id, lastCod }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useFormContext<FormModalProps>();
 
   const clearForm = () => {
     onClose()
-    getClients()
     methods.reset({
       razao: '',
       fantasia: '',
@@ -108,7 +106,6 @@ export function FormModal({ getClients, isEditing, id, lastCod }: ModalProps) {
   }
 
   const handleUpdateClient = (data: FormModalProps) => {
-    console.log(data)
     ClientService.updateById(id, data)
       .then((result) => {
         if (result instanceof ApiException) {
@@ -120,8 +117,6 @@ export function FormModal({ getClients, isEditing, id, lastCod }: ModalProps) {
   }
   
   const handleCreateNewClient = async (data: FormModalProps) => {
-    console.log(data)
-
     ClientService.create(data)
       .then((result) => {
         if (result instanceof ApiException) {
