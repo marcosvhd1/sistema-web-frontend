@@ -48,7 +48,7 @@ export function SearchBox({ children, changeEdit, getLastCod , stateFilter, stat
             <Input placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
             <Button type="submit"><Icon as={FiSearch} /></Button>
           </Flex>
-          <Button variant="outline" onClick={() => openModal()} colorScheme="green">Cadastrar</Button>
+          <Button variant="outline" onClick={() => openModal()} colorScheme="green">Cadastrar Cliente</Button>
         </Flex>
         {children}
       </Flex>

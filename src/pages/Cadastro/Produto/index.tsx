@@ -34,7 +34,7 @@ export function Produto() {
   return (
     <MainContent>
       <SearchBox>
-        {/* <DataTable headers={headers}>
+        <DataTable headers={headers}>
           {data != undefined ? data.map((d) => (
             <Tr key={d.id}>
               <Td>{d.id}</Td>
@@ -48,7 +48,7 @@ export function Produto() {
               <Td><Icon color="#F5DEB3" as={FiEdit} /> <Icon as={FiTrash2} color="#A52A2A" /></Td>
             </Tr>
           )) : ""}
-        </DataTable> */}
+        </DataTable>
       </SearchBox>
       <ModalProduct/>
     </MainContent>

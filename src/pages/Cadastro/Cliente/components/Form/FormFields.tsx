@@ -44,7 +44,7 @@ export function FormFields({ lastCod }: IFormFields) {
                 <option value='outro'>Outro</option>
               </Select>
             </FormContainer>
-            <FormContainer width="8rem" label="Cadastrado" >
+            <FormContainer width="8rem" label="Alterado" >
               <Input id="cadastrado" type="text" w="8rem" isReadOnly value={moment().format("DD/MM/YYYY")} />
             </FormContainer>
           </Flex>
@@ -52,7 +52,7 @@ export function FormFields({ lastCod }: IFormFields) {
             <FormContainer label="Nome / Razão Social" error={errors.razao} isRequired={true}>
               <Input id="nome" type="text" {...register('razao')} />
             </FormContainer>
-            <FormContainer label="Nome Fantasia" error={errors.fantasia}>
+            <FormContainer label="Nome Fantasia">
               <Input id="fantasia" type="text" {...register('fantasia')} />
             </FormContainer>
           </Flex>

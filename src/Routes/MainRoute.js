@@ -13,6 +13,8 @@ import { Produto } from '../pages/Cadastro/Produto';
 import { Servico } from '../pages/Cadastro/Servico';
 import { Transportadora } from '../pages/Cadastro/Transportadora';
 import { AlertClientContextProvider } from '../Contexts/AlertDialog/AlertClientContext';
+import { ModalServiceProvider } from '../Contexts/Modal/ServiceContext';
+import { AlertServiceContextProvider } from '../Contexts/AlertDialog/AlertServiceContext';
 
 
 export default function MainRoutes() {
@@ -23,16 +25,20 @@ export default function MainRoutes() {
                     <SidebarDrawerProvider>
                         <ModalClientProvider>
                             <ModalProductProvider>
-                                <AlertClientContextProvider>
-                                    <Routes>
-                                        <Route index element={<Login />} />
-                                        <Route path="/app" element={<Home />} />
-                                        <Route path="/app/cadastro/clientes" element={<Cliente />} />
-                                        <Route path="/app/cadastro/produtos" element={<Produto />} />
-                                        <Route path="/app/cadastro/servicos" element={<Servico />} />
-                                        <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
-                                    </Routes>
-                                </AlertClientContextProvider>
+                                <ModalServiceProvider>
+                                    <AlertClientContextProvider>
+                                        <AlertServiceContextProvider>
+                                            <Routes>
+                                                <Route index element={<Login />} />
+                                                <Route path="/app" element={<Home />} />
+                                                <Route path="/app/cadastro/clientes" element={<Cliente />} />
+                                                <Route path="/app/cadastro/produtos" element={<Produto />} />
+                                                <Route path="/app/cadastro/servicos" element={<Servico />} />
+                                                <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
+                                            </Routes>
+                                        </AlertServiceContextProvider>
+                                    </AlertClientContextProvider>
+                                </ModalServiceProvider>
                             </ModalProductProvider>
                         </ModalClientProvider>
                     </SidebarDrawerProvider>
