@@ -133,22 +133,22 @@ export function Cliente() {
     <FormProvider {...methods}>
       <MainContent>
         <SearchBox onSubmit={getClientsByFilter} changeEdit={setIsEditing} getLastCod={getLastCod} stateDescription={setDescription} stateFilter={setFilter}>
-          <DataTable headers={headers}>
+          <DataTable headers={headers} >
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
-                <Td>{data.cod}</Td>
-                <Td>{data.razao}</Td>
-                <Td>{data.fantasia}</Td>
-                <Td>{data.cnpjcpf}</Td>
-                <Td>{data.bairro}</Td>
-                <Td>{data.cidade}</Td>
-                <Td>{data.uf}</Td>
-                <Td>{data.categoria}</Td>
-                <Td>
-                  <Button variant="ghost" colorScheme="orange" onClick={() => handleEditClient(data.id!)}>
+                <Td style={{"width": "1rem"}} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cod}</Td>
+                <Td style={{"width": "1rem"}} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.fantasia}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.bairro}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cidade}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.uf}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.categoria}</Td>
+                <Td  style={{"textAlign": "center"}}>
+                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditClient(data.id!)}>
                     <Icon color="orange.300" as={FiEdit} />
                   </Button>
-                  <Button variant="ghost" colorScheme="red" onClick={() => handleOpenDialog(data.id!)}>
+                  <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem"  onClick={() => handleOpenDialog(data.id!)}>
                     <Icon as={FiTrash2} color="red.400" />
                   </Button>
                 </Td>

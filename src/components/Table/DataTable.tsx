@@ -9,14 +9,14 @@ interface DataTableProps {
 export function DataTable({ children, headers }: DataTableProps) {
   return (
     <Flex w="100%" justify="center" mt="10">
-      <TableContainer w="90%" borderRadius={8} >
-        <Table variant='simple'>
+      <TableContainer  w="90%" borderRadius={8} >
+        <Table size="sm" variant='simple' >
           <Thead bg="whiteAlpha.100">
-            <Tr>
+            <Tr style={{"height": "2rem"}}>
               {headers.map((row) => {
                 return (<Th fontSize="0.7rem"  key={row.key} onClick={() => {}}>{row.label}</Th>)
               })}
-              <Th fontSize="0.7rem">Ações</Th>
+              <Th style={{"textAlign": "center"}} fontSize="0.7rem">Ações</Th>
             </Tr>
           </Thead>
           <Tbody>

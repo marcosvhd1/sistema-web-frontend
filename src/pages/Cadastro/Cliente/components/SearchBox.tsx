@@ -35,12 +35,12 @@ export function SearchBox({ children, changeEdit, getLastCod , stateFilter, stat
   
   return (
     <form onSubmit={handleSubmit((data) => HandlegetClientsByFilter(data))}>
-      <Flex w="100%" justify="center" align="center" mt="10" direction="column" >
+      <Flex w="100%" justify="center" align="center" mt={{base: "2", md: "2", lg: "10"}} direction="column" >
         <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes / Fornecedores</Text>
         <Flex w="90%" m="4" align="center" justify="space-between">
           <Flex w="60%" justify="center" align="center">
             <Text w="8rem">Buscar por </Text>
-            <Select w="40%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
+            <Select w="50%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
               <option value='razao'>Nome / Razão Social</option>
               <option value='fantasia'>Nome Fantasia</option>
               <option value='cnpjcpf'>CPF / CNPJ</option>
