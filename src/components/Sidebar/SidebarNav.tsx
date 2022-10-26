@@ -1,16 +1,15 @@
-import { useContext } from "react"
-import { Flex } from "@chakra-ui/react"
+import { Flex } from "@chakra-ui/react";
+import { useContext } from "react";
 
 import { FcBusinessman, FcDocument, FcHome, FcInTransit, FcLock, FcPackage, FcSearch, FcSettings, FcSupport } from "react-icons/fc";
-import { FiPackage } from "react-icons/fi";
-import { LogoCubo } from "../Images/LogoCubo"
+import { LogoCubo } from "../Images/LogoCubo";
 
 import { SidebarContext } from "../../Contexts/SidebarContext";
-import { SizeContext } from "../../Contexts/SizeContext"
+import { SizeContext } from "../../Contexts/SizeContext";
 
+import { Emissor } from "../Emissor";
+import { NavItem } from "./NavItem";
 import { NavSection } from "./NavSection";
-import { NavItem } from "./NavItem"
-import { Emissor } from "../Emissor"
 
 
 export function SidebarNav() {

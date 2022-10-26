@@ -1,7 +1,6 @@
-import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Flex, Icon, useDisclosure, useToast } from "@chakra-ui/react"
-import { useEffect, useRef } from "react"
-import { FcHighPriority } from "react-icons/fc";
-import { useAlertClientContext } from "../../Contexts/AlertDialog/AlertClientContext"
+import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Flex, useToast } from "@chakra-ui/react";
+import { useRef } from "react";
+import { useAlertClientContext } from "../../Contexts/AlertDialog/AlertClientContext";
 import { ApiException } from "../../services/api/ApiException";
 import { ClientService } from "../../services/api/clientes/ClientService";
 

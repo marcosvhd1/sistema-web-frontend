@@ -8,7 +8,7 @@ type EmailProps = {
 }
 
 export function Email() {
-  const { register, formState: { errors } } = useFormContext<EmailProps>();
+  const { register } = useFormContext<EmailProps>();
 
   return (
     <Flex direction="column" align="center" justify="center">

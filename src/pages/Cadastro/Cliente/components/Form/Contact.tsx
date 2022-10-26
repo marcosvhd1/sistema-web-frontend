@@ -9,7 +9,7 @@ type SiteProps = {
 }
 
 export function Contact() {
-  const { register, formState: { errors } } = useFormContext<SiteProps>();
+  const { register } = useFormContext<SiteProps>();
 
   return (
     <Flex>

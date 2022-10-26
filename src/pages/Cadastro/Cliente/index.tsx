@@ -57,18 +57,18 @@ export function Cliente() {
   const [isEditing, setIsEditing] = useState(false)
   const { onOpen } = useAlertClientContext()
   const { onOpen: open } = useModalClient()
+  const [currentPage, setCurrantPage] = useState<number>(1)
   const [lastCod, setLastCod] = useState<number>(1)
   const [filter, setFilter] = useState<string>('razao');
   const [description, setDescription] = useState<string>('');
   const [totalClients, setTotalClients] = useState<number>(0)
   const [limitRegistros, setLimitRegistros] = useState(5)
   const [pages, setPages] = useState<number[]>([])
-  const [currentPage, setCurrantPage] = useState<number>(1)
   const navigate = useNavigate()
   const methods = useForm<IClient>({
     resolver: zodResolver(newClientFormValidationSchema)
   })
-
+  
   useEffect(() => {
     getClientsByFilter();
     navigate(`?page=${currentPage}&limit=${limitRegistros}`)
@@ -134,7 +134,7 @@ export function Cliente() {
       <MainContent>
         <SearchBox onSubmit={getClientsByFilter} changeEdit={setIsEditing} getLastCod={getLastCod} stateDescription={setDescription} stateFilter={setFilter}>
           <DataTable headers={headers}>
-            {data != undefined ? data.map((data) => (
+            {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
                 <Td>{data.cod}</Td>
                 <Td>{data.razao}</Td>

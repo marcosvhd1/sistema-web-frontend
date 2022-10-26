@@ -1,7 +1,5 @@
 import { ReactNode } from "react";
-import { useForm } from "react-hook-form"
-import { Box, Flex, FormLabel, Select, Stack, Text } from "@chakra-ui/react";
-import { IClient } from "../../services/api/clientes/ClientService";
+import { Flex, Select, Stack, Text } from "@chakra-ui/react";
 
 interface IPagination {
   children: ReactNode

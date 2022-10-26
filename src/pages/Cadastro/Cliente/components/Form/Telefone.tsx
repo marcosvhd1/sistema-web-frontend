@@ -12,7 +12,7 @@ type TelefoneProps = {
 }
 
 export function Telefone() {
-  const { register, formState: { errors } } = useFormContext<TelefoneProps>();
+  const { register } = useFormContext<TelefoneProps>();
 
   return (
     <Flex w="100%" direction="column">

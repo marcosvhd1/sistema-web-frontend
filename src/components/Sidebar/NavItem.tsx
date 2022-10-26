@@ -1,4 +1,4 @@
-import { ElementType, useContext, useState } from "react";
+import { ElementType, useContext } from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 import { Flex, Icon, Link, Menu, MenuButton, Text, Tooltip, useColorModeValue } from "@chakra-ui/react";

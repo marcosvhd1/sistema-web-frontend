@@ -1,12 +1,12 @@
-import { Flex, LightMode, useBreakpointValue, useMediaQuery } from "@chakra-ui/react";
+import { Flex, LightMode, useMediaQuery } from "@chakra-ui/react";
 
-import fundo from '../../assets/fundo.jpg'
+import fundo from '../../assets/fundo.jpg';
 
-import { LoginForm } from "./components/LoginForm";
 import { LogoCubo } from "../../components/Images/LogoCubo";
+import { LoginForm } from "./components/LoginForm";
 import { InfoLogin } from "./components/LoginInfoList";
-import { TextLogo } from "./components/LoginTextLogo";
 import { Plantext } from "./components/LoginPlansText";
+import { TextLogo } from "./components/LoginTextLogo";
 
 export function Login() {
   const [isMinWidth] = useMediaQuery('(min-width: 950px)')
