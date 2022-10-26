@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FormProvider, useForm } from "react-hook-form";
 import * as zod from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button, Icon, Td, Tr } from "@chakra-ui/react";
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from "react-icons/fi";
@@ -10,18 +12,14 @@ import { DataTable } from "../../../components/Table/DataTable";
 import { DeleteAlertDialog } from "../../../components/Utils/DeleteAlertDialog";
 import { FormModal } from "./components/Form/FormModal";
 import { SearchBox } from "./components/SearchBox";
+import { Pagination } from "../../../components/Table/Pagination";
 
 import { ApiException } from "../../../services/api/ApiException";
-
-import { useAlertClientContext } from "../../../Contexts/AlertDialog/AlertClientContext";
+import { Api } from "../../../services/api/ApiConfig";
 import { IClient } from "../../../services/api/clientes/ClientService";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import { Pagination } from "../../../components/Table/Pagination";
+import { useAlertClientContext } from "../../../Contexts/AlertDialog/AlertClientContext";
 import { useModalClient } from "../../../Contexts/Modal/ClientContext";
-import { Api } from "../../../services/api/ApiConfig";
-
 
 const newClientFormValidationSchema = zod.object({
   tipo: zod.string(),
@@ -60,39 +58,27 @@ export function Cliente() {
   const { onOpen } = useAlertClientContext()
   const { onOpen: open } = useModalClient()
   const [lastCod, setLastCod] = useState<number>(1)
-  const methods = useForm<IClient>({
-    resolver: zodResolver(newClientFormValidationSchema)
-  })
-
-  const getLastCod = async () => {
-    const response = await Api().get('/cod/clientes')
-    const { max } = response.data.rows[0];
-    setLastCod(max)
-  }
-  ////////////////////////////////////////////////////////////////
   const [filter, setFilter] = useState<string>('razao');
   const [description, setDescription] = useState<string>('');
-
   const [totalClients, setTotalClients] = useState<number>(0)
   const [limitRegistros, setLimitRegistros] = useState(5)
   const [pages, setPages] = useState<number[]>([])
   const [currentPage, setCurrantPage] = useState<number>(1)
   const navigate = useNavigate()
+  const methods = useForm<IClient>({
+    resolver: zodResolver(newClientFormValidationSchema)
+  })
 
   useEffect(() => {
     getClientsByFilter();
     navigate(`?page=${currentPage}&limit=${limitRegistros}`)
   }, [currentPage, description, limitRegistros]);
 
-  useEffect(()=>{
-    handleChangePage();
-  },[totalClients]);
+  useEffect(() => {
+    handleChangeTotalPage();
+  }, [totalClients]);
 
-
-
-  ////////////////////////////////////////////////////////////////
-
-  function handleChangePage(){
+  const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalClients / limitRegistros)
     const arrayPages = []
     for (let i = 1; i <= totalPages; i++) {
@@ -101,6 +87,11 @@ export function Cliente() {
     setPages(arrayPages);
   }
 
+  const getLastCod = async () => {
+    const response = await Api().get('/cod/clientes')
+    const { max } = response.data.rows[0];
+    setLastCod(max)
+  }
 
   const getClientsByFilter = async () => {
     await Api().get(`/cadastro/clientes?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`)
@@ -112,10 +103,6 @@ export function Cliente() {
           setTotalClients(parseInt(result.headers["qtd"]!))
         }
       })
-  }
-
-  const changeLimitRegister = (value: number) => {
-    setLimitRegistros(value)
   }
 
   const handleOpenDialog = (id: number) => {
@@ -168,7 +155,7 @@ export function Cliente() {
               </Tr>
             )) : ""}
           </DataTable>
-          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={changeLimitRegister}>
+          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
             {currentPage > 1 && (
               <Button variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrantPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
             )}

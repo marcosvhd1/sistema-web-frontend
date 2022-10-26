@@ -17,9 +17,9 @@ interface SearchBoxProps {
   stateDescription: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ children, changeEdit, onSubmit, getLastCod , stateFilter, stateDescription}: SearchBoxProps) {
+export function SearchBox({ children, changeEdit, getLastCod , stateFilter, stateDescription}: SearchBoxProps) {
   const { onOpen } = useModalClient();
-  const { register, handleSubmit, reset } = useForm()
+  const { register, handleSubmit } = useForm()
 
   const openModal = () => {
     onOpen()

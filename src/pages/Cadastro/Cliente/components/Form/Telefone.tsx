@@ -1,6 +1,6 @@
 import { Flex, Input, Select } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form"
-import { FormContainer } from "../../../../../../components/Form/FormContainer";
+import { FormContainer } from "../../../../../components/Form/FormContainer";
 
 type TelefoneProps = {
   tipo_telefone1: string;

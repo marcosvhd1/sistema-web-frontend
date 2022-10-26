@@ -11,7 +11,7 @@ import { useFormContext } from "react-hook-form";
 
 import { FormContainer } from "../../../../../components/Form/FormContainer";
 import { Adress } from "./Adress";
-import { Contact } from "./Contact/Contact";
+import { Contact } from "./Contact";
 
 import { IClient } from "../../../../../services/api/clientes/ClientService";
 import moment from "moment";

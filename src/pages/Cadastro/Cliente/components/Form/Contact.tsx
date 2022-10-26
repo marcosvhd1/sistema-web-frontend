@@ -1,8 +1,8 @@
 import { Flex, Input } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form"
-import { FormContainer } from "../../../../../../components/Form/FormContainer";
+import { FormContainer } from "../../../../../components/Form/FormContainer";
 import { Email } from "./Email";
-import { Telefone } from "./Telefone";
+import { Telefone } from "./Telefone"
 
 type SiteProps = {
   site: string
