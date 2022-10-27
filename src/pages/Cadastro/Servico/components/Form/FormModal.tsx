@@ -18,17 +18,28 @@ import {
   Text,
   Textarea
 } from "@chakra-ui/react";
+import { IServico, ServicoService } from "../../../../../services/api/servicos/ServicoService";
 import { FiCheck, FiSlash } from "react-icons/fi";
 import { FormFields } from './FormFields'
 import { useModalService } from "../../../../../Contexts/Modal/ServiceContext";
+import { ApiException } from "../../../../../services/api/ApiException";
 
 export function FormModal() {
   const { isOpen, onClose } = useModalService();
-  const methods = useFormContext();
+  const methods = useFormContext<IServico>();
 
-  // const submitData = (data: FormModalProps) => {
-
-  // }
+  const submitData = (data: IServico) => {
+    console.log(data)
+    ServicoService.create(data)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          alert(result.message)
+        } else {
+          console.log('deu certo')
+        }
+      })
+    // console.log(data)
+  }
 
   return (
     <Modal
@@ -41,7 +52,7 @@ export function FormModal() {
       size="xl"
     >
       <ModalOverlay />
-      {/* <form onSubmit={methods.handleSubmit()}> */}
+      <form onSubmit={methods.handleSubmit(submitData)}>
         <ModalContent>
           <ModalHeader>Cadastro de Serviço</ModalHeader>
           <ModalCloseButton />
@@ -55,7 +66,7 @@ export function FormModal() {
             </Flex>
           </ModalFooter>
         </ModalContent>
-      {/* </form> */}
+      </form>
     </Modal>
   )
 }
