@@ -1,4 +1,3 @@
-import { useFormContext } from "react-hook-form";
 import {
   Button,
   Flex,
@@ -9,36 +8,47 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-  Textarea
+  ModalOverlay
 } from "@chakra-ui/react";
-import { IServico, ServicoService } from "../../../../../services/api/servicos/ServicoService";
+import { useFormContext } from "react-hook-form";
 import { FiCheck, FiSlash } from "react-icons/fi";
-import { FormFields } from './FormFields'
 import { useModalService } from "../../../../../Contexts/Modal/ServiceContext";
 import { ApiException } from "../../../../../services/api/ApiException";
+import { IServico, ServicoService } from "../../../../../services/api/servicos/ServicoService";
+import { FormFields } from './FormFields';
 
 export function FormModal() {
   const { isOpen, onClose } = useModalService();
   const methods = useFormContext<IServico>();
 
-  const submitData = (data: IServico) => {
-    console.log(data)
+  const clearForm = () => {
+    onClose();
+    methods.reset({
+      descricao: "",
+      un: "",
+      preco: parseFloat(""),
+      anotacoes: "",
+      base_iss: parseFloat(""),
+      aliquota_iss: parseFloat(""),
+      situacao: "",
+      item_lista: "",
+      ncm: "",
+    })
+  }
+
+  const handleCreateNewService = (data: IServico) => {
     ServicoService.create(data)
       .then((result) => {
         if (result instanceof ApiException) {
           alert(result.message)
         } else {
-          console.log('deu certo')
+          clearForm();
         }
       })
-    // console.log(data)
+  }
+
+  const submitData = (data: IServico) => {
+    handleCreateNewService(data);
   }
 
   return (
@@ -62,7 +72,7 @@ export function FormModal() {
           <ModalFooter>
             <Flex w="100%" justify="space-between">
               <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} /> Cadastrar</Button>
-              <Button colorScheme='red' variant="outline" mr={3} onClick={() => { }}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+              <Button colorScheme='red' variant="outline" mr={3} onClick={() => {clearForm()}}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>

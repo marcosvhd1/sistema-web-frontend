@@ -63,12 +63,13 @@ type FormModalProps = zod.infer<typeof newClientFormValidationSchema>
 
 interface ModalProps {
   changeEdit: (value: React.SetStateAction<any>) => void;
+  refreshPage: () => void
   isEditing: boolean
   id: number
   lastCod: number
 }
 
-export function FormModal({ isEditing, id, lastCod }: ModalProps) {
+export function FormModal({ isEditing, id, lastCod, refreshPage }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useFormContext<FormModalProps>();
 
@@ -123,6 +124,7 @@ export function FormModal({ isEditing, id, lastCod }: ModalProps) {
           alert(result.message);
         } else {
           clearForm()
+          refreshPage()
         }
       })
   }

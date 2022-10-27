@@ -27,14 +27,14 @@ export function SearchBox({ children, changeEdit, getLastCod , stateFilter, stat
     getLastCod()
   }
 
-  const HandlegetClientsByFilter = (data: FieldValues) => {
+  const HandleGetClientsByFilter = (data: FieldValues) => {
     const { description } = data
     stateDescription(description);
   }
 
   
   return (
-    <form onSubmit={handleSubmit((data) => HandlegetClientsByFilter(data))}>
+    <form onSubmit={handleSubmit((data) => HandleGetClientsByFilter(data))}>
       <Flex w="100%" justify="center" align="center" mt={{base: "2", md: "2", lg: "10"}} direction="column" >
         <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes / Fornecedores</Text>
         <Flex w="90%" m="4" align="center" justify="space-between">

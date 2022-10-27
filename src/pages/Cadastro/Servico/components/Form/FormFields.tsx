@@ -1,11 +1,19 @@
-import { useFormContext } from "react-hook-form"
 import moment from "moment";
+import { useFormContext } from "react-hook-form"
 import { Divider, Flex, Input, Textarea, Text, Select } from "@chakra-ui/react";
 import { FormContainer } from "../../../../../components/Form/FormContainer";
-import { IServico } from "../../../../../services/api/servicos/ServicoService";
+import { IServico, ServicoService } from "../../../../../services/api/servicos/ServicoService";
+import { useEffect, useState } from "react";
 
 export function FormFields() {
   const { register, formState: { errors } } = useFormContext<IServico>()
+  const [cod, setCod] = useState<Number>(1)
+
+  useEffect(() => {
+    ServicoService.getLastCod().then((result) => {
+      setCod(result + 1)
+    })
+  }, [])
 
   return (
     <Flex direction="column" justify="space-between">
@@ -13,7 +21,7 @@ export function FormFields() {
       <Divider />
       <Flex gap="3" align="center">
         <FormContainer label="Código" width="5rem">
-          <Input id="id" type="text" w="5rem" isReadOnly value={("0000" + 1).slice(-4)} {...register('nserv', { valueAsNumber: true })} />
+          <Input id="id" type="text" w="5rem" isReadOnly value={("0000" + cod).slice(-4)} {...register('nserv', { valueAsNumber: true })} />
         </FormContainer>
         <FormContainer label="Descrição do Serviço" isRequired={true}>
           <Input {...register('descricao')} />
@@ -21,7 +29,7 @@ export function FormFields() {
       </Flex>
       <Flex justify="space-between">
         <FormContainer label="Preço" width="5rem" error={errors.preco}>
-          <Input type="number" w="5rem" {...register('preco', {
+          <Input type="number" step={0.01} w="5rem" {...register('preco', {
             setValueAs: (value) => value === "" ? 0 : parseFloat(value),
           })} />
         </FormContainer>

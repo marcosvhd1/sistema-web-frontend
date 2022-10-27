@@ -33,7 +33,14 @@ const create = async (dataToCreate: Omit<IServico, 'id' | 'nserv'>): Promise<ISe
   }
 };
 
+const getLastCod = async () => {
+  const response = await Api().get('/cod/servicos')
+  const { max } = response.data.rows[0];
+  return max
+}
+
 export const ServicoService = {
   getAll,
   create,
+  getLastCod,
 };
