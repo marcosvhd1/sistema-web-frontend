@@ -10,21 +10,19 @@ import { useModalClient } from "../../../../Contexts/Modal/ClientContext";
 
 interface SearchBoxProps {
   children: ReactNode;
-  onSubmit: () => void;
+
   changeEdit: (value: React.SetStateAction<any>) => void;
-  getLastCod: () => void;
   stateFilter: (value: React.SetStateAction<any>) => void;
   stateDescription: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ children, changeEdit, getLastCod , stateFilter, stateDescription}: SearchBoxProps) {
+export function SearchBox({ children, changeEdit , stateFilter, stateDescription}: SearchBoxProps) {
   const { onOpen } = useModalClient();
   const { register, handleSubmit } = useForm()
 
   const openModal = () => {
     onOpen()
     changeEdit(false)
-    getLastCod()
   }
 
   const HandleGetClientsByFilter = (data: FieldValues) => {

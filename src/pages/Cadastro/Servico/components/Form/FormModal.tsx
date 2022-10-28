@@ -17,7 +17,15 @@ import { ApiException } from "../../../../../services/api/ApiException";
 import { IServico, ServicoService } from "../../../../../services/api/servicos/ServicoService";
 import { FormFields } from './FormFields';
 
-export function FormModal() {
+interface ModalProps {
+  // changeEdit: (value: React.SetStateAction<any>) => void;
+  refreshPage: () => void
+  isEditing: boolean
+  id: number
+  editCod: number
+}
+
+export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
   const { isOpen, onClose } = useModalService();
   const methods = useFormContext<IServico>();
 
@@ -43,12 +51,28 @@ export function FormModal() {
           alert(result.message)
         } else {
           clearForm();
+          refreshPage()
+        }
+      })
+  }
+
+  const handleUpdateService = (data: IServico) => {
+    ServicoService.updateById(id, data)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          alert(result.message);
+        } else {
+          clearForm()
+          refreshPage()
         }
       })
   }
 
   const submitData = (data: IServico) => {
-    handleCreateNewService(data);
+    if (isEditing)
+      handleUpdateService(data)
+    else
+      handleCreateNewService(data);
   }
 
   return (
@@ -67,12 +91,12 @@ export function FormModal() {
           <ModalHeader>Cadastro de Serviço</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormFields />
+            <FormFields editCod={editCod} isEditing={isEditing} />
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">
-              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} /> Cadastrar</Button>
-              <Button colorScheme='red' variant="outline" mr={3} onClick={() => {clearForm()}}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} /> {isEditing ? "Editar" : "Cadastrar"}</Button>
+              <Button colorScheme='red' variant="outline" mr={3} onClick={() => { clearForm() }}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>

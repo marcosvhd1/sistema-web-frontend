@@ -91,11 +91,19 @@ const deleteById = async (id: number): Promise<undefined | ApiException> => {
   }
 };
 
+
+const getLastCod = async () => {
+  const response = await Api().get('/cod/clientes')
+  const { max } = response.data.rows[0];
+  return max
+}
+
 export const ClientService = {
   getAll,
   getAllPerPage,
   getById,
   create,
   updateById,
-  deleteById
+  deleteById,
+  getLastCod
 }

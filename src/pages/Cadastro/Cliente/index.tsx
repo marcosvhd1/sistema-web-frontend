@@ -55,7 +55,8 @@ export function Cliente() {
   const [data, setData] = useState<IClient[]>([])
   const [id, setId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState(false)
-  const { onOpen } = useAlertClientContext()
+  const [editCod, setEditCod] = useState<number>(1)
+  const { onOpen, onClose, isOpen } = useAlertClientContext()
   const { onOpen: open } = useModalClient()
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [lastCod, setLastCod] = useState<number>(1)
@@ -66,7 +67,6 @@ export function Cliente() {
   const [pages, setPages] = useState<number[]>([])
   const navigate = useNavigate()
   const toast = useToast()
-  const { onClose } = useAlertClientContext()
   const methods = useForm<IClient>({
     resolver: zodResolver(newClientFormValidationSchema)
   })
@@ -89,12 +89,6 @@ export function Cliente() {
     setPages(arrayPages);
   }
 
-  const getLastCod = async () => {
-    const response = await Api().get('/cod/clientes')
-    const { max } = response.data.rows[0];
-    setLastCod(max + 1)
-  }
-
   const getClientsByFilter = async () => {
     await Api().get(`/cadastro/clientes?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`)
       .then((result) => {
@@ -107,7 +101,7 @@ export function Cliente() {
       })
   }
   
-  const HandleDeleteClient = (clientId: number) => {
+  const handleDeleteClient = (clientId: number) => {
     ClientService.deleteById(clientId)
       .then((result) => {
         if (result instanceof ApiException) {
@@ -135,6 +129,7 @@ export function Cliente() {
   const handleEditClient = (id: number) => {
     const clientToUpdate = data.find((client) => client.id === id)
     setId(id)
+    setEditCod(clientToUpdate?.cod!)
     methods.reset(clientToUpdate)
     open()
     setIsEditing(true)
@@ -154,7 +149,7 @@ export function Cliente() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox onSubmit={getClientsByFilter} changeEdit={setIsEditing} getLastCod={getLastCod} stateDescription={setDescription} stateFilter={setFilter}>
+        <SearchBox changeEdit={setIsEditing} stateDescription={setDescription} stateFilter={setFilter}>
           <DataTable headers={headers} >
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
@@ -182,8 +177,8 @@ export function Cliente() {
             <Button isDisabled={currentPage === pages.length || data.length === 0} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal refreshPage={getClientsByFilter} lastCod={lastCod} isEditing={isEditing} changeEdit={setIsEditing} id={id} />
-        <DeleteAlertDialog label="Cliente" deleteFunction={HandleDeleteClient} id={id} />
+        <FormModal refreshPage={getClientsByFilter} editCod={editCod} isEditing={isEditing} changeEdit={setIsEditing} id={id} />
+        <DeleteAlertDialog label="Cliente" deleteFunction={handleDeleteClient} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>
   )

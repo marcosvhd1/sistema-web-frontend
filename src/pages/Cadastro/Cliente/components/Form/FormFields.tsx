@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import {
   Divider,
   Flex,
@@ -13,14 +14,27 @@ import { FormContainer } from "../../../../../components/Form/FormContainer";
 import { Adress } from "./Adress";
 import { Contact } from "./Contact";
 
-import { IClient } from "../../../../../services/api/clientes/ClientService";
+import { ClientService, IClient } from "../../../../../services/api/clientes/ClientService";
 import moment from "moment";
 
 interface IFormFields {
-  lastCod: number
+  editCod: number
+  isEditing: boolean
 }
-export function FormFields({ lastCod }: IFormFields) {
+export function FormFields({ editCod, isEditing }: IFormFields) {
   const { register, formState: { errors } } = useFormContext<IClient>();
+  const [cod, setCod] = useState<Number>(1)
+
+  useEffect(() => {
+    ClientService.getLastCod().then((result) => {
+      if (isEditing) {
+        setCod(editCod)
+      } else {
+        setCod(result + 1)
+      }
+    })
+  }, [])
+
 
   return (
     <Flex w="58rem" h="40rem" direction="column" justify="space-between">
@@ -29,7 +43,7 @@ export function FormFields({ lastCod }: IFormFields) {
         <Flex direction="column" w="50%">
           <Flex w="100%" justify="space-between">
             <FormContainer label="Código" width="5rem">
-              <Input id="id" type="text" w="5rem" isReadOnly value={("0000" + lastCod).slice(-4)} {...register('cod')} />
+              <Input id="id" type="text" w="5rem" isReadOnly value={("0000" + cod).slice(-4)} {...register('cod')} />
             </FormContainer>
             <FormContainer label="Tipo" width="4rem">
               <Select w="4rem" {...register('tipo')}>

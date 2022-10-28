@@ -5,13 +5,22 @@ import { FormContainer } from "../../../../../components/Form/FormContainer";
 import { IServico, ServicoService } from "../../../../../services/api/servicos/ServicoService";
 import { useEffect, useState } from "react";
 
-export function FormFields() {
+interface IFormFields {
+  editCod: number
+  isEditing: boolean
+}
+
+export function FormFields({editCod, isEditing}: IFormFields) {
   const { register, formState: { errors } } = useFormContext<IServico>()
   const [cod, setCod] = useState<Number>(1)
 
   useEffect(() => {
     ServicoService.getLastCod().then((result) => {
-      setCod(result + 1)
+      if (isEditing) {
+        setCod(editCod)
+      } else {
+        setCod(result + 1)
+      }
     })
   }, [])
 
@@ -28,7 +37,7 @@ export function FormFields() {
         </FormContainer>
       </Flex>
       <Flex justify="space-between">
-        <FormContainer label="Preço" width="5rem" error={errors.preco}>
+        <FormContainer label="Preço" width="5rem">
           <Input type="number" step={0.01} w="5rem" {...register('preco', {
             setValueAs: (value) => value === "" ? 0 : parseFloat(value),
           })} />
@@ -50,12 +59,12 @@ export function FormFields() {
       <Divider />
       <Flex justify="space-between">
         <FormContainer label="Base de Calculo ISS" width="10rem">
-          <Input type="number" w="10rem" {...register('base_iss', {
+          <Input type="number" step={0.01}  w="10rem" {...register('base_iss', {
             setValueAs: (value) => value === "" ? 0 : parseFloat(value),
           })} />
         </FormContainer>
         <FormContainer label="Alíquota ISS" width="10rem">
-          <Input type="number" w="10rem" {...register('aliquota_iss', {
+          <Input type="number" step={0.01}  w="10rem" {...register('aliquota_iss', {
             setValueAs: (value) => value === "" ? 0 : parseFloat(value),
           })} />
         </FormContainer>

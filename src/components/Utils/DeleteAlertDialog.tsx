@@ -6,10 +6,11 @@ interface AlertDialogProps {
   id: number;
   deleteFunction: (id: number) => void
   label: string
+  isOpen: boolean
+  onClose: () => void
 }
 
-export function DeleteAlertDialog({ id, deleteFunction, label }: AlertDialogProps) {
-  const { isOpen, onClose } = useAlertClientContext()
+export function DeleteAlertDialog({ id, deleteFunction, label, isOpen, onClose }: AlertDialogProps) {
   const cancelRef = useRef<HTMLButtonElement>(null)
 
   return (

@@ -66,10 +66,10 @@ interface ModalProps {
   refreshPage: () => void
   isEditing: boolean
   id: number
-  lastCod: number
+  editCod: number
 }
 
-export function FormModal({ isEditing, id, lastCod, refreshPage }: ModalProps) {
+export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useFormContext<FormModalProps>();
 
@@ -159,7 +159,7 @@ export function FormModal({ isEditing, id, lastCod, refreshPage }: ModalProps) {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <FormFields lastCod={lastCod}/>
+                  <FormFields editCod={editCod} isEditing={isEditing}/>
                 </TabPanel>
                 <TabPanel>
                   <Textarea h="37rem" placeholder='Observações...' {...methods.register('observacao')} />
@@ -169,7 +169,7 @@ export function FormModal({ isEditing, id, lastCod, refreshPage }: ModalProps) {
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">
-              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} /> Cadastrar</Button>
+              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{isEditing ? "Editar" : "Cadastrar"}</Button>
               <Button colorScheme='red' variant="outline" mr={3} onClick={() => clearForm()}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
             </Flex>
           </ModalFooter>
