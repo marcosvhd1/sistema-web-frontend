@@ -12,18 +12,19 @@ interface IFormFields {
 
 export function FormFields({editCod, isEditing}: IFormFields) {
   const { register, formState: { errors } } = useFormContext<IServico>()
-  const [cod, setCod] = useState<Number>(1)
+  const [cod, setCod] = useState<number>(1)
 
   useEffect(() => {
     ServicoService.getLastCod().then((result) => {
       if (isEditing) {
         setCod(editCod)
       } else {
-        setCod(result + 1)
+        if (result !== null) {
+          setCod(parseInt(result) + 1)
+        }
       }
     })
   }, [])
-
   return (
     <Flex direction="column" justify="space-between">
       <Text fontSize="xl">Dados Principais</Text>

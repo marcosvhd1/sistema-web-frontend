@@ -23,14 +23,18 @@ interface IFormFields {
 }
 export function FormFields({ editCod, isEditing }: IFormFields) {
   const { register, formState: { errors } } = useFormContext<IClient>();
-  const [cod, setCod] = useState<Number>(1)
+  const [cod, setCod] = useState<number>(1)
 
   useEffect(() => {
     ClientService.getLastCod().then((result) => {
       if (isEditing) {
         setCod(editCod)
       } else {
-        setCod(result + 1)
+        if (result === null) {
+          setCod(1)
+        } else {
+          setCod(parseInt(result) + 1)
+        }
       }
     })
   }, [])

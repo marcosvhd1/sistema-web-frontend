@@ -40,7 +40,7 @@ export function SearchBox({ children, changeEdit, stateFilter, stateDescription 
           <Text w="8rem">Buscar por </Text>
           <Select w="50%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
             <option value='descricao'>Descrição</option>
-            <option value='codigo'>Código</option>
+            <option value='nserv'>Código</option>
             <option value='ncm'>NCM</option>
           </Select>
           <Input placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />

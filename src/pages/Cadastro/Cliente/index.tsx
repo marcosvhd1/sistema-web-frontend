@@ -153,7 +153,7 @@ export function Cliente() {
           <DataTable headers={headers} >
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
-                <Td style={{ "width": "1rem" }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cod}</Td>
+                <Td style={{ "width": "1rem" }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{("0000" + data.cod).slice(-4)}</Td>
                 <Td style={{ "width": "1rem" }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.fantasia}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>

@@ -135,7 +135,7 @@ export function Servico() {
           <DataTable headers={headers}>
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.nserv}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{("0000" + data.nserv).slice(-4)}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.un}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco!! ? "R$ " + (data.preco).toString().replace('.', ',') : ""}</Td>
