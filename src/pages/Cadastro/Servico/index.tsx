@@ -64,7 +64,7 @@ export function Servico() {
   const toast = useToast()
 
   useEffect(() => {
-    getClients();
+    getService();
     navigate(`?page=${currentPage}&limit=${limitRegistros}`)
   }, [currentPage, description, limitRegistros, totalClients])
 
@@ -82,7 +82,7 @@ export function Servico() {
     setPages(arrayPages);
   }
 
-  const getClients = async () => {
+  const getService = async () => {
     ServicoService.getServiceByFilter(currentPage, limitRegistros, filter, description)
       .then((result: any) => {
         if (result instanceof ApiException) {
@@ -156,7 +156,7 @@ export function Servico() {
             <Button isDisabled={currentPage === pages.length || data.length === 0} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal editCod={editCod} refreshPage={getClients} id={id} isEditing={isEditing} />
+        <FormModal editCod={editCod} refreshPage={getService} id={id} isEditing={isEditing} />
         <DeleteAlertDialog label="Serviço" deleteFunction={handleDeleteService} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

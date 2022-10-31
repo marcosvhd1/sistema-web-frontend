@@ -7,7 +7,7 @@ export interface Itransportadora {
   razao: string
   cnpjcpf: string
   ie: string
-  antt: string
+  rntrc: string
   logradouro: string
   numero: string
   bairro: string
@@ -15,6 +15,8 @@ export interface Itransportadora {
   uf: string
   cidade: string
   complemento: string
+  tipo_telefone1: string
+  tipo_telefone2: string
   telefone1: string
   telefone2: string
   anotacoes: string

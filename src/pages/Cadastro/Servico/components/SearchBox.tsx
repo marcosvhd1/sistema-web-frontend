@@ -5,7 +5,6 @@ import { Button, Flex, Icon, Input, Select, Text } from "@chakra-ui/react";
 
 import { FiSearch } from "react-icons/fi";
 import { useModalService } from "../../../../Contexts/Modal/ServiceContext";
-import { ServicoService } from "../../../../services/api/servicos/ServicoService";
 
 
 
@@ -25,14 +24,14 @@ export function SearchBox({ children, changeEdit, stateFilter, stateDescription 
     changeEdit(false)
   }
 
-  const HandlegetClientsByFilter = (data: FieldValues) => {
+  const HandlegetServiceByFilter = (data: FieldValues) => {
     const { description } = data
     stateDescription(description);
   }
 
 
   return (
-    <form onSubmit={handleSubmit((data) => HandlegetClientsByFilter(data))}>
+    <form onSubmit={handleSubmit((data) => HandlegetServiceByFilter(data))}>
     <Flex w="100%" justify="center" align="center" mt={{ base: "2", md: "2", lg: "10" }} direction="column" >
       <Text fontFamily="Poppins" fontSize="xl">Lista de Serviços</Text>
       <Flex w="90%" m="4" align="center" justify="space-between">

@@ -15,6 +15,7 @@ import { Transportadora } from '../pages/Cadastro/Transportadora';
 import { AlertClientContextProvider } from '../Contexts/AlertDialog/AlertClientContext';
 import { ModalServiceProvider } from '../Contexts/Modal/ServiceContext';
 import { AlertServiceContextProvider } from '../Contexts/AlertDialog/AlertServiceContext';
+import { ModalTransportadoraProvider } from '../Contexts/Modal/TransportadoraContext';
 
 
 export default function MainRoutes() {
