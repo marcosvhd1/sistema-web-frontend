@@ -86,7 +86,7 @@ export function Servico() {
     ServicoService.getServiceByFilter(currentPage, limitRegistros, filter, description)
       .then((result: any) => {
         if (result instanceof ApiException) {
-          alert(result.message);
+          console.log(result.message);
         } else {
           setData(result.data)
           setTotalClients(parseInt(result.headers["qtd"]))
@@ -98,7 +98,7 @@ export function Servico() {
     ServicoService.deleteById(clientId)
       .then((result) => {
         if (result instanceof ApiException) {
-          alert(result.message);
+          console.log(result.message);
         } else {
           toast({
             position: 'top',

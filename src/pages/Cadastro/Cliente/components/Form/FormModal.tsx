@@ -110,7 +110,7 @@ export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
     ClientService.updateById(id, data)
       .then((result) => {
         if (result instanceof ApiException) {
-          alert(result.message)
+          console.log(result.message)
         } else {
           clearForm()
         }
@@ -121,7 +121,7 @@ export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
     ClientService.create(data)
       .then((result) => {
         if (result instanceof ApiException) {
-          alert(result.message);
+          console.log(result.message)
         } else {
           clearForm()
           refreshPage()

@@ -4,14 +4,14 @@ import { useFormContext } from "react-hook-form";
 import { FormContainer } from "../../../../../components/Form/FormContainer";
 import { useCidades } from "../../../../../hooks/useCidades";
 import { useEstados } from "../../../../../hooks/useEstados";
-import { Itransportadora } from "../../../../../services/api/transportadora/TransportadoraService";
+import { ITransportadora } from "../../../../../services/api/transportadora/TransportadoraService";
 
 export function FormFields() {
   const [selectedEstadoVeiculo, setSelectedEstadoVeiculo] = useState<string>("")
   const [selectedEstado, setSelectedEstado] = useState<string>("")
   const { estados } = useEstados()
   const { cidades } = useCidades({ uf: selectedEstado })
-  const { register } = useFormContext<Itransportadora>()
+  const { register } = useFormContext<ITransportadora>()
   const [cod, setCod] = useState<number>(1)
 
   return (

@@ -1,7 +1,7 @@
 import { Api } from "../ApiConfig";
 import { ApiException } from "../ApiException";
 
-export interface Itransportadora {
+export interface ITransportadora {
   id: number
   cod: number
   razao: string
@@ -25,7 +25,7 @@ export interface Itransportadora {
 }
 
 
-const getAll = async (): Promise<Itransportadora[] | ApiException> => {
+const getAll = async (): Promise<ITransportadora[] | ApiException> => {
   try {
     const { data } = await Api().get('/transportadora');
     return data;
@@ -34,7 +34,8 @@ const getAll = async (): Promise<Itransportadora[] | ApiException> => {
   }
 };
 
-const getTransportadoraByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string): Promise<Itransportadora[] | ApiException> => {
+
+const getTransportadoraByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string): Promise<ITransportadora[] | ApiException> => {
   try {
     return await Api().get(`/cadastro/transportadora?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`)
   } catch (error: any) {
@@ -42,7 +43,7 @@ const getTransportadoraByFilter = async (currentPage: number, limitRegistros: nu
   }
 }
 
-const create = async (dataToCreate: Omit<Itransportadora, 'id' | 'nserv'>): Promise<Itransportadora | ApiException> => {
+const create = async (dataToCreate: Omit<ITransportadora, 'id' | 'nserv'>): Promise<ITransportadora | ApiException> => {
   try {
     const { data } = await Api().post<any>('/transportadora', dataToCreate)
     return data;
@@ -51,7 +52,7 @@ const create = async (dataToCreate: Omit<Itransportadora, 'id' | 'nserv'>): Prom
   }
 };
 
-const updateById = async (id: number, dataToUpdate: Itransportadora): Promise<Itransportadora | ApiException> => {
+const updateById = async (id: number, dataToUpdate: ITransportadora): Promise<ITransportadora | ApiException> => {
   try {
     const { data } = await Api().put(`/transportadora/${id}`, dataToUpdate)
     return data;
@@ -75,7 +76,7 @@ const getLastCod = async () => {
   return max
 }
 
-export const ServicoService = {
+export const TransportadoraService = {
   getAll,
   getTransportadoraByFilter,
   create,

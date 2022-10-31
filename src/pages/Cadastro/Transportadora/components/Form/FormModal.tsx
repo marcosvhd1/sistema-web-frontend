@@ -13,7 +13,9 @@ import {
 import { useFormContext } from "react-hook-form";
 import { FiCheck, FiSlash } from "react-icons/fi";
 import { useModalTransportadora } from "../../../../../Contexts/Modal/TransportadoraContext";
+import { ApiException } from "../../../../../services/api/ApiException";
 import { IServico } from "../../../../../services/api/servicos/ServicoService";
+import { ITransportadora, TransportadoraService } from "../../../../../services/api/transportadora/TransportadoraService";
 import { FormFields } from "./FormFields";
 
 interface ModalProps {
@@ -26,25 +28,55 @@ interface ModalProps {
 
 export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
   const { isOpen, onClose } = useModalTransportadora();
-  const methods = useFormContext<IServico>();
+  const methods = useFormContext<ITransportadora>();
 
   const clearForm = () => {
+    onClose()
+    methods.reset({
+      razao: "",
+      cnpjcpf: "",
+      ie: "",
+      rntrc: "",
+      logradouro: "",
+      numero: "",
+      bairro: "",
+      cep: "",
+      uf: "",
+      cidade: "",
+      complemento: "",
+      tipo_telefone1: "",
+      tipo_telefone2: "",
+      telefone1: "",
+      telefone2: "",
+      anotacoes: "",
+      placa: "",
+      uf_placa: "",
+    })
 
   }
 
-  const handleCreateNewService = (data: IServico) => {
+  const handleCreateNewTransportadora = (data: ITransportadora) => {
+    TransportadoraService.create(data)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          console.log(result.message)
+        } else {
+          clearForm()
+          refreshPage()
+        }
+      })
 
   }
 
-  const handleUpdateService = (data: IServico) => {
+  const handleUpdateTransportadora = (data: ITransportadora) => {
 
   }
 
-  const submitData = (data: IServico) => {
+  const submitData = (data: ITransportadora) => {
     if (isEditing)
-      handleUpdateService(data)
+      handleUpdateTransportadora(data)
     else
-      handleCreateNewService(data);
+      handleCreateNewTransportadora(data);
   }
 
   return (
@@ -58,19 +90,21 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
       size="xl"
     >
       <ModalOverlay />
+      <form onSubmit={methods.handleSubmit(submitData)}>
         <ModalContent>
           <ModalHeader>Cadastro de Transportadora</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormFields/>
+            <FormFields />
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">
               <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} /> {isEditing ? "Editar" : "Cadastrar"}</Button>
-              <Button colorScheme='red' variant="outline" mr={3} onClick={() => { clearForm() }}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+              <Button colorScheme='red' variant="outline" mr={3} onClick={() => clearForm()}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>
+      </form>
     </Modal>
   )
 }
