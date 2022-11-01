@@ -10,20 +10,22 @@ interface IFormFields {
   isEditing: boolean
 }
 
-export function FormFields({editCod, isEditing}: IFormFields) {
+export function FormFields({ editCod, isEditing }: IFormFields) {
   const { register, formState: { errors } } = useFormContext<IServico>()
   const [cod, setCod] = useState<number>(1)
 
   useEffect(() => {
-    ServicoService.getLastCod().then((result) => {
-      if (isEditing) {
-        setCod(editCod)
-      } else {
-        if (result !== null) {
+    console.log(cod)
+    ServicoService.getLastCod()
+      .then((result) => {
+        if (isEditing) {
+          setCod(editCod)
+        } else if (result === null) {
+          setCod(1)
+        } else {
           setCod(parseInt(result) + 1)
         }
-      }
-    })
+      })
   }, [])
   return (
     <Flex direction="column" justify="space-between">
@@ -31,7 +33,7 @@ export function FormFields({editCod, isEditing}: IFormFields) {
       <Divider />
       <Flex gap="3" align="center">
         <FormContainer label="Código" width="5rem">
-          <Input id="id" type="text" w="5rem" isReadOnly value={("0000" + cod).slice(-4)} {...register('nserv', { valueAsNumber: true })} />
+          <Input id="id" type="text" w="5rem" isReadOnly value={("0000" + cod).slice(-4)} {...register('nserv')} />
         </FormContainer>
         <FormContainer label="Descrição do Serviço" isRequired={true}>
           <Input {...register('descricao')} />
@@ -60,12 +62,12 @@ export function FormFields({editCod, isEditing}: IFormFields) {
       <Divider />
       <Flex justify="space-between">
         <FormContainer label="Base de Calculo ISS" width="10rem">
-          <Input type="number" step={0.01}  w="10rem" {...register('base_iss', {
+          <Input type="number" step={0.01} w="10rem" {...register('base_iss', {
             setValueAs: (value) => value === "" ? 0 : parseFloat(value),
           })} />
         </FormContainer>
         <FormContainer label="Alíquota ISS" width="10rem">
-          <Input type="number" step={0.01}  w="10rem" {...register('aliquota_iss', {
+          <Input type="number" step={0.01} w="10rem" {...register('aliquota_iss', {
             setValueAs: (value) => value === "" ? 0 : parseFloat(value),
           })} />
         </FormContainer>
