@@ -16,7 +16,7 @@ export function SearchBox({ children }: SearchBoxProps) {
     <Flex w="100%" justify="center" align="center" mt="10" direction="column" >
       <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
       <Flex w="90%" m="4" align="center" justify="space-between">
-        <Flex w="70%" justify="center" align="center">
+        <Flex w="80%" justify="center" align="center">
           <Text w="9rem">Buscar por </Text>
           <Select w="40%" mr="3">
             <option value='descricao'>Descrição</option>
