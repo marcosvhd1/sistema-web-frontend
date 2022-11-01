@@ -1,18 +1,37 @@
+import { useState, useEffect } from "react";
 import { Divider, Flex, Input, Select, Text, Textarea } from "@chakra-ui/react";
-import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { FormContainer } from "../../../../../components/Form/FormContainer";
 import { useCidades } from "../../../../../hooks/useCidades";
 import { useEstados } from "../../../../../hooks/useEstados";
-import { ITransportadora } from "../../../../../services/api/transportadora/TransportadoraService";
+import { ITransportadora, TransportadoraService } from "../../../../../services/api/transportadora/TransportadoraService";
 
-export function FormFields() {
+interface IFormFields {
+  editCod: number
+  isEditing: boolean
+}
+
+export function FormFields({ editCod, isEditing }:IFormFields) {
   const [selectedEstadoVeiculo, setSelectedEstadoVeiculo] = useState<string>("")
   const [selectedEstado, setSelectedEstado] = useState<string>("")
   const { estados } = useEstados()
   const { cidades } = useCidades({ uf: selectedEstado })
   const { register } = useFormContext<ITransportadora>()
   const [cod, setCod] = useState<number>(1)
+
+  useEffect(() => {
+    TransportadoraService.getLastCod().then((result) => {
+      if (isEditing) {
+        setCod(editCod)
+      } else {
+        if (result === null) {
+          setCod(1)
+        } else {
+          setCod(parseInt(result) + 1)
+        }
+      }
+    })
+  }, [])
 
   return (
     <Flex direction="column" justify="space-between">

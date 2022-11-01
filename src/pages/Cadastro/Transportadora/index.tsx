@@ -5,7 +5,7 @@ import * as zod from "zod";
 import { Button, Icon, Td, Tr, useToast } from "@chakra-ui/react";
 import MainContent from "../../../components/MainContent";
 import { DataTable } from "../../../components/Table/DataTable";
-import { useAlertTransportadoraContext } from "../../../Contexts/AlertDialog/AlertTransportadoraContext";
+import { AlertTransportadoraContextProvider, useAlertTransportadoraContext } from "../../../Contexts/AlertDialog/AlertTransportadoraContext";
 import { ModalTransportadoraProvider, useModalTransportadora } from "../../../Contexts/Modal/TransportadoraContext";
 import { ITransportadora, TransportadoraService } from "../../../services/api/transportadora/TransportadoraService";
 import { FormModal } from "./components/Form/FormModal";
@@ -100,9 +100,42 @@ export function Transportadora() {
       })
   }
 
+  const handleDeleteService = (transportadoraId: number) => {
+    TransportadoraService.deleteById(transportadoraId)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          toast({
+            position: 'top',
+            title: 'Operação concluída.',
+            description: "Transportadora excluída com sucesso.",
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+          })
+        }
+      })
+    onClose()
+    setTotalClients(totalClients - 1)
+  }
+
+  const handleOpenDialog = (id2: number) => {
+    onOpen();
+    setId(id2);
+    console.log(id)
+  }
+
+  const handleEditTransportadora = (id: number) => {
+    const transportadoraToUpdate = data.find((transportadora) => transportadora.id === id)
+    setId(id)
+    openEditModal()
+    setEditCod(transportadoraToUpdate?.cod!)
+    methods.reset(transportadoraToUpdate)
+    setIsEditing(true)
+  }
 
   return (
-    <ModalTransportadoraProvider>
       <FormProvider {...methods}>
         <MainContent>
           <SearchBox stateDescription={setDescription} changeEdit={setIsEditing} stateFilter={setFilter}>
@@ -118,10 +151,10 @@ export function Transportadora() {
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.telefone1}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.telefone2}</Td>
                   <Td style={{ "textAlign": "center" }}>
-                    <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => { }}>
+                    <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditTransportadora(data.id!)}>
                       <Icon color="orange.300" as={FiEdit} />
                     </Button>
-                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => { }}>
+                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id!)}>
                       <Icon as={FiTrash2} color="red.400" />
                     </Button>
                   </Td>
@@ -134,9 +167,8 @@ export function Transportadora() {
             </Pagination>
           </SearchBox>
           <FormModal editCod={editCod} refreshPage={getTransportadora} id={id} isEditing={isEditing} />
-          {/* <DeleteAlertDialog label="Serviço" deleteFunction={handleDeleteService} onClose={onClose} isOpen={isOpen} id={id} /> */}
+          <DeleteAlertDialog label="Transportadora" deleteFunction={handleDeleteService} onClose={onClose} isOpen={isOpen} id={id} />
         </MainContent>
       </FormProvider>
-    </ModalTransportadoraProvider>
   )
 }

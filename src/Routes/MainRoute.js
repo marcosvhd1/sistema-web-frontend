@@ -15,6 +15,7 @@ import { Transportadora } from '../pages/Cadastro/Transportadora';
 import { AlertClientContextProvider } from '../Contexts/AlertDialog/AlertClientContext';
 import { ModalServiceProvider } from '../Contexts/Modal/ServiceContext';
 import { AlertServiceContextProvider } from '../Contexts/AlertDialog/AlertServiceContext';
+import { AlertTransportadoraContextProvider } from '../Contexts/AlertDialog/AlertTransportadoraContext';
 import { ModalTransportadoraProvider } from '../Contexts/Modal/TransportadoraContext';
 
 
@@ -27,18 +28,22 @@ export default function MainRoutes() {
                         <ModalClientProvider>
                             <ModalProductProvider>
                                 <ModalServiceProvider>
-                                    <AlertClientContextProvider>
-                                        <AlertServiceContextProvider>
-                                            <Routes>
-                                                <Route index element={<Login />} />
-                                                <Route path="/app" element={<Home />} />
-                                                <Route path="/app/cadastro/clientes" element={<Cliente />} />
-                                                <Route path="/app/cadastro/produtos" element={<Produto />} />
-                                                <Route path="/app/cadastro/servicos" element={<Servico />} />
-                                                <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
-                                            </Routes>
-                                        </AlertServiceContextProvider>
-                                    </AlertClientContextProvider>
+                                    <ModalTransportadoraProvider>
+                                        <AlertClientContextProvider>
+                                            <AlertServiceContextProvider>
+                                                <AlertTransportadoraContextProvider>
+                                                    <Routes>
+                                                        <Route index element={<Login />} />
+                                                        <Route path="/app" element={<Home />} />
+                                                        <Route path="/app/cadastro/clientes" element={<Cliente />} />
+                                                        <Route path="/app/cadastro/produtos" element={<Produto />} />
+                                                        <Route path="/app/cadastro/servicos" element={<Servico />} />
+                                                        <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
+                                                    </Routes>
+                                                </AlertTransportadoraContextProvider>
+                                            </AlertServiceContextProvider>
+                                        </AlertClientContextProvider>
+                                    </ModalTransportadoraProvider>
                                 </ModalServiceProvider>
                             </ModalProductProvider>
                         </ModalClientProvider>

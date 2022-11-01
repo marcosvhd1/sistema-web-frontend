@@ -48,7 +48,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
     ServicoService.create(data)
       .then((result) => {
         if (result instanceof ApiException) {
-          alert(result.message)
+          console.log(result.message)
         } else {
           clearForm();
           refreshPage()
@@ -60,7 +60,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
     ServicoService.updateById(id, data)
       .then((result) => {
         if (result instanceof ApiException) {
-          alert(result.message);
+          console.log(result.message);
         } else {
           clearForm()
           refreshPage()

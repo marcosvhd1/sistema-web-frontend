@@ -31,7 +31,7 @@ export function DeleteAlertDialog({ id, deleteFunction, label, isOpen, onClose }
         </AlertDialogBody>
         <AlertDialogFooter>
           <Flex justify="space-between" w="100%">
-            <Button onClick={() => deleteFunction(id)} colorScheme='red'>Sim, Excluir o {label}</Button>
+            <Button onClick={() => deleteFunction(id)} colorScheme='red'>Sim, Excluir {label}</Button>
             <Button ref={cancelRef} onClick={onClose} ml={3}>
               Não, cancelar
             </Button>

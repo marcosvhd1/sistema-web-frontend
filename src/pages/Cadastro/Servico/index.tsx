@@ -103,7 +103,7 @@ export function Servico() {
           toast({
             position: 'top',
             title: 'Operação concluída.',
-            description: "Serviço excluido com sucesso.",
+            description: "Serviço excluído com sucesso.",
             status: 'success',
             duration: 2000,
             isClosable: true,

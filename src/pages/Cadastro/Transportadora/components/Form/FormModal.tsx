@@ -69,7 +69,15 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
   }
 
   const handleUpdateTransportadora = (data: ITransportadora) => {
-
+    TransportadoraService.updateById(id, data)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          clearForm()
+          refreshPage()
+        }
+      })
   }
 
   const submitData = (data: ITransportadora) => {
@@ -95,7 +103,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
           <ModalHeader>Cadastro de Transportadora</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormFields />
+            <FormFields editCod={editCod} isEditing={isEditing} />
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">
