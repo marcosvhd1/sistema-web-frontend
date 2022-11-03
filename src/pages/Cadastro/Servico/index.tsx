@@ -82,7 +82,7 @@ export function Servico() {
     setPages(arrayPages);
   }
 
-  const getService = async () => {
+  const getService = () => {
     ServicoService.getServiceByFilter(currentPage, limitRegistros, filter, description)
       .then((result: any) => {
         if (result instanceof ApiException) {

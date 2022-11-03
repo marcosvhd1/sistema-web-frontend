@@ -17,6 +17,7 @@ import { ModalServiceProvider } from '../Contexts/Modal/ServiceContext';
 import { AlertServiceContextProvider } from '../Contexts/AlertDialog/AlertServiceContext';
 import { AlertTransportadoraContextProvider } from '../Contexts/AlertDialog/AlertTransportadoraContext';
 import { ModalTransportadoraProvider } from '../Contexts/Modal/TransportadoraContext';
+import { AlertProductContextProvider } from '../Contexts/AlertDialog/AlertProductContext';
 
 
 export default function MainRoutes() {
@@ -32,14 +33,16 @@ export default function MainRoutes() {
                                         <AlertClientContextProvider>
                                             <AlertServiceContextProvider>
                                                 <AlertTransportadoraContextProvider>
-                                                    <Routes>
-                                                        <Route index element={<Login />} />
-                                                        <Route path="/app" element={<Home />} />
-                                                        <Route path="/app/cadastro/clientes" element={<Cliente />} />
-                                                        <Route path="/app/cadastro/produtos" element={<Produto />} />
-                                                        <Route path="/app/cadastro/servicos" element={<Servico />} />
-                                                        <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
-                                                    </Routes>
+                                                    <AlertProductContextProvider>
+                                                        <Routes>
+                                                            <Route index element={<Login />} />
+                                                            <Route path="/app" element={<Home />} />
+                                                            <Route path="/app/cadastro/clientes" element={<Cliente />} />
+                                                            <Route path="/app/cadastro/produtos" element={<Produto />} />
+                                                            <Route path="/app/cadastro/servicos" element={<Servico />} />
+                                                            <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
+                                                        </Routes>
+                                                    </AlertProductContextProvider>
                                                 </AlertTransportadoraContextProvider>
                                             </AlertServiceContextProvider>
                                         </AlertClientContextProvider>
