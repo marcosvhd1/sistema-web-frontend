@@ -41,7 +41,9 @@ export function FormFields({ editCod, isEditing }: IFormFields) {
       </Flex>
       <Flex justify="space-between">
         <FormContainer label="Preço" width="5rem">
-          <Input type="text" step={0.01} w="5rem" {...register('preco')} />
+          <Input type="number" step={0.01} w="5rem" {...register('preco', {
+            setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+          })} />
         </FormContainer>
         <FormContainer label="Unidade" width="5rem">
           <Input w="5rem" {...register('un')} />
@@ -60,10 +62,14 @@ export function FormFields({ editCod, isEditing }: IFormFields) {
       <Divider />
       <Flex justify="space-between">
         <FormContainer label="Base de Calculo ISS" width="10rem">
-          <Input type="text" step={0.01} w="10rem" {...register('base_iss')} />
+          <Input type="number" step={0.01} w="10rem" {...register('base_iss', {
+            setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+          })} />
         </FormContainer>
         <FormContainer label="Alíquota ISS" width="10rem">
-          <Input type="text" step={0.01} w="10rem" {...register('aliquota_iss')} />
+          <Input type="number" step={0.01} w="10rem" {...register('aliquota_iss', {
+            setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+          })} />
         </FormContainer>
         <FormContainer label="NCM" width="10rem">
           <Input type="text" w="10rem" {...register('ncm')} />

@@ -89,7 +89,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
       <form onSubmit={methods.handleSubmit(submitData)}>
         <ModalContent>
           <ModalHeader>Cadastro de Serviço</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={() => { clearForm() }} />
           <ModalBody>
             <FormFields editCod={editCod} isEditing={isEditing} />
           </ModalBody>
