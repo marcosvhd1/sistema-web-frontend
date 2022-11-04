@@ -6,7 +6,7 @@ export type IServico = {
   nserv?: number;
   descricao: string;
   un: string;
-  preco: number;
+  preco?: number;
   anotacoes: string;
   base_iss: number;
   aliquota_iss: number;

@@ -34,7 +34,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
     methods.reset({
       descricao: "",
       un: "",
-      preco: parseFloat(""),
+      preco:parseFloat(""),
       anotacoes: "",
       base_iss: parseFloat(""),
       aliquota_iss: parseFloat(""),

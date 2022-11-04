@@ -42,35 +42,35 @@ export function DadosPrincipais({ editCod, isEditing }: IFormFields) {
         <Flex direction="column" w="50%" mr={6}>
           <Flex gap="2">
             <FormContainer label="Código" width="5rem">
-              <Input id="id" type="text" w="5rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} isReadOnly value={("0000" + cod).slice(-4)} {...register('nprod')} />
+              <Input id="nprod" type="text" w="5rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} isReadOnly value={("0000" + cod).slice(-4)} {...register('nprod')} />
             </FormContainer>
             <FormContainer label="Descrição">
-              <Input type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('descricao')} />
+              <Input id="descricao" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('descricao')} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
             <FormContainer label="Referência" >
-              <Input id="id" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('referencia')} />
+              <Input id="referencia" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('referencia')} />
             </FormContainer>
             <FormContainer label="Código de Barras">
-              <Input type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('codbarras')} />
+              <Input id="codbarras" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('codbarras')} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
             <FormContainer label="Preço">
-              <Input placeholder="R$0,00"type="number" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} step={0.01} {...register('preco', {
+              <Input id="preco" placeholder="R$0,00"type="number" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} step={0.01} {...register('preco', {
                 setValueAs: (value) => value === "" ? 0 : parseFloat(value),
               })} />
             </FormContainer>
             <FormContainer label="UN">
-              <Input type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register("un")} />
+              <Input id="un" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register("un")} />
             </FormContainer>
           </Flex>
         </Flex>
         <Flex direction="column" w="50%">
           <Flex align="center" gap="2" justify="space-between">
             <FormContainer label="Marca" >
-              <Select borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} >
+              <Select id="marca" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} >
 
               </Select>
             </FormContainer>
@@ -80,7 +80,7 @@ export function DadosPrincipais({ editCod, isEditing }: IFormFields) {
           </Flex>
           <Flex align="center" gap="2" justify="space-between">
             <FormContainer label="Grupo">
-              <Select borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"}>
+              <Select id="grupo" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"}>
 
               </Select>
             </FormContainer>
@@ -90,7 +90,7 @@ export function DadosPrincipais({ editCod, isEditing }: IFormFields) {
           </Flex>
           <Flex w="100%" justify="space-between">
             <FormContainer label="Status" width="6rem">
-              <Checkbox onChange={() => setActive(!active)} isChecked={active} size="lg" colorScheme="green">
+              <Checkbox id="status" onChange={() => setActive(!active)} isChecked={active} size="lg" colorScheme="green">
                 {active ? "Ativo" : "Inativo"}
               </Checkbox>
             </FormContainer>
@@ -98,13 +98,13 @@ export function DadosPrincipais({ editCod, isEditing }: IFormFields) {
               <Input id="cadastrado" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} w="8rem" isReadOnly value={moment().format("DD/MM/YYYY")} />
             </FormContainer>
             <FormContainer width="8rem" label="Alterado" >
-              <Input id="cadastrado" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} w="8rem" isReadOnly value={moment().format("DD/MM/YYYY")} />
+              <Input id="alterado" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} w="8rem" isReadOnly value={moment().format("DD/MM/YYYY")} />
             </FormContainer>
           </Flex>
         </Flex>
       </Flex>
       <FormContainer label="Anotações">
-        <Textarea borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
+        <Textarea id="anotacoes" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('anotacoes')}/>
       </FormContainer>
     </Flex>
   )
