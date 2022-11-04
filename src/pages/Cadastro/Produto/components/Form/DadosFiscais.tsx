@@ -13,10 +13,10 @@ export function DadosFiscais() {
               <Input id="cadastrado" type="text" w="10rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
             </FormContainer>
             <FormContainer width="8rem" label="Alíquota ICMS" >
-              <Input id="cadastrado" type="text" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
+              <Input placeholder="0,00%" id="cadastrado" type="text" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
             </FormContainer>
             <FormContainer width="6rem" label="Base" >
-              <Input id="cadastrado" type="text" w="6rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
+              <Input placeholder="0,00%"  id="cadastrado" type="text" w="6rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
@@ -24,7 +24,7 @@ export function DadosFiscais() {
               <Input id="cadastrado" type="text" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
             </FormContainer>
             <FormContainer width="8rem" label="Alíquota IPI" >
-              <Input id="cadastrado" type="text" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
+              <Input placeholder="0,00%" id="cadastrado" type="text" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
@@ -32,7 +32,7 @@ export function DadosFiscais() {
               <Input id="cadastrado" type="text" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
             </FormContainer>
             <FormContainer width="8rem" label="Alíquota Cofins" >
-              <Input id="cadastrado" type="text" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
+              <Input placeholder="0,00%" id="cadastrado" type="text" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
@@ -40,7 +40,7 @@ export function DadosFiscais() {
               <Input id="cadastrado" type="text" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
             </FormContainer>
             <FormContainer width="8rem" label="Alíquota PIS" >
-              <Input id="cadastrado" type="text" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
+              <Input placeholder="0,00%" id="cadastrado" type="text" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
             </FormContainer>
           </Flex>
         </Flex>
@@ -69,10 +69,10 @@ export function DadosFiscais() {
           </Flex>
           <Flex gap="2">
             <FormContainer label="Peso Bruto">
-              <Input placeholder="0,0000 kg" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
+              <Input placeholder="0,000kg" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
             </FormContainer>
             <FormContainer label="Peso Líquido">
-              <Input placeholder="0,0000 kg" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
+              <Input placeholder="0,000kg" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} />
             </FormContainer>
             <FormContainer label="Preço Trib.">
               <Input placeholder="Tributável" type="number" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} step={0.01} />
@@ -102,3 +102,4 @@ export function DadosFiscais() {
     </Flex>
   )
 }
+

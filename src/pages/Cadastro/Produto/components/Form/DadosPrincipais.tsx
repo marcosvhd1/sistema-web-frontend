@@ -58,7 +58,7 @@ export function DadosPrincipais({ editCod, isEditing }: IFormFields) {
           </Flex>
           <Flex gap="2">
             <FormContainer label="Preço">
-              <Input type="number" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} step={0.01} {...register('preco', {
+              <Input placeholder="R$0,00"type="number" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} step={0.01} {...register('preco', {
                 setValueAs: (value) => value === "" ? 0 : parseFloat(value),
               })} />
             </FormContainer>

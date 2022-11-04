@@ -14,7 +14,8 @@ import {
   TabPanel, 
   TabPanels, 
   Tabs, 
-  Textarea 
+  Textarea, 
+  useColorMode
 } from "@chakra-ui/react";
 import * as zod from "zod";
 import { useFormContext } from "react-hook-form";
@@ -72,6 +73,7 @@ interface ModalProps {
 export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useFormContext<FormModalProps>();
+  const { colorMode } = useColorMode()
 
   const clearForm = () => {
     onClose()
@@ -162,7 +164,7 @@ export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
                   <FormFields editCod={editCod} isEditing={isEditing}/>
                 </TabPanel>
                 <TabPanel>
-                  <Textarea h="37rem" placeholder='Observações...' {...methods.register('observacao')} />
+                  <Textarea borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} h="37rem" placeholder='Observações...' {...methods.register('observacao')} />
                 </TabPanel>
               </TabPanels>
             </Tabs>
