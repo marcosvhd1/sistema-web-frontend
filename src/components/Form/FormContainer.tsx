@@ -8,13 +8,14 @@ interface FormContainerProps {
   error?: FieldError;
   isRequired?: boolean
   width?: string
+  align?: string
 }
 
-export function FormContainer({ label, children, error, width = "100%", isRequired = false }: FormContainerProps) {
+export function FormContainer({ label, children, error, align, width = "100%", isRequired = false }: FormContainerProps) {
   return (
     <FormControl isInvalid={!!error} isRequired={isRequired} w={`${width}`}>
-      <Flex direction="column" mt="4">
-        <FormLabel>{label}</FormLabel>
+      <Flex direction="column" align={`${align}`} mt="4">
+        <FormLabel fontSize="sm">{label}</FormLabel>
         {children}
         {!!error && (
           <FormErrorMessage>{error.message}</FormErrorMessage>

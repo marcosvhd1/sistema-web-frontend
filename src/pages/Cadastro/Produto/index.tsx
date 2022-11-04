@@ -9,7 +9,6 @@ import MainContent from "../../../components/MainContent";
 import { DataTable } from "../../../components/Table/DataTable";
 import { FormModal } from "./components/Form/ModalProduct";
 import { SearchBox } from "./components/SearchBox";
-import { IServico } from "../../../services/api/servicos/ServicoService";
 import { useAlertProductContext } from "../../../Contexts/AlertDialog/AlertProductContext";
 import { useModalProduct } from "../../../Contexts/Modal/ProductContext";
 import { useNavigate } from "react-router-dom";
@@ -63,7 +62,7 @@ const headers: { key: string, label: string }[] = [
 ]
 
 export function Produto() {
-  const methods = useForm<IServico>({
+  const methods = useForm<IProduct>({
     resolver: zodResolver(newProductFormValidationSchema)
   })
   const [data, setData] = useState<IProduct[]>([])

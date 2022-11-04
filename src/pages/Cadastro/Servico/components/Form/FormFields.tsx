@@ -15,7 +15,6 @@ export function FormFields({ editCod, isEditing }: IFormFields) {
   const [cod, setCod] = useState<number>(1)
 
   useEffect(() => {
-    console.log(cod)
     ServicoService.getLastCod()
       .then((result) => {
         if (isEditing) {
