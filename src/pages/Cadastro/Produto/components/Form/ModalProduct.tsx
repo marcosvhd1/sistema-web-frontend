@@ -87,47 +87,46 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
   }
 
   return (
-    <>
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        closeOnOverlayClick={false}
-        motionPreset='slideInBottom'
-        isCentered
-        scrollBehavior="inside"
-        size="5xl"
-      >
-        <ModalOverlay />
-        <form onSubmit={methods.handleSubmit(submitData)}>
-          <ModalContent>
-            <ModalHeader>Cadastro de Produtos</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Tabs variant='enclosed' colorScheme="gray" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"}>
-                <TabList>
-                  <Tab>1. Dados Principais</Tab>
-                  <Tab>2. Outros Dados / Fiscais</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel>
-                    <DadosPrincipais editCod={editCod} isEditing={isEditing} />
-                  </TabPanel>
-                  <TabPanel>
-                    <DadosFiscais />
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </ModalBody>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      closeOnOverlayClick={false}
+      motionPreset='slideInBottom'
+      isCentered
+      scrollBehavior="inside"
+      size="5xl"
+    >
+      <ModalOverlay />
+      <form onSubmit={methods.handleSubmit(submitData)}>
+        <ModalContent>
+          <ModalHeader>Cadastro de Produtos</ModalHeader>
+          <ModalCloseButton onClick={() => clearForm()} />
+          <ModalBody>
+            <Tabs variant='enclosed' colorScheme="gray" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"}>
+              <TabList>
+                <Tab>1. Dados Principais</Tab>
+                <Tab>2. Outros Dados / Fiscais</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <DadosPrincipais editCod={editCod} isEditing={isEditing} />
+                </TabPanel>
+                <TabPanel>
+                  <DadosFiscais />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </ModalBody>
 
-            <ModalFooter>
-              <Flex w="100%" justify="space-between" >
-                <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{isEditing ? "Editar" : "Cadastrar"}</Button>
-                <Button colorScheme='red' variant="outline" mr={3} onClick={onClose}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
-              </Flex>
-            </ModalFooter>
-          </ModalContent>
-        </form>
-      </Modal>
-    </>
+          <ModalFooter>
+            <Flex w="100%" justify="space-between" >
+              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{isEditing ? "Editar" : "Cadastrar"}</Button>
+              <Button colorScheme='red' variant="outline" mr={3} onClick={onClose}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+            </Flex>
+          </ModalFooter>
+        </ModalContent>
+      </form>
+    </Modal>
+
   )
 }
