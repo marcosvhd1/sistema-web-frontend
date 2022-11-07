@@ -1,20 +1,20 @@
 import { ApiException } from "../ApiException";
 import { Api } from "../ApiConfig"
 
-export interface IProduct {
+export type IProduct = {
   id?: number;
   nprod?: number;
-  descricao?: string;
-  referencia?: string;
-  codbarras?: string;
-  marca?: string;
-  grupo?: string;
+  descricao: string;
+  referencia: string;
+  codbarras: string;
+  marca: string;
+  grupo: string;
   preco?: number;
   preco_trib?: number;
-  un?: string;
-  un_trib?: string;
-  status?: string;
-  anotacoes?: string;
+  un: string;
+  un_trib: string;
+  status: string;
+  anotacoes: string;
   cst_icms?: number;
   aliquota_icms?: number;
   base_icms?: number;
@@ -24,16 +24,16 @@ export interface IProduct {
   aliquota_cofins?: number;
   cst_pis?: number;
   aliquota_pis?: number;
-  info_adicional?: string;
-  ncm?: string;
-  cest?: string;
-  cnpj_produtor?: string;
-  producao_propria?: string;
-  cfop?: string;
-  origem?: string;
+  info_adicional: string;
+  ncm: string;
+  cest: string;
+  cnpj_produtor: string;
+  producao_propria: string;
+  cfop: string;
+  origem: string;
   peso_bruto?: number;
   peso_liquido?: number;
-}
+};
 
 
 const getAll = async (): Promise<IProduct[] | ApiException> => {
