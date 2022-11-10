@@ -1,15 +1,15 @@
-import { Flex, LightMode, useMediaQuery } from "@chakra-ui/react";
+import { Flex, LightMode, useMediaQuery } from '@chakra-ui/react';
 
 import fundo from '../../assets/fundo.jpg';
 
-import { LogoCubo } from "../../components/Images/LogoCubo";
-import { LoginForm } from "./components/LoginForm";
-import { InfoLogin } from "./components/LoginInfoList";
-import { Plantext } from "./components/LoginPlansText";
-import { TextLogo } from "./components/LoginTextLogo";
+import { LogoCubo } from '../../components/Images/LogoCubo';
+import { LoginForm } from './components/LoginForm';
+import { InfoLogin } from './components/LoginInfoList';
+import { Plantext } from './components/LoginPlansText';
+import { TextLogo } from './components/LoginTextLogo';
 
 export function Login() {
-  const [isMinWidth] = useMediaQuery('(min-width: 950px)')
+  const [isMinWidth] = useMediaQuery('(min-width: 950px)');
 
   return (
     <LightMode>
@@ -25,8 +25,8 @@ export function Login() {
       >
         <Flex
           align="center"
-          w={isMinWidth ? { sm: "70%", md: "60%", lg: "50%" } : "40%"}
-          h={{ sm: "80%", md: "75%", lg: "60%" }}
+          w={isMinWidth ? { sm: '70%', md: '60%', lg: '50%' } : '40%'}
+          h={{ sm: '80%', md: '75%', lg: '60%' }}
           bg="whiteAlpha.700"
           position="absolute"
           borderRadius={10}
@@ -35,7 +35,7 @@ export function Login() {
           <Flex
             w="100%"
             h="100%"
-            justify={isMinWidth ? "space-between" : "center"}
+            justify={isMinWidth ? 'space-between' : 'center'}
           >
             {isMinWidth ?
               <Flex
@@ -48,7 +48,7 @@ export function Login() {
                 <InfoLogin />
               </Flex> : null}
             <Flex
-              w={isMinWidth ? "50%" : "100%"}
+              w={isMinWidth ? '50%' : '100%'}
               p="4"
               justify="center"
               align="center"
@@ -63,5 +63,5 @@ export function Login() {
         </Flex>
       </Flex>
     </LightMode>
-  )
+  );
 }

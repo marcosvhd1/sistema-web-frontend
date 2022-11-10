@@ -1,6 +1,5 @@
-import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Flex } from "@chakra-ui/react";
-import { useRef } from "react";
-import { useAlertClientContext } from "../../Contexts/AlertDialog/AlertClientContext";
+import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Flex } from '@chakra-ui/react';
+import { useRef } from 'react';
 
 interface AlertDialogProps {
   id: number;
@@ -11,7 +10,7 @@ interface AlertDialogProps {
 }
 
 export function DeleteAlertDialog({ id, deleteFunction, label, isOpen, onClose }: AlertDialogProps) {
-  const cancelRef = useRef<HTMLButtonElement>(null)
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   return (
     <AlertDialog
@@ -39,5 +38,5 @@ export function DeleteAlertDialog({ id, deleteFunction, label, isOpen, onClose }
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

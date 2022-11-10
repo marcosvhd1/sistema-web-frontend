@@ -1,11 +1,11 @@
-import { ReactNode } from "react"
-import { FieldValues, useForm } from "react-hook-form";
+import { ReactNode } from 'react';
+import { FieldValues, useForm } from 'react-hook-form';
 
 
-import { Button, Flex, Icon, Input, Select, Text } from "@chakra-ui/react";
+import { Button, Flex, Icon, Input, Select, Text } from '@chakra-ui/react';
 
-import { FiSearch } from "react-icons/fi";
-import { useModalProduct } from "../../../../Contexts/Modal/ProductContext";
+import { FiSearch } from 'react-icons/fi';
+import { useModalProduct } from '../../../../Contexts/Modal/ProductContext';
 
 interface SearchBoxProps {
   children: ReactNode;
@@ -16,17 +16,17 @@ interface SearchBoxProps {
 
 export function SearchBox({ children, setFilter, setDescription, changeEdit }: SearchBoxProps) {
   const { onOpen } = useModalProduct();
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm();
 
   const openModal = async () => {
-    onOpen()
-    changeEdit(false)
-  }
+    onOpen();
+    changeEdit(false);
+  };
 
   const HandleGetProductByFilter = (data: FieldValues) => {
-    const { description } = data
+    const { description } = data;
     setDescription(description);
-  }
+  };
 
 
   return (
@@ -36,7 +36,7 @@ export function SearchBox({ children, setFilter, setDescription, changeEdit }: S
         <Flex w="90%" m="4" align="center" justify="space-between">
           <Flex w="80%" justify="center" align="center">
             <Text w="9rem">Buscar por </Text>
-            <Select w="40%" mr="3">
+            <Select w="40%" mr="3" onChange={(e) => setFilter(e.target.value)}>
               <option value='descricao'>Descrição</option>
               <option value='codigo'>Código</option>
               <option value='referencia'>Referência</option>
@@ -54,5 +54,5 @@ export function SearchBox({ children, setFilter, setDescription, changeEdit }: S
       </Flex>
     </form >
 
-  )
+  );
 }

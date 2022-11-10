@@ -1,6 +1,6 @@
-import { Image } from "@chakra-ui/react"
+import { Image } from '@chakra-ui/react';
 
-import backgroundImg from '../../assets/bg.jpg'
+import backgroundImg from '../../assets/bg.jpg';
 
 export function BackgroundImg() {
   return (
@@ -10,5 +10,5 @@ export function BackgroundImg() {
       src={backgroundImg}
       alt="Imagem de fundo da tela de login"
     />
-  )
+  );
 }

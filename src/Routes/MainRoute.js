@@ -21,38 +21,38 @@ import { AlertProductContextProvider } from '../Contexts/AlertDialog/AlertProduc
 
 
 export default function MainRoutes() {
-    return (
-        <BrowserRouter>
-            <SizeProvider>
-                <SidebarProvider>
-                    <SidebarDrawerProvider>
-                        <ModalClientProvider>
-                            <ModalProductProvider>
-                                <ModalServiceProvider>
-                                    <ModalTransportadoraProvider>
-                                        <AlertClientContextProvider>
-                                            <AlertServiceContextProvider>
-                                                <AlertTransportadoraContextProvider>
-                                                    <AlertProductContextProvider>
-                                                        <Routes>
-                                                            <Route index element={<Login />} />
-                                                            <Route path="/app" element={<Home />} />
-                                                            <Route path="/app/cadastro/clientes" element={<Cliente />} />
-                                                            <Route path="/app/cadastro/produtos" element={<Produto />} />
-                                                            <Route path="/app/cadastro/servicos" element={<Servico />} />
-                                                            <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
-                                                        </Routes>
-                                                    </AlertProductContextProvider>
-                                                </AlertTransportadoraContextProvider>
-                                            </AlertServiceContextProvider>
-                                        </AlertClientContextProvider>
-                                    </ModalTransportadoraProvider>
-                                </ModalServiceProvider>
-                            </ModalProductProvider>
-                        </ModalClientProvider>
-                    </SidebarDrawerProvider>
-                </SidebarProvider>
-            </SizeProvider>
-        </BrowserRouter>
-    )
+  return (
+    <BrowserRouter>
+      <SizeProvider>
+        <SidebarProvider>
+          <SidebarDrawerProvider>
+            <ModalClientProvider>
+              <ModalProductProvider>
+                <ModalServiceProvider>
+                  <ModalTransportadoraProvider>
+                    <AlertClientContextProvider>
+                      <AlertServiceContextProvider>
+                        <AlertTransportadoraContextProvider>
+                          <AlertProductContextProvider>
+                            <Routes>
+                              <Route index element={<Login />} />
+                              <Route path="/app" element={<Home />} />
+                              <Route path="/app/cadastro/clientes" element={<Cliente />} />
+                              <Route path="/app/cadastro/produtos" element={<Produto />} />
+                              <Route path="/app/cadastro/servicos" element={<Servico />} />
+                              <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
+                            </Routes>
+                          </AlertProductContextProvider>
+                        </AlertTransportadoraContextProvider>
+                      </AlertServiceContextProvider>
+                    </AlertClientContextProvider>
+                  </ModalTransportadoraProvider>
+                </ModalServiceProvider>
+              </ModalProductProvider>
+            </ModalClientProvider>
+          </SidebarDrawerProvider>
+        </SidebarProvider>
+      </SizeProvider>
+    </BrowserRouter>
+  );
 }

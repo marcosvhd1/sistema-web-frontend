@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from '@chakra-ui/react';
 
 export function TextLogo() {
   return (
@@ -15,5 +15,5 @@ export function TextLogo() {
         Emissor de NF-e e NFC-e (Cupom).
       </Text>
     </Flex>
-  )
+  );
 }

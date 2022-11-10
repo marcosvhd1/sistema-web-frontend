@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { Flex, Select, Stack, Text } from "@chakra-ui/react";
+import { ReactNode } from 'react';
+import { Flex, Select, Stack, Text } from '@chakra-ui/react';
 
 interface IPagination {
   children: ReactNode
@@ -15,7 +15,7 @@ export function Pagination({ children, limitRegistros, currentPage, totalClients
     <Stack
       direction="row"
       spacing="6"
-      m={{base: "2rem 0 .5rem 0", md: "2rem 0 .5rem 0", lg: "2rem 0"}}
+      m={{base: '2rem 0 .5rem 0', md: '2rem 0 .5rem 0', lg: '2rem 0'}}
       justify="flex-end"
       align="center"
       w="90%"
@@ -43,5 +43,5 @@ export function Pagination({ children, limitRegistros, currentPage, totalClients
         {children}
       </Stack>
     </Stack>
-  )
+  );
 }

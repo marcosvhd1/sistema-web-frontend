@@ -1,5 +1,5 @@
-import { Button, Flex, Input, InputGroup, InputLeftAddon, Stack } from "@chakra-ui/react";
-import { FiUser, FiLock, FiAtSign } from "react-icons/fi"
+import { Button, Flex, Input, InputGroup, InputLeftAddon, Stack } from '@chakra-ui/react';
+import { FiUser, FiLock, FiAtSign } from 'react-icons/fi';
 
 export function LoginForm() {
   return (
@@ -18,7 +18,9 @@ export function LoginForm() {
         <InputGroup
           size="lg"
         >
-          <InputLeftAddon children={<FiUser />} borderColor="blackAlpha.500" color="gray.700" />
+          <InputLeftAddon borderColor="blackAlpha.500" color="gray.700">
+            <FiUser />
+          </InputLeftAddon>
           <Input
             borderColor="blackAlpha.500"
             focusBorderColor="orange.400"
@@ -30,7 +32,9 @@ export function LoginForm() {
         <InputGroup
           size="lg"
         >
-          <InputLeftAddon children={<FiAtSign />} borderColor="blackAlpha.500" color="gray.700" />
+          <InputLeftAddon borderColor="blackAlpha.500" color="gray.700" >
+            <FiAtSign />
+          </InputLeftAddon>
           <Input
             borderColor="blackAlpha.500"
             focusBorderColor="orange.400"
@@ -42,7 +46,9 @@ export function LoginForm() {
         <InputGroup
           size="lg"
         >
-          <InputLeftAddon children={<FiLock />} borderColor="blackAlpha.500" color="gray.700" />
+          <InputLeftAddon borderColor="blackAlpha.500" color="gray.700" >
+            <FiLock />
+          </InputLeftAddon>
           <Input
             borderColor="blackAlpha.500"
             type="password"
@@ -55,5 +61,5 @@ export function LoginForm() {
         </Button>
       </Stack>
     </Flex>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import { FieldError } from "react-hook-form"
-import { Flex, FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react";
+import { ReactNode } from 'react';
+import { FieldError } from 'react-hook-form';
+import { Flex, FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react';
 
 interface FormContainerProps {
   label: string;
@@ -11,7 +11,7 @@ interface FormContainerProps {
   align?: string
 }
 
-export function FormContainer({ label, children, error, align, width = "100%", isRequired = false }: FormContainerProps) {
+export function FormContainer({ label, children, error, align, width = '100%', isRequired = false }: FormContainerProps) {
   return (
     <FormControl isInvalid={!!error} isRequired={isRequired} w={`${width}`}>
       <Flex direction="column" align={`${align}`} mt="4">
@@ -22,5 +22,5 @@ export function FormContainer({ label, children, error, align, width = "100%", i
         )}
       </Flex>
     </FormControl>
-  )
+  );
 }

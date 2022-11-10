@@ -1,4 +1,4 @@
-import MainContent from "../../components/MainContent";
+import MainContent from '../../components/MainContent';
 
 
 export function Home() {
@@ -6,5 +6,5 @@ export function Home() {
     <MainContent>
       <h1>Main</h1>
     </MainContent>
-  )
+  );
 }

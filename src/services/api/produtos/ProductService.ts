@@ -1,9 +1,9 @@
-import { ApiException } from "../ApiException";
-import { Api } from "../ApiConfig"
+import { ApiException } from '../ApiException';
+import { Api } from '../ApiConfig';
 
 export type IProduct = {
-  id?: number;
-  nprod?: number;
+  id: number;
+  nprod: number;
   descricao: string;
   referencia: string;
   codbarras: string;
@@ -38,54 +38,54 @@ export type IProduct = {
 
 const getAll = async (): Promise<IProduct[] | ApiException> => {
   try {
-    const { data } = await Api().get(`/produtos`)
+    const { data } = await Api().get('/produtos');
     return data;
-  } catch (error: any) {
-    return new ApiException(error.message || 'Erro ao buscar os registros.')
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }
 };
 
 const getProductByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string): Promise<IProduct[] | ApiException> => {
   try {
-    return await Api().get(`/cadastro/produtos?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`)
-  } catch (error: any) {
-    return new ApiException(error.message || 'Erro ao buscar os registros.');
+    return await Api().get(`/cadastro/produtos?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`);
+  } catch (error) {
+    return new ApiException((error as ApiException).message|| 'Erro ao buscar os registros.');
   }
-}
+};
 
 const create = async (dataToCreate: Omit<IProduct, 'id' | 'cod'>): Promise<IProduct | ApiException> => {
   try {
-    const { data } = await Api().post<any>('/produtos', dataToCreate)
+    const { data } = await Api().post<IProduct>('/produtos', dataToCreate);
     return data;
-  } catch (error: any) {
-    return new ApiException(error.message || 'Erro ao criar o registro.')
+  } catch (error) {
+    return new ApiException((error as ApiException).message|| 'Erro ao criar o registro.');
   }
 };
 
 const updateById = async (id: number, dataToUpdate: IProduct): Promise<IProduct | ApiException> => {
   try {
-    const { data } = await Api().put(`/produtos/${id}`, dataToUpdate)
+    const { data } = await Api().put(`/produtos/${id}`, dataToUpdate);
     return data;
-  } catch (error: any) {
-    return new ApiException(error.message || 'Erro ao atualizar o registro.')
+  } catch (error) {
+    return new ApiException((error as ApiException).message|| 'Erro ao atualizar o registro.');
   }
 };
 
 const deleteById = async (id: number): Promise<undefined | ApiException> => {
   try {
-    await Api().delete(`/produtos/${id}`)
+    await Api().delete(`/produtos/${id}`);
     return undefined;
-  } catch (error: any) {
-    return new ApiException(error.message || 'Erro ao apagar o registro.')
+  } catch (error) {
+    return new ApiException((error as ApiException).message|| 'Erro ao apagar o registro.');
   }
 };
 
 
 const getLastCod = async () => {
-  const response = await Api().get('/cod/produtos')
+  const response = await Api().get('/cod/produtos');
   const { max } = response.data.rows[0];
-  return max
-}
+  return max;
+};
 
 export const ProductService = {
   getAll,
@@ -94,4 +94,4 @@ export const ProductService = {
   updateById,
   deleteById,
   getLastCod
-}
+};

@@ -1,15 +1,15 @@
-import { useContext } from "react"
-import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
+import { useContext } from 'react';
+import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from '@chakra-ui/react';
 
-import { useSidebarDrawer } from "../../Contexts/SidebarDrawerContext";
-import { SizeContext } from "../../Contexts/SizeContext"
+import { useSidebarDrawer } from '../../Contexts/SidebarDrawerContext';
+import { SizeContext } from '../../Contexts/SizeContext';
 
-import { SidebarNav } from "./SidebarNav"
+import { SidebarNav } from './SidebarNav';
 
 
 export function Sidebar() {
-  const { smSize } = useContext(SizeContext)
-  const { isOpen, onClose } = useSidebarDrawer()
+  const { smSize } = useContext(SizeContext);
+  const { isOpen, onClose } = useSidebarDrawer();
 
 
   if (!smSize[0]) {
@@ -28,5 +28,5 @@ export function Sidebar() {
 
   return (
     <SidebarNav />
-  )
+  );
 }

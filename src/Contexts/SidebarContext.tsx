@@ -1,7 +1,7 @@
-import { createContext, ReactNode, useState } from 'react'
+import { createContext, ReactNode, useState } from 'react';
 
 interface SidebarStatusType {
-  navSize: String;
+  navSize: string;
   changeNavSize: () => void
 }
 
@@ -11,18 +11,18 @@ interface SidebarProviderProps {
 export const SidebarContext = createContext({} as SidebarStatusType);
 
 export function SidebarProvider({ children }: SidebarProviderProps) {
-  const [navSize, SetNavSize] = useState("large")
+  const [navSize, SetNavSize] = useState('large');
   
   function changeNavSize() {
-    if (navSize == "small")
-      SetNavSize("large")
+    if (navSize == 'small')
+      SetNavSize('large');
     else
-      SetNavSize("small")
+      SetNavSize('small');
   }
 
   return (
     <SidebarContext.Provider value={{ navSize, changeNavSize}}>
       {children}
     </SidebarContext.Provider>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
-import axios from "axios"
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export interface Icidade {
   nome: string;
@@ -11,15 +11,15 @@ export function useCidades({ uf }: { uf: string }) {
 
   async function getCities() {
     await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
-      .then((response) => setCidades(response.data))
+      .then((response) => setCidades(response.data));
   }
 
   useEffect(() => {
-    getCities()
-  }, [uf])
+    getCities();
+  }, [uf]);
 
   return {
     cidades
-  }
+  };
 
 }

@@ -1,4 +1,4 @@
-import { Text } from "@chakra-ui/react";
+import { Text } from '@chakra-ui/react';
 
 export function Plantext() {
   return (
@@ -18,5 +18,5 @@ export function Plantext() {
         Conhecer nossos planos!
       </Text>
     </>
-  )
+  );
 }

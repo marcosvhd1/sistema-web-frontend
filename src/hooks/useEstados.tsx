@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
-import axios from "axios"
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export interface Regiao {
   id: number;
@@ -19,15 +19,15 @@ export function useEstados() {
 
   async function getStates() {
     await axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados')
-    .then((response) => setEstados(response.data))
+      .then((response) => setEstados(response.data));
   }
   
 
   useEffect(() => {
-    getStates()
-  }, [])
+    getStates();
+  }, []);
 
   return {
     estados
-  }
+  };
 }

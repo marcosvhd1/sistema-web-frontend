@@ -1,11 +1,11 @@
-import { Flex, Input, Select, Textarea, useColorMode } from "@chakra-ui/react";
-import { useFormContext } from "react-hook-form";
-import { FormContainer } from "../../../../../components/Form/FormContainer";
-import { IProduct } from "../../../../../services/api/produtos/ProductService";
+import { Flex, Input, Select, Textarea, useColorMode } from '@chakra-ui/react';
+import { useFormContext } from 'react-hook-form';
+import { FormContainer } from '../../../../../components/Form/FormContainer';
+import { IProduct } from '../../../../../services/api/produtos/ProductService';
 
 export function DadosFiscais() {
-  const { register, formState: { errors } } = useFormContext<IProduct>();
-  const { colorMode } = useColorMode()
+  const { register } = useFormContext<IProduct>();
+  const { colorMode } = useColorMode();
 
   return (
     <Flex w="58rem" h="30rem" gap="2" direction="column" justify="space-between">
@@ -13,54 +13,54 @@ export function DadosFiscais() {
         <Flex direction="column" w="50%" mr={6}>
           <Flex gap="2">
             <FormContainer width="10rem" label="CST / CSOSN ICMS" >
-              <Input id="cst_icms" type="number" w="10rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('cst_icms', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input id="cst_icms" type="number" w="10rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cst_icms', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
             <FormContainer width="8rem" label="Alíquota ICMS" >
-              <Input id="aliquota_icms" placeholder="0,00%" type="number" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('aliquota_icms', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input id="aliquota_icms" placeholder="0,00%" type="number" w="8rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('aliquota_icms', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
             <FormContainer width="6rem" label="Base" >
-              <Input id="base_icms" placeholder="0,00%" type="number" w="6rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('base_icms', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input id="base_icms" placeholder="0,00%" type="number" w="6rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('base_icms', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
             <FormContainer width="8rem" label="CST IPI" >
-              <Input id="cst_ipi" type="number" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('cst_pis', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input id="cst_ipi" type="number" w="8rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cst_pis', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
             <FormContainer width="8rem" label="Alíquota IPI" >
-              <Input id="aliquota_ipi" placeholder="0,00%" type="number" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('aliquota_ipi', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input id="aliquota_ipi" placeholder="0,00%" type="number" w="8rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('aliquota_ipi', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
             <FormContainer width="8rem" label="CST Cofins" >
-              <Input id="cst_cofins" type="number" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('cst_cofins', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input id="cst_cofins" type="number" w="8rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cst_cofins', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
             <FormContainer width="8rem" label="Alíquota Cofins" >
-              <Input id="aliquota_cofins" placeholder="0,00%" type="number" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('aliquota_cofins', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input id="aliquota_cofins" placeholder="0,00%" type="number" w="8rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('aliquota_cofins', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
             <FormContainer width="8rem" label="CST PIS">
-              <Input id="cst_pis" type="number" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('cst_pis', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input id="cst_pis" type="number" w="8rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cst_pis', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
             <FormContainer width="8rem" label="Alíquota PIS" >
-              <Input placeholder="0,00%" id="cadastrado" type="number" w="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('aliquota_pis', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input placeholder="0,00%" id="cadastrado" type="number" w="8rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('aliquota_pis', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
           </Flex>
@@ -68,48 +68,48 @@ export function DadosFiscais() {
         <Flex direction="column" w="50%">
           <Flex gap="2">
             <FormContainer label="CFOP de Venda" width="8rem">
-              <Input id="cfop" width="8rem" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('cfop')} />
+              <Input id="cfop" width="8rem" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cfop')} />
             </FormContainer>
             <FormContainer label="Produção Própria" width="8rem">
-              <Select defaultValue="nao" id="producao_propria" width="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('producao_propria')}>
+              <Select defaultValue="nao" id="producao_propria" width="8rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('producao_propria')}>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
               </Select>
             </FormContainer>
             <FormContainer label="CNPJ do Produtor">
-              <Input id="cnpj_produtor" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('cnpj_produtor')} />
+              <Input id="cnpj_produtor" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cnpj_produtor')} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
             <FormContainer label="Classificação Fiscal (NCM)">
-              <Input id="ncm" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('ncm')} />
+              <Input id="ncm" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('ncm')} />
             </FormContainer>
             <FormContainer label="CEST">
-              <Input id="cest" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('cest')} />
+              <Input id="cest" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cest')} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
             <FormContainer label="Peso Bruto">
-              <Input id="peso_bruto" placeholder="0,000kg" type="number" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('peso_bruto', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input id="peso_bruto" placeholder="0,000kg" type="number" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('peso_bruto', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
             <FormContainer label="Peso Líquido">
-              <Input id="peso_liquido" placeholder="0,000kg" type="number" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('peso_liquido', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input id="peso_liquido" placeholder="0,000kg" type="number" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('peso_liquido', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
             <FormContainer label="Preço Trib.">
-              <Input id="preco_trib" placeholder="Tributável" type="number" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} step={0.01} {...register('preco_trib', {
-                setValueAs: (value) => value === "" ? 0 : parseFloat(value),
+              <Input id="preco_trib" placeholder="Tributável" type="number" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} step={0.01} {...register('preco_trib', {
+                setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
             <FormContainer label="UN Trib.">
-              <Input id="un_trib" placeholder="Tributável" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('un_trib')} />
+              <Input id="un_trib" placeholder="Tributável" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('un_trib')} />
             </FormContainer>
           </Flex>
           <FormContainer label="Origem Mercadoria">
-            <Select id="origem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('origem')}>
+            <Select id="origem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('origem')}>
               <option>0 - Nacional, exceto as indicadas nos códigos 3 a 5</option>
               <option>1 - Estrangeira - Importação direta, exceto a indicada no código 6</option>
               <option>2 - Estrangeira - Adquirida no mercado interno, exceto a indicada no código 7</option>
@@ -124,9 +124,9 @@ export function DadosFiscais() {
         </Flex>
       </Flex>
       <FormContainer label="Informações Adicionais">
-        <Textarea id="info_adicional" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('info_adicional')} />
+        <Textarea id="info_adicional" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('info_adicional')} />
       </FormContainer>
     </Flex>
-  )
+  );
 }
 

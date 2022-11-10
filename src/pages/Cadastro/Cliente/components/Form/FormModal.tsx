@@ -16,17 +16,17 @@ import {
   Tabs, 
   Textarea, 
   useColorMode
-} from "@chakra-ui/react";
-import * as zod from "zod";
-import { useFormContext } from "react-hook-form";
-import { FiCheck, FiSlash } from "react-icons/fi";
+} from '@chakra-ui/react';
+import * as zod from 'zod';
+import { useFormContext } from 'react-hook-form';
+import { FiCheck, FiSlash } from 'react-icons/fi';
 
-import { FormFields } from "./FormFields";
+import { FormFields } from './FormFields';
 
-import { useModalClient } from "../../../../../Contexts/Modal/ClientContext";
+import { useModalClient } from '../../../../../Contexts/Modal/ClientContext';
 
-import { ApiException } from "../../../../../services/api/ApiException";
-import { ClientService } from "../../../../../services/api/clientes/ClientService";
+import { ApiException } from '../../../../../services/api/ApiException';
+import { ClientService } from '../../../../../services/api/clientes/ClientService';
 
 const newClientFormValidationSchema = zod.object({
   id: zod.number(),
@@ -58,7 +58,7 @@ const newClientFormValidationSchema = zod.object({
   email1: zod.string(),
   email2: zod.string(),
   site: zod.string(),
-})
+});
 
 type FormModalProps = zod.infer<typeof newClientFormValidationSchema>
 
@@ -73,15 +73,15 @@ interface ModalProps {
 export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useFormContext<FormModalProps>();
-  const { colorMode } = useColorMode()
+  const { colorMode } = useColorMode();
 
   const clearForm = () => {
-    onClose()
+    onClose();
     methods.reset({
       razao: '',
       fantasia: '',
       bairro: '',
-      categoria:"cliente",
+      categoria:'cliente',
       cep: '',
       cidade: '',
       cnpjcpf: '',
@@ -99,44 +99,44 @@ export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
       telefone1: '',
       telefone2: '',
       telefone3: '',
-      tipo:"j",
+      tipo:'j',
       tipo_contribuinte: '',
       tipo_telefone1: '',
       tipo_telefone2: '',
       tipo_telefone3: '',
       uf: '',
-    })
-  }
+    });
+  };
 
   const handleUpdateClient = (data: FormModalProps) => {
     ClientService.updateById(id, data)
       .then((result) => {
         if (result instanceof ApiException) {
-          console.log(result.message)
+          console.log(result.message);
         } else {
-          clearForm()
+          clearForm();
         }
-      })
-  }
+      });
+  };
   
   const handleCreateNewClient = async (data: FormModalProps) => {
     ClientService.create(data)
       .then((result) => {
         if (result instanceof ApiException) {
-          console.log(result.message)
+          console.log(result.message);
         } else {
-          clearForm()
-          refreshPage()
+          clearForm();
+          refreshPage();
         }
-      })
-  }
+      });
+  };
 
   const submitData = (data: FormModalProps) => {
     if (isEditing)
-      handleUpdateClient(data)
+      handleUpdateClient(data);
     else
-      handleCreateNewClient(data)
-  }
+      handleCreateNewClient(data);
+  };
 
   return (
     <Modal
@@ -164,19 +164,19 @@ export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
                   <FormFields editCod={editCod} isEditing={isEditing}/>
                 </TabPanel>
                 <TabPanel>
-                  <Textarea borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} h="37rem" placeholder='Observações...' {...methods.register('observacao')} />
+                  <Textarea borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} h="37rem" placeholder='Observações...' {...methods.register('observacao')} />
                 </TabPanel>
               </TabPanels>
             </Tabs>
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">
-              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{isEditing ? "Editar" : "Cadastrar"}</Button>
+              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
               <Button colorScheme='red' variant="outline" mr={3} onClick={() => clearForm()}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>
       </form>
     </Modal>
-  )
+  );
 }

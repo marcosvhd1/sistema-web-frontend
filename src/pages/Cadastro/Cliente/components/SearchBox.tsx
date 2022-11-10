@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { ReactNode } from 'react';
+import { FieldValues, useForm } from 'react-hook-form';
 
-import { Button, Flex, Icon, Input, Select, Text } from "@chakra-ui/react";
+import { Button, Flex, Icon, Input, Select, Text } from '@chakra-ui/react';
 
-import { FiSearch } from "react-icons/fi";
-import { useModalClient } from "../../../../Contexts/Modal/ClientContext";
+import { FiSearch } from 'react-icons/fi';
+import { useModalClient } from '../../../../Contexts/Modal/ClientContext';
 
 
 
@@ -18,22 +18,22 @@ interface SearchBoxProps {
 
 export function SearchBox({ children, changeEdit , stateFilter, stateDescription}: SearchBoxProps) {
   const { onOpen } = useModalClient();
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm();
 
   const openModal = () => {
-    onOpen()
-    changeEdit(false)
-  }
+    onOpen();
+    changeEdit(false);
+  };
 
   const HandleGetClientsByFilter = (data: FieldValues) => {
-    const { description } = data
+    const { description } = data;
     stateDescription(description);
-  }
+  };
 
   
   return (
     <form onSubmit={handleSubmit((data) => HandleGetClientsByFilter(data))}>
-      <Flex w="100%" justify="center" align="center" mt={{base: "2", md: "2", lg: "10"}} direction="column" >
+      <Flex w="100%" justify="center" align="center" mt={{base: '2', md: '2', lg: '10'}} direction="column" >
         <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes / Fornecedores</Text>
         <Flex w="90%" m="4" align="center" justify="space-between">
           <Flex w="60%" justify="center" align="center">
@@ -51,5 +51,5 @@ export function SearchBox({ children, changeEdit , stateFilter, stateDescription
         {children}
       </Flex>
     </form >
-  )
+  );
 }

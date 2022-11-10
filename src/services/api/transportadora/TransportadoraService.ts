@@ -1,5 +1,5 @@
-import { Api } from "../ApiConfig";
-import { ApiException } from "../ApiException";
+import { Api } from '../ApiConfig';
+import { ApiException } from '../ApiException';
 
 export interface ITransportadora {
   id: number
@@ -29,52 +29,52 @@ const getAll = async (): Promise<ITransportadora[] | ApiException> => {
   try {
     const { data } = await Api().get('/transportadora');
     return data;
-  } catch (error: any) {
-    return new ApiException(error.message || 'Erro ao buscar os registros.');
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }
 };
 
 
 const getTransportadoraByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string): Promise<ITransportadora[] | ApiException> => {
   try {
-    return await Api().get(`/cadastro/transportadora?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`)
-  } catch (error: any) {
-    return new ApiException(error.message || 'Erro ao buscar os registros.');
-  }
-}
-
-const create = async (dataToCreate: Omit<ITransportadora, 'id' | 'nserv'>): Promise<ITransportadora | ApiException> => {
-  try {
-    const { data } = await Api().post<any>('/transportadora', dataToCreate)
-    return data;
-  } catch (error: any) {
-    return new ApiException(error.message || 'Erro ao criar o registro.')
+    return await Api().get(`/cadastro/transportadora?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`);
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }
 };
 
-const updateById = async (id: number, dataToUpdate: ITransportadora): Promise<ITransportadora | ApiException> => {
+const create = async (dataToCreate: Omit<ITransportadora, 'id' | 'nserv'>): Promise<ITransportadora | ApiException> => {
   try {
-    const { data } = await Api().put(`/transportadora/${id}`, dataToUpdate)
+    const { data } = await Api().post<ITransportadora>('/transportadora', dataToCreate);
     return data;
-  } catch (error: any) {
-    return new ApiException(error.message || 'Erro ao atualizar o registro.')
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao criar o registro.');
+  }
+};
+
+const updateById = async (id: number | undefined, dataToUpdate: ITransportadora): Promise<ITransportadora | ApiException> => {
+  try {
+    const { data } = await Api().put(`/transportadora/${id}`, dataToUpdate);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
   }
 };
 
 const deleteById = async (id: number): Promise<undefined | ApiException> => {
   try {
-    await Api().delete(`/transportadora/${id}`)
+    await Api().delete(`/transportadora/${id}`);
     return undefined;
-  } catch (error: any) {
-    return new ApiException(error.message || 'Erro ao apagar o registro.')
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao apagar o registro.');
   }
 };
 
 const getLastCod = async () => {
-  const response = await Api().get('/cod/transportadora')
+  const response = await Api().get('/cod/transportadora');
   const { max } = response.data.rows[0];
-  return max
-}
+  return max;
+};
 
 export const TransportadoraService = {
   getAll,

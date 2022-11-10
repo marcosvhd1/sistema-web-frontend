@@ -1,7 +1,7 @@
-import { ChakraProvider } from "@chakra-ui/react"
+import { ChakraProvider } from '@chakra-ui/react';
 
-import MainRoutes from "./Routes/MainRoute";
-import { theme } from "./styles/theme";
+import MainRoutes from './Routes/MainRoute';
+import { theme } from './styles/theme';
 
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
     <ChakraProvider theme={theme}>
       <MainRoutes />
     </ChakraProvider>
-  )
+  );
 }
 
 export default App;

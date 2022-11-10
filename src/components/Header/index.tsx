@@ -1,22 +1,22 @@
-import { useContext } from "react"
+import { useContext } from 'react';
 
-import { Flex, IconButton, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { Flex, IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
 
-import { FiBell, FiLogOut, FiMenu } from "react-icons/fi";
-import { FaMoon, FaSun } from "react-icons/fa";
+import { FiBell, FiLogOut, FiMenu } from 'react-icons/fi';
+import { FaMoon, FaSun } from 'react-icons/fa';
 
-import { useSidebarDrawer } from "../../Contexts/SidebarDrawerContext";
-import { SidebarContext } from "../../Contexts/SidebarContext";
-import { SizeContext } from "../../Contexts/SizeContext";
+import { useSidebarDrawer } from '../../Contexts/SidebarDrawerContext';
+import { SidebarContext } from '../../Contexts/SidebarContext';
+import { SizeContext } from '../../Contexts/SizeContext';
 
-import { LoggedInUser } from "./LoggedInUser";
+import { LoggedInUser } from './LoggedInUser';
 
 export function Header() {
-  const { changeNavSize } = useContext(SidebarContext)
-  const { smSize } = useContext(SizeContext)
-  const { onOpen } = useSidebarDrawer()
-  const { toggleColorMode } = useColorMode()
-  const SwitchIcon = useColorModeValue(FaMoon, FaSun)
+  const { changeNavSize } = useContext(SidebarContext);
+  const { smSize } = useContext(SizeContext);
+  const { onOpen } = useSidebarDrawer();
+  const { toggleColorMode } = useColorMode();
+  const SwitchIcon = useColorModeValue(FaMoon, FaSun);
 
   return (
     <Flex
@@ -41,7 +41,7 @@ export function Header() {
           aria-label="Trocar entre modo claro e escuro"
           _hover={{ background: 'none' }}
           icon={<SwitchIcon />}
-          size={"lg"}
+          size={'lg'}
           bg="none"
           onClick={toggleColorMode}
         />
@@ -49,7 +49,7 @@ export function Header() {
           aria-label="Notificações"
           _hover={{ background: 'none' }}
           icon={<FiBell />}
-          size={"lg"}
+          size={'lg'}
           bg="none"
         />
         <LoggedInUser />
@@ -59,10 +59,10 @@ export function Header() {
           aria-label="Botão de sair"
           icon={<FiLogOut />}
           _hover={{ background: 'none' }}
-          size={"lg"}
+          size={'lg'}
           bg="none"
         />
       </Flex>
     </Flex >
-  )
+  );
 }

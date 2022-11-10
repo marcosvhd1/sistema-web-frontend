@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from '@chakra-ui/react';
 
 export function NavHover() {
   return (
@@ -7,5 +7,5 @@ export function NavHover() {
         Cliente
       </Text>
     </Flex>
-  )
+  );
 }

@@ -1,8 +1,8 @@
 declare module '*.svg' {
-  const content: any;
+  const content: unknown;
   export default content;
 }
-declare module "*.jpg";
-declare module "*.png";
-declare module "*.jpeg";
-declare module "*.gif";
+declare module '*.jpg';
+declare module '*.png';
+declare module '*.jpeg';
+declare module '*.gif';

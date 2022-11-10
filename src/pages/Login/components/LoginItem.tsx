@@ -1,5 +1,5 @@
-import { Flex, Icon, Text } from "@chakra-ui/react";
-import { FcApproval } from "react-icons/fc"
+import { Flex, Icon, Text } from '@chakra-ui/react';
+import { FcApproval } from 'react-icons/fc';
 
 interface LoginItemProps {
   description: string;
@@ -17,5 +17,5 @@ export function LoginItem({ description }: LoginItemProps) {
         {description}
       </Text>
     </Flex>
-  )
+  );
 }

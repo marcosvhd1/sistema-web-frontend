@@ -1,5 +1,5 @@
-import { Flex } from "@chakra-ui/react";
-import { LoginItem } from "./LoginItem";
+import { Flex } from '@chakra-ui/react';
+import { LoginItem } from './LoginItem';
 
 export function InfoLogin() {
   return (
@@ -12,5 +12,5 @@ export function InfoLogin() {
       <LoginItem description="Espelhamento de NFe." />
       <LoginItem description="Cancelamento e carta de correção." />
     </Flex>
-  )
+  );
 }

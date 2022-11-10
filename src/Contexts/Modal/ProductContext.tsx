@@ -1,5 +1,5 @@
-import { useDisclosure, UseDisclosureReturn } from "@chakra-ui/react";
-import { createContext, ReactNode, useContext } from "react";
+import { useDisclosure, UseDisclosureReturn } from '@chakra-ui/react';
+import { createContext, ReactNode, useContext } from 'react';
 
 interface ModalProductProviderProps {
   children: ReactNode;
@@ -7,16 +7,16 @@ interface ModalProductProviderProps {
 
 type ModalProductContextData = UseDisclosureReturn
 
-const ModalProductContext = createContext({} as ModalProductContextData)
+const ModalProductContext = createContext({} as ModalProductContextData);
 
 export function ModalProductProvider({ children }: ModalProductProviderProps) {
-  const disclosure = useDisclosure()
+  const disclosure = useDisclosure();
 
   return (
     <ModalProductContext.Provider value={disclosure}>
       {children}
     </ModalProductContext.Provider>
-  )
+  );
 }
 
-export const useModalProduct = () => useContext(ModalProductContext)
+export const useModalProduct = () => useContext(ModalProductContext);
