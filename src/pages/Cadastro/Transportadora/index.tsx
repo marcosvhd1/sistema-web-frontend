@@ -1,10 +1,8 @@
 import { Button, Icon, Td, Tr, useToast } from '@chakra-ui/react';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import * as zod from 'zod';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
@@ -15,27 +13,6 @@ import { ApiException } from '../../../services/api/ApiException';
 import { ITransportadora, TransportadoraService } from '../../../services/api/transportadora/TransportadoraService';
 import { FormModal } from './components/Form/FormModal';
 import { SearchBox } from './components/SearchBox';
-
-const newTransportadoraFormValidationSchema = zod.object({
-  razao: zod.string(),
-  cnpjcpf: zod.string(),
-  ie: zod.string(),
-  rntrc: zod.string(),
-  logradouro: zod.string(),
-  numero: zod.string(),
-  bairro: zod.string(),
-  cep: zod.string(),
-  uf: zod.string(),
-  cidade: zod.string(),
-  complemento: zod.string(),
-  tipo_telefone1: zod.string(),
-  tipo_telefone2: zod.string(),
-  telefone1: zod.string(),
-  telefone2: zod.string(),
-  anotacoes: zod.string(),
-  placa: zod.string(),
-  uf_placa: zod.string(),
-});
 
 const headers: { key: string, label: string }[] = [
   { key: 'cod', label: 'Código' },
@@ -49,9 +26,7 @@ const headers: { key: string, label: string }[] = [
 ];
 
 export function Transportadora() {
-  const methods = useForm<ITransportadora>({
-    resolver: zodResolver(newTransportadoraFormValidationSchema)
-  });
+  const methods = useForm<ITransportadora>();
   const [data, setData] = useState<ITransportadora[]>([]);
   const [id, setId] = useState<number>(0);
   const [isEditing, setIsEditing] = useState<boolean>(false);

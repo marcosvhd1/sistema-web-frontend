@@ -17,7 +17,7 @@ import {
   Textarea, 
   useColorMode
 } from '@chakra-ui/react';
-import * as zod from 'zod';
+
 import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 
@@ -27,40 +27,7 @@ import { useModalClient } from '../../../../../Contexts/Modal/ClientContext';
 
 import { ApiException } from '../../../../../services/api/ApiException';
 import { ClientService } from '../../../../../services/api/clientes/ClientService';
-
-const newClientFormValidationSchema = zod.object({
-  id: zod.number(),
-  cod: zod.number(),
-  tipo: zod.string(),
-  categoria: zod.string(),
-  razao: zod.string(),
-  fantasia: zod.string(),
-  cnpjcpf: zod.string(),
-  rg: zod.string(),
-  ie: zod.string(),
-  im: zod.string(),
-  suframa: zod.string(),
-  tipo_contribuinte: zod.string(),
-  logradouro: zod.string(),
-  numero: zod.string(),
-  bairro: zod.string(),
-  cep: zod.string(),
-  uf: zod.string(),
-  cidade: zod.string(),
-  complemento: zod.string(),
-  observacao: zod.string(),
-  tipo_telefone1: zod.string(),
-  tipo_telefone2: zod.string(),
-  tipo_telefone3: zod.string(),
-  telefone1: zod.string(),
-  telefone2: zod.string(),
-  telefone3: zod.string(),
-  email1: zod.string(),
-  email2: zod.string(),
-  site: zod.string(),
-});
-
-type FormModalProps = zod.infer<typeof newClientFormValidationSchema>
+import { IClient } from '../../../../../services/api/clientes/ClientService';
 
 interface ModalProps {
   changeEdit: (value: React.SetStateAction<any>) => void;
@@ -72,7 +39,7 @@ interface ModalProps {
 
 export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
-  const methods = useFormContext<FormModalProps>();
+  const methods = useFormContext<IClient>();
   const { colorMode } = useColorMode();
 
   const clearForm = () => {
@@ -108,7 +75,7 @@ export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
     });
   };
 
-  const handleUpdateClient = (data: FormModalProps) => {
+  const handleUpdateClient = (data: IClient) => {
     ClientService.updateById(id, data)
       .then((result) => {
         if (result instanceof ApiException) {
@@ -119,7 +86,7 @@ export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
       });
   };
   
-  const handleCreateNewClient = async (data: FormModalProps) => {
+  const handleCreateNewClient = async (data: IClient) => {
     ClientService.create(data)
       .then((result) => {
         if (result instanceof ApiException) {
@@ -131,7 +98,7 @@ export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
       });
   };
 
-  const submitData = (data: FormModalProps) => {
+  const submitData = (data: IClient) => {
     if (isEditing)
       handleUpdateClient(data);
     else

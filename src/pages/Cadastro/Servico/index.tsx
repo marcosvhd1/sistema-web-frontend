@@ -3,7 +3,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { ServicoService } from '../../../services/api/servicos/ServicoService';
 
-
 import { Button, Icon, Td, Tr, useToast } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
