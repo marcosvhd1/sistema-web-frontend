@@ -1,6 +1,6 @@
-import { Button, useColorMode, Checkbox, Flex, FormControl, FormLabel, Icon, IconButton, Input, Radio, Select, Switch, Textarea } from "@chakra-ui/react"
+import { Button, Checkbox, Flex, Icon, Input, Select, Textarea, useColorMode } from "@chakra-ui/react"
 import moment from "moment"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { FcPlus } from "react-icons/fc"
 import { FormContainer } from "../../../../../components/Form/FormContainer"
@@ -12,7 +12,7 @@ interface IFormFields {
 }
 
 export function DadosPrincipais({ editCod, isEditing }: IFormFields) {
-  const { register } = useFormContext<IProduct>();
+  const { register, formState: { errors } } = useFormContext<IProduct>();
   const [cod, setCod] = useState<number>(1);
   const [active, setActive] = useState<boolean>(true)
   const { colorMode } = useColorMode()

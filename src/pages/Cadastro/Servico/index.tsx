@@ -14,7 +14,7 @@ import { IServico } from "../../../services/api/servicos/ServicoService";
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from "react-icons/fi";
 import { Button, Icon, Td, Tr, useToast } from "@chakra-ui/react";
 import { ApiException } from "../../../services/api/ApiException";
-import { DeleteAlertDialog } from "../../../components/utils/DeleteAlertDialog";
+import { DeleteAlertDialog } from "../../../components/Utils/DeleteAlertDialog";
 import { useAlertServiceContext } from "../../../Contexts/AlertDialog/AlertServiceContext";
 import { useModalService } from "../../../Contexts/Modal/ServiceContext";
 import { useNavigate } from "react-router-dom";
@@ -43,9 +43,7 @@ const headers: { key: string, label: string }[] = [
 ]
 
 export function Servico() {
-  const methods = useForm<IServico>({
-    resolver: zodResolver(newServiceFormValidationSchema)
-  })
+  const methods = useForm<IServico>()
   const [data, setData] = useState<IServico[]>([])
   const [id, setId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState<boolean>(false)

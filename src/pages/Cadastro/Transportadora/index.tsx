@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ApiException } from "../../../services/api/ApiException";
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from "react-icons/fi";
 import { Pagination } from "../../../components/Table/Pagination";
-import { DeleteAlertDialog } from "../../../components/utils/DeleteAlertDialog";
+import { DeleteAlertDialog } from "../../../components/Utils/DeleteAlertDialog";
 
 const newTransportadoraFormValidationSchema = zod.object({
   razao: zod.string(),

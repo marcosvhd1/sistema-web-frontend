@@ -9,21 +9,21 @@ export type IProduct = {
   codbarras: string;
   marca: string;
   grupo: string;
-  preco?: number;
-  preco_trib?: number;
+  preco: number;
+  preco_trib: number;
   un: string;
   un_trib: string;
   status: string;
   anotacoes: string;
-  cst_icms?: number;
-  aliquota_icms?: number;
-  base_icms?: number;
-  cst_ipi?: number;
-  aliquota_ipi?: number;
-  cst_cofins?: number;
-  aliquota_cofins?: number;
-  cst_pis?: number;
-  aliquota_pis?: number;
+  cst_icms: number;
+  aliquota_icms: number;
+  base_icms: number;
+  cst_ipi: number;
+  aliquota_ipi: number;
+  cst_cofins: number;
+  aliquota_cofins: number;
+  cst_pis: number;
+  aliquota_pis: number;
   info_adicional: string;
   ncm: string;
   cest: string;
@@ -31,8 +31,8 @@ export type IProduct = {
   producao_propria: string;
   cfop: string;
   origem: string;
-  peso_bruto?: number;
-  peso_liquido?: number;
+  peso_bruto: number;
+  peso_liquido: number;
 };
 
 

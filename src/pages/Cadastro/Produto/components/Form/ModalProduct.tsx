@@ -1,4 +1,6 @@
 import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useColorMode } from "@chakra-ui/react";
+import * as zod from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormContext } from "react-hook-form";
 import { FiCheck, FiSlash } from "react-icons/fi";
 import { useModalProduct } from "../../../../../Contexts/Modal/ProductContext";
@@ -13,6 +15,7 @@ interface ModalProps {
   id: number
   editCod: number
 }
+
 
 export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
   const { isOpen, onClose } = useModalProduct();

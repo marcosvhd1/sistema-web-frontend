@@ -1,10 +1,10 @@
-import { useFormContext } from "react-hook-form";
 import { Flex, Input, Select, Textarea, useColorMode } from "@chakra-ui/react";
+import { useFormContext } from "react-hook-form";
 import { FormContainer } from "../../../../../components/Form/FormContainer";
 import { IProduct } from "../../../../../services/api/produtos/ProductService";
 
 export function DadosFiscais() {
-  const { register } = useFormContext<IProduct>();
+  const { register, formState: { errors } } = useFormContext<IProduct>();
   const { colorMode } = useColorMode()
 
   return (
@@ -71,9 +71,9 @@ export function DadosFiscais() {
               <Input id="cfop" width="8rem" type="text" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('cfop')} />
             </FormContainer>
             <FormContainer label="Produção Própria" width="8rem">
-              <Select id="producao_propria" width="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('producao_propria')}>
-                <option>Sim</option>
-                <option selected>Não</option>
+              <Select defaultValue="nao" id="producao_propria" width="8rem" borderColor={colorMode === 'light' ? "blackAlpha.600" : "gray.600"} {...register('producao_propria')}>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
               </Select>
             </FormContainer>
             <FormContainer label="CNPJ do Produtor">

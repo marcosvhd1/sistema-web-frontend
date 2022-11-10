@@ -14,7 +14,19 @@ import { useModalProduct } from "../../../Contexts/Modal/ProductContext";
 import { useNavigate } from "react-router-dom";
 import { Pagination } from "../../../components/Table/Pagination";
 import { ApiException } from "../../../services/api/ApiException";
-import { DeleteAlertDialog } from "../../../components/utils/DeleteAlertDialog";
+import { DeleteAlertDialog } from "../../../components/Utils/DeleteAlertDialog";
+
+const headers: { key: string, label: string }[] = [
+  { key: "id", label: "Código" },
+  { key: "descricao", label: "Descrição" },
+  { key: "referencia", label: "Referência" },
+  { key: "marca", label: "Marca" },
+  { key: "grupo", label: "Grupo" },
+  { key: "un", label: "UN" },
+  { key: "preco", label: "Preço" },
+  { key: "ncm", label: "NCM" },
+  {key: "status", label: "Status"}
+]
 
 const newProductFormValidationSchema = zod.object({
   descricao: zod.string(),
@@ -49,22 +61,8 @@ const newProductFormValidationSchema = zod.object({
 
 })
 
-const headers: { key: string, label: string }[] = [
-  { key: "id", label: "Código" },
-  { key: "descricao", label: "Descrição" },
-  { key: "referencia", label: "Referência" },
-  { key: "marca", label: "Marca" },
-  { key: "grupo", label: "Grupo" },
-  { key: "un", label: "UN" },
-  { key: "preco", label: "Preço" },
-  { key: "ncm", label: "NCM" },
-  {key: "status", label: "Status"}
-]
-
 export function Produto() {
-  const methods = useForm<IProduct>({
-    resolver: zodResolver(newProductFormValidationSchema)
-  })
+  const methods = useForm<IProduct>()
   const [data, setData] = useState<IProduct[]>([])
   const [id, setId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState<boolean>(false)

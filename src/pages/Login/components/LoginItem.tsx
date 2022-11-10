@@ -12,7 +12,7 @@ export function LoginItem({ description }: LoginItemProps) {
       <Text
         fontSize={15}
         fontFamily="Poppins"
-        color="gray.700" 
+        color="gray.700"
       >
         {description}
       </Text>

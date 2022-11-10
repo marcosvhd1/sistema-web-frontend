@@ -1,5 +1,5 @@
 import { Button, Flex, Input, InputGroup, InputLeftAddon, Stack } from "@chakra-ui/react";
-import { FiUser, FiLock } from "react-icons/fi"
+import { FiUser, FiLock, FiAtSign } from "react-icons/fi"
 
 export function LoginForm() {
   return (
@@ -23,7 +23,19 @@ export function LoginForm() {
             borderColor="blackAlpha.500"
             focusBorderColor="orange.400"
             type="text"
-            placeholder="Usuário"
+            placeholder="CNPJ"
+            color="black"
+          />
+        </InputGroup>
+        <InputGroup
+          size="lg"
+        >
+          <InputLeftAddon children={<FiAtSign />} borderColor="blackAlpha.500" color="gray.700" />
+          <Input
+            borderColor="blackAlpha.500"
+            focusBorderColor="orange.400"
+            type="text"
+            placeholder="E-mail"
             color="black"
           />
         </InputGroup>
