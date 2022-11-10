@@ -38,7 +38,7 @@ export function SearchBox({ children, setFilter, setDescription, changeEdit }: S
             <Text w="9rem">Buscar por </Text>
             <Select w="40%" mr="3" onChange={(e) => setFilter(e.target.value)}>
               <option value='descricao'>Descrição</option>
-              <option value='codigo'>Código</option>
+              <option value='nprod'>Código</option>
               <option value='referencia'>Referência</option>
               <option value='marca'>Marca</option>
               <option value='ncm'>NCM</option>
