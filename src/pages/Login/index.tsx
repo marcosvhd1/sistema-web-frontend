@@ -50,7 +50,7 @@ export function Login() {
             <Flex
               w={isMinWidth ? '50%' : '100%'}
               p="4"
-              justify="center"
+              justify="space-around"
               align="center"
               direction="column"
             >

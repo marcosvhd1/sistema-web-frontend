@@ -1,10 +1,10 @@
-import { Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 
 export function Plantext() {
   return (
-    <>
+    <Flex direction="column" justify='center' align='center'>
       <Text
-        marginTop={14}
+        marginTop={{md: 4, lg: 14}}
         color="gray.700"
       >
         Não tem acesso? Adquira já sua licença!
@@ -17,6 +17,6 @@ export function Plantext() {
       >
         Conhecer nossos planos!
       </Text>
-    </>
+    </Flex>
   );
 }
