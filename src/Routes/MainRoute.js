@@ -18,7 +18,13 @@ import { AlertServiceContextProvider } from '../Contexts/AlertDialog/AlertServic
 import { AlertTransportadoraContextProvider } from '../Contexts/AlertDialog/AlertTransportadoraContext';
 import { ModalTransportadoraProvider } from '../Contexts/Modal/TransportadoraContext';
 import { AlertProductContextProvider } from '../Contexts/AlertDialog/AlertProductContext';
+import { RequireAuth } from '../components/AuthComponents/RequireAuth';
+import { Usuario } from '../pages/Configuracoes/Usuario';
 
+const ROLES = {
+  'admin': 1,
+  'normal': 2,
+};
 
 export default function MainRoutes() {
   return (
@@ -36,11 +42,19 @@ export default function MainRoutes() {
                           <AlertProductContextProvider>
                             <Routes>
                               <Route index element={<Login />} />
-                              <Route path="/app" element={<Home />} />
-                              <Route path="/app/cadastro/clientes" element={<Cliente />} />
-                              <Route path="/app/cadastro/produtos" element={<Produto />} />
-                              <Route path="/app/cadastro/servicos" element={<Servico />} />
-                              <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
+
+                              <Route element={<RequireAuth  allowedRoles={[ROLES.admin, ROLES.normal]} />}>
+                                <Route path="/app" element={<Home />} />
+                                <Route path="/app/cadastro/clientes" element={<Cliente />} />
+                                <Route path="/app/cadastro/produtos" element={<Produto />} />
+                                <Route path="/app/cadastro/servicos" element={<Servico />} />
+                                <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
+                              </Route>
+                              
+                              <Route element={<RequireAuth  allowedRoles={[ROLES.admin]} />}>
+                                <Route path="/app/usuarios" element={<Usuario />} />
+                              </Route>
+                              <Route path="*" element={<h1>Pagina não encontrada</h1>} />
                             </Routes>
                           </AlertProductContextProvider>
                         </AlertTransportadoraContextProvider>

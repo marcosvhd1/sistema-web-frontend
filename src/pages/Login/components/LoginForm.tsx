@@ -2,6 +2,7 @@ import { Button, Flex, Input, InputGroup, InputLeftAddon, Stack, useToast } from
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiAtSign, FiLock, FiUser } from 'react-icons/fi';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../../Contexts/AuthProvider';
 import { Api } from '../../../services/api/ApiConfig';
 
@@ -15,13 +16,11 @@ interface ILogin {
 export function LoginForm() {
   const { register, handleSubmit, setFocus } = useForm<ILogin>();
   const { auth, setAuth } = useAuthContext();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
   const toast = useToast();
 
-
-  useEffect(() => {
-    setFocus('cnpjcpf');
-  }, []);
 
   const submitData = async (data: ILogin) => {
     try {
@@ -30,18 +29,21 @@ export function LoginForm() {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true
         });
-      // console.log(response);
-      const accessToken = response.data.accessToken;
-      setAuth({ data, accessToken });
-      // console.log(auth);
-
-      // if (token) {
-      //   navigate('/app');
-      // }
+      const accessToken = `Bearer ${response.data.accessToken.token}`;
+      const userPermission =[ response.data.user.tipo_admin];
+      const user = {
+        'user': data,
+        'token': accessToken,
+        'permission': userPermission
+      };
+      setAuth(user);
+      localStorage.setItem('token', accessToken);
+      navigate('/app');
+      
     } catch (error: any) {
       toast({
         position: 'top',
-        description: `${error.response.data.error}`,
+        description: 'Credencias inválidas',
         status: 'error',
         duration: 2000,
         isClosable: true,
