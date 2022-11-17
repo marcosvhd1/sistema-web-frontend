@@ -20,10 +20,11 @@ import { ModalTransportadoraProvider } from '../Contexts/Modal/TransportadoraCon
 import { AlertProductContextProvider } from '../Contexts/AlertDialog/AlertProductContext';
 import { RequireAuth } from '../components/AuthComponents/RequireAuth';
 import { Usuario } from '../pages/Configuracoes/Usuario';
+import { PageNotFound } from '../pages/PageNotFound';
 
 const ROLES = {
+  'normal': 0,
   'admin': 1,
-  'normal': 2,
 };
 
 export default function MainRoutes() {
@@ -54,7 +55,8 @@ export default function MainRoutes() {
                               <Route element={<RequireAuth  allowedRoles={[ROLES.admin]} />}>
                                 <Route path="/app/usuarios" element={<Usuario />} />
                               </Route>
-                              <Route path="*" element={<h1>Pagina não encontrada</h1>} />
+
+                              <Route path="*" element={<PageNotFound />} />
                             </Routes>
                           </AlertProductContextProvider>
                         </AlertTransportadoraContextProvider>

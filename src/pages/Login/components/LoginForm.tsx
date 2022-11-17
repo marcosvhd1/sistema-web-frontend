@@ -29,17 +29,20 @@ export function LoginForm() {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true
         });
-      const accessToken = `Bearer ${response.data.accessToken.token}`;
-      const userPermission =[ response.data.user.tipo_admin];
+
       const user = {
-        'user': data,
-        'token': accessToken,
-        'permission': userPermission
+        'user': {
+          'empresa': data.cnpjcpf,
+          'email': data.email,
+          'permissao': response.data.admin,
+          'accessToken': `Bearer ${response.data.token.token}`
+        },
       };
       setAuth(user);
-      localStorage.setItem('token', accessToken);
+      localStorage.setItem('user', JSON.stringify(user));
       navigate('/app');
-      
+
+
     } catch (error: any) {
       toast({
         position: 'top',

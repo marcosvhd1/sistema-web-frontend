@@ -1,31 +1,35 @@
-import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useAuthContext } from '../../Contexts/AuthProvider';
 import { UnauthorizedUser } from '../../pages/Unauthorized';
 
 interface IAuthProps {
   allowedRoles: number[],
 }
 
+const LOCAL_DATA = JSON.parse(localStorage.getItem('user')!);
+const PERMISSION = LOCAL_DATA.user.permissao;
+
+
 export function RequireAuth({ allowedRoles }: IAuthProps) {
-  const { auth } = useAuthContext();
   const location = useLocation();
 
-  const teste = () => {
-    console.log(auth?.token == localStorage.getItem('token')  );
-    
-  };
-
-  useEffect(() => {
-    teste();
-    console.log(auth);
-  }, []);
+  // const teste = async () => {
+  //   const opt = {
+  //     headers: {
+  //       'Authorization': `Bearer ${auth.token}`
+  //     }
+  //   };
+  //   const data = await Api().get('/token', opt);
+  //   console.log(data);
+  // };
+  // setInterval(async () => await teste(), 1000);
+  // useEffect(() => {
+  //   teste();
+  // },[]);
 
   return (
-    // allowedRoles.some(el => [auth.permission].includes(el))
-    auth?.permission?.find((role: number) => allowedRoles?.includes(role))
+    allowedRoles.some(el => [PERMISSION].includes(el))
       ? <Outlet />
-      : auth?.token == localStorage.getItem('token') 
+      : parseInt(PERMISSION) === 0
         ? <UnauthorizedUser/>
         : <Navigate to="/" state={{ from: location }} />
   );

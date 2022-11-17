@@ -1,10 +1,9 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Flex, Image, useToast } from '@chakra-ui/react';
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Flex, Image } from '@chakra-ui/react';
 
-import MainContent from '../components/MainContent';
 import img from '../assets/unauthorized.svg';
+import MainContent from '../components/MainContent';
 
 export function UnauthorizedUser() {
-  const toast = useToast();
 
   return (
     <MainContent>

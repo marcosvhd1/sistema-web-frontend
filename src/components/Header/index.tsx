@@ -10,6 +10,7 @@ import { SidebarContext } from '../../Contexts/SidebarContext';
 import { SizeContext } from '../../Contexts/SizeContext';
 
 import { LoggedInUser } from './LoggedInUser';
+import { Api } from '../../services/api/ApiConfig';
 
 export function Header() {
   const { changeNavSize } = useContext(SidebarContext);
@@ -61,6 +62,10 @@ export function Header() {
           _hover={{ background: 'none' }}
           size={'lg'}
           bg="none"
+          onClick={async () => {
+            await Api().get('/logout');
+            localStorage.clear();
+          }}
         />
       </Flex>
     </Flex >
