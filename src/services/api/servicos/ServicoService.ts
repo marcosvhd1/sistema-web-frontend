@@ -1,5 +1,6 @@
 import { Api } from '../ApiConfig';
 import { ApiException } from '../ApiException';
+import { HEADERS } from '../../../Routes/MainRoute';
 
 export type IServico = {
   id: number;
@@ -15,9 +16,18 @@ export type IServico = {
   ncm: string;
 };
 
+// const LOCAL_DATA = JSON.parse(localStorage.getItem('user')!);
+// const TOKEN = LOCAL_DATA.user?.accessToken;
+
+// const HEADERS = {
+//   headers: {
+//     'Authorization': TOKEN
+//   }
+// };
+
 const getAll = async (): Promise<IServico[] | ApiException> => {
   try {
-    const { data } = await Api().get('/servicos');
+    const { data } = await Api().get('/servicos', HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
@@ -26,7 +36,7 @@ const getAll = async (): Promise<IServico[] | ApiException> => {
 
 const getServiceByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string): Promise<IServico[] | ApiException> => {
   try {
-    return await Api().get(`/cadastro/servicos?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`);
+    return await Api().get(`/servicos/filter?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }
@@ -34,7 +44,7 @@ const getServiceByFilter = async (currentPage: number, limitRegistros: number, f
 
 const create = async (dataToCreate: Omit<IServico, 'id' | 'nserv'>): Promise<IServico | ApiException> => {
   try {
-    const { data } = await Api().post<IServico>('/servicos', dataToCreate);
+    const { data } = await Api().post<IServico>('/servicos', dataToCreate, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao criar o registro.');
@@ -43,7 +53,7 @@ const create = async (dataToCreate: Omit<IServico, 'id' | 'nserv'>): Promise<ISe
 
 const updateById = async (id: number, dataToUpdate: IServico): Promise<IServico | ApiException> => {
   try {
-    const { data } = await Api().put(`/servicos/${id}`, dataToUpdate);
+    const { data } = await Api().put(`/servicos/${id}`, dataToUpdate, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
@@ -52,7 +62,7 @@ const updateById = async (id: number, dataToUpdate: IServico): Promise<IServico 
 
 const deleteById = async (id: number): Promise<undefined | ApiException> => {
   try {
-    await Api().delete(`/servicos/${id}`);
+    await Api().delete(`/servicos/${id}`, HEADERS);
     return undefined;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao apagar o registro.');
@@ -60,7 +70,7 @@ const deleteById = async (id: number): Promise<undefined | ApiException> => {
 };
 
 const getLastCod = async () => {
-  const response = await Api().get('/cod/servicos');
+  const response = await Api().get('/servicos/maxnserv', HEADERS);
   const { max } = response.data.rows[0];
   return max;
 };

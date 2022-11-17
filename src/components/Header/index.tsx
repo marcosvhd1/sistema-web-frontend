@@ -62,8 +62,7 @@ export function Header() {
           _hover={{ background: 'none' }}
           size={'lg'}
           bg="none"
-          onClick={async () => {
-            await Api().get('/logout');
+          onClick={() => {
             localStorage.clear();
           }}
         />

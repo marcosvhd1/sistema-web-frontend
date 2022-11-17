@@ -27,6 +27,14 @@ const ROLES = {
   'admin': 1,
 };
 
+const LOCAL_DATA = JSON.parse(localStorage.getItem('user'));
+const TOKEN = LOCAL_DATA?.user.accessToken;
+
+export const HEADERS = {
+  headers: {
+    'Authorization': TOKEN
+  }
+};
 export default function MainRoutes() {
   return (
     <BrowserRouter>
@@ -51,7 +59,7 @@ export default function MainRoutes() {
                                 <Route path="/app/cadastro/servicos" element={<Servico />} />
                                 <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
                               </Route>
-                              
+
                               <Route element={<RequireAuth  allowedRoles={[ROLES.admin]} />}>
                                 <Route path="/app/usuarios" element={<Usuario />} />
                               </Route>

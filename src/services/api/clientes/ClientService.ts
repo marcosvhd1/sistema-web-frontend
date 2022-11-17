@@ -1,4 +1,5 @@
 import { ApiException } from '../ApiException';
+import { HEADERS } from '../../../Routes/MainRoute';
 import { Api } from '../ApiConfig';
 
 export interface IClient {
@@ -35,7 +36,7 @@ export interface IClient {
 
 const getAll = async (): Promise<IClient[] | ApiException> => {
   try {
-    const { data } = await Api().get('/clientes');
+    const { data } = await Api().get('/clientes', HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
@@ -44,7 +45,7 @@ const getAll = async (): Promise<IClient[] | ApiException> => {
 
 const getClientsByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string): Promise<IClient[] | ApiException> => {
   try {
-    return await Api().get(`/cadastro/clientes?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`);
+    return await Api().get(`/clientes/filter?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }
@@ -52,7 +53,7 @@ const getClientsByFilter = async (currentPage: number, limitRegistros: number, f
 
 const getById = async (id: number): Promise<IClient | ApiException> => {
   try {
-    const { data } = await Api().get(`/clientes/${id}`);
+    const { data } = await Api().get(`/clientes/only/${id}`, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao consultar o registro.');
@@ -61,7 +62,7 @@ const getById = async (id: number): Promise<IClient | ApiException> => {
 
 const create = async (dataToCreate: Omit<IClient, 'id' | 'cod'>): Promise<IClient | ApiException> => {
   try {
-    const { data } = await Api().post<IClient>('/clientes', dataToCreate);
+    const { data } = await Api().post<IClient>('/clientes/', dataToCreate, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao criar o registro.');
@@ -70,7 +71,7 @@ const create = async (dataToCreate: Omit<IClient, 'id' | 'cod'>): Promise<IClien
 
 const updateById = async (id: number, dataToUpdate: IClient): Promise<IClient | ApiException> => {
   try {
-    const { data } = await Api().put(`/clientes/${id}`, dataToUpdate);
+    const { data } = await Api().put(`/clientes/${id}`, dataToUpdate, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
@@ -79,7 +80,7 @@ const updateById = async (id: number, dataToUpdate: IClient): Promise<IClient | 
 
 const deleteById = async (id: number): Promise<undefined | ApiException> => {
   try {
-    await Api().delete(`/clientes/${id}`);
+    await Api().delete(`/clientes/${id}`, HEADERS);
     return undefined;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao apagar o registro.');
@@ -88,7 +89,7 @@ const deleteById = async (id: number): Promise<undefined | ApiException> => {
 
 
 const getLastCod = async () => {
-  const response = await Api().get('/cod/clientes');
+  const response = await Api().get('/clientes/maxcod', HEADERS);
   const { max } = response.data.rows[0];
   return max;
 };

@@ -10,7 +10,7 @@ export function UnauthorizedUser() {
       <Alert status='error'>
         <AlertIcon />
         <AlertTitle>Sem permissão de acesso!</AlertTitle>
-        <AlertDescription>O seu usuário não tem permissão para prosseguir .</AlertDescription>
+        <AlertDescription>O seu usuário não tem permissão para prosseguir.</AlertDescription>
       </Alert>
       <Flex direction="column" w='100%' h='90%' align='center' justify="center">
         <Image

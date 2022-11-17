@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { UnauthorizedUser } from '../../pages/Unauthorized';
 
@@ -5,12 +6,11 @@ interface IAuthProps {
   allowedRoles: number[],
 }
 
-const LOCAL_DATA = JSON.parse(localStorage.getItem('user')!);
-const PERMISSION = LOCAL_DATA.user.permissao;
-
-
 export function RequireAuth({ allowedRoles }: IAuthProps) {
   const location = useLocation();
+
+  const LOCAL_DATA = JSON.parse(localStorage.getItem('user')!);
+  const PERMISSION = LOCAL_DATA.user.permissao;
 
   // const teste = async () => {
   //   const opt = {
@@ -25,7 +25,12 @@ export function RequireAuth({ allowedRoles }: IAuthProps) {
   // useEffect(() => {
   //   teste();
   // },[]);
-
+  // const teste = () => {
+  //   localStorage.clear();
+  // };
+  // useEffect(() => {
+  //   teste();
+  // },[]);
   return (
     allowedRoles.some(el => [PERMISSION].includes(el))
       ? <Outlet />
