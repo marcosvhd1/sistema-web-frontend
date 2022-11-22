@@ -1,20 +1,38 @@
-import { Button, Checkbox, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Button, Checkbox, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useToast } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { useEmissorContext } from '../../Contexts/EmissorProvider';
 import { useModalEmissor } from '../../Contexts/Modal/EmissorContext';
 
-interface IEmissorProps {
-  emissor: any
-}
-
 export function EmissorModal() {
   const { onClose, isOpen } = useModalEmissor();
-  const { emissor,getEmissoresByUser, setIdEmissorSelecionado, idEmissorSelecionado, handleGetUserInfo, updateUltimoEmissorSelecionado } = useEmissorContext();
+  const toast = useToast();
+  const { emissor, getEmissoresByUser, setIdEmissorSelecionado, idEmissorSelecionado, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais } = useEmissorContext();
+  const navigate = useNavigate();
 
   const handleSaveEmissor = () => {
     updateUltimoEmissorSelecionado();
+    getCredenciais();
+    navigate('/app');
     onClose();
+  };
+
+  const handleEmissorSelecionado = () => {
+
+    if (idEmissorSelecionado === null || idEmissorSelecionado === 0) {
+      toast({
+        position: 'top',
+        title: 'Erro',
+        description: 'Selecione um emissor.',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+
+    } else {
+      onClose();
+    }
   };
 
   useEffect(() => {
@@ -22,10 +40,12 @@ export function EmissorModal() {
     getEmissoresByUser();
   }, []);
 
+
+
   return (
     <Modal
       isCentered
-      onClose={onClose}
+      onClose={handleEmissorSelecionado}
       isOpen={isOpen}
       closeOnOverlayClick={false}
       motionPreset='slideInBottom'
@@ -68,7 +88,7 @@ export function EmissorModal() {
         <ModalFooter>
           <Flex w="100%" justify="space-between" >
             <Button variant='solid' colorScheme="green" onClick={handleSaveEmissor}><Icon as={FiCheck} mr={1} />Salvar</Button>
-            <Button colorScheme='red' variant="outline" mr={3} onClick={onClose}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+            <Button colorScheme='red' variant="outline" mr={3} onClick={handleEmissorSelecionado}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
           </Flex>
         </ModalFooter>
       </ModalContent>

@@ -34,6 +34,7 @@ export interface IClient {
   site: string;
 }
 
+
 const getAll = async (): Promise<IClient[] | ApiException> => {
   try {
     const { data } = await Api().get('/clientes', HEADERS);
@@ -43,9 +44,9 @@ const getAll = async (): Promise<IClient[] | ApiException> => {
   }
 };
 
-const getClientsByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string): Promise<IClient[] | ApiException> => {
+const getClientsByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, idEmissorSelecionado: number): Promise<IClient[] | ApiException> => {
   try {
-    return await Api().get(`/clientes/filter?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`, HEADERS);
+    return await Api().get(`/clientes/filter?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&id_emissor=${idEmissorSelecionado}`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }
@@ -88,9 +89,9 @@ const deleteById = async (id: number): Promise<undefined | ApiException> => {
 };
 
 
-const getLastCod = async () => {
-  const response = await Api().get('/clientes/maxcod', HEADERS);
-  const { max } = response.data.rows[0];
+const getLastCod = async (idEmissorSelecionado: number) => {
+  const response = await Api().get(`/clientes/max?id_emissor=${idEmissorSelecionado}`, HEADERS);
+  const { max } = response.data[0];
   return max;
 };
 

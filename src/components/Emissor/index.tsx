@@ -12,7 +12,7 @@ export function Emissor() {
   const { mdSize, smSize } = useContext(SizeContext);
   const { navSize } = useContext(SidebarContext);
   const { onOpen } = useModalEmissor();
-  const {getEmissoresByUser, handleGetUserInfo} = useEmissorContext();
+  const {getEmissoresByUser, cnpjcpf, razao} = useEmissorContext();
 
   const handleOpenModal = () => {
     getEmissoresByUser();
@@ -20,11 +20,12 @@ export function Emissor() {
   };
 
 
+
   return (
     <Flex direction="row" align="cente" justify="space-between" p="3%" w="100%">
       <Box display={!smSize[0] ? '' : navSize == 'small' ? 'none' : ''}>
-        <Text fontWeight="bold" fontSize={mdSize[0] ? 10 : 14}>1 - CUBO SISTEMAS</Text>
-        <Text fontSize={11}>CNPJ: 11.195.060/0001-43</Text>
+        <Text fontWeight="bold" fontSize={mdSize[0] ? 10 : 14}>{razao.toString()}</Text>
+        <Text fontSize={11}>CNPJ: {cnpjcpf.toString()}</Text>
       </Box>
       <IconButton
         icon={<Icon as={FcSearch} fontSize={mdSize[0] ? 20 : 25} />}

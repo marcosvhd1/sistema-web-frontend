@@ -17,30 +17,16 @@ import { Contact } from './Contact';
 import { ClientService, IClient } from '../../../../../services/api/clientes/ClientService';
 import moment from 'moment';
 import { useColorMode } from '@chakra-ui/react';
+import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 
 interface IFormFields {
   editCod: number
+  cod: number
   isEditing: boolean
 }
-export function FormFields({ editCod, isEditing }: IFormFields) {
+export function FormFields({ editCod, isEditing, cod }: IFormFields) {
   const { register, formState: { errors } } = useFormContext<IClient>();
-  const [cod, setCod] = useState<number>(1);
   const { colorMode } = useColorMode();
-
-  useEffect(() => {
-    ClientService.getLastCod().then((result) => {
-      if (isEditing) {
-        setCod(editCod);
-      } else {
-        if (result === null) {
-          setCod(1);
-        } else {
-          setCod(parseInt(result) + 1);
-        }
-      }
-    });
-  }, []);
-
 
   return (
     <Flex w="58rem" h="40rem" direction="column" justify="space-between">

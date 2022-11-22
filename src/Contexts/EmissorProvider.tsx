@@ -8,12 +8,17 @@ type EmissorProviderProps = {
 
 interface IEmissore {
   emissor: any
+  cnpjcpf: string
+  razao: string
   idEmissorSelecionado: number
   getEmissoresByUser: () => void;
+  getCredenciais: () => void;
   handleGetUserInfo: () => void;
   updateUltimoEmissorSelecionado: () => void;
   setIdEmissorSelecionado: (value: React.SetStateAction<number>) => void;
   setIdUsuarioSelecionado: (value: React.SetStateAction<number>) => void;
+  setCnpjcpf: (value: React.SetStateAction<string>) => void;
+  setRazao: (value: React.SetStateAction<string>) => void;
 }
 
 const EmissorContext = createContext({} as IEmissore);
@@ -22,8 +27,9 @@ export function EmissorProvider({children}: EmissorProviderProps) {
   const [emissor, setEmissor] = useState<IEmissor[]>([]);
   const [idEmissorSelecionado, setIdEmissorSelecionado] = useState<number>(0);
   const [idUsuarioSelecionado, setIdUsuarioSelecionado] = useState<number>(0);
+  const [cnpjcpf, setCnpjcpf] = useState<string>('');
+  const [razao, setRazao] = useState<string>('');
 
-  //ta fixo o id
   const getEmissoresByUser = () => {
     EmissorService.getEmissores(idUsuarioSelecionado)
       .then((result) => {
@@ -33,6 +39,15 @@ export function EmissorProvider({children}: EmissorProviderProps) {
           setEmissor(result);
         }
       });
+  };
+
+  const getCredenciais = () => {
+    emissor.forEach(e => {
+      if (e.id === idEmissorSelecionado) {
+        setCnpjcpf(e.cnpjcpf);
+        setRazao(e.razao);
+      }
+    });
   };
 
   const handleGetUserInfo = () => {
@@ -54,7 +69,7 @@ export function EmissorProvider({children}: EmissorProviderProps) {
   };
 
   return (
-    <EmissorContext.Provider value={{ emissor, idEmissorSelecionado, setIdEmissorSelecionado, setIdUsuarioSelecionado, getEmissoresByUser, handleGetUserInfo, updateUltimoEmissorSelecionado }}>
+    <EmissorContext.Provider value={{ emissor, cnpjcpf, razao, idEmissorSelecionado, setIdEmissorSelecionado, setIdUsuarioSelecionado, getEmissoresByUser, setCnpjcpf, setRazao, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais }}>
       {children}
     </EmissorContext.Provider>
   );

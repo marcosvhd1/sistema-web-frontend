@@ -1,20 +1,20 @@
-import { 
-  Button, 
-  Flex, 
-  Icon, 
-  Modal, 
-  ModalBody, 
-  ModalCloseButton, 
-  ModalContent, 
-  ModalFooter, 
-  ModalHeader, 
-  ModalOverlay, 
-  Tab, 
-  TabList, 
-  TabPanel, 
-  TabPanels, 
-  Tabs, 
-  Textarea, 
+import {
+  Button,
+  Flex,
+  Icon,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Textarea,
   useColorMode
 } from '@chakra-ui/react';
 
@@ -31,13 +31,13 @@ import { IClient } from '../../../../../services/api/clientes/ClientService';
 
 interface ModalProps {
   changeEdit: (value: React.SetStateAction<any>) => void;
-  refreshPage: () => void
+  cod: number
   isEditing: boolean
   id: number
   editCod: number
 }
 
-export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
+export function FormModal({ isEditing, id, editCod, cod }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useFormContext<IClient>();
   const { colorMode } = useColorMode();
@@ -85,7 +85,7 @@ export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
         }
       });
   };
-  
+
   const handleCreateNewClient = async (data: IClient) => {
     ClientService.create(data)
       .then((result) => {
@@ -93,7 +93,6 @@ export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
           console.log(result.message);
         } else {
           clearForm();
-          refreshPage();
         }
       });
   };
@@ -128,7 +127,7 @@ export function FormModal({ isEditing, id, editCod, refreshPage }: ModalProps) {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <FormFields editCod={editCod} isEditing={isEditing}/>
+                  <FormFields cod={cod} editCod={editCod} isEditing={isEditing}/>
                 </TabPanel>
                 <TabPanel>
                   <Textarea borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} h="37rem" placeholder='Observações...' {...methods.register('observacao')} />

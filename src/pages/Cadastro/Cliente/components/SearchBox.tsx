@@ -10,13 +10,12 @@ import { useModalClient } from '../../../../Contexts/Modal/ClientContext';
 
 interface SearchBoxProps {
   children: ReactNode;
-
+  getClientsByFilter: (description: string) => void;
   changeEdit: (value: React.SetStateAction<any>) => void;
   stateFilter: (value: React.SetStateAction<any>) => void;
-  stateDescription: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ children, changeEdit , stateFilter, stateDescription}: SearchBoxProps) {
+export function SearchBox({ children, changeEdit , stateFilter, getClientsByFilter}: SearchBoxProps) {
   const { onOpen } = useModalClient();
   const { register, handleSubmit } = useForm();
 
@@ -25,14 +24,20 @@ export function SearchBox({ children, changeEdit , stateFilter, stateDescription
     changeEdit(false);
   };
 
-  const HandleGetClientsByFilter = (data: FieldValues) => {
+
+
+  const handleGetClientsByFilter = async (data: FieldValues) => {
     const { description } = data;
-    stateDescription(description);
+    getClientsByFilter(description);
   };
 
-  
+  // const setDescription = (data: FieldValues) => {
+  //   stateDescription(description);
+  // };
+
+
   return (
-    <form onSubmit={handleSubmit((data) => HandleGetClientsByFilter(data))}>
+    <form onSubmit={handleSubmit((data) => handleGetClientsByFilter(data))}>
       <Flex w="100%" justify="center" align="center" mt={{base: '2', md: '2', lg: '10'}} direction="column" >
         <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes / Fornecedores</Text>
         <Flex w="90%" m="4" align="center" justify="space-between">

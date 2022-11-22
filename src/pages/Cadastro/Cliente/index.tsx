@@ -17,6 +17,7 @@ import { ClientService, IClient } from '../../../services/api/clientes/ClientSer
 
 import { useAlertClientContext } from '../../../Contexts/AlertDialog/AlertClientContext';
 import { useModalClient } from '../../../Contexts/Modal/ClientContext';
+import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 
 
 export function Cliente() {
@@ -29,21 +30,39 @@ export function Cliente() {
   const { onOpen: open } = useModalClient();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('razao');
-  const [description, setDescription] = useState<string>('');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState(5);
   const [pages, setPages] = useState<number[]>([]);
   const navigate = useNavigate();
   const toast = useToast();
+  const { idEmissorSelecionado } = useEmissorContext();
+  const [cod, setCod] = useState<number>(1);
+
 
   useEffect(() => {
-    getClientsByFilter();
     navigate(`?page=${currentPage}&limit=${limitRegistros}`);
-  }, [currentPage, description, limitRegistros, totalClients]);
+    getLastCod();
+  }, [currentPage, limitRegistros, totalClients]);
 
   useEffect(() => {
     handleChangeTotalPage();
   }, [totalClients]);
+
+  const getLastCod = () => {
+    ClientService.getLastCod(idEmissorSelecionado)
+      .then((result) => {
+        if (isEditing) {
+          setCod(editCod);
+        } else {
+          if (result === null) {
+            setCod(1);
+          } else {
+            setCod(parseInt(result) + 1);
+          }
+        }
+      });
+  };
+
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalClients / limitRegistros);
@@ -54,8 +73,8 @@ export function Cliente() {
     setPages(arrayPages);
   };
 
-  const getClientsByFilter = async () => {
-    ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description)
+  const getClientsByFilter = async (description: string) => {
+    ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -66,7 +85,7 @@ export function Cliente() {
         }
       });
   };
-  
+
   const handleDeleteClient = (clientId: number) => {
     ClientService.deleteById(clientId)
       .then((result) => {
@@ -117,7 +136,7 @@ export function Cliente() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox changeEdit={setIsEditing} stateDescription={setDescription} stateFilter={setFilter}>
+        <SearchBox getClientsByFilter={getClientsByFilter} changeEdit={setIsEditing} stateFilter={setFilter}>
           <DataTable headers={headers} >
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
@@ -145,7 +164,7 @@ export function Cliente() {
             <Button isDisabled={currentPage === pages.length || data.length === 0} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal refreshPage={getClientsByFilter} editCod={editCod} isEditing={isEditing} changeEdit={setIsEditing} id={id} />
+        <FormModal cod={cod} editCod={editCod} isEditing={isEditing} changeEdit={setIsEditing} id={id} />
         <DeleteAlertDialog label="Cliente" deleteFunction={handleDeleteClient} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>
