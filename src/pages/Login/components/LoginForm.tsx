@@ -1,9 +1,10 @@
 import { Button, Flex, Input, InputGroup, InputLeftAddon, Stack, useToast } from '@chakra-ui/react';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiAtSign, FiLock, FiUser } from 'react-icons/fi';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../../Contexts/AuthProvider';
+import { useEmissorContext } from '../../../Contexts/EmissorProvider';
+import { useModalEmissor } from '../../../Contexts/Modal/EmissorContext';
 import { Api } from '../../../services/api/ApiConfig';
 
 interface ILogin {
@@ -16,10 +17,10 @@ interface ILogin {
 export function LoginForm() {
   const { register, handleSubmit, setFocus } = useForm<ILogin>();
   const { auth, setAuth } = useAuthContext();
+  const {getEmissoresByUser} = useEmissorContext();
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
   const toast = useToast();
+  const { onOpen } = useModalEmissor();
 
 
   const submitData = async (data: ILogin) => {
@@ -40,8 +41,9 @@ export function LoginForm() {
       };
       setAuth(user);
       localStorage.setItem('user', JSON.stringify(user));
+      onOpen();
+      getEmissoresByUser();
       navigate('/app');
-
 
     } catch (error: any) {
       toast({

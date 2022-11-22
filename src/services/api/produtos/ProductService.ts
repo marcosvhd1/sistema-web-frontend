@@ -1,6 +1,6 @@
 import { ApiException } from '../ApiException';
 import { Api } from '../ApiConfig';
-import { HEADERS } from '../../../Routes/MainRoute';
+import { HEADERS } from '../../../Routes/Route';
 
 export type IProduct = {
   id: number;

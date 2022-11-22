@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { UnauthorizedUser } from '../../pages/Unauthorized';
 
@@ -12,25 +11,6 @@ export function RequireAuth({ allowedRoles }: IAuthProps) {
   const LOCAL_DATA = JSON.parse(localStorage.getItem('user')!);
   const PERMISSION = LOCAL_DATA.user.permissao;
 
-  // const teste = async () => {
-  //   const opt = {
-  //     headers: {
-  //       'Authorization': `Bearer ${auth.token}`
-  //     }
-  //   };
-  //   const data = await Api().get('/token', opt);
-  //   console.log(data);
-  // };
-  // setInterval(async () => await teste(), 1000);
-  // useEffect(() => {
-  //   teste();
-  // },[]);
-  // const teste = () => {
-  //   localStorage.clear();
-  // };
-  // useEffect(() => {
-  //   teste();
-  // },[]);
   return (
     allowedRoles.some(el => [PERMISSION].includes(el))
       ? <Outlet />

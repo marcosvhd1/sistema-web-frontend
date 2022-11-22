@@ -1,6 +1,6 @@
+import { HEADERS } from '../../../Routes/Route';
 import { Api } from '../ApiConfig';
 import { ApiException } from '../ApiException';
-import { HEADERS } from '../../../Routes/MainRoute';
 
 export type IServico = {
   id: number;
@@ -16,27 +16,9 @@ export type IServico = {
   ncm: string;
 };
 
-// const LOCAL_DATA = JSON.parse(localStorage.getItem('user')!);
-// const TOKEN = LOCAL_DATA.user?.accessToken;
-
-// const HEADERS = {
-//   headers: {
-//     'Authorization': TOKEN
-//   }
-// };
-
-const getAll = async (): Promise<IServico[] | ApiException> => {
-  try {
-    const { data } = await Api().get('/servicos', HEADERS);
-    return data;
-  } catch (error) {
-    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
-  }
-};
-
 const getServiceByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string): Promise<IServico[] | ApiException> => {
   try {
-    return await Api().get(`/servicos/filter?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`, HEADERS);
+    return await Api().get(`/servicos/filter?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&id_emissor=1`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }
@@ -76,7 +58,6 @@ const getLastCod = async () => {
 };
 
 export const ServicoService = {
-  getAll,
   getServiceByFilter,
   create,
   updateById,

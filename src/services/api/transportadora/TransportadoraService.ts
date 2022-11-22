@@ -1,6 +1,6 @@
 import { Api } from '../ApiConfig';
 import { ApiException } from '../ApiException';
-import { HEADERS } from '../../../Routes/MainRoute';
+import { HEADERS } from '../../../Routes/Route';
 
 export interface ITransportadora {
   id: number

@@ -1,5 +1,5 @@
 import { ApiException } from '../ApiException';
-import { HEADERS } from '../../../Routes/MainRoute';
+import { HEADERS } from '../../../Routes/Route';
 import { Api } from '../ApiConfig';
 
 export interface IClient {
