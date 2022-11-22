@@ -17,7 +17,7 @@ interface ILogin {
 export function LoginForm() {
   const { register, handleSubmit, setFocus } = useForm<ILogin>();
   const { auth, setAuth } = useAuthContext();
-  const {getEmissoresByUser} = useEmissorContext();
+  const {getEmissoresByUser, setIdEmissorSelecionado, setIdUsuarioSelecionado} = useEmissorContext();
   const navigate = useNavigate();
   const toast = useToast();
   const { onOpen } = useModalEmissor();
@@ -39,7 +39,10 @@ export function LoginForm() {
           'accessToken': `Bearer ${response.data.token.token}`
         },
       };
+
       setAuth(user);
+      setIdUsuarioSelecionado(response.data.idUser);
+      setIdEmissorSelecionado(response.data.ultimoEmissor);
       localStorage.setItem('user', JSON.stringify(user));
       onOpen();
       getEmissoresByUser();

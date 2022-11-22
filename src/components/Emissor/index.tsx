@@ -12,11 +12,11 @@ export function Emissor() {
   const { mdSize, smSize } = useContext(SizeContext);
   const { navSize } = useContext(SidebarContext);
   const { onOpen } = useModalEmissor();
-  const {getEmissoresByUser} = useEmissorContext();
+  const {getEmissoresByUser, handleGetUserInfo} = useEmissorContext();
 
   const handleOpenModal = () => {
-    onOpen();
     getEmissoresByUser();
+    onOpen();
   };
 
 
@@ -28,7 +28,7 @@ export function Emissor() {
       </Box>
       <IconButton
         icon={<Icon as={FcSearch} fontSize={mdSize[0] ? 20 : 25} />}
-        aria-label="Botão de fechar a sidebar"
+        aria-label="Botão de abrir emissor"
         background="none"
         _hover={{ background: 'none' }}
         ml={5}

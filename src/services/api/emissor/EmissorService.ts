@@ -22,7 +22,30 @@ const getEmissores = async (idUsuario: number): Promise<IEmissor[] | ApiExceptio
   }
 };
 
+const updateUltimoEmissorSelecionado = async (idUsuario: number, idEmissor: number) => {
+  try {
+    const { data } = await Api().patch(`/ultimoEmissor?id_usuario=${idUsuario}&id_emissor=${idEmissor}`, HEADERS);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
+  }
+};
+
+const getUltimoEmissorSelecionadoByUser = async () => {
+  const data = JSON.parse(localStorage.getItem('user')!);
+  const  cnpjcpf = data.user.empresa;
+  const email = data.user.email;
+
+  try {
+    const { data } = await Api().get(`/ultimoEmissor?cnpjcpf=${cnpjcpf}&email=${email}`, HEADERS);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
+  }
+};
 
 export const EmissorService = {
-  getEmissores
+  getEmissores,
+  updateUltimoEmissorSelecionado,
+  getUltimoEmissorSelecionadoByUser
 };
