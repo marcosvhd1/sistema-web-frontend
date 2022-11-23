@@ -1,4 +1,4 @@
-import { HEADERS } from '../../../Routes/Route';
+import { HEADERS } from '../../../pages/Inicio';
 import { Api } from '../ApiConfig';
 import { ApiException } from '../ApiException';
 

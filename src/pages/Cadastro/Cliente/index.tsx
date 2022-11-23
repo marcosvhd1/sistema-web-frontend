@@ -39,6 +39,16 @@ export function Cliente() {
   const [cod, setCod] = useState<number>(1);
 
 
+  const LOCAL_DATA = JSON.parse(localStorage.getItem('user')!);
+  const TOKEN = LOCAL_DATA?.user.accessToken;
+
+  const HEADERS = {
+    headers: {
+      'Authorization': TOKEN
+    }
+  };
+
+
   useEffect(() => {
     navigate(`?page=${currentPage}&limit=${limitRegistros}`);
   }, [currentPage, limitRegistros, totalClients]);
@@ -55,7 +65,7 @@ export function Cliente() {
 
 
   const getLastCod = () => {
-    ClientService.getLastCod(idEmissorSelecionado)
+    ClientService.getLastCod(idEmissorSelecionado, HEADERS)
       .then((result) => {
         if (isEditing) {
           setCod(editCod);
@@ -80,7 +90,7 @@ export function Cliente() {
   };
 
   const getClientsByFilter = async (description: string) => {
-    ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado)
+    ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -93,7 +103,7 @@ export function Cliente() {
   };
 
   const handleDeleteClient = (clientId: number) => {
-    ClientService.deleteById(clientId, idEmissorSelecionado)
+    ClientService.deleteById(clientId, idEmissorSelecionado, HEADERS)
       .then((result) => {
         if (result instanceof ApiException) {
           alert(result.message);
@@ -170,7 +180,7 @@ export function Cliente() {
             <Button isDisabled={currentPage === pages.length || data.length === 0} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal refreshPage={getClientsByFilter} cod={cod} editCod={editCod} isEditing={isEditing} changeEdit={setIsEditing} id={id} />
+        <FormModal header={HEADERS} refreshPage={getClientsByFilter} cod={cod} editCod={editCod} isEditing={isEditing} changeEdit={setIsEditing} id={id} />
         <DeleteAlertDialog label="Cliente" deleteFunction={handleDeleteClient} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

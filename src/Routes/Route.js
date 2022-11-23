@@ -29,14 +29,6 @@ const ROLES = {
   'admin': 1,
 };
 
-const LOCAL_DATA = JSON.parse(localStorage.getItem('user'));
-const TOKEN = LOCAL_DATA?.user.accessToken;
-
-export const HEADERS = {
-  headers: {
-    'Authorization': TOKEN
-  }
-};
 export default function MainRoutes() {
   return (
     <BrowserRouter>

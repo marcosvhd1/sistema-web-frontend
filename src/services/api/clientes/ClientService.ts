@@ -1,5 +1,4 @@
 import { ApiException } from '../ApiException';
-import { HEADERS } from '../../../Routes/Route';
 import { Api } from '../ApiConfig';
 
 export interface IClient {
@@ -36,7 +35,7 @@ export interface IClient {
 }
 
 
-const getAll = async (): Promise<IClient[] | ApiException> => {
+const getAll = async (HEADERS: any): Promise<IClient[] | ApiException> => {
   try {
     const { data } = await Api().get('/clientes', HEADERS);
     return data;
@@ -45,7 +44,8 @@ const getAll = async (): Promise<IClient[] | ApiException> => {
   }
 };
 
-const getClientsByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, idEmissorSelecionado: number): Promise<IClient[] | ApiException> => {
+const getClientsByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, idEmissorSelecionado: number, HEADERS: any): Promise<IClient[] | ApiException> => {
+  console.log(HEADERS);
   try {
     return await Api().get(`/clientes/filter?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&id_emissor=${idEmissorSelecionado}`, HEADERS);
   } catch (error) {
@@ -53,7 +53,7 @@ const getClientsByFilter = async (currentPage: number, limitRegistros: number, f
   }
 };
 
-const getById = async (id: number, idEmissorSelecionado: number): Promise<IClient | ApiException> => {
+const getById = async (id: number, idEmissorSelecionado: number, HEADERS: any): Promise<IClient | ApiException> => {
   try {
     const { data } = await Api().get(`/clientes/only/${id}?id_emissor=${idEmissorSelecionado}`, HEADERS);
     return data;
@@ -62,7 +62,7 @@ const getById = async (id: number, idEmissorSelecionado: number): Promise<IClien
   }
 };
 
-const create = async (dataToCreate: Omit<IClient, 'id' | 'cod'>): Promise<IClient | ApiException> => {
+const create = async (dataToCreate: Omit<IClient, 'id' | 'cod'>, HEADERS: any): Promise<IClient | ApiException> => {
   try {
     const { data } = await Api().post<IClient>('/clientes', dataToCreate, HEADERS);
     return data;
@@ -71,7 +71,7 @@ const create = async (dataToCreate: Omit<IClient, 'id' | 'cod'>): Promise<IClien
   }
 };
 
-const updateById = async (id: number, dataToUpdate: IClient, idEmissorSelecionado: number): Promise<IClient | ApiException> => {
+const updateById = async (id: number, dataToUpdate: IClient, idEmissorSelecionado: number, HEADERS: any): Promise<IClient | ApiException> => {
   try {
     const { data } = await Api().put(`/clientes/${id}?id_emissor=${idEmissorSelecionado}`, dataToUpdate, HEADERS);
     return data;
@@ -80,7 +80,7 @@ const updateById = async (id: number, dataToUpdate: IClient, idEmissorSelecionad
   }
 };
 
-const deleteById = async (id: number, idEmissorSelecionado: number): Promise<undefined | ApiException> => {
+const deleteById = async (id: number, idEmissorSelecionado: number, HEADERS: any): Promise<undefined | ApiException> => {
   try {
     await Api().delete(`/clientes/${id}?id_emissor=${idEmissorSelecionado}`, HEADERS);
     return undefined;
@@ -90,7 +90,7 @@ const deleteById = async (id: number, idEmissorSelecionado: number): Promise<und
 };
 
 
-const getLastCod = async (idEmissorSelecionado: number) => {
+const getLastCod = async (idEmissorSelecionado: number, HEADERS: any) => {
   const response = await Api().get(`/clientes/max?id_emissor=${idEmissorSelecionado}`, HEADERS);
   const { max } = response.data[0];
   return max;

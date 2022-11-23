@@ -37,9 +37,10 @@ interface ModalProps {
   isEditing: boolean
   id: number
   editCod: number
+  header: any
 }
 
-export function FormModal({ isEditing, id, editCod, cod, refreshPage }: ModalProps) {
+export function FormModal({ isEditing, id, editCod, cod, refreshPage, header }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useFormContext<IClient>();
   const { colorMode } = useColorMode();
@@ -79,7 +80,7 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage }: ModalPro
   };
 
   const handleUpdateClient = (data: IClient) => {
-    ClientService.updateById(id, data, idEmissorSelecionado)
+    ClientService.updateById(id, data, idEmissorSelecionado, header)
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -92,7 +93,7 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage }: ModalPro
 
   const handleCreateNewClient = async (data: IClient) => {
     data.id_emissor = idEmissorSelecionado;
-    ClientService.create(data)
+    ClientService.create(data, header)
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
