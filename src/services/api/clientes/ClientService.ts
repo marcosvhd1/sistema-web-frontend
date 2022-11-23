@@ -4,6 +4,7 @@ import { Api } from '../ApiConfig';
 
 export interface IClient {
   id: number;
+  id_emissor: number;
   cod: number;
   tipo: string;
   categoria: string;
@@ -52,9 +53,9 @@ const getClientsByFilter = async (currentPage: number, limitRegistros: number, f
   }
 };
 
-const getById = async (id: number): Promise<IClient | ApiException> => {
+const getById = async (id: number, idEmissorSelecionado: number): Promise<IClient | ApiException> => {
   try {
-    const { data } = await Api().get(`/clientes/only/${id}`, HEADERS);
+    const { data } = await Api().get(`/clientes/only/${id}?id_emissor=${idEmissorSelecionado}`, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao consultar o registro.');
@@ -63,25 +64,25 @@ const getById = async (id: number): Promise<IClient | ApiException> => {
 
 const create = async (dataToCreate: Omit<IClient, 'id' | 'cod'>): Promise<IClient | ApiException> => {
   try {
-    const { data } = await Api().post<IClient>('/clientes/', dataToCreate, HEADERS);
+    const { data } = await Api().post<IClient>('/clientes', dataToCreate, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao criar o registro.');
   }
 };
 
-const updateById = async (id: number, dataToUpdate: IClient): Promise<IClient | ApiException> => {
+const updateById = async (id: number, dataToUpdate: IClient, idEmissorSelecionado: number): Promise<IClient | ApiException> => {
   try {
-    const { data } = await Api().put(`/clientes/${id}`, dataToUpdate, HEADERS);
+    const { data } = await Api().put(`/clientes/${id}?id_emissor=${idEmissorSelecionado}`, dataToUpdate, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
   }
 };
 
-const deleteById = async (id: number): Promise<undefined | ApiException> => {
+const deleteById = async (id: number, idEmissorSelecionado: number): Promise<undefined | ApiException> => {
   try {
-    await Api().delete(`/clientes/${id}`, HEADERS);
+    await Api().delete(`/clientes/${id}?id_emissor=${idEmissorSelecionado}`, HEADERS);
     return undefined;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao apagar o registro.');

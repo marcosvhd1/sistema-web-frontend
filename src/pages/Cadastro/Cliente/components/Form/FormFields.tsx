@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   Divider,
   Flex,
@@ -14,10 +13,9 @@ import { FormContainer } from '../../../../../components/Form/FormContainer';
 import { Adress } from './Adress';
 import { Contact } from './Contact';
 
-import { ClientService, IClient } from '../../../../../services/api/clientes/ClientService';
-import moment from 'moment';
 import { useColorMode } from '@chakra-ui/react';
-import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
+import moment from 'moment';
+import { IClient } from '../../../../../services/api/clientes/ClientService';
 
 interface IFormFields {
   editCod: number

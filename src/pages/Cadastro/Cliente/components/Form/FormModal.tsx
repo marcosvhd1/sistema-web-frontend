@@ -28,19 +28,22 @@ import { useModalClient } from '../../../../../Contexts/Modal/ClientContext';
 import { ApiException } from '../../../../../services/api/ApiException';
 import { ClientService } from '../../../../../services/api/clientes/ClientService';
 import { IClient } from '../../../../../services/api/clientes/ClientService';
+import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 
 interface ModalProps {
-  changeEdit: (value: React.SetStateAction<any>) => void;
+  changeEdit: (value: React.SetStateAction<any>) => void
+  refreshPage: (description: string) => void
   cod: number
   isEditing: boolean
   id: number
   editCod: number
 }
 
-export function FormModal({ isEditing, id, editCod, cod }: ModalProps) {
+export function FormModal({ isEditing, id, editCod, cod, refreshPage }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useFormContext<IClient>();
   const { colorMode } = useColorMode();
+  const { idEmissorSelecionado } = useEmissorContext();
 
   const clearForm = () => {
     onClose();
@@ -76,23 +79,26 @@ export function FormModal({ isEditing, id, editCod, cod }: ModalProps) {
   };
 
   const handleUpdateClient = (data: IClient) => {
-    ClientService.updateById(id, data)
+    ClientService.updateById(id, data, idEmissorSelecionado)
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
         } else {
           clearForm();
+          refreshPage('');
         }
       });
   };
 
   const handleCreateNewClient = async (data: IClient) => {
+    data.id_emissor = idEmissorSelecionado;
     ClientService.create(data)
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
         } else {
           clearForm();
+          refreshPage('');
         }
       });
   };

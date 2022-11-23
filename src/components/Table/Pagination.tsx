@@ -10,7 +10,6 @@ interface IPagination {
 }
 
 export function Pagination({ children, limitRegistros, currentPage, totalClients, changeLimitRegister }: IPagination) {
-
   return (
     <Stack
       direction="row"

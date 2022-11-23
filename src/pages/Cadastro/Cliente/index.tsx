@@ -41,12 +41,18 @@ export function Cliente() {
 
   useEffect(() => {
     navigate(`?page=${currentPage}&limit=${limitRegistros}`);
-    getLastCod();
   }, [currentPage, limitRegistros, totalClients]);
+
+
+  useEffect(() => {
+    getClientsByFilter('');
+  }, [currentPage]);
 
   useEffect(() => {
     handleChangeTotalPage();
   }, [totalClients]);
+
+
 
   const getLastCod = () => {
     ClientService.getLastCod(idEmissorSelecionado)
@@ -87,7 +93,7 @@ export function Cliente() {
   };
 
   const handleDeleteClient = (clientId: number) => {
-    ClientService.deleteById(clientId)
+    ClientService.deleteById(clientId, idEmissorSelecionado)
       .then((result) => {
         if (result instanceof ApiException) {
           alert(result.message);
@@ -136,7 +142,7 @@ export function Cliente() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox getClientsByFilter={getClientsByFilter} changeEdit={setIsEditing} stateFilter={setFilter}>
+        <SearchBox getCod={getLastCod} getClientsByFilter={getClientsByFilter} changeEdit={setIsEditing} stateFilter={setFilter}>
           <DataTable headers={headers} >
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
@@ -164,7 +170,7 @@ export function Cliente() {
             <Button isDisabled={currentPage === pages.length || data.length === 0} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal cod={cod} editCod={editCod} isEditing={isEditing} changeEdit={setIsEditing} id={id} />
+        <FormModal refreshPage={getClientsByFilter} cod={cod} editCod={editCod} isEditing={isEditing} changeEdit={setIsEditing} id={id} />
         <DeleteAlertDialog label="Cliente" deleteFunction={handleDeleteClient} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>
