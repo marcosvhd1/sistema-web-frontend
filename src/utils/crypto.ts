@@ -17,6 +17,6 @@ export function getDecrypted(cryptoData: any) {
     return JSON.parse(JSON.parse(deCryptoData));
 
   } catch (error) {
-    throw new Error('Dado inválido');
+    console.log(error);
   }
 }

@@ -1,4 +1,5 @@
 import { HEADERS } from '../../../pages/Inicio';
+import { getDecrypted } from '../../../utils/crypto';
 import { Api } from '../ApiConfig';
 import { ApiException } from '../ApiException';
 
@@ -32,7 +33,7 @@ const updateUltimoEmissorSelecionado = async (idUsuario: number, idEmissor: numb
 };
 
 const getUltimoEmissorSelecionadoByUser = async () => {
-  const data = JSON.parse(localStorage.getItem('user')!);
+  const data = getDecrypted(localStorage.getItem('user'));
   const  cnpjcpf = data.user.empresa;
   const email = data.user.email;
 

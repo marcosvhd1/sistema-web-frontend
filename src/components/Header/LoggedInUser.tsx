@@ -1,11 +1,12 @@
 import { Avatar, Flex, Link, Tag, TagLabel } from '@chakra-ui/react';
+import { getDecrypted } from '../../utils/crypto';
 
 interface LoggedInUserProps {
   showProfileData?: boolean;
 }
 
 export function LoggedInUser({ showProfileData = true }: LoggedInUserProps) {
-  const data = JSON.parse(localStorage.getItem('user')!);
+  const data = getDecrypted(localStorage.getItem('user'));
 
   return (
     <Flex align="center">

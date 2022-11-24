@@ -6,7 +6,7 @@ import { useAuthContext } from '../../../Contexts/AuthProvider';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalEmissor } from '../../../Contexts/Modal/EmissorContext';
 import { Api } from '../../../services/api/ApiConfig';
-import { getEncrypted, getDecrypted } from '../../../utils/crypto';
+import { getEncrypted } from '../../../utils/crypto';
 
 interface ILogin {
   email: string
@@ -47,7 +47,7 @@ export function LoginForm() {
 
       setIdUsuarioSelecionado(response.data.idUser);
       setIdEmissorSelecionado(response.data.ultimoEmissor);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', cryptoData);
       onOpen();
       getEmissoresByUser();
       navigate('/app');

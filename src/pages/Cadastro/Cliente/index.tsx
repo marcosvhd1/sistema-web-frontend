@@ -18,6 +18,7 @@ import { ClientService, IClient } from '../../../services/api/clientes/ClientSer
 import { useAlertClientContext } from '../../../Contexts/AlertDialog/AlertClientContext';
 import { useModalClient } from '../../../Contexts/Modal/ClientContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
+import { getDecrypted } from '../../../utils/crypto';
 
 
 export function Cliente() {
@@ -39,7 +40,7 @@ export function Cliente() {
   const [cod, setCod] = useState<number>(1);
 
 
-  const LOCAL_DATA = JSON.parse(localStorage.getItem('user')!);
+  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
   const TOKEN = LOCAL_DATA?.user.accessToken;
 
   const HEADERS = {

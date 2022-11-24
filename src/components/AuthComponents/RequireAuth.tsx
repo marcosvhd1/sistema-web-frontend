@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { UnauthorizedUser } from '../../pages/Unauthorized';
+import { getDecrypted } from '../../utils/crypto';
 
 interface IAuthProps {
   allowedRoles: number[],
@@ -8,7 +9,8 @@ interface IAuthProps {
 export function RequireAuth({ allowedRoles }: IAuthProps) {
   const location = useLocation();
 
-  const LOCAL_DATA = JSON.parse(localStorage.getItem('user')!);
+  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
+
   const PERMISSION = LOCAL_DATA.user.permissao;
 
   return (
