@@ -1,5 +1,5 @@
 import { Box, Flex, Icon, IconButton, Text } from '@chakra-ui/react';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { FcSearch } from 'react-icons/fc';
 import { useEmissorContext } from '../../Contexts/EmissorProvider';
 import { useModalEmissor } from '../../Contexts/Modal/EmissorContext';
@@ -12,7 +12,7 @@ export function Emissor() {
   const { mdSize, smSize } = useContext(SizeContext);
   const { navSize } = useContext(SidebarContext);
   const { onOpen } = useModalEmissor();
-  const {getEmissoresByUser, cnpjcpf, razao} = useEmissorContext();
+  const {getEmissoresByUser, getCredenciais, emissor, cnpjcpf, razao} = useEmissorContext();
 
   const handleOpenModal = () => {
     getEmissoresByUser();

@@ -21,21 +21,15 @@ export function SearchBox({ children, changeEdit , stateFilter, getClientsByFilt
   const { register, handleSubmit } = useForm();
 
   const openModal = () => {
+    getCod();
     onOpen();
     changeEdit(false);
-    getCod();
   };
-
-
 
   const handleGetClientsByFilter = async (data: FieldValues) => {
     const { description } = data;
     getClientsByFilter(description);
   };
-
-  // const setDescription = (data: FieldValues) => {
-  //   stateDescription(description);
-  // };
 
 
   return (
@@ -53,7 +47,7 @@ export function SearchBox({ children, changeEdit , stateFilter, getClientsByFilt
             <Input placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
             <Button type="submit"><Icon as={FiSearch} /></Button>
           </Flex>
-          <Button variant="outline" onClick={() => openModal()} colorScheme="green">Cadastrar Cliente</Button>
+          <Button variant="outline" onClick={openModal} colorScheme="green">Cadastrar Cliente</Button>
         </Flex>
         {children}
       </Flex>

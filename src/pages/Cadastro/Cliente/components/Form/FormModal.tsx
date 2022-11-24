@@ -15,7 +15,8 @@ import {
   TabPanels,
   Tabs,
   Textarea,
-  useColorMode
+  useColorMode,
+  useToast
 } from '@chakra-ui/react';
 
 import { useFormContext } from 'react-hook-form';
@@ -33,6 +34,7 @@ import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 interface ModalProps {
   changeEdit: (value: React.SetStateAction<any>) => void
   refreshPage: (description: string) => void
+  getCod: () => void
   cod: number
   isEditing: boolean
   id: number
@@ -40,11 +42,14 @@ interface ModalProps {
   header: any
 }
 
-export function FormModal({ isEditing, id, editCod, cod, refreshPage, header }: ModalProps) {
+export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, getCod }: ModalProps) {
   const { isOpen, onClose } = useModalClient();
   const methods = useFormContext<IClient>();
   const { colorMode } = useColorMode();
+  const toast = useToast();
   const { idEmissorSelecionado } = useEmissorContext();
+
+  // console.log('form Modal cod ' + cod);
 
   const clearForm = () => {
     onClose();
@@ -93,15 +98,26 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header }: 
 
   const handleCreateNewClient = async (data: IClient) => {
     data.id_emissor = idEmissorSelecionado;
-    ClientService.create(data, header)
-      .then((result) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          clearForm();
-          refreshPage('');
-        }
+    if (data.razao.trim().length === 0) {
+      toast({
+        position: 'top',
+        title: 'Erro ao cadastrar.',
+        description: 'Nome / Razão inválido',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
       });
+    } else {
+      ClientService.create(data, header)
+        .then((result) => {
+          if (result instanceof ApiException) {
+            console.log(result.message);
+          } else {
+            clearForm();
+            refreshPage('');
+          }
+        });
+    }
   };
 
   const submitData = (data: IClient) => {
@@ -134,7 +150,7 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header }: 
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <FormFields cod={cod} editCod={editCod} isEditing={isEditing}/>
+                  <FormFields getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing}/>
                 </TabPanel>
                 <TabPanel>
                   <Textarea borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} h="37rem" placeholder='Observações...' {...methods.register('observacao')} />

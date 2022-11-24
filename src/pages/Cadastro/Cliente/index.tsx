@@ -131,7 +131,7 @@ export function Cliente() {
     const clientToUpdate = data.find((client) => client.id === id);
     if (clientToUpdate) {
       setId(id);
-      setEditCod(clientToUpdate.cod);
+      setEditCod(clientToUpdate?.cod);
       methods.reset(clientToUpdate);
       open();
       setIsEditing(true);
@@ -180,7 +180,7 @@ export function Cliente() {
             <Button isDisabled={currentPage === pages.length || data.length === 0} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal header={HEADERS} refreshPage={getClientsByFilter} cod={cod} editCod={editCod} isEditing={isEditing} changeEdit={setIsEditing} id={id} />
+        <FormModal getCod={getLastCod} header={HEADERS} refreshPage={getClientsByFilter} cod={cod} editCod={editCod} isEditing={isEditing} changeEdit={setIsEditing} id={id} />
         <DeleteAlertDialog label="Cliente" deleteFunction={handleDeleteClient} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

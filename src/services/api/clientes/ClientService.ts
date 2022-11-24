@@ -34,16 +34,6 @@ export interface IClient {
   site: string;
 }
 
-
-const getAll = async (HEADERS: any): Promise<IClient[] | ApiException> => {
-  try {
-    const { data } = await Api().get('/clientes', HEADERS);
-    return data;
-  } catch (error) {
-    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
-  }
-};
-
 const getClientsByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, idEmissorSelecionado: number, HEADERS: any): Promise<IClient[] | ApiException> => {
   console.log(HEADERS);
   try {
@@ -53,14 +43,6 @@ const getClientsByFilter = async (currentPage: number, limitRegistros: number, f
   }
 };
 
-const getById = async (id: number, idEmissorSelecionado: number, HEADERS: any): Promise<IClient | ApiException> => {
-  try {
-    const { data } = await Api().get(`/clientes/only/${id}?id_emissor=${idEmissorSelecionado}`, HEADERS);
-    return data;
-  } catch (error) {
-    return new ApiException((error as ApiException).message || 'Erro ao consultar o registro.');
-  }
-};
 
 const create = async (dataToCreate: Omit<IClient, 'id' | 'cod'>, HEADERS: any): Promise<IClient | ApiException> => {
   try {
@@ -97,9 +79,7 @@ const getLastCod = async (idEmissorSelecionado: number, HEADERS: any) => {
 };
 
 export const ClientService = {
-  getAll,
   getClientsByFilter,
-  getById,
   create,
   updateById,
   deleteById,
