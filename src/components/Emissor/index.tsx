@@ -5,6 +5,7 @@ import { useEmissorContext } from '../../Contexts/EmissorProvider';
 import { useModalEmissor } from '../../Contexts/Modal/EmissorContext';
 import { SidebarContext } from '../../Contexts/SidebarContext';
 import { SizeContext } from '../../Contexts/SizeContext';
+import { getDecrypted } from '../../utils/crypto';
 import { EmissorModal } from './EmissorModal';
 
 
@@ -12,13 +13,16 @@ export function Emissor() {
   const { mdSize, smSize } = useContext(SizeContext);
   const { navSize } = useContext(SidebarContext);
   const { onOpen } = useModalEmissor();
-  const {getEmissoresByUser, getCredenciais, emissor, cnpjcpf, razao} = useEmissorContext();
+  const {getEmissoresByUser} = useEmissorContext();
 
   const handleOpenModal = () => {
     getEmissoresByUser();
     onOpen();
   };
 
+  const dadosEmi = getDecrypted(localStorage.getItem('emissor'));
+  const cnpjcpf = dadosEmi ? dadosEmi.cnpjcpf : '';
+  const razao = dadosEmi ? dadosEmi.razao : '';
 
 
   return (

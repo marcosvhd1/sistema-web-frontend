@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { ApiException } from '../services/api/ApiException';
 import { EmissorService, IEmissor } from '../services/api/emissor/EmissorService';
+import { getEncrypted } from '../utils/crypto';
 
 type EmissorProviderProps = {
   children: ReactNode
@@ -8,8 +9,6 @@ type EmissorProviderProps = {
 
 interface IEmissore {
   emissor: any
-  cnpjcpf: string
-  razao: string
   idEmissorSelecionado: number
   getEmissoresByUser: () => void;
   getCredenciais: () => void;
@@ -17,8 +16,6 @@ interface IEmissore {
   updateUltimoEmissorSelecionado: () => void;
   setIdEmissorSelecionado: (value: React.SetStateAction<number>) => void;
   setIdUsuarioSelecionado: (value: React.SetStateAction<number>) => void;
-  setCnpjcpf: (value: React.SetStateAction<string>) => void;
-  setRazao: (value: React.SetStateAction<string>) => void;
 }
 
 const EmissorContext = createContext({} as IEmissore);
@@ -27,8 +24,6 @@ export function EmissorProvider({children}: EmissorProviderProps) {
   const [emissor, setEmissor] = useState<IEmissor[]>([]);
   const [idEmissorSelecionado, setIdEmissorSelecionado] = useState<number>(0);
   const [idUsuarioSelecionado, setIdUsuarioSelecionado] = useState<number>(0);
-  const [cnpjcpf, setCnpjcpf] = useState<string>('');
-  const [razao, setRazao] = useState<string>('');
 
   const getEmissoresByUser = () => {
     EmissorService.getEmissores(idUsuarioSelecionado)
@@ -44,8 +39,11 @@ export function EmissorProvider({children}: EmissorProviderProps) {
   const getCredenciais = () => {
     emissor.forEach(e => {
       if (e.id === idEmissorSelecionado) {
-        setCnpjcpf(e.cnpjcpf);
-        setRazao(e.razao);
+        const dados = {
+          'cnpjcpf': e.cnpjcpf,
+          'razao': e.razao
+        };
+        localStorage.setItem('emissor', getEncrypted(dados));
       }
     });
   };
@@ -69,7 +67,7 @@ export function EmissorProvider({children}: EmissorProviderProps) {
   };
 
   return (
-    <EmissorContext.Provider value={{ emissor, cnpjcpf, razao, idEmissorSelecionado, setIdEmissorSelecionado, setIdUsuarioSelecionado, getEmissoresByUser, setCnpjcpf, setRazao, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais }}>
+    <EmissorContext.Provider value={{ emissor, idEmissorSelecionado, setIdEmissorSelecionado, setIdUsuarioSelecionado, getEmissoresByUser, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais }}>
       {children}
     </EmissorContext.Provider>
   );
