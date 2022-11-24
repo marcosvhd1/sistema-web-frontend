@@ -15,7 +15,7 @@ export interface IEmissor {
 
 const getEmissores = async (idUsuario: number): Promise<IEmissor[] | ApiException> => {
   try {
-    const { data } = await Api().get(`/emissor?id_usuario=${idUsuario}`, HEADERS);
+    const { data } = await Api().get(`/emissores?id_usuario=${idUsuario}`, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
@@ -24,7 +24,7 @@ const getEmissores = async (idUsuario: number): Promise<IEmissor[] | ApiExceptio
 
 const updateUltimoEmissorSelecionado = async (idUsuario: number, idEmissor: number) => {
   try {
-    const { data } = await Api().patch(`/ultimoEmissor?id_usuario=${idUsuario}&id_emissor=${idEmissor}`, HEADERS);
+    const { data } = await Api().patch(`/emissores/ultimo?id_usuario=${idUsuario}&id_emissor=${idEmissor}`, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
@@ -37,7 +37,7 @@ const getUltimoEmissorSelecionadoByUser = async () => {
   const email = data.user.email;
 
   try {
-    const { data } = await Api().get(`/ultimoEmissor?cnpjcpf=${cnpjcpf}&email=${email}`, HEADERS);
+    const { data } = await Api().get(`/emissores/ultimo?cnpjcpf=${cnpjcpf}&email=${email}`, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
