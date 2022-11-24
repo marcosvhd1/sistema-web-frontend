@@ -6,8 +6,6 @@ import { Button, Flex, Icon, Input, Select, Text } from '@chakra-ui/react';
 import { FiSearch } from 'react-icons/fi';
 import { useModalClient } from '../../../../Contexts/Modal/ClientContext';
 
-
-
 interface SearchBoxProps {
   children: ReactNode;
   getCod: () => void
