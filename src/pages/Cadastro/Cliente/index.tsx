@@ -52,15 +52,15 @@ export function Cliente() {
 
   useEffect(() => {
     navigate(`?page=${currentPage}&limit=${limitRegistros}`);
-    getClientsByFilter('');
-    console.log(pages);
-
   }, [currentPage, limitRegistros, totalClients]);
-
 
   useEffect(() => {
     getClientsByFilter('');
   }, [currentPage]);
+
+  useEffect(() => {
+    getClientsByFilter('');
+  }, [limitRegistros]);
 
   useEffect(() => {
     handleChangeTotalPage();
