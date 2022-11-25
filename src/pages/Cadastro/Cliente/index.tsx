@@ -64,7 +64,7 @@ export function Cliente() {
 
   useEffect(() => {
     handleChangeTotalPage();
-  }, [totalClients]);
+  }, [totalClients, limitRegistros]);
 
 
 
