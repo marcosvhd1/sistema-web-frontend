@@ -4,6 +4,7 @@ import { HEADERS } from '../../../pages/Inicio';
 
 export type IProduct = {
   id: number;
+  id_emissor: number;
   nprod: number;
   descricao: string;
   referencia: string;
@@ -36,33 +37,15 @@ export type IProduct = {
   peso_liquido: number;
 };
 
-// const LOCAL_DATA = JSON.parse(localStorage.getItem('user')!);
-// const TOKEN = LOCAL_DATA.user?.accessToken;
-
-// const HEADERS = {
-//   headers: {
-//     'Authorization': TOKEN
-//   }
-// };
-
-const getAll = async (): Promise<IProduct[] | ApiException> => {
+const getProductByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, idEmissorSelecionado: number, HEADERS: any): Promise<IProduct[] | ApiException> => {
   try {
-    const { data } = await Api().get('/produtos', HEADERS);
-    return data;
-  } catch (error) {
-    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
-  }
-};
-
-const getProductByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string): Promise<IProduct[] | ApiException> => {
-  try {
-    return await Api().get(`/produtos/filter?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}`, HEADERS);
+    return await Api().get(`/produtos?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&id_emissor=${idEmissorSelecionado}`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message|| 'Erro ao buscar os registros.');
   }
 };
 
-const create = async (dataToCreate: Omit<IProduct, 'id' | 'cod'>): Promise<IProduct | ApiException> => {
+const create = async (dataToCreate: Omit<IProduct, 'id' | 'cod'>, HEADERS: any): Promise<IProduct | ApiException> => {
   try {
     const { data } = await Api().post<IProduct>('/produtos', dataToCreate, HEADERS);
     return data;
@@ -71,32 +54,31 @@ const create = async (dataToCreate: Omit<IProduct, 'id' | 'cod'>): Promise<IProd
   }
 };
 
-const updateById = async (id: number, dataToUpdate: IProduct): Promise<IProduct | ApiException> => {
+const updateById = async (id: number, dataToUpdate: IProduct, idEmissorSelecionado: number, HEADERS: any): Promise<IProduct | ApiException> => {
   try {
-    const { data } = await Api().put(`/produtos/${id}`, dataToUpdate, HEADERS);
+    const { data } = await Api().put(`/produtos/${id}?id_emissor=${idEmissorSelecionado}`, dataToUpdate, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message|| 'Erro ao atualizar o registro.');
   }
 };
 
-const deleteById = async (id: number): Promise<undefined | ApiException> => {
+const deleteById = async (id: number, idEmissorSelecionado: number, HEADERS: any): Promise<undefined | ApiException> => {
   try {
-    await Api().delete(`/produtos/${id}`, HEADERS);
+    await Api().delete(`/produtos/${id}?id_emissor=${idEmissorSelecionado}`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message|| 'Erro ao apagar o registro.');
   }
 };
 
 
-const getLastCod = async () => {
-  const response = await Api().get('/produtos/maxnprod', HEADERS);
-  const { max } = response.data.rows[0];
+const getLastCod = async (idEmissorSelecionado: number, HEADERS: any) => {
+  const response = await Api().get(`/produtos/max?id_emissor=${idEmissorSelecionado}`, HEADERS);
+  const { max } = response.data[0];
   return max;
 };
 
 export const ProductService = {
-  getAll,
   getProductByFilter,
   create,
   updateById,

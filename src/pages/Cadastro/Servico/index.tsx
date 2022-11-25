@@ -123,6 +123,7 @@ export function Servico() {
             duration: 2000,
             isClosable: true,
           });
+          getService('');
         }
       });
     onClose();

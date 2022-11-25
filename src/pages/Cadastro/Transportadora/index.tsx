@@ -126,6 +126,7 @@ export function Transportadora() {
             duration: 2000,
             isClosable: true,
           });
+          getTransportadora('');
         }
       });
     onClose();

@@ -1,6 +1,7 @@
-import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useColorMode, useToast } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
+import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 import { useModalProduct } from '../../../../../Contexts/Modal/ProductContext';
 import { ApiException } from '../../../../../services/api/ApiException';
 import { IProduct, ProductService } from '../../../../../services/api/produtos/ProductService';
@@ -8,17 +9,22 @@ import { DadosFiscais } from './DadosFiscais';
 import { DadosPrincipais } from './DadosPrincipais';
 
 interface ModalProps {
-  refreshPage: () => void
+  refreshPage: (description: string) => void
+  getCod: () => void
+  cod: number
   isEditing: boolean
   id: number
   editCod: number
+  header: any
 }
 
 
-export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
+export function FormModal({ isEditing, id, refreshPage, editCod, cod, header, getCod }: ModalProps) {
   const { isOpen, onClose } = useModalProduct();
   const methods = useFormContext<IProduct>();
   const { colorMode } = useColorMode();
+  const toast = useToast();
+  const { idEmissorSelecionado } = useEmissorContext();
 
   const clearForm = () => {
     onClose();
@@ -56,31 +62,42 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
   };
 
   const handleCreateNewProduct = (data: IProduct) => {
-    ProductService.create(data)
-      .then((result) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          clearForm();
-          refreshPage();
-        }
+    data.id_emissor = idEmissorSelecionado;
+    if (data.descricao.trim().length === 0) {
+      toast({
+        position: 'top',
+        title: 'Erro ao cadastrar.',
+        description: 'Descrição inválida',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
       });
+    } else {
+      ProductService.create(data, header)
+        .then((result) => {
+          if (result instanceof ApiException) {
+            console.log(result.message);
+          } else {
+            clearForm();
+            refreshPage('');
+          }
+        });
+    }
   };
 
   const handleUpdateProduct = (data: IProduct) => {
-    ProductService.updateById(id, data)
+    ProductService.updateById(id, data, idEmissorSelecionado, header)
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
         } else {
           clearForm();
-          refreshPage();
+          refreshPage('');
         }
       });
   };
 
   const submitData = (data: IProduct) => {
-    console.log(data);
     if (isEditing)
       handleUpdateProduct(data);
     else
@@ -110,7 +127,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <DadosPrincipais editCod={editCod} isEditing={isEditing} />
+                  <DadosPrincipais getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} />
                 </TabPanel>
                 <TabPanel>
                   <DadosFiscais />

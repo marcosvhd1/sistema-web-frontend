@@ -4,36 +4,27 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FcPlus } from 'react-icons/fc';
 import { FormContainer } from '../../../../../components/Form/FormContainer';
-import { IProduct, ProductService } from '../../../../../services/api/produtos/ProductService';
+import { IProduct } from '../../../../../services/api/produtos/ProductService';
 
 interface IFormFields {
   editCod: number
+  getCod: () => void
+  cod: number
   isEditing: boolean
 }
 
-export function DadosPrincipais({ editCod, isEditing }: IFormFields) {
-  const { register } = useFormContext<IProduct>();
-  const [cod, setCod] = useState<number>(1);
+export function DadosPrincipais({ editCod, isEditing, getCod, cod }: IFormFields) {
+  const { register, setFocus } = useFormContext<IProduct>();
   const [active, setActive] = useState<boolean>(true);
   const { colorMode } = useColorMode();
 
   useEffect(() => {
-    ProductService.getLastCod()
-      .then((result) => {
-        if (isEditing) {
-          setCod(editCod);
-        } else {
-          if (result === null) {
-            setCod(1);
-          } else {
-            setCod(parseInt(result) + 1);
-          }
-        }
-      });
+    getCod();
+    setFocus('nprod');
+    setTimeout(() => {
+      setFocus('descricao');
+    }, 100);
   }, []);
-
-
-
 
   return (
     <Flex w="58rem" h="25rem" gap="2" direction="column" justify="space-between">
@@ -42,7 +33,7 @@ export function DadosPrincipais({ editCod, isEditing }: IFormFields) {
         <Flex direction="column" w="50%" mr={6}>
           <Flex gap="2">
             <FormContainer label="Código" width="5rem">
-              <Input id="nprod" type="text" w="5rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isReadOnly value={('0000' + cod).slice(-4)} {...register('nprod')} />
+              <Input id="nprod" type="text" w="5rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('nprod')} />
             </FormContainer>
             <FormContainer label="Descrição">
               <Input id="descricao" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('descricao')} />

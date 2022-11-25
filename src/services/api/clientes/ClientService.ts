@@ -64,7 +64,6 @@ const updateById = async (id: number, dataToUpdate: IClient, idEmissorSelecionad
 const deleteById = async (id: number, idEmissorSelecionado: number, HEADERS: any): Promise<undefined | ApiException> => {
   try {
     await Api().delete(`/clientes/${id}?id_emissor=${idEmissorSelecionado}`, HEADERS);
-    return undefined;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao apagar o registro.');
   }

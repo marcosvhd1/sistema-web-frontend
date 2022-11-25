@@ -8,9 +8,11 @@ import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
 import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
 import { useAlertProductContext } from '../../../Contexts/AlertDialog/AlertProductContext';
+import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalProduct } from '../../../Contexts/Modal/ProductContext';
 import { ApiException } from '../../../services/api/ApiException';
 import { IProduct, ProductService } from '../../../services/api/produtos/ProductService';
+import { getDecrypted } from '../../../utils/crypto';
 import { FormModal } from './components/Form/ModalProduct';
 import { SearchBox } from './components/SearchBox';
 
@@ -37,23 +39,54 @@ export function Produto() {
   /// pagination and search by filter
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('descricao');
-  const [description, setDescription] = useState<string>('');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
   ///////////////////////////////////
   const navigate = useNavigate();
   const toast = useToast();
+  const { idEmissorSelecionado } = useEmissorContext();
+  const [cod, setCod] = useState<number>(1);
+
+  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
+  const TOKEN = LOCAL_DATA?.user.accessToken;
+
+  const HEADERS = {
+    headers: {
+      'Authorization': TOKEN
+    }
+  };
 
   useEffect(() => {
-    getProduct();
     navigate(`?page=${currentPage}&limit=${limitRegistros}`);
-  }, [currentPage, description, limitRegistros, totalClients]);
+  }, [currentPage, limitRegistros, totalClients]);
+
+  useEffect(() => {
+    getProduct('');
+  }, [currentPage]);
+
+  useEffect(() => {
+    getProduct('');
+  }, [limitRegistros]);
 
   useEffect(() => {
     handleChangeTotalPage();
-  }, [totalClients]);
+  }, [totalClients, limitRegistros]);
 
+  const getLastCod = () => {
+    ProductService.getLastCod(idEmissorSelecionado, HEADERS)
+      .then((result) => {
+        if (isEditing) {
+          setCod(editCod);
+        } else {
+          if (result === null) {
+            setCod(1);
+          } else {
+            setCod(parseInt(result) + 1);
+          }
+        }
+      });
+  };
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalClients / limitRegistros);
@@ -64,8 +97,8 @@ export function Produto() {
     setPages(arrayPages);
   };
 
-  const getProduct = () => {
-    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description)
+  const getProduct = (description: string) => {
+    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -77,7 +110,7 @@ export function Produto() {
   };
 
   const handleDeleteProduct = (clientId: number) => {
-    ProductService.deleteById(clientId)
+    ProductService.deleteById(clientId, idEmissorSelecionado, HEADERS)
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -90,6 +123,7 @@ export function Produto() {
             duration: 2000,
             isClosable: true,
           });
+          getProduct('');
         }
       });
     onClose();
@@ -117,7 +151,7 @@ export function Produto() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox setDescription={setDescription} changeEdit={setIsEditing} setFilter={setFilter}>
+        <SearchBox getCod={getLastCod} getProduct={getProduct} changeEdit={setIsEditing} setFilter={setFilter}>
           <DataTable headers={headers}>
             {data != undefined ? data.map((data) => (
               <Tr key={data.id}>
@@ -143,10 +177,10 @@ export function Produto() {
           </DataTable>
           <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
-            <Button isDisabled={currentPage === pages.length || data.length === 0} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
+            <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal editCod={editCod} refreshPage={getProduct} id={id} isEditing={isEditing} />
+        <FormModal getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getProduct} id={id} isEditing={isEditing} />
         <DeleteAlertDialog label="Produto" deleteFunction={handleDeleteProduct} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

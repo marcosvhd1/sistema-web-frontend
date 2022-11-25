@@ -93,7 +93,7 @@ export function Cliente() {
     setPages(arrayPages);
   };
 
-  const getClientsByFilter = async (description: string) => {
+  const getClientsByFilter = (description: string) => {
     ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
@@ -119,6 +119,7 @@ export function Cliente() {
             duration: 2000,
             isClosable: true,
           });
+          getClientsByFilter('');
         }
       });
     onClose();

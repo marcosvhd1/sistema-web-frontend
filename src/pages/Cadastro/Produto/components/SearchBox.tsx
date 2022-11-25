@@ -9,23 +9,25 @@ import { useModalProduct } from '../../../../Contexts/Modal/ProductContext';
 
 interface SearchBoxProps {
   children: ReactNode;
+  getCod: () => void
+  getProduct: (description: string) => void;
   changeEdit: (value: React.SetStateAction<any>) => void;
   setFilter: (value: React.SetStateAction<any>) => void;
-  setDescription: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ children, setFilter, setDescription, changeEdit }: SearchBoxProps) {
+export function SearchBox({ children, setFilter, getProduct, getCod, changeEdit }: SearchBoxProps) {
   const { onOpen } = useModalProduct();
   const { register, handleSubmit } = useForm();
 
   const openModal = async () => {
+    getCod();
     onOpen();
     changeEdit(false);
   };
 
   const HandleGetProductByFilter = (data: FieldValues) => {
     const { description } = data;
-    setDescription(description);
+    getProduct(description);
   };
 
 

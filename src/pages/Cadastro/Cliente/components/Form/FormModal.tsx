@@ -49,8 +49,6 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, ge
   const toast = useToast();
   const { idEmissorSelecionado } = useEmissorContext();
 
-  // console.log('form Modal cod ' + cod);
-
   const clearForm = () => {
     onClose();
     methods.reset({
