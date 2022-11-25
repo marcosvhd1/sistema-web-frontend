@@ -112,13 +112,13 @@ export function FormModal({ isEditing, id, refreshPage, editCod, cod, header, ge
       motionPreset='slideInBottom'
       isCentered
       scrollBehavior="inside"
-      size="5xl"
+      size={{md: '4xl', lg: '5xl'}}
     >
       <ModalOverlay />
       <form onSubmit={methods.handleSubmit(submitData)}>
         <ModalContent>
           <ModalHeader>Cadastro de Produtos</ModalHeader>
-          <ModalCloseButton onClick={() => clearForm()} />
+          <ModalCloseButton onClick={clearForm} />
           <ModalBody>
             <Tabs variant='enclosed' colorScheme="gray" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
               <TabList>
@@ -135,11 +135,10 @@ export function FormModal({ isEditing, id, refreshPage, editCod, cod, header, ge
               </TabPanels>
             </Tabs>
           </ModalBody>
-
           <ModalFooter>
             <Flex w="100%" justify="space-between" >
               <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
-              <Button colorScheme='red' variant="outline" mr={3} onClick={onClose}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+              <Button colorScheme='red' variant="outline" mr={3} onClick={clearForm}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>

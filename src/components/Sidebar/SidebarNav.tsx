@@ -10,11 +10,20 @@ import { SizeContext } from '../../Contexts/SizeContext';
 import { Emissor } from '../Emissor';
 import { NavItem } from './NavItem';
 import { NavSection } from './NavSection';
+import { useModalEmissor } from '../../Contexts/Modal/EmissorContext';
+import { useEmissorContext } from '../../Contexts/EmissorProvider';
 
 
 export function SidebarNav() {
   const { smSize } = useContext(SizeContext);
   const { navSize } = useContext(SidebarContext);
+  const { onOpen } = useModalEmissor();
+  const {getEmissoresByUser} = useEmissorContext();
+
+  const handleOpenModal = () => {
+    getEmissoresByUser();
+    onOpen();
+  };
 
   return (
     <Flex
@@ -55,7 +64,7 @@ export function SidebarNav() {
             <Emissor />
           </Flex>
           {!smSize[0] ? '' : navSize == 'small' && (
-            <NavItem aria-label="Emissor" icon={FcSearch} title="" rota="/app/emissor" />
+            <NavItem aria-label="Emissor" icon={FcSearch} title="" rota="" click={handleOpenModal}/>
           )}
         </NavSection>
       </Flex>

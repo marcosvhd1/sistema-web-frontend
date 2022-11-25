@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, Icon, Input, Select, Textarea, useColorMode } from '@chakra-ui/react';
+import { Button, Checkbox, Flex, Icon, IconButton, Input, Select, Textarea, useColorMode } from '@chakra-ui/react';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -27,7 +27,7 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod }: IFormFields
   }, []);
 
   return (
-    <Flex w="58rem" h="25rem" gap="2" direction="column" justify="space-between">
+    <Flex w={{md: '51rem', lg: '58rem'}} h='20rem'  gap="2" direction="column">
       <Flex w="100%" >
         {/* lado a */}
         <Flex direction="column" w="50%" mr={6}>
@@ -58,30 +58,31 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod }: IFormFields
             </FormContainer>
           </Flex>
         </Flex>
+        {/* lado b */}
         <Flex direction="column" w="50%">
-          <Flex align="center" gap="2" justify="space-between">
-            <FormContainer label="Marca" >
-              <Select id="marca" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} >
-
-              </Select>
-            </FormContainer>
-            <Button mt="3rem">
-              <Icon fontSize="2xl" width="2rem" as={FcPlus} />
-            </Button>
+          <Flex gap="2">
+            <Flex w='100%' align='center' gap='2'>
+              <FormContainer label="Marca" >
+                <Select id="marca" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} >
+                </Select>
+              </FormContainer>
+              <FormContainer label='' width="2rem">
+                <IconButton mt='1.3rem'  variant='outline' fontSize="2xl" aria-label='Botao de adicionar grupo' icon={<FcPlus />} _hover={{'filter': 'brightness(0.8)'}} transition='0.3s' />
+              </FormContainer>
+            </Flex>
           </Flex>
-          <Flex align="center" gap="2" justify="space-between">
+          <Flex gap="2">
             <FormContainer label="Grupo">
               <Select id="grupo" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
-
               </Select>
             </FormContainer>
-            <Button mt="3rem">
-              <Icon fontSize="2xl" width="2rem" as={FcPlus} />
-            </Button>
+            <FormContainer label='' width="2rem">
+              <IconButton mt='1.3rem'  variant='outline' fontSize="2xl" aria-label='Botao de adicionar grupo' icon={<FcPlus />}  _hover={{'filter': 'brightness(0.8)'}} transition='0.3s' />
+            </FormContainer>
           </Flex>
-          <Flex w="100%" justify="space-between">
-            <FormContainer label="Status" width="6rem">
-              <Checkbox id="status" onChange={() => setActive(!active)} isChecked={active} size="lg" colorScheme="green">
+          <Flex w="100%" gap='3' justify='space-between'>
+            <FormContainer label="Status" width="6rem" >
+              <Checkbox id="status" onChange={() => setActive(!active)} isChecked={active} size="lg" colorScheme="green" mt='.4rem'>
                 {active ? 'Ativo' : 'Inativo'}
               </Checkbox>
             </FormContainer>

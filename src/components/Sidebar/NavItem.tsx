@@ -10,9 +10,9 @@ interface NavItemProps {
   title: string;
   icon: ElementType;
   rota: string;
-
+  click?: () => void
 }
-export function NavItem({ title, icon, rota }: NavItemProps) {
+export function NavItem({ title, icon, rota, click }: NavItemProps) {
   const { mdSize, smSize } = useContext(SizeContext);
   const { navSize } = useContext(SidebarContext);
   const SwitchColor = useColorModeValue('#FFEBCD', 'gray.600');
@@ -27,6 +27,7 @@ export function NavItem({ title, icon, rota }: NavItemProps) {
       <Menu placement="right">
         <Tooltip label={navSize === 'small' ? title : ''} placement='auto-start' hasArrow>
           <Link
+            onClick={click}
             as={ReactRouterLink}
             to={rota}
             p={mdSize[0] ? (navSize == 'small' ? 2 : 1) : 2}

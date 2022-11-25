@@ -8,7 +8,7 @@ export function DadosFiscais() {
   const { colorMode } = useColorMode();
 
   return (
-    <Flex w="58rem" h="30rem" gap="2" direction="column" justify="space-between">
+    <Flex w={{md: '51rem', lg: '58rem'}} h={{ md: '20rem', lg: '25rem', sm: '20rem'}} gap="2" direction="column">
       <Flex w="100%" justify="space-between" >
         <Flex direction="column" w="50%" mr={6}>
           <Flex gap="2">
