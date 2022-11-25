@@ -38,7 +38,7 @@ export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
       </Flex>
       <Flex justify="space-between">
         <FormContainer label="Preço" width="6rem">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" step={0.01} w="6rem" {...register('preco', {
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="R$0,00" type="number" step={0.01} w="6rem" {...register('preco', {
             setValueAs: (value) => value === '' ? 0 : parseFloat(value),
           })} />
         </FormContainer>
