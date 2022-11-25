@@ -101,7 +101,6 @@ export function Cliente() {
         } else {
           setData(result.data);
           setTotalClients(parseInt(result.headers['qtd']));
-          return true;
         }
       });
   };

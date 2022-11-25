@@ -1,39 +1,36 @@
+import { Divider, Flex, Input, Select, Text, Textarea, useColorMode } from '@chakra-ui/react';
 import moment from 'moment';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Divider, Flex, Input, Textarea, Text, Select, useColorMode } from '@chakra-ui/react';
 import { FormContainer } from '../../../../../components/Form/FormContainer';
-import { IServico, ServicoService } from '../../../../../services/api/servicos/ServicoService';
-import { useEffect, useState } from 'react';
+import { IServico } from '../../../../../services/api/servicos/ServicoService';
 
 interface IFormFields {
   editCod: number
+  getCod: () => void
+  cod: number
   isEditing: boolean
 }
 
-export function FormFields({ editCod, isEditing }: IFormFields) {
-  const { register } = useFormContext<IServico>();
-  const [cod, setCod] = useState<number>(1);
+export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
+  const { register, setFocus } = useFormContext<IServico>();
   const { colorMode } = useColorMode();
 
   useEffect(() => {
-    ServicoService.getLastCod()
-      .then((result) => {
-        if (isEditing) {
-          setCod(editCod);
-        } else if (result === null) {
-          setCod(1);
-        } else {
-          setCod(parseInt(result) + 1);
-        }
-      });
+    getCod();
+    setFocus('nserv');
+    setTimeout(() => {
+      setFocus('descricao');
+    }, 100);
   }, []);
+
   return (
     <Flex direction="column" justify="space-between">
       <Text fontSize="xl">Dados Principais</Text>
       <Divider />
       <Flex gap="3" align="center">
         <FormContainer label="Código" width="5rem">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" w="5rem" isReadOnly value={('0000' + cod).slice(-4)} {...register('nserv')} />
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" w="5rem" isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('nserv')} />
         </FormContainer>
         <FormContainer label="Descrição do Serviço" isRequired={true}>
           <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('descricao')} />

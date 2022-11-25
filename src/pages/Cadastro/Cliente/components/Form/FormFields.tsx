@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
   Divider,
   Flex,
@@ -7,6 +6,7 @@ import {
   Stack,
   Text
 } from '@chakra-ui/react';
+import { useEffect } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 

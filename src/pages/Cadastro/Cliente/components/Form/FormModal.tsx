@@ -84,17 +84,6 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, ge
     });
   };
 
-  const handleUpdateClient = (data: IClient) => {
-    ClientService.updateById(id, data, idEmissorSelecionado, header)
-      .then((result) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          clearForm();
-          refreshPage('');
-        }
-      });
-  };
 
   const handleCreateNewClient = async (data: IClient) => {
     data.id_emissor = idEmissorSelecionado;
@@ -118,6 +107,18 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, ge
           }
         });
     }
+  };
+
+  const handleUpdateClient = (data: IClient) => {
+    ClientService.updateById(id, data, idEmissorSelecionado, header)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          clearForm();
+          refreshPage('');
+        }
+      });
   };
 
   const submitData = (data: IClient) => {

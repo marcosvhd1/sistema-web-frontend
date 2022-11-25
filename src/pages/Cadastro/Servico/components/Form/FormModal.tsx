@@ -8,10 +8,12 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay
+  ModalOverlay,
+  useToast
 } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
+import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 import { useModalService } from '../../../../../Contexts/Modal/ServiceContext';
 import { ApiException } from '../../../../../services/api/ApiException';
 import { IServico, ServicoService } from '../../../../../services/api/servicos/ServicoService';
@@ -19,15 +21,20 @@ import { FormFields } from './FormFields';
 
 interface ModalProps {
   // changeEdit: (value: React.SetStateAction<any>) => void;
-  refreshPage: () => void
+  refreshPage: (description: string) => void
+  getCod: () => void
+  cod: number
   isEditing: boolean
   id: number
   editCod: number
+  header: any
 }
 
-export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
+export function FormModal({ isEditing, id, refreshPage, editCod, cod, header, getCod  }: ModalProps) {
   const { isOpen, onClose } = useModalService();
   const methods = useFormContext<IServico>();
+  const toast = useToast();
+  const { idEmissorSelecionado } = useEmissorContext();
 
   const clearForm = () => {
     onClose();
@@ -45,25 +52,38 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
   };
 
   const handleCreateNewService = (data: IServico) => {
-    ServicoService.create(data)
-      .then((result) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          clearForm();
-          refreshPage();
-        }
+    data.id_emissor = idEmissorSelecionado;
+    if (data.descricao.trim().length === 0) {
+      toast({
+        position: 'top',
+        title: 'Erro ao cadastrar.',
+        description: 'Descrição inválido',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
       });
+    } else {
+      ServicoService.create(data, header)
+        .then((result) => {
+          if (result instanceof ApiException) {
+            console.log(result.message);
+          } else {
+            clearForm();
+            refreshPage('');
+          }
+        });
+    }
+
   };
 
   const handleUpdateService = (data: IServico) => {
-    ServicoService.updateById(id, data)
+    ServicoService.updateById(id, data, idEmissorSelecionado, header)
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
         } else {
           clearForm();
-          refreshPage();
+          refreshPage('');
         }
       });
   };
@@ -91,7 +111,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
           <ModalHeader>Cadastro de Serviço</ModalHeader>
           <ModalCloseButton onClick={() => { clearForm(); }} />
           <ModalBody>
-            <FormFields editCod={editCod} isEditing={isEditing} />
+            <FormFields getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} />
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">

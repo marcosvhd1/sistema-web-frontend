@@ -16,6 +16,8 @@ import { ApiException } from '../../../services/api/ApiException';
 import { IServico } from '../../../services/api/servicos/ServicoService';
 import { FormModal } from './components/Form/FormModal';
 import { SearchBox } from './components/SearchBox';
+import { useEmissorContext } from '../../../Contexts/EmissorProvider';
+import { getDecrypted } from '../../../utils/crypto';
 
 const headers: { key: string, label: string }[] = [
   { key: 'cod', label: 'Código' },
@@ -36,22 +38,54 @@ export function Servico() {
   /// pagination and search by filter
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('descricao');
-  const [description, setDescription] = useState<string>('');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
   ///////////////////////////////////
   const navigate = useNavigate();
   const toast = useToast();
+  const { idEmissorSelecionado } = useEmissorContext();
+  const [cod, setCod] = useState<number>(1);
+
+  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
+  const TOKEN = LOCAL_DATA?.user.accessToken;
+
+  const HEADERS = {
+    headers: {
+      'Authorization': TOKEN
+    }
+  };
 
   useEffect(() => {
-    getService();
     navigate(`?page=${currentPage}&limit=${limitRegistros}`);
-  }, [currentPage, description, limitRegistros, totalClients]);
+  }, [currentPage,  limitRegistros, totalClients]);
+
+  useEffect(() => {
+    getService('');
+  }, [currentPage]);
+
+  useEffect(() => {
+    getService('');
+  }, [limitRegistros]);
 
   useEffect(() => {
     handleChangeTotalPage();
-  }, [totalClients]);
+  }, [totalClients, limitRegistros]);
+
+  const getLastCod = () => {
+    ServicoService.getLastCod(idEmissorSelecionado, HEADERS)
+      .then((result) => {
+        if (isEditing) {
+          setCod(editCod);
+        } else {
+          if (result === null) {
+            setCod(1);
+          } else {
+            setCod(parseInt(result) + 1);
+          }
+        }
+      });
+  };
 
 
   const handleChangeTotalPage = () => {
@@ -63,8 +97,8 @@ export function Servico() {
     setPages(arrayPages);
   };
 
-  const getService = () => {
-    ServicoService.getServiceByFilter(currentPage, limitRegistros, filter, description)
+  const getService = (description: string) => {
+    ServicoService.getServiceByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -76,7 +110,7 @@ export function Servico() {
   };
 
   const handleDeleteService = (clientId: number) => {
-    ServicoService.deleteById(clientId)
+    ServicoService.deleteById(clientId, idEmissorSelecionado, HEADERS)
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -114,7 +148,7 @@ export function Servico() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox stateDescription={setDescription} changeEdit={setIsEditing} stateFilter={setFilter}>
+        <SearchBox getCod={getLastCod} getService={getService} changeEdit={setIsEditing} stateFilter={setFilter}>
           <DataTable headers={headers}>
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
@@ -136,10 +170,10 @@ export function Servico() {
           </DataTable>
           <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
-            <Button isDisabled={currentPage === pages.length || data.length === 0} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
+            <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal editCod={editCod} refreshPage={getService} id={id} isEditing={isEditing} />
+        <FormModal getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getService} id={id} isEditing={isEditing} />
         <DeleteAlertDialog label="Serviço" deleteFunction={handleDeleteService} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

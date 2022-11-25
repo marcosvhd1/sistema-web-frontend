@@ -36,7 +36,7 @@ export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
       <Divider />
       <Flex gap="3" align="center">
         <FormContainer label="Código" width="5rem">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" w="5rem" isReadOnly value={('0000' + cod).slice(-4)} {...register('cod')} />
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" w="5rem" isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('cod')} />
         </FormContainer>
         <FormContainer label="Nome / Razão Social" isRequired={true}>
           <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('razao')} />

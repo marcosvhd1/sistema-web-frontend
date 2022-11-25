@@ -10,23 +10,25 @@ import { useModalService } from '../../../../Contexts/Modal/ServiceContext';
 
 interface SearchBoxProps {
   children: ReactNode;
+  getCod: () => void
+  getService: (description: string) => void
   changeEdit: (value: React.SetStateAction<any>) => void;
   stateFilter: (value: React.SetStateAction<any>) => void;
-  stateDescription: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ children, changeEdit, stateFilter, stateDescription }: SearchBoxProps) {
+export function SearchBox({ children, changeEdit, stateFilter, getService, getCod }: SearchBoxProps) {
   const { onOpen } = useModalService();
   const { register, handleSubmit } = useForm();
 
   const openModal = async () => {
+    getCod();
     onOpen();
     changeEdit(false);
   };
 
   const HandleGetServiceByFilter = (data: FieldValues) => {
     const { description } = data;
-    stateDescription(description);
+    getService(description);
   };
 
 
