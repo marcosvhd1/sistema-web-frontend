@@ -8,10 +8,12 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay
+  ModalOverlay,
+  useToast
 } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
+import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 import { useModalTransportadora } from '../../../../../Contexts/Modal/TransportadoraContext';
 import { ApiException } from '../../../../../services/api/ApiException';
 import { ITransportadora, TransportadoraService } from '../../../../../services/api/transportadora/TransportadoraService';
@@ -19,15 +21,20 @@ import { FormFields } from './FormFields';
 
 interface ModalProps {
   // changeEdit: (value: React.SetStateAction<any>) => void;
-  refreshPage: () => void
+  refreshPage: (description: string) => void
+  getCod: () => void
   isEditing: boolean
   id: number
+  cod: number
   editCod: number
+  header: any
 }
 
-export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
+export function FormModal({ isEditing, id, refreshPage, editCod, cod, getCod, header }: ModalProps) {
   const { isOpen, onClose } = useModalTransportadora();
   const methods = useFormContext<ITransportadora>();
+  const toast = useToast();
+  const { idEmissorSelecionado } = useEmissorContext();
 
   const clearForm = () => {
     onClose();
@@ -55,26 +62,37 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
   };
 
   const handleCreateNewTransportadora = (data: ITransportadora) => {
-    TransportadoraService.create(data)
-      .then((result) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          clearForm();
-          refreshPage();
-        }
+    data.id_emissor = idEmissorSelecionado;
+    if (data.razao.trim().length === 0) {
+      toast({
+        position: 'top',
+        title: 'Erro ao cadastrar.',
+        description: 'Nome / Razão inválido',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
       });
-
+    } else {
+      TransportadoraService.create(data, header)
+        .then((result) => {
+          if (result instanceof ApiException) {
+            console.log(result.message);
+          } else {
+            clearForm();
+            refreshPage('');
+          }
+        });
+    }
   };
 
   const handleUpdateTransportadora = (data: ITransportadora) => {
-    TransportadoraService.updateById(id, data)
+    TransportadoraService.updateById(id, data, idEmissorSelecionado, header)
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
         } else {
           clearForm();
-          refreshPage();
+          refreshPage('');
         }
       });
   };
@@ -102,7 +120,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod }: ModalProps) {
           <ModalHeader>Cadastro de Transportadora</ModalHeader>
           <ModalCloseButton onClick={clearForm}/>
           <ModalBody>
-            <FormFields editCod={editCod} isEditing={isEditing} />
+            <FormFields getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} />
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">

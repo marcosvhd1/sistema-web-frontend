@@ -8,9 +8,11 @@ import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
 import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
 import { useAlertTransportadoraContext } from '../../../Contexts/AlertDialog/AlertTransportadoraContext';
+import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalTransportadora } from '../../../Contexts/Modal/TransportadoraContext';
 import { ApiException } from '../../../services/api/ApiException';
 import { ITransportadora, TransportadoraService } from '../../../services/api/transportadora/TransportadoraService';
+import { getDecrypted } from '../../../utils/crypto';
 import { FormModal } from './components/Form/FormModal';
 import { SearchBox } from './components/SearchBox';
 
@@ -43,15 +45,49 @@ export function Transportadora() {
   ///////////////////////////////////
   const navigate = useNavigate();
   const toast = useToast();
+  const { idEmissorSelecionado } = useEmissorContext();
+  const [cod, setCod] = useState<number>(1);
+
+
+  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
+  const TOKEN = LOCAL_DATA?.user.accessToken;
+
+  const HEADERS = {
+    headers: {
+      'Authorization': TOKEN
+    }
+  };
 
   useEffect(() => {
-    getTransportadora();
     navigate(`?page=${currentPage}&limit=${limitRegistros}`);
-  }, [currentPage, description, limitRegistros, totalClients]);
+  }, [currentPage, limitRegistros, totalClients]);
+
+  useEffect(() => {
+    getTransportadora('');
+  }, [currentPage]);
+
+  useEffect(() => {
+    getTransportadora('');
+  }, [limitRegistros]);
 
   useEffect(() => {
     handleChangeTotalPage();
-  }, [totalClients]);
+  }, [totalClients, limitRegistros]);
+
+  const getLastCod = () => {
+    TransportadoraService.getLastCod(idEmissorSelecionado, HEADERS)
+      .then((result) => {
+        if (isEditing) {
+          setCod(editCod);
+        } else {
+          if (result === null) {
+            setCod(1);
+          } else {
+            setCod(parseInt(result) + 1);
+          }
+        }
+      });
+  };
 
 
   const handleChangeTotalPage = () => {
@@ -63,8 +99,8 @@ export function Transportadora() {
     setPages(arrayPages);
   };
 
-  const getTransportadora = () => {
-    TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, filter, description)
+  const getTransportadora = (description: string) => {
+    TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -77,7 +113,7 @@ export function Transportadora() {
   };
 
   const handleDeleteService = (transportadoraId: number) => {
-    TransportadoraService.deleteById(transportadoraId)
+    TransportadoraService.deleteById(transportadoraId, idEmissorSelecionado, HEADERS)
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -116,7 +152,7 @@ export function Transportadora() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox stateDescription={setDescription} changeEdit={setIsEditing} stateFilter={setFilter}>
+        <SearchBox getCod={getLastCod} getTransportadora={getTransportadora} changeEdit={setIsEditing} stateFilter={setFilter}>
           <DataTable headers={headers}>
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
@@ -141,10 +177,10 @@ export function Transportadora() {
           </DataTable>
           <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
-            <Button isDisabled={currentPage === pages.length || data.length === 0} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
+            <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal editCod={editCod} refreshPage={getTransportadora} id={id} isEditing={isEditing} />
+        <FormModal getCod={getLastCod} header={HEADERS} cod={cod} editCod={editCod} refreshPage={getTransportadora} id={id} isEditing={isEditing} />
         <DeleteAlertDialog label="Transportadora" deleteFunction={handleDeleteService} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

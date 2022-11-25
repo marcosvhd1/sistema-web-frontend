@@ -10,23 +10,26 @@ import { useModalTransportadora } from '../../../../Contexts/Modal/Transportador
 
 interface SearchBoxProps {
   children: ReactNode;
+  getCod: () => void
+  getTransportadora: (description: string) => void;
   changeEdit: (value: React.SetStateAction<any>) => void;
   stateFilter: (value: React.SetStateAction<any>) => void;
-  stateDescription: (value: React.SetStateAction<any>) => void;
+
 }
 
-export function SearchBox({ children, changeEdit, stateFilter, stateDescription }: SearchBoxProps) {
+export function SearchBox({ children, changeEdit, stateFilter, getTransportadora, getCod}: SearchBoxProps) {
   const { onOpen } = useModalTransportadora();
   const { register, handleSubmit } = useForm();
 
   const openModal = () => {
+    getCod();
     onOpen();
     changeEdit(false);
   };
 
   const HandlegetTransportadoraByFilter = (data: FieldValues) => {
     const { description } = data;
-    stateDescription(description);
+    getTransportadora(description);
   };
 
 

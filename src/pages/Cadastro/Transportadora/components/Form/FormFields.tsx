@@ -1,38 +1,33 @@
-import { useState, useEffect } from 'react';
 import { Divider, Flex, Input, Select, Text, Textarea, useColorMode } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../../../components/Form/FormContainer';
 import { useCidades } from '../../../../../hooks/useCidades';
 import { useEstados } from '../../../../../hooks/useEstados';
-import { ITransportadora, TransportadoraService } from '../../../../../services/api/transportadora/TransportadoraService';
+import { ITransportadora } from '../../../../../services/api/transportadora/TransportadoraService';
 
 interface IFormFields {
   editCod: number
   isEditing: boolean
+  getCod: () => void
+  cod: number
 }
 
-export function FormFields({ editCod, isEditing }:IFormFields) {
+export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
   const [selectedEstadoVeiculo, setSelectedEstadoVeiculo] = useState<string>('');
   const [selectedEstado, setSelectedEstado] = useState<string>('');
   const { estados } = useEstados();
   const { cidades } = useCidades({ uf: selectedEstado });
-  const { register } = useFormContext<ITransportadora>();
-  const [cod, setCod] = useState<number>(1);
+  const { register, setFocus } = useFormContext<ITransportadora>();
   const { colorMode } = useColorMode();
 
 
   useEffect(() => {
-    TransportadoraService.getLastCod().then((result) => {
-      if (isEditing) {
-        setCod(editCod);
-      } else {
-        if (result === null) {
-          setCod(1);
-        } else {
-          setCod(parseInt(result) + 1);
-        }
-      }
-    });
+    getCod();
+    setFocus('cod');
+    setTimeout(() => {
+      setFocus('razao');
+    }, 100);
   }, []);
 
   return (

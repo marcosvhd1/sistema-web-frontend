@@ -32,7 +32,7 @@ import { IClient } from '../../../../../services/api/clientes/ClientService';
 import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 
 interface ModalProps {
-  changeEdit: (value: React.SetStateAction<any>) => void
+  // changeEdit: (value: React.SetStateAction<any>) => void
   refreshPage: (description: string) => void
   getCod: () => void
   cod: number
