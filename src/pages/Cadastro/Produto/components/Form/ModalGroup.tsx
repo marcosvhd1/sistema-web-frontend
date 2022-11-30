@@ -13,9 +13,10 @@ import { GroupService, IGroup } from '../../../../../services/api/produtos/Group
 interface IGroupModal {
   isMarca: boolean
   header: any
+  refreshData: () => void
 }
 
-export function GroupModal({ isMarca, header }: IGroupModal) {
+export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
   const {isOpen, onClose} = useModalGroup();
   const {isOpen: isAberto, onOpen, onClose: aoFechar} = useAlertProductGroupContext();
   const { idEmissorSelecionado } = useEmissorContext();
@@ -31,6 +32,7 @@ export function GroupModal({ isMarca, header }: IGroupModal) {
     methods.reset({
       descricao: ''
     });
+    refreshData();
   };
 
   const getDados = async () => {
@@ -48,7 +50,7 @@ export function GroupModal({ isMarca, header }: IGroupModal) {
     setTimeout(() => {
       methods.setFocus('descricao');
     }, 100);
-  }, [isMarca]);
+  }, []);
 
   const submitData = async () => {
     const dataToCreate = {

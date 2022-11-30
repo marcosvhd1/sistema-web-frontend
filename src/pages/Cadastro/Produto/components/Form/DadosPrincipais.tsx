@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FcPlus } from 'react-icons/fc';
 import { FormContainer } from '../../../../../components/Form/FormContainer';
+import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 import { useModalGroup } from '../../../../../Contexts/Modal/GroupConxtext';
+import { ApiException } from '../../../../../services/api/ApiException';
+import { GroupService, IGroup } from '../../../../../services/api/produtos/GroupService';
 import { IProduct } from '../../../../../services/api/produtos/ProductService';
 import { GroupModal } from './ModalGroup';
 
@@ -22,9 +25,12 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod, header }: IFo
   const { colorMode } = useColorMode();
   const {onOpen} = useModalGroup();
   const [isMarca, setIsMarca] = useState<boolean>(false);
+  const { idEmissorSelecionado } = useEmissorContext();
+  const [data, setData] = useState<IGroup[]>([]);
 
   useEffect(() => {
     getCod();
+    getDados();
     setFocus('nprod');
     setTimeout(() => {
       setFocus('descricao');
@@ -39,6 +45,17 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod, header }: IFo
     setIsMarca(false);
     onOpen();
   };
+
+  const getDados = async () => {
+    GroupService.getAll(idEmissorSelecionado, header)
+      .then((result: any) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          setData(result.data);
+        }});
+  };
+
 
   return (
     <Flex w={{md: '51rem', lg: '58rem'}} h='20rem'  gap="2" direction="column">
@@ -77,7 +94,17 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod, header }: IFo
           <Flex gap="2">
             <Flex w='100%' align='center' gap='2'>
               <FormContainer label="Marca" >
-                <Select id="marca" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} >
+                <Select id="marca" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('marca')} >
+                  <option value=''></option>
+                  {data != undefined ? data.map((data) => (
+                    data.tipo.toUpperCase() === 'MARCA'
+                      ?
+                      <option key={data.id} value={data.descricao}>{data.descricao}</option>
+                      :
+                      <></>
+                  ))
+                    :
+                    <></>}
                 </Select>
               </FormContainer>
               <FormContainer label='' width="2rem">
@@ -87,7 +114,17 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod, header }: IFo
           </Flex>
           <Flex gap="2">
             <FormContainer label="Grupo">
-              <Select id="grupo" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
+              <Select id="grupo" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('grupo')} >
+                <option value=''></option>
+                {data != undefined ? data.map((data) => (
+                  data.tipo.toUpperCase() === 'GRUPO'
+                    ?
+                    <option key={data.id} value={data.descricao}>{data.descricao}</option>
+                    :
+                    <></>
+                ))
+                  :
+                  <></>}
               </Select>
             </FormContainer>
             <FormContainer label='' width="2rem">
@@ -112,7 +149,7 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod, header }: IFo
       <FormContainer label="Anotações">
         <Textarea id="anotacoes" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('anotacoes')}/>
       </FormContainer>
-      <GroupModal header={header} isMarca={isMarca}/>
+      <GroupModal refreshData={getDados} header={header} isMarca={isMarca}/>
     </Flex>
   );
 }

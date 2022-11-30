@@ -17,8 +17,14 @@ const getAll = async (idEmissorSelecionado: number, HEADERS: any): Promise<IGrou
 };
 
 const create = async (dataToCreate: Omit<IGroup, 'id'>, HEADERS: any) => {
+  const data = {
+    id_emissor: dataToCreate.id_emissor,
+    descricao: dataToCreate.descricao,
+    tipo: dataToCreate.tipo
+  };
+
   try {
-    return await Api().post('/grupos', dataToCreate, HEADERS);
+    return await Api().post('/grupos', data, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message|| 'Erro ao criar o registro.');
   }
