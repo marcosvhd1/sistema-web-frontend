@@ -127,7 +127,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod, cod, header, ge
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <DadosPrincipais getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} />
+                  <DadosPrincipais header={header} getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} />
                 </TabPanel>
                 <TabPanel>
                   <DadosFiscais />

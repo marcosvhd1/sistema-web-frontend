@@ -23,7 +23,7 @@ export function DeleteAlertDialog({ id, deleteFunction, label, isOpen, onClose }
       <AlertDialogOverlay />
 
       <AlertDialogContent>
-        <AlertDialogHeader>Deseja Excluir o {label}?</AlertDialogHeader>
+        <AlertDialogHeader>Deseja Excluir {label.toUpperCase() === 'MARCA' ? 'a' : 'o'} {label}?</AlertDialogHeader>
         <AlertDialogCloseButton />
         <AlertDialogBody>
           Essa ação não poderá ser desfeita.

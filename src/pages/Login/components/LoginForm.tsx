@@ -1,4 +1,5 @@
 import { Button, Flex, Input, InputGroup, InputLeftAddon, Stack, useToast } from '@chakra-ui/react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiAtSign, FiLock, FiUser } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
@@ -62,6 +63,10 @@ export function LoginForm() {
       });
     }
   };
+
+  useEffect(()=> {
+    setFocus('cnpjcpf');
+  }, []);
 
 
   return (

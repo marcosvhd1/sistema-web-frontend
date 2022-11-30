@@ -4,19 +4,24 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FcPlus } from 'react-icons/fc';
 import { FormContainer } from '../../../../../components/Form/FormContainer';
+import { useModalGroup } from '../../../../../Contexts/Modal/GroupConxtext';
 import { IProduct } from '../../../../../services/api/produtos/ProductService';
+import { GroupModal } from './ModalGroup';
 
 interface IFormFields {
   editCod: number
   getCod: () => void
   cod: number
   isEditing: boolean
+  header: any
 }
 
-export function DadosPrincipais({ editCod, isEditing, getCod, cod }: IFormFields) {
+export function DadosPrincipais({ editCod, isEditing, getCod, cod, header }: IFormFields) {
   const { register, setFocus } = useFormContext<IProduct>();
   const [active, setActive] = useState<boolean>(true);
   const { colorMode } = useColorMode();
+  const {onOpen} = useModalGroup();
+  const [isMarca, setIsMarca] = useState<boolean>(false);
 
   useEffect(() => {
     getCod();
@@ -25,6 +30,15 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod }: IFormFields
       setFocus('descricao');
     }, 100);
   }, []);
+
+  const openMarca = () => {
+    setIsMarca(true);
+    onOpen();
+  };
+  const openGrupo = () => {
+    setIsMarca(false);
+    onOpen();
+  };
 
   return (
     <Flex w={{md: '51rem', lg: '58rem'}} h='20rem'  gap="2" direction="column">
@@ -67,7 +81,7 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod }: IFormFields
                 </Select>
               </FormContainer>
               <FormContainer label='' width="2rem">
-                <IconButton mt='1.3rem'  variant='outline' fontSize="2xl" aria-label='Botao de adicionar grupo' icon={<FcPlus />} _hover={{'filter': 'brightness(0.8)'}} transition='0.3s' />
+                <IconButton onClick={openMarca} mt='1.3rem'  variant='outline' fontSize="2xl" aria-label='Botao de adicionar grupo' icon={<FcPlus />} _hover={{'filter': 'brightness(0.8)'}} transition='0.3s' />
               </FormContainer>
             </Flex>
           </Flex>
@@ -77,7 +91,7 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod }: IFormFields
               </Select>
             </FormContainer>
             <FormContainer label='' width="2rem">
-              <IconButton mt='1.3rem'  variant='outline' fontSize="2xl" aria-label='Botao de adicionar grupo' icon={<FcPlus />}  _hover={{'filter': 'brightness(0.8)'}} transition='0.3s' />
+              <IconButton onClick={openGrupo} mt='1.3rem'  variant='outline' fontSize="2xl" aria-label='Botao de adicionar grupo' icon={<FcPlus />}  _hover={{'filter': 'brightness(0.8)'}} transition='0.3s' />
             </FormContainer>
           </Flex>
           <Flex w="100%" gap='3' justify='space-between'>
@@ -98,6 +112,7 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod }: IFormFields
       <FormContainer label="Anotações">
         <Textarea id="anotacoes" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('anotacoes')}/>
       </FormContainer>
+      <GroupModal header={header} isMarca={isMarca}/>
     </Flex>
   );
 }
