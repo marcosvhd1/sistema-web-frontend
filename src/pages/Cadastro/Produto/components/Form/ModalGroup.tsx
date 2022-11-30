@@ -19,6 +19,7 @@ export function GroupModal({ isMarca, header }: IGroupModal) {
   const {isOpen, onClose} = useModalGroup();
   const {isOpen: isAberto, onOpen, onClose: aoFechar} = useAlertProductGroupContext();
   const { idEmissorSelecionado } = useEmissorContext();
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [id, setId] = useState<number>(0);
   const { colorMode } = useColorMode();
   const [data, setData] = useState<IGroup[]>([]);
@@ -44,10 +45,14 @@ export function GroupModal({ isMarca, header }: IGroupModal) {
 
   useEffect(() => {
     getDados();
-  }, []);
+    setTimeout(() => {
+      methods.setFocus('descricao');
+    }, 100);
+  }, [isMarca]);
 
   const submitData = async () => {
     const dataToCreate = {
+      'id': id,
       'id_emissor': idEmissorSelecionado,
       'descricao': methods.watch(('descricao')),
       'tipo': isMarca ? 'Marca' : 'Grupo'
@@ -61,8 +66,13 @@ export function GroupModal({ isMarca, header }: IGroupModal) {
         duration: 2000,
         isClosable: true,
       });
+    } else if (isEditing) {
+      handleUpdateProduct(dataToCreate);
+      getDados();
+      setIsEditing(false);
     } else {
       await GroupService.create(dataToCreate, header);
+      getDados();
     }
   };
 
@@ -92,11 +102,34 @@ export function GroupModal({ isMarca, header }: IGroupModal) {
         }
       });
     aoFechar();
+
   };
 
   const handleOpenDialog = (id: number) => {
+    methods.reset({
+      descricao: ''
+    });
     onOpen();
     setId(id);
+    setIsEditing(false);
+  };
+
+  const handleEditProductGroup = async (id: number) => {
+    const groupToUpdate = data.find((group) => group.id === id);
+    if (groupToUpdate) {
+      setId(id);
+      methods.reset({
+        descricao: groupToUpdate.descricao
+      });
+      setIsEditing(true);
+      setTimeout(() => {
+        methods.setFocus('descricao');
+      }, 10);
+    }
+  };
+
+  const handleUpdateProduct = (data: IGroup) => {
+    GroupService.update(id, data, idEmissorSelecionado, header);
   };
 
 
@@ -120,7 +153,13 @@ export function GroupModal({ isMarca, header }: IGroupModal) {
           <TableContainer w="90%" >
             <Flex gap='3' align='center' mb='1rem'>
               <Input {...methods.register('descricao')} placeholder={isMarca ? 'Adicionar Marca' : 'Adicionar Grupo'} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}/>
-              <IconButton onClick={addGrupo} variant='outline' fontSize="2xl" aria-label='Botao de adicionar grupo' icon={<FcPlus />}  _hover={{'filter': 'brightness(0.8)'}} transition='0.3s' />
+              {
+                isEditing
+                  ?
+                  <Button variant='outline' colorScheme="green" onClick={addGrupo}><Icon as={FiCheck} mr={1} />Editar</Button>
+                  :
+                  <IconButton onClick={addGrupo} variant='outline' fontSize="2xl" aria-label='Botao de adicionar grupo' icon={<FcPlus />}  _hover={{'filter': 'brightness(0.8)'}} transition='0.3s' />
+              }
             </Flex>
             <Table colorScheme='blackAlpha' size="sm" variant='simple' >
               <Thead bg="whiteAlpha.100">
@@ -146,7 +185,7 @@ export function GroupModal({ isMarca, header }: IGroupModal) {
                           <>
                             <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao!}</Td>
                             <Td style={{ 'textAlign': 'center', 'width': '1rem' }}>
-                              <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
+                              <Button onClick={() => handleEditProductGroup(data.id)} variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
                                 <Icon color="orange.300" as={FiEdit} />
                               </Button>
                               <Button onClick={() => handleOpenDialog(data.id)} variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
@@ -169,7 +208,7 @@ export function GroupModal({ isMarca, header }: IGroupModal) {
                           <>
                             <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
                             <Td style={{ 'textAlign': 'center' }}>
-                              <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
+                              <Button onClick={() => handleEditProductGroup(data.id)} variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
                                 <Icon color="orange.300" as={FiEdit} />
                               </Button>
                               <Button onClick={() => handleOpenDialog(data.id)} variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
@@ -190,7 +229,7 @@ export function GroupModal({ isMarca, header }: IGroupModal) {
         </ModalBody>
         <ModalFooter>
           <Flex w="100%" justify="space-between" >
-            <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />Salvar</Button>
+            <Button variant='solid' colorScheme="green" onClick={clearForm}><Icon as={FiCheck} mr={1} />Salvar</Button>
             <Button onClick={clearForm} colorScheme='red' variant="outline" mr={3}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
           </Flex>
         </ModalFooter>

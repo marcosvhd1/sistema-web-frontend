@@ -19,11 +19,11 @@ import { SearchBox } from './components/SearchBox';
 const headers: { key: string, label: string }[] = [
   { key: 'id', label: 'Código' },
   { key: 'descricao', label: 'Descrição' },
+  { key: 'preco', label: 'Preço' },
   { key: 'referencia', label: 'Referência' },
   { key: 'marca', label: 'Marca' },
   { key: 'grupo', label: 'Grupo' },
   { key: 'un', label: 'UN' },
-  { key: 'preco', label: 'Preço' },
   { key: 'ncm', label: 'NCM' },
   { key: 'status', label: 'Status' }
 ];
@@ -135,7 +135,7 @@ export function Produto() {
     setId(id);
   };
 
-  const handleEditService = async (id: number) => {
+  const handleEditProduct = async (id: number) => {
     const productToUpdate = data.find((product) => product.id === id);
     if (productToUpdate) {
       setId(id);
@@ -157,15 +157,15 @@ export function Produto() {
               <Tr key={data.id}>
                 <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.nprod).slice(-4)}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + (data.preco).toString().replace('.', ',') : ''}</Td>
                 <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.referencia}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.marca}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.grupo}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.un}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + (data.preco).toString().replace('.', ',') : ''}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.ncm}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.status}</Td>
                 <Td style={{ 'textAlign': 'center' }}>
-                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditService(data.id)}>
+                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditProduct(data.id)}>
                     <Icon color="orange.300" as={FiEdit} />
                   </Button>
                   <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
