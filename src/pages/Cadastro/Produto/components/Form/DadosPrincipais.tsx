@@ -17,10 +17,12 @@ interface IFormFields {
   cod: number
   isEditing: boolean
   header: any
+  marca: string
+  grupo: string
 }
 
-export function DadosPrincipais({ editCod, isEditing, getCod, cod, header }: IFormFields) {
-  const { register, setFocus } = useFormContext<IProduct>();
+export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod, header }: IFormFields) {
+  const { register, setFocus, setValue } = useFormContext<IProduct>();
   const [active, setActive] = useState<boolean>(true);
   const { colorMode } = useColorMode();
   const {onOpen} = useModalGroup();
@@ -36,6 +38,21 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod, header }: IFo
       setFocus('descricao');
     }, 100);
   }, []);
+
+  useEffect(() => {
+    if (isEditing) {
+      setTimeout(() => {
+        setValue('marca', marca);
+        setValue('grupo', grupo);
+      }, 100);
+    } else {
+      setTimeout(() => {
+        setValue('marca', '');
+        setValue('grupo', '');
+
+      }, 100);
+    }
+  },[]);
 
   const openMarca = () => {
     setIsMarca(true);
@@ -101,10 +118,10 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod, header }: IFo
                       ?
                       <option key={data.id} value={data.descricao}>{data.descricao}</option>
                       :
-                      <></>
+                      ''
                   ))
                     :
-                    <></>}
+                    ''}
                 </Select>
               </FormContainer>
               <FormContainer label='' width="2rem">
@@ -119,12 +136,12 @@ export function DadosPrincipais({ editCod, isEditing, getCod, cod, header }: IFo
                 {data != undefined ? data.map((data) => (
                   data.tipo.toUpperCase() === 'GRUPO'
                     ?
-                    <option key={data.id} value={data.descricao}>{data.descricao}</option>
+                    <option key={data.id} id={data.descricao} value={data.descricao}>{data.descricao}</option>
                     :
-                    <></>
+                    ''
                 ))
                   :
-                  <></>}
+                  ''}
               </Select>
             </FormContainer>
             <FormContainer label='' width="2rem">

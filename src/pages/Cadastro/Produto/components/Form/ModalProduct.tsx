@@ -16,10 +16,12 @@ interface ModalProps {
   id: number
   editCod: number
   header: any
+  marca: string
+  grupo: string
 }
 
 
-export function FormModal({ isEditing, id, refreshPage, editCod, cod, header, getCod }: ModalProps) {
+export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, cod, header, getCod }: ModalProps) {
   const { isOpen, onClose } = useModalProduct();
   const methods = useFormContext<IProduct>();
   const { colorMode } = useColorMode();
@@ -127,7 +129,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod, cod, header, ge
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <DadosPrincipais header={header} getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} />
+                  <DadosPrincipais marca={marca} grupo={grupo} header={header} getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} />
                 </TabPanel>
                 <TabPanel>
                   <DadosFiscais />

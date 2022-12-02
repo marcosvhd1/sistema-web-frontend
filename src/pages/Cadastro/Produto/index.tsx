@@ -47,6 +47,8 @@ export function Produto() {
   const toast = useToast();
   const { idEmissorSelecionado } = useEmissorContext();
   const [cod, setCod] = useState<number>(1);
+  const [marca, setMarca] = useState<string>('');
+  const [grupo, setGrupo] = useState<string>('');
 
   const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
   const TOKEN = LOCAL_DATA?.user.accessToken;
@@ -141,6 +143,8 @@ export function Produto() {
       setId(id);
       openEditModal();
       setEditCod(productToUpdate.nprod);
+      setMarca(productToUpdate.marca);
+      setGrupo(productToUpdate.grupo);
       methods.reset(productToUpdate);
       setIsEditing(true);
     }
@@ -151,7 +155,7 @@ export function Produto() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox getCod={getLastCod} getProduct={getProduct} changeEdit={setIsEditing} setFilter={setFilter}>
+        <SearchBox header={HEADERS} getCod={getLastCod} getProduct={getProduct} changeEdit={setIsEditing} setFilter={setFilter}>
           <DataTable headers={headers}>
             {data != undefined ? data.map((data) => (
               <Tr key={data.id}>
@@ -180,7 +184,7 @@ export function Produto() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getProduct} id={id} isEditing={isEditing} />
+        <FormModal marca={marca} grupo={grupo} getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getProduct} id={id} isEditing={isEditing} />
         <DeleteAlertDialog label="Produto" deleteFunction={handleDeleteProduct} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

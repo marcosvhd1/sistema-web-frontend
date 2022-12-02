@@ -30,7 +30,7 @@ export function DadosFiscais() {
           </Flex>
           <Flex gap="2">
             <FormContainer width="8rem" label="CST IPI" >
-              <Input id="cst_ipi" type="number" w="8rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cst_pis', {
+              <Input id="cst_ipi" type="number" w="8rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cst_ipi', {
                 setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
