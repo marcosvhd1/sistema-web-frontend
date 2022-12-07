@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
 
@@ -6,24 +6,21 @@ import { Button, Flex, Icon, Input, Select, Text } from '@chakra-ui/react';
 
 import { FiSearch } from 'react-icons/fi';
 import { useModalProduct } from '../../../../Contexts/Modal/ProductContext';
-import { GroupService, IGroup } from '../../../../services/api/produtos/GroupService';
-import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
-import { ApiException } from '../../../../services/api/ApiException';
+import { useGroupContext } from '../../../../Contexts/ProductGroupContext';
 
 interface SearchBoxProps {
   children: ReactNode;
   getCod: () => void
   getProduct: (description: string) => void;
+  getProductByGroup: (description: string, group: string) => void;
   changeEdit: (value: React.SetStateAction<any>) => void;
   setFilter: (value: React.SetStateAction<any>) => void;
-  header: any
 }
 
-export function SearchBox({children, setFilter, getProduct, getCod, changeEdit, header }: SearchBoxProps) {
+export function SearchBox({ children, setFilter, getProduct, getProductByGroup, getCod, changeEdit }: SearchBoxProps) {
   const { onOpen } = useModalProduct();
   const { register, handleSubmit } = useForm();
-  const { idEmissorSelecionado } = useEmissorContext();
-  const [data, setData] = useState<IGroup[]>([]);
+  const { data, getDados } = useGroupContext();
 
   const openModal = () => {
     getCod();
@@ -33,21 +30,11 @@ export function SearchBox({children, setFilter, getProduct, getCod, changeEdit, 
 
   useEffect(() => {
     getDados();
-  },[]);
+  }, []);
 
   const HandleGetProductByFilter = (data: FieldValues) => {
-    const { description } = data;
-    getProduct(description);
-  };
-
-  const getDados = async () => {
-    GroupService.getAll(idEmissorSelecionado, header)
-      .then((result: any) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          setData(result.data);
-        }});
+    const { description, group } = data;
+    group ? getProductByGroup(description, group) : getProduct(description);
   };
 
   return (
@@ -64,8 +51,8 @@ export function SearchBox({children, setFilter, getProduct, getCod, changeEdit, 
               <option value='marca'>Marca</option>
               <option value='ncm'>NCM</option>
             </Select>
-            <Input placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')}/>
-            <Select placeholder="Selecione o Grupo" w="40%" mr="3">
+            <Input placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
+            <Select placeholder="Selecione o Grupo" w="40%" mr="3" {...register('group')}>
               {
                 data != undefined ? data.map((data) => (
                   data.tipo.toUpperCase() === 'GRUPO'
@@ -78,7 +65,7 @@ export function SearchBox({children, setFilter, getProduct, getCod, changeEdit, 
                   ''
               }
             </Select>
-            <Button type="submit"><Icon as={FiSearch} /></Button>
+            <Button type="submit"><Icon as={FiSearch} onClick={getDados} /></Button>
           </Flex>
           <Button variant="outline" onClick={openModal} colorScheme="green">Cadastrar Produto</Button>
         </Flex>

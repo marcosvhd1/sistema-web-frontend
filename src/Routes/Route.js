@@ -25,6 +25,9 @@ import { ModalEmissorProvider } from '../Contexts/Modal/EmissorContext';
 import { EmissorProvider } from '../Contexts/EmissorProvider';
 import { ModalGroupProvider } from '../Contexts/Modal/GroupConxtext';
 import { AlertProductGroupContextProvider } from '../Contexts/AlertDialog/AlertProductGroupContext';
+import { ProductGroupProvider } from '../Contexts/ProductGroupContext';
+import { ModalUserProvider } from '../Contexts/Modal/UserContext';
+import { UnauthorizedUser } from '../pages/Unauthorized';
 
 const ROLES = {
   'normal': 0,
@@ -44,33 +47,34 @@ export default function MainRoutes() {
                     <ModalServiceProvider>
                       <ModalTransportadoraProvider>
                         <ModalEmissorProvider>
-                          <AlertClientContextProvider>
-                            <AlertServiceContextProvider>
-                              <AlertTransportadoraContextProvider>
-                                <AlertProductContextProvider>
-                                  <AlertProductGroupContextProvider>
-                                    <Routes>
-                                      <Route index element={<Login />} />
+                          <ModalUserProvider>
+                            <AlertClientContextProvider>
+                              <AlertServiceContextProvider>
+                                <AlertTransportadoraContextProvider>
+                                  <AlertProductContextProvider>
+                                    <AlertProductGroupContextProvider>
+                                      <ProductGroupProvider>
+                                        <Routes>
+                                          <Route index element={<Login />} />
 
-                                      <Route element={<RequireAuth  allowedRoles={[ROLES.admin, ROLES.normal]} />}>
-                                        <Route path="/app" element={<Home />} />
-                                        <Route path="/app/cadastro/clientes" element={<Cliente />} />
-                                        <Route path="/app/cadastro/produtos" element={<Produto />} />
-                                        <Route path="/app/cadastro/servicos" element={<Servico />} />
-                                        <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
-                                      </Route>
+                                          <Route element={<RequireAuth allowedRoles={[ROLES.admin, ROLES.normal]} />}>
+                                            <Route path="/app" element={<Home />} />
+                                            <Route path="/app/unauthorized" element={<UnauthorizedUser />} />
+                                            <Route path="/app/cadastro/clientes" element={<Cliente />} />
+                                            <Route path="/app/cadastro/produtos" element={<Produto />} />
+                                            <Route path="/app/cadastro/servicos" element={<Servico />} />
+                                            <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
+                                          </Route>
 
-                                      <Route element={<RequireAuth  allowedRoles={[ROLES.admin]} />}>
-                                        <Route path="/app/usuarios" element={<Usuario />} />
-                                      </Route>
-
-                                      <Route path="*" element={<PageNotFound />} />
-                                    </Routes>
-                                  </AlertProductGroupContextProvider>
-                                </AlertProductContextProvider>
-                              </AlertTransportadoraContextProvider>
-                            </AlertServiceContextProvider>
-                          </AlertClientContextProvider>
+                                          <Route path="*" element={<PageNotFound />} />
+                                        </Routes>
+                                      </ProductGroupProvider>
+                                    </AlertProductGroupContextProvider>
+                                  </AlertProductContextProvider>
+                                </AlertTransportadoraContextProvider>
+                              </AlertServiceContextProvider>
+                            </AlertClientContextProvider>
+                          </ModalUserProvider>
                         </ModalEmissorProvider>
                       </ModalTransportadoraProvider>
                     </ModalServiceProvider>

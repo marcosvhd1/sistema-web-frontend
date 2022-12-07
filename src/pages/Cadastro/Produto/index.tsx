@@ -110,6 +110,17 @@ export function Produto() {
         }
       });
   };
+  const getProductByGroup = (description: string, group: string) => {
+    ProductService.getProductByGroup(currentPage, limitRegistros, filter, description, group, idEmissorSelecionado, HEADERS)
+      .then((result: any) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          setData(result.data);
+          setTotalClients(parseInt(result.headers['qtd']));
+        }
+      });
+  };
 
   const handleDeleteProduct = (clientId: number) => {
     ProductService.deleteById(clientId, idEmissorSelecionado, HEADERS)
@@ -155,7 +166,7 @@ export function Produto() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox header={HEADERS} getCod={getLastCod} getProduct={getProduct} changeEdit={setIsEditing} setFilter={setFilter}>
+        <SearchBox getProductByGroup={getProductByGroup} getCod={getLastCod} getProduct={getProduct} changeEdit={setIsEditing} setFilter={setFilter}>
           <DataTable headers={headers}>
             {data != undefined ? data.map((data) => (
               <Tr key={data.id}>

@@ -1,12 +1,13 @@
 import { Button, Flex, Icon, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorMode, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useFormContext, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { FcPlus } from 'react-icons/fc';
 import { FiCheck, FiEdit, FiSlash, FiTrash2 } from 'react-icons/fi';
 import { DeleteAlertDialog } from '../../../../../components/Utils/DeleteAlertDialog';
 import { useAlertProductGroupContext } from '../../../../../Contexts/AlertDialog/AlertProductGroupContext';
 import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 import { useModalGroup } from '../../../../../Contexts/Modal/GroupConxtext';
+import { useGroupContext } from '../../../../../Contexts/ProductGroupContext';
 import { ApiException } from '../../../../../services/api/ApiException';
 import { GroupService, IGroup } from '../../../../../services/api/produtos/GroupService';
 
@@ -17,13 +18,13 @@ interface IGroupModal {
 }
 
 export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
-  const {isOpen, onClose} = useModalGroup();
-  const {isOpen: isAberto, onOpen, onClose: aoFechar} = useAlertProductGroupContext();
+  const { isOpen, onClose } = useModalGroup();
+  const { isOpen: isAberto, onOpen, onClose: aoFechar } = useAlertProductGroupContext();
   const { idEmissorSelecionado } = useEmissorContext();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [id, setId] = useState<number>(0);
   const { colorMode } = useColorMode();
-  const [data, setData] = useState<IGroup[]>([]);
+  const { data, getDados } = useGroupContext();
   const methods = useForm<IGroup>();
   const toast = useToast();
 
@@ -33,16 +34,6 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
       descricao: ''
     });
     refreshData();
-  };
-
-  const getDados = async () => {
-    GroupService.getAll(idEmissorSelecionado, header)
-      .then((result: any) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          setData(result.data);
-        }});
   };
 
   useEffect(() => {
@@ -136,7 +127,6 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
 
 
   return (
-
     <Modal
       isOpen={isOpen}
       onClose={onClose}
@@ -150,22 +140,22 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
         <ModalHeader>
           {isMarca ? 'Marcas' : 'Grupos'}
         </ModalHeader>
-        <ModalCloseButton onClick={clearForm}/>
+        <ModalCloseButton onClick={clearForm} />
         <ModalBody>
           <TableContainer w="90%" >
             <Flex gap='3' align='center' mb='1rem'>
-              <Input {...methods.register('descricao')} placeholder={isMarca ? 'Adicionar Marca' : 'Adicionar Grupo'} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}/>
+              <Input {...methods.register('descricao')} placeholder={isMarca ? 'Adicionar Marca' : 'Adicionar Grupo'} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} />
               {
                 isEditing
                   ?
                   <Button variant='outline' colorScheme="green" onClick={addGrupo}><Icon as={FiCheck} mr={1} />Editar</Button>
                   :
-                  <IconButton onClick={addGrupo} variant='outline' fontSize="2xl" aria-label='Botao de adicionar grupo' icon={<FcPlus />}  _hover={{'filter': 'brightness(0.8)'}} transition='0.3s' />
+                  <IconButton onClick={addGrupo} variant='outline' fontSize="2xl" aria-label='Botao de adicionar grupo' icon={<FcPlus />} _hover={{ 'filter': 'brightness(0.8)' }} transition='0.3s' />
               }
             </Flex>
             <Table colorScheme='blackAlpha' size="sm" variant='simple' >
               <Thead bg="whiteAlpha.100">
-                <Tr style={{'height': '2rem'}}>
+                <Tr style={{ 'height': '2rem' }}>
                   {
                     isMarca
                       ?
@@ -173,11 +163,11 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
                       :
                       <Th fontSize="0.7rem">Grupo</Th>
                   }
-                  <Th style={{'textAlign': 'center'}} fontSize="0.7rem">Ações</Th>
+                  <Th style={{ 'textAlign': 'center' }} fontSize="0.7rem">Ações</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                { isMarca
+                {isMarca
                   ?
                   data != undefined ? data.map((data) => (
                     <Tr key={data.id}>
@@ -236,7 +226,7 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
           </Flex>
         </ModalFooter>
       </ModalContent>
-      <DeleteAlertDialog label={isMarca ? 'Marca' : 'Grupo'} deleteFunction={handleDeleteGroup} onClose={aoFechar} isOpen={isAberto} id={id}/>
+      <DeleteAlertDialog label={isMarca ? 'Marca' : 'Grupo'} deleteFunction={handleDeleteGroup} onClose={aoFechar} isOpen={isAberto} id={id} />
     </Modal>
   );
 }
