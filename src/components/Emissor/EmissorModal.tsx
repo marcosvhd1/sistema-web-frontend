@@ -19,7 +19,6 @@ export function EmissorModal() {
   };
 
   const handleEmissorSelecionado = () => {
-
     if (idEmissorSelecionado === null || idEmissorSelecionado === 0) {
       toast({
         position: 'top',
@@ -29,9 +28,9 @@ export function EmissorModal() {
         duration: 2000,
         isClosable: true,
       });
-
     } else {
       onClose();
+      getCredenciais();
     }
   };
 

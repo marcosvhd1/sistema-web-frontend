@@ -25,6 +25,9 @@ export function SidebarNav() {
   const location = useLocation();
   const { onOpen: openUserModal } = useModalUser();
 
+  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
+  const permission = LOCAL_DATA?.user?.permissao;
+
   const handleOpenModal = () => {
     getEmissoresByUser();
     onOpen();
@@ -35,9 +38,6 @@ export function SidebarNav() {
       openUserModal();
     }
   };
-
-  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
-  const permission = LOCAL_DATA?.user?.permissao;
 
 
   return (
