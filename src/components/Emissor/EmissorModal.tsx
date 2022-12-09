@@ -40,7 +40,6 @@ export function EmissorModal() {
   }, []);
 
 
-
   return (
     <Modal
       isCentered

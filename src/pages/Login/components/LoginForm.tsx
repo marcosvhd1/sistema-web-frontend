@@ -49,8 +49,8 @@ export function LoginForm() {
       setIdUsuarioSelecionado(response.data.idUser);
       setIdEmissorSelecionado(response.data.ultimoEmissor);
       localStorage.setItem('user', cryptoData);
-      onOpen();
       getEmissoresByUser();
+      onOpen();
       navigate('/app');
 
     } catch (error: any) {
