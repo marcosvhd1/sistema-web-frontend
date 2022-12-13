@@ -54,7 +54,7 @@ const create = async (dataToCreate: Omit<IClient, 'id' | 'cod'>, HEADERS: any): 
 
 const updateById = async (id: number, dataToUpdate: IClient, idEmissorSelecionado: number, HEADERS: any): Promise<IClient | ApiException> => {
   try {
-    const { data } = await Api().put(`/clientes/${id}?id_emissor=${idEmissorSelecionado}`, dataToUpdate, HEADERS);
+    const { data } = await Api().put(`/clientes/${id}`, dataToUpdate, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');

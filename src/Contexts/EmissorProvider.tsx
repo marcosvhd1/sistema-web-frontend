@@ -9,12 +9,15 @@ type EmissorProviderProps = {
 
 interface IEmissore {
   emissor: any
+  emissorByUser: any
   idEmissorSelecionado: number
   getEmissoresByUser: () => void;
+  getNewEmissorByUserId: () => void;
   getCredenciais: () => void;
   handleGetUserInfo: () => void;
   updateUltimoEmissorSelecionado: () => void;
   setIdEmissorSelecionado: (value: React.SetStateAction<number>) => void;
+  setIdNewEmissorSelecionado: (value: React.SetStateAction<number>) => void;
   setIdUsuarioSelecionado: (value: React.SetStateAction<number>) => void;
 }
 
@@ -24,6 +27,8 @@ export function EmissorProvider({children}: EmissorProviderProps) {
   const [emissor, setEmissor] = useState<IEmissor[]>([]);
   const [idEmissorSelecionado, setIdEmissorSelecionado] = useState<number>(0);
   const [idUsuarioSelecionado, setIdUsuarioSelecionado] = useState<number>(0);
+  const [emissorByUser, setEmissorByUser] = useState<IEmissor[]>([]);
+  const [idNewEmissorSelecionado, setIdNewEmissorSelecionado] = useState<number>(0);
 
   const getEmissoresByUser = () => {
     EmissorService.getEmissores(idUsuarioSelecionado)
@@ -32,6 +37,17 @@ export function EmissorProvider({children}: EmissorProviderProps) {
           console.log(result.message);
         } else {
           setEmissor(result);
+        }
+      });
+  };
+
+  const getNewEmissorByUserId = () => {
+    EmissorService.getEmissores(idNewEmissorSelecionado)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          setEmissorByUser(result);
         }
       });
   };
@@ -67,7 +83,7 @@ export function EmissorProvider({children}: EmissorProviderProps) {
   };
 
   return (
-    <EmissorContext.Provider value={{ emissor, idEmissorSelecionado, setIdEmissorSelecionado, setIdUsuarioSelecionado, getEmissoresByUser, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais }}>
+    <EmissorContext.Provider value={{ emissor, idEmissorSelecionado, getNewEmissorByUserId, emissorByUser, setIdNewEmissorSelecionado, setIdEmissorSelecionado, setIdUsuarioSelecionado, getEmissoresByUser, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais }}>
       {children}
     </EmissorContext.Provider>
   );

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { FiCheck } from 'react-icons/fi';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { ApiException } from '../../../services/api/ApiException';
+import { IEmissor } from '../../../services/api/emissor/EmissorService';
 import { EmissorUsuarioService } from '../../../services/api/emissor/EmissorUsuarioService';
 import { EmpresaService } from '../../../services/api/empresas/EmpresaService';
 import { IUsuario, UsuarioService } from '../../../services/api/usuarios/UsuarioService';
@@ -12,12 +13,18 @@ import { getDecrypted } from '../../../utils/crypto';
 interface FormUserProps {
   isDisabled: boolean
   setIsDisabled: () => void
+  getUsers: () => void
+  dataToUpdate: IUsuario
+  id: number
+  isEditing: boolean
 }
 
-export function FormUser({ isDisabled, setIsDisabled }: FormUserProps) {
-  const { emissor, getEmissoresByUser } = useEmissorContext();
+export function FormUser({ isDisabled, setIsDisabled, getUsers, dataToUpdate, id, isEditing }: FormUserProps) {
+  const { emissor, emissorByUser, getNewEmissorByUserId,getEmissoresByUser, setIdNewEmissorSelecionado } = useEmissorContext();
   const [idEmpresa, setIdEmpresa] = useState<number>();
-  const [isCbChecked, setIsCbChecked] = useState<boolean>(false);
+  const [isTipoAdminChecked, setIsTipoAdminChecked] = useState<boolean>(false);
+  const [tipoAdmin, setTipoAdmin] = useState<number>(0);
+  const [idEmissor, setIdEmissor] = useState<number[]>([]);
   const toast = useToast();
   const { colorMode } = useColorMode();
   const methods = useForm();
@@ -36,9 +43,9 @@ export function FormUser({ isDisabled, setIsDisabled }: FormUserProps) {
     methods.reset({
       email: '',
       password: '',
-      emissores: false,
-      tipo_admin: false
     });
+    idEmissor.splice(0, idEmissor.length);
+    setIsTipoAdminChecked(false);
   };
 
   const getIdEmpresa = (cnpjcpf: string, HEADERS: any) => {
@@ -52,14 +59,36 @@ export function FormUser({ isDisabled, setIsDisabled }: FormUserProps) {
       });
   };
 
+  const getPermissaoAdmin = () => {
+    if (tipoAdmin === 0) {
+      setTipoAdmin(1);
+      setIsTipoAdminChecked(true);
+    } else {
+      setTipoAdmin(0);
+      setIsTipoAdminChecked(false);
+    }
+  };
+
+  const getEmissorId = (data: number) => {
+    const index = idEmissor.indexOf(data);
+    if (index > -1) {
+      const newArray = [...idEmissor];
+      newArray.splice(index, 1);
+      setIdEmissor(newArray);
+    } else {
+      const newArray = [...idEmissor, data];
+      setIdEmissor(newArray);
+    }
+  };
+
   const handleCreateUser = async (data: any) => {
-    const emissores = data.emissores;
     const dataToCreate = {
       'id_empresa': idEmpresa!,
       'email': data.email,
       'password': data.password,
-      'tipo_admin': parseInt(data.tipo_admin ? data.tipo_admin : 0),
-      'ultimo_emissor_selecionado':parseInt(emissores[0])
+      'tipo_admin': tipoAdmin,
+      'ultimo_emissor_selecionado':idEmissor[0],
+      'usuario_principal': 'Não'
     };
     const isUsuarioCadastrado: IUsuario[] = await UsuarioService.getUserId(idEmpresa!, dataToCreate.email, HEADERS);
 
@@ -72,7 +101,7 @@ export function FormUser({ isDisabled, setIsDisabled }: FormUserProps) {
         duration: 2500,
         isClosable: true,
       });
-    }else if (emissores.length === 0 || emissores === false ) {
+    }else if (idEmissor.length === 0) {
       toast({
         position: 'top',
         title: 'Erro ao cadastrar novo usuário.',
@@ -92,33 +121,63 @@ export function FormUser({ isDisabled, setIsDisabled }: FormUserProps) {
                 if (result instanceof ApiException) {
                   console.log(result.message);
                 } else {
-                  emissores.forEach((emi: number) => {
+                  idEmissor.forEach((id: number) => {
                     const dataEmissorUsuario = {
                       'id_usuario': result[0].id,
-                      'id_emissor': emi
+                      'id_emissor': id
                     };
                     EmissorUsuarioService.create(dataEmissorUsuario, HEADERS)
                       .then((result) => {
                         if (result instanceof ApiException) {
                           console.log(result.message);
-                        } else {
-                          toast({
-                            position: 'top',
-                            title: 'Sucesso',
-                            description: 'Cadastro realizado com sucesso.',
-                            status: 'success',
-                            duration: 2500,
-                            isClosable: true,
-                          });
-                          clearForm();
                         }
                       });
+                    toast({
+                      position: 'top',
+                      title: 'Sucesso',
+                      description: 'Cadastro realizado com sucesso.',
+                      status: 'success',
+                      duration: 2500,
+                      isClosable: true,
+                    });
+                    clearForm();
+                    getUsers();
                   });
                 }
               });
           }
         });
     }
+  };
+
+  const handleUpdateUsuario = (data: IUsuario) => {
+    if (data.id === id) {
+      UsuarioService.updateById(id, data, HEADERS)
+        .then((result) => {
+          if (result instanceof ApiException) {
+            console.log(result.message);
+          } else {
+            clearForm();
+            getUsers();
+          }
+        });
+    }
+  };
+
+  const submitData = (data: IUsuario) => {
+    const dataToUpdates = {
+      id: dataToUpdate.id,
+      id_empresa: dataToUpdate.id_empresa,
+      email: data.email,
+      password: data.password,
+      tipo_admin: data.tipo_admin,
+      ultimo_emissor_selecionado: dataToUpdate.ultimo_emissor_selecionado,
+      usuario_principal: dataToUpdate.usuario_principal
+    };
+    if (isEditing)
+      handleUpdateUsuario(dataToUpdates);
+    else
+      handleCreateUser(data);
   };
 
   useEffect(() => {
@@ -130,8 +189,26 @@ export function FormUser({ isDisabled, setIsDisabled }: FormUserProps) {
     methods.setFocus('email');
   }, [isDisabled]);
 
+  useEffect(() => {
+    methods.reset(dataToUpdate);
+    if (dataToUpdate?.tipo_admin === 1) {
+      setIsTipoAdminChecked(true);
+    } else {
+      setIsTipoAdminChecked(false);
+    }
+    setIdNewEmissorSelecionado(dataToUpdate?.id ? dataToUpdate.id : 0);
+    getNewEmissorByUserId();
+    const idEmi: number[] = [];
+    emissorByUser.forEach((emi: IEmissor) => {
+      idEmi.push(emi.id);
+    });
+    setIdEmissor(idEmi);
+    setIsDisabled();
+  }, [dataToUpdate]);
+  console.log(idEmissor);
+
   return (
-    <form onSubmit={methods.handleSubmit(handleCreateUser)}>
+    <form onSubmit={methods.handleSubmit(submitData)}>
       <Flex direction='column' w='100%' h='100%' p='.5rem' align='center' justify='space-between' overflowY='auto'>
         <Flex direction='column' >
           <Text fontSize="sm" fontWeight='medium'>Login</Text>
@@ -154,13 +231,13 @@ export function FormUser({ isDisabled, setIsDisabled }: FormUserProps) {
             <AccordionPanel borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
               <Flex direction='column' gap='2'>
                 {emissor !== undefined ? emissor.map((data: any) => (
-                  <Checkbox key={data.id} value={data.id} {...methods.register('emissores')}>{data.razao}</Checkbox>
+                  <Checkbox key={data.id} isChecked={idEmissor.includes(data.id)} onChange={() => getEmissorId(data.id)} value={data.id}>{data.razao}</Checkbox>
                 )): ''}
               </Flex>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
-        <Checkbox isDisabled={isDisabled} my='1rem' value={1} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  {...methods.register('tipo_admin')}>Permissão de Administrador</Checkbox>
+        <Checkbox isDisabled={isDisabled} my='1rem' isChecked={isTipoAdminChecked} onChange={getPermissaoAdmin} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} >Permissão de Administrador</Checkbox>
         <Flex w="100%" justify='center' >
           <Button w="100%" isDisabled={isDisabled} variant='outline' colorScheme="green" type="submit" size='sm'><Icon as={FiCheck} mr={1} />Salvar</Button>
         </Flex>
