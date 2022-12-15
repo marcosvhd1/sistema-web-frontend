@@ -1,6 +1,6 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Button, Checkbox, Flex, FormErrorMessage, Icon, Input, Text, useColorMode, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { FiCheck } from 'react-icons/fi';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { ApiException } from '../../../services/api/ApiException';
@@ -12,22 +12,24 @@ import { getDecrypted } from '../../../utils/crypto';
 
 interface FormUserProps {
   isDisabled: boolean
-  setIsDisabled: () => void
   getUsers: () => void
   dataToUpdate: IUsuario
   id: number
   isEditing: boolean
+  idEmissor: number[]
+  setIdEmissor: (value: number[]) => void
+  getEmissores: () => void
 }
 
-export function FormUser({ isDisabled, setIsDisabled, getUsers, dataToUpdate, id, isEditing }: FormUserProps) {
+export function FormUser({ isDisabled, idEmissor, getEmissores, setIdEmissor, getUsers, dataToUpdate, id, isEditing }: FormUserProps) {
   const { emissor, emissorByUser, getNewEmissorByUserId,getEmissoresByUser, setIdNewEmissorSelecionado } = useEmissorContext();
   const [idEmpresa, setIdEmpresa] = useState<number>();
   const [isTipoAdminChecked, setIsTipoAdminChecked] = useState<boolean>(false);
   const [tipoAdmin, setTipoAdmin] = useState<number>(0);
-  const [idEmissor, setIdEmissor] = useState<number[]>([]);
+
   const toast = useToast();
   const { colorMode } = useColorMode();
-  const methods = useForm();
+  const methods = useFormContext();
 
   const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
   const TOKEN = LOCAL_DATA?.user.accessToken;
@@ -157,6 +159,14 @@ export function FormUser({ isDisabled, setIsDisabled, getUsers, dataToUpdate, id
           if (result instanceof ApiException) {
             console.log(result.message);
           } else {
+            toast({
+              position: 'top',
+              title: 'Sucesso',
+              description: 'Usuário atualizado com sucesso.',
+              status: 'success',
+              duration: 2500,
+              isClosable: true,
+            });
             clearForm();
             getUsers();
           }
@@ -174,20 +184,14 @@ export function FormUser({ isDisabled, setIsDisabled, getUsers, dataToUpdate, id
       ultimo_emissor_selecionado: dataToUpdate.ultimo_emissor_selecionado,
       usuario_principal: dataToUpdate.usuario_principal
     };
-    if (isEditing)
+    if (isEditing) {
       handleUpdateUsuario(dataToUpdates);
-    else
+    }
+    else {
       handleCreateUser(data);
+
+    }
   };
-
-  useEffect(() => {
-    getEmissoresByUser();
-    getIdEmpresa(empresa, HEADERS);
-  }, []);
-
-  useEffect(() => {
-    methods.setFocus('email');
-  }, [isDisabled]);
 
   useEffect(() => {
     methods.reset(dataToUpdate);
@@ -198,14 +202,20 @@ export function FormUser({ isDisabled, setIsDisabled, getUsers, dataToUpdate, id
     }
     setIdNewEmissorSelecionado(dataToUpdate?.id ? dataToUpdate.id : 0);
     getNewEmissorByUserId();
-    const idEmi: number[] = [];
-    emissorByUser.forEach((emi: IEmissor) => {
-      idEmi.push(emi.id);
-    });
-    setIdEmissor(idEmi);
-    setIsDisabled();
+    getEmissores();
+
   }, [dataToUpdate]);
-  console.log(idEmissor);
+
+  useEffect(() => {
+    getEmissoresByUser();
+    getIdEmpresa(empresa, HEADERS);
+    getNewEmissorByUserId();
+    getEmissores();
+  }, []);
+
+  useEffect(() => {
+    methods.setFocus('email');
+  }, [isDisabled]);
 
   return (
     <form onSubmit={methods.handleSubmit(submitData)}>

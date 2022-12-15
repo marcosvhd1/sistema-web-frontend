@@ -9,6 +9,8 @@ import { ApiException } from '../../../services/api/ApiException';
 import { IUsuario, UsuarioService } from '../../../services/api/usuarios/UsuarioService';
 import { getDecrypted } from '../../../utils/crypto';
 import { FormUser } from './FormUser';
+import { useForm, FormProvider } from 'react-hook-form';
+import { IEmissor } from '../../../services/api/emissor/EmissorService';
 
 export function ModalUser() {
   const { onClose, isOpen } = useModalUser();
@@ -19,6 +21,9 @@ export function ModalUser() {
   const [data, setData] = useState<IUsuario[]>([]);
   const [dataToUpdate, setDataToUpdate] = useState<IUsuario>();
   const [isEditing, setIsEditing] = useState(false);
+  const { emissor, emissorByUser, getNewEmissorByUserId,getEmissoresByUser, setIdNewEmissorSelecionado } = useEmissorContext();
+  const [idEmissor, setIdEmissor] = useState<number[]>([]);
+  const methods = useForm();
 
   const headers: { key: string, label: string }[] = [
     { key: 'login', label: 'Login' },
@@ -36,11 +41,16 @@ export function ModalUser() {
 
   const handleRegisterNewUser = () => {
     setIsDisabled(false);
+    setIsEditing(false);
   };
 
   const closeModal = () => {
     onClose();
     setIsDisabled(true);
+    setDataToUpdate({
+      email: '',
+      password: '',
+    });
   };
 
   const getUsers = async () => {
@@ -79,18 +89,30 @@ export function ModalUser() {
       setId(id);
       setDataToUpdate(userToUpdate);
       setIsEditing(true);
+      setIsDisabled(false);
+      console.log(idEmissor);
     }
+  };
+
+  const getEmissores = () => {
+    const idEmi: number[] = [];
+    getNewEmissorByUserId();
+    emissorByUser.forEach((emi: IEmissor) => {
+      idEmi.push(emi.id);
+    });
+    setIdEmissor(idEmi);
   };
 
   useEffect(() => {
     getUsers();
+    getEmissores();
   }, []);
 
 
   return (
     <Modal
       isCentered
-      onClose={onClose}
+      onClose={closeModal}
       isOpen={isOpen}
       closeOnOverlayClick={false}
       scrollBehavior={'inside'}
@@ -98,53 +120,55 @@ export function ModalUser() {
       size='xl'
     >
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Usuários</ModalHeader>
-        <ModalCloseButton onClick={closeModal}/>
-        <ModalBody>
-          <Flex w='100%' h='22rem' p='.5rem' justify='space-between' borderBottom='.1rem solid #e1e1e3'>
-            <Flex w='50%' borderRight='.1rem solid #e1e1e3'>
-              <TableContainer  w="90%" borderRadius={8} overflowY='auto' >
-                <Table size="sm" variant='simple' >
-                  <Thead bg="whiteAlpha.100">
-                    <Tr style={{'height': '2rem'}}>
-                      {headers.map((row) => {
-                        return (<Th fontSize="0.7rem"  key={row.key}>{row.label}</Th>);
-                      })}
-                      <Th style={{'textAlign': 'center', 'width': '1rem' }} fontSize="0.7rem">Ações</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {data != undefined ? data.map((data) => (
-                      <Tr key={data.id}>
-                        <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.email}</Td>
-                        <Td style={{ 'textAlign': 'center' }}>
-                          <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditClient(data.id!)}>
-                            <Icon color="orange.300" as={FiEdit} />
-                          </Button>
-                          <Button variant="ghost" colorScheme="red" isDisabled={data.usuario_principal === 'Sim'} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id!)}>
-                            <Icon as={FiTrash2} color="red.400" />
-                          </Button>
-                        </Td>
+      <FormProvider {...methods}>
+        <ModalContent>
+          <ModalHeader>Usuários</ModalHeader>
+          <ModalCloseButton onClick={closeModal}/>
+          <ModalBody>
+            <Flex w='100%' h='22rem' p='.5rem' justify='space-between' borderBottom='.1rem solid #e1e1e3'>
+              <Flex w='50%' borderRight='.1rem solid #e1e1e3'>
+                <TableContainer  w="90%" borderRadius={8} overflowY='auto' >
+                  <Table size="sm" variant='simple' >
+                    <Thead bg="whiteAlpha.100">
+                      <Tr style={{'height': '2rem'}}>
+                        {headers.map((row) => {
+                          return (<Th fontSize="0.7rem"  key={row.key}>{row.label}</Th>);
+                        })}
+                        <Th style={{'textAlign': 'center', 'width': '1rem' }} fontSize="0.7rem">Ações</Th>
                       </Tr>
-                    )) : ''}
-                  </Tbody>
-                </Table>
-              </TableContainer>
+                    </Thead>
+                    <Tbody>
+                      {data != undefined ? data.map((data) => (
+                        <Tr key={data.id}>
+                          <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.email}</Td>
+                          <Td style={{ 'textAlign': 'center' }}>
+                            <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditClient(data.id!)}>
+                              <Icon color="orange.300" as={FiEdit} />
+                            </Button>
+                            <Button variant="ghost" colorScheme="red" isDisabled={data.usuario_principal === 'Sim'} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id!)}>
+                              <Icon as={FiTrash2} color="red.400" />
+                            </Button>
+                          </Td>
+                        </Tr>
+                      )) : ''}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+              </Flex>
+              <Flex w='50%' justify='center'>
+                <FormUser id={id} getEmissores={getEmissores} idEmissor={idEmissor} setIdEmissor={setIdEmissor} isEditing={isEditing} dataToUpdate={dataToUpdate!} getUsers={getUsers} isDisabled={isDisabled}/>
+              </Flex>
             </Flex>
-            <Flex w='50%' justify='center'>
-              <FormUser id={id} isEditing={isEditing} dataToUpdate={dataToUpdate!} getUsers={getUsers} isDisabled={isDisabled} setIsDisabled={handleRegisterNewUser}/>
+          </ModalBody>
+          <ModalFooter>
+            <Flex justify='space-between' w='100%'>
+              <Button variant='outline' colorScheme="green" onClick={handleRegisterNewUser}>Cadastrar</Button>
+              <Button variant='outline' colorScheme="red" onClick={closeModal}>Cancelar</Button>
             </Flex>
-          </Flex>
-        </ModalBody>
-        <ModalFooter>
-          <Flex justify='space-between' w='100%'>
-            <Button variant='outline' colorScheme="green" onClick={handleRegisterNewUser}>Cadastrar</Button>
-            <Button variant='outline' colorScheme="red" onClick={closeModal}>Cancelar</Button>
-          </Flex>
-        </ModalFooter>
-        <DeleteAlertDialog id={id} label='Usuário' isOpen={isExcluirOpen} onClose={onExcluirClose} deleteFunction={handleDeleteClient}/>
-      </ModalContent>
+          </ModalFooter>
+          <DeleteAlertDialog id={id} label='Usuário' isOpen={isExcluirOpen} onClose={onExcluirClose} deleteFunction={handleDeleteClient}/>
+        </ModalContent>
+      </FormProvider>
     </Modal>
   );
 }

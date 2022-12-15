@@ -72,7 +72,7 @@ export function SidebarNav() {
         </NavSection>
         <NavSection title={navSize == 'small' ? 'CONFIG' : 'CONFIGURAÇÃO'}>
           <NavItem icon={FcSettings} title="Configuração" rota="/app/config" />
-          <NavItem icon={FcLock} title="Usuários" rota={permission === 0 ? '/app/unauthorized' : location.pathname + location.search} click={handleOpenUserModal} />
+          {/* <NavItem icon={FcLock} title="Usuários" rota={permission === 0 ? '/app/unauthorized' : location.pathname + location.search} click={handleOpenUserModal} /> */}
         </NavSection>
         <NavSection title="EMISSOR">
           <Flex mt={4} display={!smSize[0] ? 'flex' : navSize == 'small' ? 'none' : 'flex'}>
