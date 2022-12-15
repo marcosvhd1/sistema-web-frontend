@@ -39,6 +39,7 @@ export function LoginForm() {
           'email': data.email,
           'permissao': response.data.admin,
           'principal': response.data.usuarioPrincipal,
+          'loggedUser': response.data.idUser,
           'accessToken': `Bearer ${response.data.token.token}`
         },
       };
@@ -46,7 +47,7 @@ export function LoginForm() {
       setAuth(user);
       const cryptoData = getEncrypted(user);
 
-      setIdUsuarioSelecionado(response.data.idUser);
+      // setIdUsuarioSelecionado(response.data.idUser);
       setIdEmissorSelecionado(response.data.ultimoEmissor);
       localStorage.setItem('user', cryptoData);
       getEmissoresByUser();

@@ -16,13 +16,12 @@ interface FormUserProps {
   dataToUpdate: IUsuario
   id: number
   isEditing: boolean
-  idEmissor: number[]
   setIdEmissor: (value: number[]) => void
   getEmissores: () => void
 }
 
-export function FormUser({ isDisabled, idEmissor, getEmissores, setIdEmissor, getUsers, dataToUpdate, id, isEditing }: FormUserProps) {
-  const { emissor, emissorByUser, getNewEmissorByUserId,getEmissoresByUser, setIdNewEmissorSelecionado } = useEmissorContext();
+export function FormUser({ isDisabled, getEmissores, setIdEmissor, getUsers, dataToUpdate, id, isEditing }: FormUserProps) {
+  const { emissor, idEmissor, getEmissoresByUser, setIdEmissorSelecionado } = useEmissorContext();
   const [idEmpresa, setIdEmpresa] = useState<number>();
   const [isTipoAdminChecked, setIsTipoAdminChecked] = useState<boolean>(false);
   const [tipoAdmin, setTipoAdmin] = useState<number>(0);
@@ -200,8 +199,8 @@ export function FormUser({ isDisabled, idEmissor, getEmissores, setIdEmissor, ge
     } else {
       setIsTipoAdminChecked(false);
     }
-    setIdNewEmissorSelecionado(dataToUpdate?.id ? dataToUpdate.id : 0);
-    getNewEmissorByUserId();
+    setIdEmissorSelecionado(dataToUpdate?.id ? dataToUpdate.id : 0);
+    getEmissoresByUser();
     getEmissores();
 
   }, [dataToUpdate]);
@@ -209,8 +208,9 @@ export function FormUser({ isDisabled, idEmissor, getEmissores, setIdEmissor, ge
   useEffect(() => {
     getEmissoresByUser();
     getIdEmpresa(empresa, HEADERS);
-    getNewEmissorByUserId();
+    getEmissoresByUser();
     getEmissores();
+    console.log(idEmissor);
   }, []);
 
   useEffect(() => {

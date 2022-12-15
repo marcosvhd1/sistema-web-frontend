@@ -10,7 +10,7 @@ import { IUsuario, UsuarioService } from '../../../services/api/usuarios/Usuario
 import { getDecrypted } from '../../../utils/crypto';
 import { FormUser } from './FormUser';
 import { useForm, FormProvider } from 'react-hook-form';
-import { IEmissor } from '../../../services/api/emissor/EmissorService';
+import { EmissorService, IEmissor } from '../../../services/api/emissor/EmissorService';
 
 export function ModalUser() {
   const { onClose, isOpen } = useModalUser();
@@ -21,7 +21,7 @@ export function ModalUser() {
   const [data, setData] = useState<IUsuario[]>([]);
   const [dataToUpdate, setDataToUpdate] = useState<IUsuario>();
   const [isEditing, setIsEditing] = useState(false);
-  const { emissor, emissorByUser, getNewEmissorByUserId,getEmissoresByUser, setIdNewEmissorSelecionado } = useEmissorContext();
+  const { emissor, setIdUsuarioSelecionado, getIdEmissoresByUser} = useEmissorContext();
   const [idEmissor, setIdEmissor] = useState<number[]>([]);
   const methods = useForm();
 
@@ -90,22 +90,13 @@ export function ModalUser() {
       setDataToUpdate(userToUpdate);
       setIsEditing(true);
       setIsDisabled(false);
-      console.log(idEmissor);
+      setIdUsuarioSelecionado(id);
+      getIdEmissoresByUser();
     }
-  };
-
-  const getEmissores = () => {
-    const idEmi: number[] = [];
-    getNewEmissorByUserId();
-    emissorByUser.forEach((emi: IEmissor) => {
-      idEmi.push(emi.id);
-    });
-    setIdEmissor(idEmi);
   };
 
   useEffect(() => {
     getUsers();
-    getEmissores();
   }, []);
 
 
@@ -156,7 +147,7 @@ export function ModalUser() {
                 </TableContainer>
               </Flex>
               <Flex w='50%' justify='center'>
-                <FormUser id={id} getEmissores={getEmissores} idEmissor={idEmissor} setIdEmissor={setIdEmissor} isEditing={isEditing} dataToUpdate={dataToUpdate!} getUsers={getUsers} isDisabled={isDisabled}/>
+                <FormUser id={id} getEmissores={getIdEmissoresByUser} setIdEmissor={setIdEmissor} isEditing={isEditing} dataToUpdate={dataToUpdate!} getUsers={getUsers} isDisabled={isDisabled}/>
               </Flex>
             </Flex>
           </ModalBody>

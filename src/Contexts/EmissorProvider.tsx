@@ -9,15 +9,14 @@ type EmissorProviderProps = {
 
 interface IEmissore {
   emissor: any
-  emissorByUser: any
+  idEmissor: any
   idEmissorSelecionado: number
   getEmissoresByUser: () => void;
-  getNewEmissorByUserId: () => void;
+  getIdEmissoresByUser: () => void;
   getCredenciais: () => void;
   handleGetUserInfo: () => void;
   updateUltimoEmissorSelecionado: () => void;
   setIdEmissorSelecionado: (value: React.SetStateAction<number>) => void;
-  setIdNewEmissorSelecionado: (value: React.SetStateAction<number>) => void;
   setIdUsuarioSelecionado: (value: React.SetStateAction<number>) => void;
 }
 
@@ -25,13 +24,12 @@ const EmissorContext = createContext({} as IEmissore);
 
 export function EmissorProvider({children}: EmissorProviderProps) {
   const [emissor, setEmissor] = useState<IEmissor[]>([]);
+  const [idEmissor, setIdEmissor] = useState<number[] | ApiException>([]);
   const [idEmissorSelecionado, setIdEmissorSelecionado] = useState<number>(0);
   const [idUsuarioSelecionado, setIdUsuarioSelecionado] = useState<number>(0);
-  const [emissorByUser, setEmissorByUser] = useState<IEmissor[]>([]);
-  const [idNewEmissorSelecionado, setIdNewEmissorSelecionado] = useState<number>(0);
 
   const getEmissoresByUser = () => {
-    EmissorService.getEmissores(idUsuarioSelecionado)
+    EmissorService.getEmissores()
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -41,15 +39,16 @@ export function EmissorProvider({children}: EmissorProviderProps) {
       });
   };
 
-  const getNewEmissorByUserId = () => {
-    EmissorService.getEmissores(idNewEmissorSelecionado)
-      .then((result) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          setEmissorByUser(result);
-        }
-      });
+  const getIdEmissoresByUser = async () => {
+    const result = await EmissorService.getEmissoresId(idUsuarioSelecionado);
+    setIdEmissor(result);
+    // setIdEmissor(idEmissores);
+    // const idEmi: number[] = [];
+    // getEmissoresByUser();
+    // emissor.forEach((emi: IEmissor) => {
+    //   idEmi.push(emi.id);
+    // });
+    // setIdEmissor(idEmi);
   };
 
   const getCredenciais = () => {
@@ -83,7 +82,7 @@ export function EmissorProvider({children}: EmissorProviderProps) {
   };
 
   return (
-    <EmissorContext.Provider value={{ emissor, idEmissorSelecionado, getNewEmissorByUserId, emissorByUser, setIdNewEmissorSelecionado, setIdEmissorSelecionado, setIdUsuarioSelecionado, getEmissoresByUser, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais }}>
+    <EmissorContext.Provider value={{ emissor, idEmissorSelecionado,idEmissor, setIdEmissorSelecionado, setIdUsuarioSelecionado, getEmissoresByUser, getIdEmissoresByUser, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais }}>
       {children}
     </EmissorContext.Provider>
   );
