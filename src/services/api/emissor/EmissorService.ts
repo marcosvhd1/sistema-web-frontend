@@ -14,12 +14,27 @@ export interface IEmissor {
   cnpjcpf: string
 }
 
+export interface INewEmissor {
+  cnpjcpf_principal: number
+  razao: string
+  cnpjcpf: string
+}
+
 const getEmissores = async (idUsuario: number): Promise<IEmissor[] | ApiException> => {
   try {
     const { data } = await Api().get(`/emissores?id_usuario=${idUsuario}`, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
+  }
+};
+
+const create = async (dataToCreate: INewEmissor, HEADERS: any): Promise<INewEmissor | ApiException> => {
+  try {
+    const { data } = await Api().post<INewEmissor>('/emissores', dataToCreate, HEADERS);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao criar o registro.');
   }
 };
 
@@ -48,5 +63,6 @@ const getUltimoEmissorSelecionadoByUser = async () => {
 export const EmissorService = {
   getEmissores,
   updateUltimoEmissorSelecionado,
-  getUltimoEmissorSelecionadoByUser
+  getUltimoEmissorSelecionadoByUser,
+  create
 };

@@ -28,10 +28,12 @@ import { AlertProductGroupContextProvider } from '../Contexts/AlertDialog/AlertP
 import { ProductGroupProvider } from '../Contexts/ProductGroupContext';
 import { ModalUserProvider } from '../Contexts/Modal/UserContext';
 import { UnauthorizedUser } from '../pages/Unauthorized';
+import { Emissor } from '../pages/Emissor';
 
 const ROLES = {
   'normal': 0,
   'admin': 1,
+  'principal': 'Sim'
 };
 
 export default function MainRoutes() {
@@ -54,6 +56,7 @@ export default function MainRoutes() {
                                   <AlertProductContextProvider>
                                     <AlertProductGroupContextProvider>
                                       <ProductGroupProvider>
+
                                         <Routes>
                                           <Route index element={<Login />} />
 
@@ -66,8 +69,13 @@ export default function MainRoutes() {
                                             <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
                                           </Route>
 
+                                          <Route element={<RequireAuth allowedRoles={[ROLES.principal]} />}>
+                                            <Route path='/app/emissor' element={<Emissor />}/>
+                                          </Route>
+
                                           <Route path="*" element={<PageNotFound />} />
                                         </Routes>
+
                                       </ProductGroupProvider>
                                     </AlertProductGroupContextProvider>
                                   </AlertProductContextProvider>

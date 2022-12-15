@@ -38,12 +38,12 @@ export function LoginForm() {
           'empresa': data.cnpjcpf,
           'email': data.email,
           'permissao': response.data.admin,
+          'principal': response.data.usuarioPrincipal,
           'accessToken': `Bearer ${response.data.token.token}`
         },
       };
 
       setAuth(user);
-
       const cryptoData = getEncrypted(user);
 
       setIdUsuarioSelecionado(response.data.idUser);

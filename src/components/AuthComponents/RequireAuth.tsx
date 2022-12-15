@@ -13,11 +13,15 @@ export function RequireAuth({ allowedRoles }: IAuthProps) {
 
   const PERMISSION = LOCAL_DATA.user.permissao;
 
+  const PRINCIPAL = LOCAL_DATA.user.principal;
+
   return (
     allowedRoles.some(el => [PERMISSION].includes(el))
       ? <Outlet />
-      : parseInt(PERMISSION) === 0
-        ? <UnauthorizedUser/>
-        : <Navigate to="/" state={{ from: location }} />
+      : PRINCIPAL === 'Sim'
+        ? <Outlet />
+        : parseInt(PERMISSION) === 0
+          ? <UnauthorizedUser/>
+          : <Navigate to="/" state={{ from: location }} />
   );
 }
