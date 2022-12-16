@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { FiCheck } from 'react-icons/fi';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { ApiException } from '../../../services/api/ApiException';
-import { IEmissor } from '../../../services/api/emissor/EmissorService';
+import { EmissorService, IEmissor } from '../../../services/api/emissor/EmissorService';
 import { EmissorUsuarioService } from '../../../services/api/emissor/EmissorUsuarioService';
 import { EmpresaService } from '../../../services/api/empresas/EmpresaService';
 import { IUsuario, UsuarioService } from '../../../services/api/usuarios/UsuarioService';
@@ -154,16 +154,31 @@ export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id,
           if (result instanceof ApiException) {
             console.log(result.message);
           } else {
-            toast({
-              position: 'top',
-              title: 'Sucesso',
-              description: 'Usuário atualizado com sucesso.',
-              status: 'success',
-              duration: 2500,
-              isClosable: true,
-            });
-            clearForm();
-            getUsers();
+            EmissorUsuarioService.deleteById(id, HEADERS)
+              .then(() => {
+                idEmissor.forEach((idEmi: number) => {
+                  const dataEmissorUsuario = {
+                    'id_usuario': id,
+                    'id_emissor': idEmi
+                  };
+                  EmissorUsuarioService.create(dataEmissorUsuario, HEADERS)
+                    .then((result) => {
+                      if (result instanceof ApiException) {
+                        console.log(result.message);
+                      }
+                    });
+                });
+                toast({
+                  position: 'top',
+                  title: 'Sucesso',
+                  description: 'Usuário atualizado com sucesso.',
+                  status: 'success',
+                  duration: 2500,
+                  isClosable: true,
+                });
+                clearForm();
+                getUsers();
+              });
           }
         });
     }

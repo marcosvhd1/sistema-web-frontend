@@ -18,6 +18,7 @@ export function RequireAuth({ allowedRoles }: IAuthProps) {
   return (
     allowedRoles.some(el => [PERMISSION].includes(el))
       ? <Outlet />
+      //comentar as duas linhas abaixo caso seja para permitir outros usuarios tipo admin a acessar a rota de cadastro de emissor
       : PRINCIPAL === 'Sim'
         ? <Outlet />
         : parseInt(PERMISSION) === 0

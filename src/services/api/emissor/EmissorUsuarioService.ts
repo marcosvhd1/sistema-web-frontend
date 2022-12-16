@@ -6,6 +6,16 @@ interface IEmissorUsuario {
   id_usuario: number;
   id_emissor: number;
 }
+
+const deleteById = async (id: number, HEADERS: any): Promise<undefined | ApiException> => {
+  try {
+    await Api().delete(`/emissor/usuario/${id}`, HEADERS);
+
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao apagar os registros.');
+  }
+};
+
 const create = async (dataToCreate: Omit<IEmissorUsuario, 'id'>, HEADERS: any) : Promise<IEmissorUsuario | ApiException> => {
   try {
     const { data } = await Api().post<IEmissorUsuario>('/emissor/usuario', dataToCreate, HEADERS);
@@ -16,5 +26,6 @@ const create = async (dataToCreate: Omit<IEmissorUsuario, 'id'>, HEADERS: any) :
 };
 
 export const EmissorUsuarioService = {
-  create
+  create,
+  deleteById
 };

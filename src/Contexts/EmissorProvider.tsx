@@ -73,6 +73,7 @@ export function EmissorProvider({children}: EmissorProviderProps) {
           console.log(result.message);
         } else {
           setIdEmissor(result);
+
         }
       });
   };
