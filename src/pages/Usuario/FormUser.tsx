@@ -2,14 +2,14 @@ import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPane
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiCheck } from 'react-icons/fi';
-import { useEmissorContext } from '../../../Contexts/EmissorProvider';
-import { ApiException } from '../../../services/api/ApiException';
-import { EmissorService, IEmissor } from '../../../services/api/emissor/EmissorService';
-import { EmissorUsuarioService } from '../../../services/api/emissor/EmissorUsuarioService';
-import { EmpresaService } from '../../../services/api/empresas/EmpresaService';
-import { IUsuario, UsuarioService } from '../../../services/api/usuarios/UsuarioService';
-import { getDecrypted } from '../../../utils/crypto';
-import { userInfos } from '../../../utils/header';
+import { useEmissorContext } from '../../Contexts/EmissorProvider';
+import { ApiException } from '../../services/api/ApiException';
+import { EmissorService, IEmissor } from '../../services/api/emissor/EmissorService';
+import { EmissorUsuarioService } from '../../services/api/emissor/EmissorUsuarioService';
+import { EmpresaService } from '../../services/api/empresas/EmpresaService';
+import { IUsuario, UsuarioService } from '../../services/api/usuarios/UsuarioService';
+import { getDecrypted } from '../../utils/crypto';
+import { userInfos } from '../../utils/header';
 
 interface FormUserProps {
   isDisabled: boolean
@@ -31,7 +31,7 @@ export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id,
   const methods = useFormContext();
 
   const userInfo = userInfos();
-
+  const permissao = userInfo.infos?.permissao;
   const HEADERS = userInfo.header;
 
   const { empresa } = userInfo.infos;
@@ -190,7 +190,7 @@ export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id,
       id_empresa: dataToUpdate.id_empresa,
       email: data.email,
       password: data.password,
-      tipo_admin: data.tipo_admin,
+      tipo_admin: tipoAdmin,
       ultimo_emissor_selecionado: dataToUpdate.ultimo_emissor_selecionado,
       usuario_principal: dataToUpdate.usuario_principal
     };
@@ -237,7 +237,7 @@ export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id,
           <Input type='password' isDisabled={isDisabled} {...methods.register('password')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isRequired/>
         </Flex>
         <Accordion defaultIndex={[-1]} w='100%' allowToggle my='1rem' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
-          <AccordionItem isDisabled={isDisabled}>
+          <AccordionItem isDisabled={isDisabled || permissao === 0}>
             <h2>
               <AccordionButton>
                 <Flex flex='1' textAlign='left'>
@@ -255,7 +255,7 @@ export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id,
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
-        <Checkbox isDisabled={isDisabled} my='1rem' isChecked={isTipoAdminChecked} onChange={getPermissaoAdmin} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} >Permissão de Administrador</Checkbox>
+        <Checkbox isDisabled={isDisabled || permissao === 0} my='1rem' isChecked={isTipoAdminChecked} onChange={getPermissaoAdmin} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} >Permissão de Administrador</Checkbox>
         <Flex w="100%" justify='center' >
           <Button w="100%" isDisabled={isDisabled} variant='outline' colorScheme="green" type="submit" size='sm'><Icon as={FiCheck} mr={1} />Salvar</Button>
         </Flex>

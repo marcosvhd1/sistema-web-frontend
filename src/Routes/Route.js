@@ -19,7 +19,7 @@ import { AlertTransportadoraContextProvider } from '../Contexts/AlertDialog/Aler
 import { ModalTransportadoraProvider } from '../Contexts/Modal/TransportadoraContext';
 import { AlertProductContextProvider } from '../Contexts/AlertDialog/AlertProductContext';
 import { RequireAuth } from '../components/AuthComponents/RequireAuth';
-import { Usuario } from '../pages/Configuracoes/Usuario';
+import { Usuario } from '../pages/Usuario';
 import { PageNotFound } from '../pages/PageNotFound';
 import { ModalEmissorProvider } from '../Contexts/Modal/EmissorContext';
 import { EmissorProvider } from '../Contexts/EmissorProvider';

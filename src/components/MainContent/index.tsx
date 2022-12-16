@@ -7,7 +7,7 @@ import { SizeContext } from '../../Contexts/SizeContext';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { Sidebar } from '../Sidebar';
-import { ModalUser } from '../../pages/Configuracoes/Usuario';
+import { ModalUser } from '../../pages/Usuario';
 
 interface MainContentProps {
   children: ReactNode

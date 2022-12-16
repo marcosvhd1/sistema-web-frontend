@@ -1,16 +1,17 @@
 import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Td, Table, TableContainer, Tbody, Th, Thead, Tr, useDisclosure, useToast } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import { DataTable } from '../../../components/Table/DataTable';
-import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
-import { useEmissorContext } from '../../../Contexts/EmissorProvider';
-import { useModalUser } from '../../../Contexts/Modal/UserContext';
-import { ApiException } from '../../../services/api/ApiException';
-import { IUsuario, UsuarioService } from '../../../services/api/usuarios/UsuarioService';
-import { getDecrypted } from '../../../utils/crypto';
+import { DataTable } from '../../components/Table/DataTable';
+import { DeleteAlertDialog } from '../../components/Utils/DeleteAlertDialog';
+import { useEmissorContext } from '../../Contexts/EmissorProvider';
+import { useModalUser } from '../../Contexts/Modal/UserContext';
+import { ApiException } from '../../services/api/ApiException';
+import { IUsuario, UsuarioService } from '../../services/api/usuarios/UsuarioService';
+import { getDecrypted } from '../../utils/crypto';
 import { FormUser } from './FormUser';
 import { useForm, FormProvider } from 'react-hook-form';
-import { EmissorService, IEmissor } from '../../../services/api/emissor/EmissorService';
+import { EmissorService, IEmissor } from '../../services/api/emissor/EmissorService';
+import { userInfos } from '../../utils/header';
 
 export function ModalUser() {
   const { onClose, isOpen } = useModalUser();
@@ -28,15 +29,11 @@ export function ModalUser() {
     { key: 'login', label: 'Login' },
   ];
 
-  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
-  const TOKEN = LOCAL_DATA?.user.accessToken;
-  const cnpjcpf = LOCAL_DATA.user.empresa;
-
-  const HEADERS = {
-    headers: {
-      'Authorization': TOKEN
-    }
-  };
+  const userInfo = userInfos();
+  const idUser = userInfo.infos?.idUser;
+  const permissao = userInfo.infos?.permissao;
+  const cnpjcpf = userInfo.infos?.empresa;
+  const HEADERS = userInfo.header;
 
   const handleRegisterNewUser = () => {
     setIsDisabled(false);
@@ -133,10 +130,10 @@ export function ModalUser() {
                         <Tr key={data.id}>
                           <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.email}</Td>
                           <Td style={{ 'textAlign': 'center' }}>
-                            <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditClient(data.id!)}>
+                            <Button variant="ghost" colorScheme="orange" isDisabled={permissao === 0 && data.id !== idUser} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditClient(data.id!)}>
                               <Icon color="orange.300" as={FiEdit} />
                             </Button>
-                            <Button variant="ghost" colorScheme="red" isDisabled={data.usuario_principal === 'Sim'} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id!)}>
+                            <Button variant="ghost" colorScheme="red" isDisabled={data.usuario_principal === 'Sim' || permissao === 0 && data.id !== idUser} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id!)}>
                               <Icon as={FiTrash2} color="red.400" />
                             </Button>
                           </Td>
