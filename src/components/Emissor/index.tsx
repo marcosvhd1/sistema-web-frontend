@@ -13,10 +13,8 @@ export function Emissor() {
   const { mdSize, smSize } = useContext(SizeContext);
   const { navSize } = useContext(SidebarContext);
   const { onOpen } = useModalEmissor();
-  const {getEmissoresByUser} = useEmissorContext();
 
   const handleOpenModal = () => {
-    getEmissoresByUser();
     onOpen();
   };
 

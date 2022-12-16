@@ -7,7 +7,7 @@ import { getDecrypted } from '../../../utils/crypto';
 import { FormEmissor } from './FormEmissor';
 
 
-export function ModalNewEmisso() {
+export function ModalNewEmissor() {
   const { onClose, isOpen } = useModalNewEmissor();
   const methods = useForm();
 

@@ -1,58 +1,84 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { ApiException } from '../services/api/ApiException';
 import { EmissorService, IEmissor } from '../services/api/emissor/EmissorService';
-import { getEncrypted } from '../utils/crypto';
+import { UsuarioService } from '../services/api/usuarios/UsuarioService';
+import { getDecrypted, getEncrypted } from '../utils/crypto';
+import { userInfos } from '../utils/header';
 
 type EmissorProviderProps = {
   children: ReactNode
 }
 
 interface IEmissore {
-  emissor: any
+  emissores: IEmissor[]
+  userEmissores: IEmissor[]
   idEmissor: any
   idEmissorSelecionado: number
-  getEmissoresByUser: () => void;
+  getEmissores: () => void;
+  getEmissoresByUser: (id: number) => void;
   getIdEmissoresByUser: () => void;
   getCredenciais: () => void;
   handleGetUserInfo: () => void;
   updateUltimoEmissorSelecionado: () => void;
   setIdEmissorSelecionado: (value: React.SetStateAction<number>) => void;
   setIdUsuarioSelecionado: (value: React.SetStateAction<number>) => void;
+  setIdEmissor: (value: React.SetStateAction<any[]>) => void;
 }
 
 const EmissorContext = createContext({} as IEmissore);
 
 export function EmissorProvider({children}: EmissorProviderProps) {
-  const [emissor, setEmissor] = useState<IEmissor[]>([]);
-  const [idEmissor, setIdEmissor] = useState<number[] | ApiException>([]);
+  const [emissores, setEmissores] = useState<IEmissor[]>([]);
+  const [userEmissores, setUserEmissores] = useState<IEmissor[]>([]);
+  const [idEmissor, setIdEmissor] = useState<number[]>([]);
   const [idEmissorSelecionado, setIdEmissorSelecionado] = useState<number>(0);
   const [idUsuarioSelecionado, setIdUsuarioSelecionado] = useState<number>(0);
 
-  const getEmissoresByUser = () => {
-    EmissorService.getEmissores()
+  const userInfo = userInfos();
+
+  const HEADERS = userInfo.header;
+
+  const cnpjcpf = userInfo.infos?.empresa;
+
+  const getEmissores = () => {
+    UsuarioService.getUserMaster(cnpjcpf, HEADERS)
+      .then((result) => {
+        const idMaster = result[0].id;
+        EmissorService.getEmissores(idMaster, HEADERS)
+          .then((result) => {
+            if (result instanceof ApiException) {
+              console.log(result.message);
+            } else {
+              setEmissores(result);
+            }
+          });
+      });
+  };
+
+  const getEmissoresByUser = (id: number) => {
+    EmissorService.getEmissores(id ?? idUsuarioSelecionado, HEADERS)
       .then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
         } else {
-          setEmissor(result);
+          setUserEmissores(result);
         }
       });
   };
 
   const getIdEmissoresByUser = async () => {
-    const result = await EmissorService.getEmissoresId(idUsuarioSelecionado);
-    setIdEmissor(result);
-    // setIdEmissor(idEmissores);
-    // const idEmi: number[] = [];
-    // getEmissoresByUser();
-    // emissor.forEach((emi: IEmissor) => {
-    //   idEmi.push(emi.id);
-    // });
-    // setIdEmissor(idEmi);
+    EmissorService.getEmissoresId(idUsuarioSelecionado, HEADERS)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          setIdEmissor(result);
+        }
+      });
   };
 
   const getCredenciais = () => {
-    emissor.forEach(e => {
+    emissores.forEach(e => {
       if (e.id === idEmissorSelecionado) {
         const dados = {
           'cnpjcpf': e.cnpjcpf,
@@ -64,7 +90,7 @@ export function EmissorProvider({children}: EmissorProviderProps) {
   };
 
   const handleGetUserInfo = () => {
-    EmissorService.getUltimoEmissorSelecionadoByUser()
+    EmissorService.getUltimoEmissorSelecionadoByUser(HEADERS)
       .then((result) => {
         setIdUsuarioSelecionado(result.idUsuario);
         setIdEmissorSelecionado(result.ultimoEmissorSelecionado);
@@ -74,7 +100,7 @@ export function EmissorProvider({children}: EmissorProviderProps) {
 
   const updateUltimoEmissorSelecionado = () => {
     try {
-      EmissorService.updateUltimoEmissorSelecionado(idUsuarioSelecionado, idEmissorSelecionado);
+      EmissorService.updateUltimoEmissorSelecionado(idUsuarioSelecionado, idEmissorSelecionado, HEADERS);
     } catch (error) {
       return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
     }
@@ -82,7 +108,7 @@ export function EmissorProvider({children}: EmissorProviderProps) {
   };
 
   return (
-    <EmissorContext.Provider value={{ emissor, idEmissorSelecionado,idEmissor, setIdEmissorSelecionado, setIdUsuarioSelecionado, getEmissoresByUser, getIdEmissoresByUser, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais }}>
+    <EmissorContext.Provider value={{ emissores, userEmissores, idEmissorSelecionado, idEmissor, getEmissoresByUser, setIdEmissor, setIdEmissorSelecionado, setIdUsuarioSelecionado, getEmissores, getIdEmissoresByUser, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais }}>
       {children}
     </EmissorContext.Provider>
   );

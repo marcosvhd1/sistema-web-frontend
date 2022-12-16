@@ -9,6 +9,7 @@ import { EmissorUsuarioService } from '../../../services/api/emissor/EmissorUsua
 import { EmpresaService } from '../../../services/api/empresas/EmpresaService';
 import { IUsuario, UsuarioService } from '../../../services/api/usuarios/UsuarioService';
 import { getDecrypted } from '../../../utils/crypto';
+import { userInfos } from '../../../utils/header';
 
 interface FormUserProps {
   isDisabled: boolean
@@ -17,11 +18,10 @@ interface FormUserProps {
   id: number
   isEditing: boolean
   setIdEmissor: (value: number[]) => void
-  getEmissores: () => void
 }
 
-export function FormUser({ isDisabled, getEmissores, setIdEmissor, getUsers, dataToUpdate, id, isEditing }: FormUserProps) {
-  const { emissor, idEmissor, getEmissoresByUser, setIdEmissorSelecionado } = useEmissorContext();
+export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id, isEditing }: FormUserProps) {
+  const { emissores, idEmissor, getEmissores, setIdEmissorSelecionado, getIdEmissoresByUser } = useEmissorContext();
   const [idEmpresa, setIdEmpresa] = useState<number>();
   const [isTipoAdminChecked, setIsTipoAdminChecked] = useState<boolean>(false);
   const [tipoAdmin, setTipoAdmin] = useState<number>(0);
@@ -30,15 +30,11 @@ export function FormUser({ isDisabled, getEmissores, setIdEmissor, getUsers, dat
   const { colorMode } = useColorMode();
   const methods = useFormContext();
 
-  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
-  const TOKEN = LOCAL_DATA?.user.accessToken;
+  const userInfo = userInfos();
 
-  const HEADERS = {
-    headers: {
-      'Authorization': TOKEN
-    }
-  };
-  const { empresa } = LOCAL_DATA.user;
+  const HEADERS = userInfo.header;
+
+  const { empresa } = userInfo.infos;
 
   const clearForm = () => {
     methods.reset({
@@ -200,17 +196,14 @@ export function FormUser({ isDisabled, getEmissores, setIdEmissor, getUsers, dat
       setIsTipoAdminChecked(false);
     }
     setIdEmissorSelecionado(dataToUpdate?.id ? dataToUpdate.id : 0);
-    getEmissoresByUser();
+    getIdEmissoresByUser();
     getEmissores();
-
   }, [dataToUpdate]);
 
   useEffect(() => {
-    getEmissoresByUser();
     getIdEmpresa(empresa, HEADERS);
-    getEmissoresByUser();
     getEmissores();
-    console.log(idEmissor);
+
   }, []);
 
   useEffect(() => {
@@ -240,7 +233,7 @@ export function FormUser({ isDisabled, getEmissores, setIdEmissor, getUsers, dat
             </h2>
             <AccordionPanel borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
               <Flex direction='column' gap='2'>
-                {emissor !== undefined ? emissor.map((data: any) => (
+                {emissores !== undefined ? emissores.map((data: any) => (
                   <Checkbox key={data.id} isChecked={idEmissor.includes(data.id)} onChange={() => getEmissorId(data.id)} value={data.id}>{data.razao}</Checkbox>
                 )): ''}
               </Flex>

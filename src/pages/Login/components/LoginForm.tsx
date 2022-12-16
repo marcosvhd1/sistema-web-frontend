@@ -19,7 +19,7 @@ interface ILogin {
 export function LoginForm() {
   const { register, handleSubmit, setFocus } = useForm<ILogin>();
   const { auth, setAuth } = useAuthContext();
-  const {getEmissoresByUser, setIdEmissorSelecionado, setIdUsuarioSelecionado} = useEmissorContext();
+  const { setIdEmissorSelecionado, setIdUsuarioSelecionado } = useEmissorContext();
   const navigate = useNavigate();
   const toast = useToast();
   const { onOpen } = useModalEmissor();
@@ -37,6 +37,7 @@ export function LoginForm() {
         'user': {
           'empresa': data.cnpjcpf,
           'email': data.email,
+          'idUser': response.data.idUser,
           'permissao': response.data.admin,
           'principal': response.data.usuarioPrincipal,
           'loggedUser': response.data.idUser,
@@ -47,12 +48,12 @@ export function LoginForm() {
       setAuth(user);
       const cryptoData = getEncrypted(user);
 
-      // setIdUsuarioSelecionado(response.data.idUser);
       setIdEmissorSelecionado(response.data.ultimoEmissor);
+      setIdUsuarioSelecionado(response.data.idUser);
       localStorage.setItem('user', cryptoData);
-      getEmissoresByUser();
       onOpen();
       navigate('/app');
+
 
     } catch (error: any) {
       toast({

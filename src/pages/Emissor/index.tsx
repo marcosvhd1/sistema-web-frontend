@@ -3,7 +3,7 @@ import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import MainContent from '../../components/MainContent';
 import { DataTable } from '../../components/Table/DataTable';
 import { ModalNewEmissorProvider } from '../../Contexts/Modal/NewEmissorContext';
-import { ModalNewEmisso } from './components/ModalNewEmissor';
+import { ModalNewEmissor } from './components/ModalNewEmissor';
 import { SearchBox } from './components/SearchBox';
 
 
@@ -34,7 +34,7 @@ export function Emissor() {
             </Tr>
           </DataTable>
         </SearchBox>
-        <ModalNewEmisso />
+        <ModalNewEmissor />
       </MainContent>
     </ModalNewEmissorProvider>
   );

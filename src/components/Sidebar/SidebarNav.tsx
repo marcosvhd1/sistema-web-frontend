@@ -21,23 +21,21 @@ export function SidebarNav() {
   const { smSize } = useContext(SizeContext);
   const { navSize } = useContext(SidebarContext);
   const { onOpen } = useModalEmissor();
-  const { getEmissoresByUser } = useEmissorContext();
-  const location = useLocation();
-  const { onOpen: openUserModal } = useModalUser();
+  // const location = useLocation();
+  // const { onOpen: openUserModal } = useModalUser();
 
-  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
-  const permission = LOCAL_DATA?.user?.permissao;
+  // const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
+  // const permission = LOCAL_DATA?.user?.permissao;
 
   const handleOpenModal = () => {
-    getEmissoresByUser();
     onOpen();
   };
 
-  const handleOpenUserModal = () => {
-    if (permission === 1) {
-      openUserModal();
-    }
-  };
+  // const handleOpenUserModal = () => {
+  //   if (permission === 1) {
+  //     openUserModal();
+  //   }
+  // };
 
 
   return (

@@ -36,6 +36,15 @@ const getUserId = async (id: number, user: string, headers: any) => {
     return new ApiException((error as ApiException).message || 'Erro ao buscar o registro.');
   }
 };
+
+const getUserMaster = async (cnpjcpf: string, headers: any) => {
+  try {
+    const { data } = await Api().get(`/usuarios/master?emp=${cnpjcpf}`, headers);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar o registro.');
+  }
+};
 const create = async (dataToCreate: Omit<IUsuario, 'id'>, headers: any): Promise<IUsuario | ApiException> => {
   try {
     const { data } = await Api().post<IUsuario>('/usuarios', dataToCreate, headers);
@@ -67,6 +76,7 @@ export const UsuarioService = {
   getAll,
   getAllUsers,
   getUserId,
+  getUserMaster,
   create,
   deleteById,
   updateById

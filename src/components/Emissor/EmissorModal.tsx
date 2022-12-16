@@ -4,12 +4,17 @@ import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useEmissorContext } from '../../Contexts/EmissorProvider';
 import { useModalEmissor } from '../../Contexts/Modal/EmissorContext';
+import { userInfos } from '../../utils/header';
 
 export function EmissorModal() {
   const { onClose, isOpen } = useModalEmissor();
   const toast = useToast();
-  const { emissor, getEmissoresByUser, setIdEmissorSelecionado, idEmissorSelecionado, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais } = useEmissorContext();
+  const { emissores, setIdEmissorSelecionado, userEmissores, idEmissorSelecionado, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais, getEmissoresByUser } = useEmissorContext();
   const navigate = useNavigate();
+
+  const userInfo = userInfos();
+
+  const idUser = userInfo.infos?.idUser;
 
   const handleSaveEmissor = () => {
     updateUltimoEmissorSelecionado();
@@ -36,7 +41,7 @@ export function EmissorModal() {
 
   useEffect(() => {
     handleGetUserInfo();
-    getEmissoresByUser();
+    getEmissoresByUser(idUser);
   }, []);
 
 
@@ -65,7 +70,7 @@ export function EmissorModal() {
                 </Tr>
               </Thead>
               <Tbody>
-                { emissor.map((data: any) => (
+                { userEmissores.map((data: any) => (
                   <Tr key={data.id}>
                     <Td style={{ 'width': '.1rem' }} >
                       <Checkbox

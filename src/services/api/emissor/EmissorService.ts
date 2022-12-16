@@ -1,4 +1,3 @@
-import { HEADERS } from '../../../pages/Inicio';
 import { getDecrypted } from '../../../utils/crypto';
 import { Api } from '../ApiConfig';
 import { ApiException } from '../ApiException';
@@ -19,10 +18,8 @@ export interface INewEmissor {
   razao: string
   cnpjcpf: string
 }
-const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
-const idUser = LOCAL_DATA?.user.loggedUser;
 
-const getEmissores = async (): Promise<IEmissor[] | ApiException> => {
+const getEmissores = async (idUser: number, HEADERS: any): Promise<IEmissor[] | ApiException> => {
   try {
     const { data } = await Api().get(`/emissores?id_usuario=${idUser}`, HEADERS);
     return data;
@@ -31,7 +28,7 @@ const getEmissores = async (): Promise<IEmissor[] | ApiException> => {
   }
 };
 
-const getEmissoresId = async (idUsuario: number): Promise<number[] | ApiException> => {
+const getEmissoresId = async (idUsuario: number, HEADERS: any): Promise<number[] | ApiException> => {
   try {
     const { data } = await Api().get(`/emissor/usuario?id_usuario=${idUsuario}`, HEADERS);
     return data;
@@ -49,7 +46,7 @@ const create = async (dataToCreate: INewEmissor, HEADERS: any): Promise<INewEmis
   }
 };
 
-const updateUltimoEmissorSelecionado = async (idUsuario: number, idEmissor: number) => {
+const updateUltimoEmissorSelecionado = async (idUsuario: number, idEmissor: number, HEADERS: any) => {
   try {
     const { data } = await Api().patch(`/emissores/ultimo?id_usuario=${idUsuario}&id_emissor=${idEmissor}`, HEADERS);
     return data;
@@ -58,7 +55,7 @@ const updateUltimoEmissorSelecionado = async (idUsuario: number, idEmissor: numb
   }
 };
 
-const getUltimoEmissorSelecionadoByUser = async () => {
+const getUltimoEmissorSelecionadoByUser = async (HEADERS: any) => {
   const data = getDecrypted(localStorage.getItem('user'));
   const  cnpjcpf = data.user.empresa;
   const email = data.user.email;

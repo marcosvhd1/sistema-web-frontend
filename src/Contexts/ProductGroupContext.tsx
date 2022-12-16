@@ -2,6 +2,7 @@ import { createContext, ReactNode, useContext, useState } from 'react';
 import { ApiException } from '../services/api/ApiException';
 import { GroupService, IGroup } from '../services/api/produtos/GroupService';
 import { getDecrypted } from '../utils/crypto';
+import { userInfos } from '../utils/header';
 import { useEmissorContext } from './EmissorProvider';
 
 type GroupProviderProps = {
@@ -19,14 +20,9 @@ export function ProductGroupProvider({ children }: GroupProviderProps) {
   const [data, setData] = useState<IGroup[]>([]);
   const { idEmissorSelecionado } = useEmissorContext();
 
-  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
-  const TOKEN = LOCAL_DATA?.user.accessToken;
+  const userInfo = userInfos();
 
-  const HEADERS = {
-    headers: {
-      'Authorization': TOKEN
-    }
-  };
+  const HEADERS = userInfo.header;
 
   const getDados = async () => {
     GroupService.getAll(idEmissorSelecionado, HEADERS)

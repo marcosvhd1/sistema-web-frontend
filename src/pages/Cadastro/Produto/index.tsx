@@ -13,6 +13,7 @@ import { useModalProduct } from '../../../Contexts/Modal/ProductContext';
 import { ApiException } from '../../../services/api/ApiException';
 import { IProduct, ProductService } from '../../../services/api/produtos/ProductService';
 import { getDecrypted } from '../../../utils/crypto';
+import { userInfos } from '../../../utils/header';
 import { FormModal } from './components/Form/ModalProduct';
 import { SearchBox } from './components/SearchBox';
 
@@ -50,14 +51,18 @@ export function Produto() {
   const [marca, setMarca] = useState<string>('');
   const [grupo, setGrupo] = useState<string>('');
 
-  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
-  const TOKEN = LOCAL_DATA?.user.accessToken;
 
-  const HEADERS = {
-    headers: {
-      'Authorization': TOKEN
-    }
-  };
+  const userInfo = userInfos();
+
+  const HEADERS = userInfo.header;
+  // const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
+  // const TOKEN = LOCAL_DATA?.user.accessToken;
+
+  // const HEADERS = {
+  //   headers: {
+  //     'Authorization': TOKEN
+  //   }
+  // };
 
   useEffect(() => {
     navigate(`?page=${currentPage}&limit=${limitRegistros}`);

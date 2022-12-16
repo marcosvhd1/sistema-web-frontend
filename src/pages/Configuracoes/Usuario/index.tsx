@@ -21,8 +21,7 @@ export function ModalUser() {
   const [data, setData] = useState<IUsuario[]>([]);
   const [dataToUpdate, setDataToUpdate] = useState<IUsuario>();
   const [isEditing, setIsEditing] = useState(false);
-  const { emissor, setIdUsuarioSelecionado, getIdEmissoresByUser} = useEmissorContext();
-  const [idEmissor, setIdEmissor] = useState<number[]>([]);
+  const { setIdEmissor, setIdUsuarioSelecionado, getIdEmissoresByUser} = useEmissorContext();
   const methods = useForm();
 
   const headers: { key: string, label: string }[] = [
@@ -42,6 +41,7 @@ export function ModalUser() {
   const handleRegisterNewUser = () => {
     setIsDisabled(false);
     setIsEditing(false);
+    setIdEmissor([]);
   };
 
   const closeModal = () => {
@@ -147,7 +147,7 @@ export function ModalUser() {
                 </TableContainer>
               </Flex>
               <Flex w='50%' justify='center'>
-                <FormUser id={id} getEmissores={getIdEmissoresByUser} setIdEmissor={setIdEmissor} isEditing={isEditing} dataToUpdate={dataToUpdate!} getUsers={getUsers} isDisabled={isDisabled}/>
+                <FormUser id={id} setIdEmissor={setIdEmissor} isEditing={isEditing} dataToUpdate={dataToUpdate!} getUsers={getUsers} isDisabled={isDisabled}/>
               </Flex>
             </Flex>
           </ModalBody>
