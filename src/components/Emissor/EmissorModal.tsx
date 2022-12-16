@@ -17,8 +17,8 @@ export function EmissorModal() {
   const idUser = userInfo.infos?.idUser;
 
   const handleSaveEmissor = () => {
-    updateUltimoEmissorSelecionado();
     getCredenciais();
+    updateUltimoEmissorSelecionado();
     navigate('/app');
     onClose();
   };
@@ -42,6 +42,7 @@ export function EmissorModal() {
   useEffect(() => {
     handleGetUserInfo();
     getEmissoresByUser(idUser);
+    getCredenciais();
   }, []);
 
 

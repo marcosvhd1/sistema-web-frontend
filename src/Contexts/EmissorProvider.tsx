@@ -77,8 +77,10 @@ export function EmissorProvider({children}: EmissorProviderProps) {
       });
   };
 
+
+
   const getCredenciais = () => {
-    emissores.forEach(e => {
+    userEmissores.forEach(e => {
       if (e.id === idEmissorSelecionado) {
         const dados = {
           'cnpjcpf': e.cnpjcpf,
