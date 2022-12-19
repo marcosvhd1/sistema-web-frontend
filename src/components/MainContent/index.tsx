@@ -8,6 +8,7 @@ import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { Sidebar } from '../Sidebar';
 import { ModalUser } from '../../pages/Usuario';
+import { ChangePasswordModal } from '../ChangePassword';
 
 interface MainContentProps {
   children: ReactNode
@@ -42,6 +43,7 @@ export default function MainContent({ children }: MainContentProps) {
         <Footer />
       </GridItem>
       <ModalUser />
+      <ChangePasswordModal />
     </Grid>
   );
 }

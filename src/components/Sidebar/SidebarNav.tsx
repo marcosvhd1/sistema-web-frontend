@@ -77,7 +77,7 @@ export function SidebarNav() {
             <Emissor />
           </Flex>
           {!smSize[0] ? '' : navSize == 'small' && (
-            <NavItem aria-label="Emissor" icon={FcSearch} title="" rota="" click={handleOpenModal} />
+            <NavItem aria-label="Emissor" icon={FcSearch} title='Emissor' rota="" click={handleOpenModal} />
           )}
         </NavSection>
       </Flex>

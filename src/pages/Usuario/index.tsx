@@ -59,7 +59,7 @@ export function ModalUser() {
     UsuarioService.deleteById(userId, HEADERS)
       .then((result) => {
         if (result instanceof ApiException) {
-          alert(result.message);
+          console.log(result.message);
         } else {
           toast({
             position: 'top',

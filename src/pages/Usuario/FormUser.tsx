@@ -185,16 +185,16 @@ export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id,
   };
 
   const submitData = (data: IUsuario) => {
-    const dataToUpdates = {
-      id: dataToUpdate.id,
-      id_empresa: dataToUpdate.id_empresa,
-      email: data.email,
-      password: data.password,
-      tipo_admin: tipoAdmin,
-      ultimo_emissor_selecionado: dataToUpdate.ultimo_emissor_selecionado,
-      usuario_principal: dataToUpdate.usuario_principal
-    };
     if (isEditing) {
+      const dataToUpdates = {
+        id: dataToUpdate.id,
+        id_empresa: dataToUpdate.id_empresa,
+        email: data.email,
+        password: data.password,
+        tipo_admin: tipoAdmin,
+        ultimo_emissor_selecionado: dataToUpdate.ultimo_emissor_selecionado,
+        usuario_principal: dataToUpdate.usuario_principal
+      };
       handleUpdateUsuario(dataToUpdates);
     }
     else {

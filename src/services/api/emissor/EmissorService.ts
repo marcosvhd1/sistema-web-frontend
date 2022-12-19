@@ -57,7 +57,7 @@ const updateUltimoEmissorSelecionado = async (idUsuario: number, idEmissor: numb
 
 const getUltimoEmissorSelecionadoByUser = async (HEADERS: any) => {
   const data = getDecrypted(localStorage.getItem('user'));
-  const  cnpjcpf = data.user.empresa;
+  const cnpjcpf = data.user.empresa;
   const email = data.user.email;
 
   try {

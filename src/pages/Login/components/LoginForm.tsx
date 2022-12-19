@@ -7,6 +7,7 @@ import { useAuthContext } from '../../../Contexts/AuthProvider';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalEmissor } from '../../../Contexts/Modal/EmissorContext';
 import { Api } from '../../../services/api/ApiConfig';
+import { EmpresaService } from '../../../services/api/empresas/EmpresaService';
 import { getEncrypted } from '../../../utils/crypto';
 
 interface ILogin {
@@ -40,7 +41,6 @@ export function LoginForm() {
           'idUser': response.data.idUser,
           'permissao': response.data.admin,
           'principal': response.data.usuarioPrincipal,
-          'loggedUser': response.data.idUser,
           'accessToken': `Bearer ${response.data.token.token}`
         },
       };
