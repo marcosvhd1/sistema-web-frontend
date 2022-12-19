@@ -50,19 +50,13 @@ export function Produto() {
   const [cod, setCod] = useState<number>(1);
   const [marca, setMarca] = useState<string>('');
   const [grupo, setGrupo] = useState<string>('');
+  const [active, setActive] = useState<boolean>(true);
+
 
 
   const userInfo = userInfos();
 
   const HEADERS = userInfo.header;
-  // const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
-  // const TOKEN = LOCAL_DATA?.user.accessToken;
-
-  // const HEADERS = {
-  //   headers: {
-  //     'Authorization': TOKEN
-  //   }
-  // };
 
   useEffect(() => {
     navigate(`?page=${currentPage}&limit=${limitRegistros}`);
@@ -163,6 +157,7 @@ export function Produto() {
       setGrupo(productToUpdate.grupo);
       methods.reset(productToUpdate);
       setIsEditing(true);
+      setActive(productToUpdate.status === 'Ativo' ? true : false);
     }
   };
 
@@ -200,7 +195,7 @@ export function Produto() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal marca={marca} grupo={grupo} getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getProduct} id={id} isEditing={isEditing} />
+        <FormModal active={active} setActive={setActive} marca={marca} grupo={grupo} getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getProduct} id={id} isEditing={isEditing} />
         <DeleteAlertDialog label="Produto" deleteFunction={handleDeleteProduct} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

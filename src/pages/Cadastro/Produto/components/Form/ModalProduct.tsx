@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useColorMode, useToast } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
@@ -18,10 +19,12 @@ interface ModalProps {
   header: any
   marca: string
   grupo: string
+  active: boolean
+  setActive: (value: boolean) => void
 }
 
 
-export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, cod, header, getCod }: ModalProps) {
+export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, cod, header, getCod, setActive, active }: ModalProps) {
   const { isOpen, onClose } = useModalProduct();
   const methods = useFormContext<IProduct>();
   const { colorMode } = useColorMode();
@@ -61,6 +64,7 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
       peso_bruto: parseFloat(''),
       peso_liquido: parseFloat(''),
     });
+    setActive(true);
   };
 
   const handleCreateNewProduct = (data: IProduct) => {
@@ -100,6 +104,7 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
   };
 
   const submitData = (data: IProduct) => {
+    data.status = active ? 'Ativo' : 'Inativo';
     if (isEditing)
       handleUpdateProduct(data);
     else
@@ -129,7 +134,7 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <DadosPrincipais marca={marca} grupo={grupo} header={header} getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} />
+                  <DadosPrincipais active={active} setActive={setActive} marca={marca} grupo={grupo} header={header} getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} />
                 </TabPanel>
                 <TabPanel>
                   <DadosFiscais />

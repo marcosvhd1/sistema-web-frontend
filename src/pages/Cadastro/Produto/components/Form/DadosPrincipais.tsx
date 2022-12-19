@@ -19,11 +19,12 @@ interface IFormFields {
   header: any
   marca: string
   grupo: string
+  active: boolean
+  setActive: (value: boolean) => void
 }
 
-export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod, header }: IFormFields) {
+export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod, header, setActive, active}: IFormFields) {
   const { register, setFocus, setValue } = useFormContext<IProduct>();
-  const [active, setActive] = useState<boolean>(true);
   const { colorMode } = useColorMode();
   const {onOpen} = useModalGroup();
   const [isMarca, setIsMarca] = useState<boolean>(false);
@@ -150,7 +151,7 @@ export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod,
           </Flex>
           <Flex w="100%" gap='3' justify='space-between'>
             <FormContainer label="Status" width="6rem" >
-              <Checkbox id="status" onChange={() => setActive(!active)} isChecked={active} size="lg" colorScheme="green" mt='.4rem'>
+              <Checkbox id="status" onChange={() => setActive(!active)} value={active ? 'Ativo' : 'Inativo'} isChecked={active} size="lg" colorScheme="green" mt='.4rem'>
                 {active ? 'Ativo' : 'Inativo'}
               </Checkbox>
             </FormContainer>
