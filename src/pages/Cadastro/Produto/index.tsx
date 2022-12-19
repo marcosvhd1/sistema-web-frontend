@@ -1,4 +1,4 @@
-import { Button, Icon, Td, Tr, useToast } from '@chakra-ui/react';
+import { Badge, Button, Icon, Tag, Td, Tr, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -51,6 +51,7 @@ export function Produto() {
   const [marca, setMarca] = useState<string>('');
   const [grupo, setGrupo] = useState<string>('');
   const [active, setActive] = useState<boolean>(true);
+  const [seeActive, setSeeActive] = useState<string>('Ativo');
 
 
 
@@ -63,11 +64,11 @@ export function Produto() {
   }, [currentPage, limitRegistros, totalClients]);
 
   useEffect(() => {
-    getProduct('');
+    getProduct('', seeActive);
   }, [currentPage]);
 
   useEffect(() => {
-    getProduct('');
+    getProduct('', seeActive);
   }, [limitRegistros]);
 
   useEffect(() => {
@@ -98,8 +99,8 @@ export function Produto() {
     setPages(arrayPages);
   };
 
-  const getProduct = (description: string) => {
-    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
+  const getProduct = (description: string, status: string) => {
+    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, status, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -109,8 +110,8 @@ export function Produto() {
         }
       });
   };
-  const getProductByGroup = (description: string, group: string) => {
-    ProductService.getProductByGroup(currentPage, limitRegistros, filter, description, group, idEmissorSelecionado, HEADERS)
+  const getProductByGroup = (description: string, group: string, status: string) => {
+    ProductService.getProductByGroup(currentPage, limitRegistros, filter, description, group, idEmissorSelecionado, status, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -135,7 +136,7 @@ export function Produto() {
             duration: 2000,
             isClosable: true,
           });
-          getProduct('');
+          getProduct('', seeActive);
         }
       });
     onClose();
@@ -166,7 +167,7 @@ export function Produto() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox getProductByGroup={getProductByGroup} getCod={getLastCod} getProduct={getProduct} changeEdit={setIsEditing} setFilter={setFilter}>
+        <SearchBox seeActive={seeActive} setSeeActive={setSeeActive} getProductByGroup={getProductByGroup} getCod={getLastCod} getProduct={getProduct} changeEdit={setIsEditing} setFilter={setFilter}>
           <DataTable headers={headers}>
             {data != undefined ? data.map((data) => (
               <Tr key={data.id}>
@@ -178,7 +179,11 @@ export function Produto() {
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.grupo}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.un}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.ncm}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.status}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                  <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
+                    {data.status}
+                  </Tag>
+                </Td>
                 <Td style={{ 'textAlign': 'center' }}>
                   <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditProduct(data.id)}>
                     <Icon color="orange.300" as={FiEdit} />
@@ -195,7 +200,7 @@ export function Produto() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal active={active} setActive={setActive} marca={marca} grupo={grupo} getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getProduct} id={id} isEditing={isEditing} />
+        <FormModal seeActive={seeActive} active={active} setActive={setActive} marca={marca} grupo={grupo} getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getProduct} id={id} isEditing={isEditing} />
         <DeleteAlertDialog label="Produto" deleteFunction={handleDeleteProduct} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

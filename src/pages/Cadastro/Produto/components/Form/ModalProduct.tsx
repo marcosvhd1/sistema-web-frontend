@@ -10,7 +10,7 @@ import { DadosFiscais } from './DadosFiscais';
 import { DadosPrincipais } from './DadosPrincipais';
 
 interface ModalProps {
-  refreshPage: (description: string) => void
+  refreshPage: (description: string, status: string) => void
   getCod: () => void
   cod: number
   isEditing: boolean
@@ -21,10 +21,11 @@ interface ModalProps {
   grupo: string
   active: boolean
   setActive: (value: boolean) => void
+  seeActive: string
 }
 
 
-export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, cod, header, getCod, setActive, active }: ModalProps) {
+export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, cod, header, getCod, setActive, active, seeActive }: ModalProps) {
   const { isOpen, onClose } = useModalProduct();
   const methods = useFormContext<IProduct>();
   const { colorMode } = useColorMode();
@@ -85,7 +86,7 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
             console.log(result.message);
           } else {
             clearForm();
-            refreshPage('');
+            refreshPage('', seeActive);
           }
         });
     }
@@ -98,7 +99,7 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
           console.log(result.message);
         } else {
           clearForm();
-          refreshPage('');
+          refreshPage('', seeActive);
         }
       });
   };
