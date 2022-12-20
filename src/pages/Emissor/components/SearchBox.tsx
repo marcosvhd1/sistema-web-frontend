@@ -6,9 +6,10 @@ import { ModalNewEmissorProvider, useModalNewEmissor } from '../../../Contexts/M
 
 interface SearchBoxProps {
   children: ReactNode;
+  getEmissores: () => void
 }
 
-export function SearchBox({ children }: SearchBoxProps) {
+export function SearchBox({ children, getEmissores }: SearchBoxProps) {
   const { onOpen } = useModalNewEmissor();
   return (
     <Flex w="100%" justify="center" align="center" mt={{base: '2', md: '2', lg: '10'}} direction="column" >
@@ -21,7 +22,7 @@ export function SearchBox({ children }: SearchBoxProps) {
             <option value='cnpjcpf'>CPF / CNPJ</option>
           </Select>
           <Input placeholder="Localizar..." w="60%" type="text" mr="3"/>
-          <Button type="submit"><Icon as={FiSearch} /></Button>
+          <Button onClick={getEmissores}><Icon as={FiSearch} /></Button>
         </Flex>
         <Button variant="outline" onClick={onOpen} colorScheme="green">Cadastrar Emissor</Button>
       </Flex>

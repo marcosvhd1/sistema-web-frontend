@@ -11,6 +11,7 @@ export interface IEmissor {
   id: number
   razao: string
   cnpjcpf: string
+  status: string
 }
 
 export interface INewEmissor {
@@ -22,6 +23,15 @@ export interface INewEmissor {
 const getEmissores = async (idUser: number, HEADERS: any): Promise<IEmissor[] | ApiException> => {
   try {
     const { data } = await Api().get(`/emissores?id_usuario=${idUser}`, HEADERS);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
+  }
+};
+
+const getAll = async (idEmpresa: number, HEADERS: any): Promise<IEmissor[] | ApiException> => {
+  try {
+    const { data } = await Api().get(`/emissores/all?empresa=${idEmpresa}`, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
@@ -71,6 +81,7 @@ const getUltimoEmissorSelecionadoByUser = async (HEADERS: any) => {
 export const EmissorService = {
   getEmissores,
   getEmissoresId,
+  getAll,
   updateUltimoEmissorSelecionado,
   getUltimoEmissorSelecionadoByUser,
   create

@@ -4,22 +4,17 @@ import { useModalNewEmissor } from '../../../Contexts/Modal/NewEmissorContext';
 import { ApiException } from '../../../services/api/ApiException';
 import { EmissorService } from '../../../services/api/emissor/EmissorService';
 import { getDecrypted } from '../../../utils/crypto';
+import { userInfos } from '../../../utils/header';
 import { FormEmissor } from './FormEmissor';
 
 
 export function ModalNewEmissor() {
   const { onClose, isOpen } = useModalNewEmissor();
   const methods = useForm();
+  const userInfo = userInfos();
 
-  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
-  const TOKEN = LOCAL_DATA?.user.accessToken;
-  const EMPRESA = LOCAL_DATA?.user.empresa;
-
-  const HEADERS = {
-    headers: {
-      'Authorization': TOKEN
-    }
-  };
+  const EMPRESA = userInfo.infos?.empresa;
+  const HEADERS = userInfo.header;
 
   const submitData = (data: any) => {
     const dataToCreate = {
@@ -39,8 +34,6 @@ export function ModalNewEmissor() {
       });
   };
 
-
-
   return (
     <FormProvider {...methods} >
       <Modal
@@ -50,7 +43,7 @@ export function ModalNewEmissor() {
         closeOnOverlayClick={false}
         scrollBehavior={'inside'}
         motionPreset='slideInBottom'
-        size='xl'
+        size='md'
       >
         <ModalOverlay />
         <ModalContent>
@@ -58,7 +51,7 @@ export function ModalNewEmissor() {
             <ModalHeader>Cadastro Emissor</ModalHeader>
             <ModalCloseButton/>
             <ModalBody>
-              <Flex w='100%' h='22rem' p='.5rem' justify='space-between' borderBottom='.1rem solid #e1e1e3'>
+              <Flex w='100%' h='10rem' p='.5rem' justify='space-between' borderBottom='.1rem solid #e1e1e3'>
                 <FormEmissor />
               </Flex>
             </ModalBody>
