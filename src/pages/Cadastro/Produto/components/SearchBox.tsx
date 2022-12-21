@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 
 import { Button, Checkbox, Flex, Icon, Input, Select, Text } from '@chakra-ui/react';
@@ -19,9 +19,14 @@ interface SearchBoxProps {
   setSeeActive: (value: string) => void
 }
 
+interface getProductProps {
+  description: string;
+  group: string
+}
+
 export function SearchBox({ children, setFilter, getProduct, getProductByGroup, getCod, changeEdit, seeActive, setSeeActive }: SearchBoxProps) {
   const { onOpen } = useModalProduct();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<getProductProps>();
   const { data, getDados } = useGroupContext();
   const [active, setActive] = useState<boolean>(false);
 
@@ -35,7 +40,7 @@ export function SearchBox({ children, setFilter, getProduct, getProductByGroup, 
     getDados();
   }, []);
 
-  const HandleGetProductByFilter = (data: FieldValues) => {
+  const HandleGetProductByFilter = (data: getProductProps) => {
     const { description, group } = data;
     group ? getProductByGroup(description, group, seeActive) : getProduct(description, seeActive);
   };
@@ -46,7 +51,7 @@ export function SearchBox({ children, setFilter, getProduct, getProductByGroup, 
   };
 
   return (
-    <form onSubmit={handleSubmit((data) => HandleGetProductByFilter(data))}>
+    <form onSubmit={handleSubmit(HandleGetProductByFilter)}>
       <Flex w="100%" justify="center" align="center" mt="10" direction="column" >
         <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
         <Flex w="90%" m="4" align="center" justify="space-between">
@@ -75,7 +80,7 @@ export function SearchBox({ children, setFilter, getProduct, getProductByGroup, 
             </Select>
             <Button type="submit"><Icon as={FiSearch} onClick={getDados} /></Button>
             <Checkbox size='lg' mx='2' onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
-            <Text fontSize={{base: 'sm', lg: 'lg'}} w='20%' onChange={(e) => console.log(e)}>Visualizar inativos</Text>
+            <Text fontSize={{base: 'sm', lg: 'lg'}} w='20%' onClick={handleSeeActiveProducts}>Visualizar inativos</Text>
           </Flex>
           <Button ml='4' variant="outline" onClick={openModal} colorScheme="green">Cadastrar</Button>
         </Flex>

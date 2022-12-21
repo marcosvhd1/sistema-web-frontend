@@ -1,4 +1,4 @@
-import { Avatar, Button, Flex, Link, Menu, MenuButton, MenuItem, MenuList, Tag, TagLabel, Tooltip } from '@chakra-ui/react';
+import { Avatar, Flex, Menu, MenuButton, MenuItem, MenuList, Tag, TagLabel, Tooltip } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useModalChangePassword } from '../../Contexts/Modal/ChangePasswordContext';
 import { useModalUser } from '../../Contexts/Modal/UserContext';
@@ -14,14 +14,26 @@ export function LoggedInUser({ showProfileData = true }: LoggedInUserProps) {
   const navigate = useNavigate();
   const { onOpen } = useModalUser();
   const { onOpen: OpenChangePassword } = useModalChangePassword();
+  const userInfo = userInfos();
+
+  const permissao = userInfo.infos?.permissao;
 
   const navigateTo = () => {
     navigate('/app/emissor');
   };
 
+
+  const managerUsers = () => {
+    if (permissao === 1) {
+      onOpen();
+    } else {
+      navigate('/app/unauthorized');
+    }
+  };
+
   return (
     <>
-      <Tag size="md" borderRadius="xl" colorScheme={showProfileData ? 'orange' : ''}>
+      <Tag size="md" borderRadius="xl" colorScheme={showProfileData ? 'orange' : ''} >
         <Menu>
           <Tooltip label='Gerenciar' placement='bottom-end' hasArrow>
             <MenuButton>
@@ -35,7 +47,7 @@ export function LoggedInUser({ showProfileData = true }: LoggedInUserProps) {
           </Tooltip>
           <MenuList>
             <MenuItem onClick={navigateTo}>Cadastrar Emissor</MenuItem>
-            <MenuItem onClick={onOpen}>Gerenciar Usuários</MenuItem>
+            <MenuItem onClick={managerUsers}>Gerenciar Usuários</MenuItem>
             <MenuItem onClick={OpenChangePassword}>Alterar Senha</MenuItem>
           </MenuList>
         </Menu>

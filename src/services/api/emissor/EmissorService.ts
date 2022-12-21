@@ -29,10 +29,9 @@ const getEmissores = async (idUser: number, HEADERS: any): Promise<IEmissor[] | 
   }
 };
 
-const getAll = async (idEmpresa: number, HEADERS: any): Promise<IEmissor[] | ApiException> => {
+const getAll = async (currentPage: number, limitRegistros: number, filter: string, description: string, idEmpresa: number, status: string, HEADERS: any): Promise<IEmissor[] | ApiException> => {
   try {
-    const { data } = await Api().get(`/emissores/all?empresa=${idEmpresa}`, HEADERS);
-    return data;
+    return await Api().get(`/emissores/all?empresa=${idEmpresa}&page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&status=${status}`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }
@@ -53,6 +52,14 @@ const create = async (dataToCreate: INewEmissor, HEADERS: any): Promise<INewEmis
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao criar o registro.');
+  }
+};
+const update = async (id: number, dataToUpdate: IEmissor, HEADERS: any): Promise<IEmissor | ApiException> => {
+  try {
+    const { data } = await Api().patch(`/emissores/update/${id}`, dataToUpdate, HEADERS);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
   }
 };
 
@@ -77,6 +84,13 @@ const getUltimoEmissorSelecionadoByUser = async (HEADERS: any) => {
     return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
   }
 };
+const deleteById = async (id: number, HEADERS: any): Promise<undefined | ApiException> => {
+  try {
+    await Api().delete(`/emissores/${id}`, HEADERS);
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao apagar o registro.');
+  }
+};
 
 export const EmissorService = {
   getEmissores,
@@ -84,5 +98,7 @@ export const EmissorService = {
   getAll,
   updateUltimoEmissorSelecionado,
   getUltimoEmissorSelecionadoByUser,
-  create
+  create,
+  update,
+  deleteById
 };

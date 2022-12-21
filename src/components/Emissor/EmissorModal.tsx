@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useToast } from '@chakra-ui/react';
+import { Button, Checkbox, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableContainer, Tag, Tbody, Td, Th, Thead, Tr, useToast } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { userInfos } from '../../utils/header';
 export function EmissorModal() {
   const { onClose, isOpen } = useModalEmissor();
   const toast = useToast();
-  const { emissores, setIdEmissorSelecionado, userEmissores, idEmissorSelecionado, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais, getEmissoresByUser } = useEmissorContext();
+  const { setIdEmissorSelecionado, userEmissores, idEmissorSelecionado, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais, getEmissoresByUser } = useEmissorContext();
   const navigate = useNavigate();
 
   const userInfo = userInfos();
@@ -17,13 +17,6 @@ export function EmissorModal() {
   const idUser = userInfo.infos?.idUser;
 
   const handleSaveEmissor = () => {
-    getCredenciais();
-    updateUltimoEmissorSelecionado();
-    navigate('/app');
-    onClose();
-  };
-
-  const handleEmissorSelecionado = () => {
     if (idEmissorSelecionado === null || idEmissorSelecionado === 0) {
       toast({
         position: 'top',
@@ -34,9 +27,17 @@ export function EmissorModal() {
         isClosable: true,
       });
     } else {
-      onClose();
       getCredenciais();
+      updateUltimoEmissorSelecionado();
+      navigate('/app');
+      onClose();
+
     }
+  };
+
+  const closeModal = () => {
+    onClose();
+    getCredenciais();
   };
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export function EmissorModal() {
   return (
     <Modal
       isCentered
-      onClose={handleEmissorSelecionado}
+      onClose={closeModal}
       isOpen={isOpen}
       closeOnOverlayClick={false}
       motionPreset='slideInBottom'
@@ -68,6 +69,7 @@ export function EmissorModal() {
                   <Th style={{ 'width': '1rem' }}><Checkbox isReadOnly></Checkbox></Th>
                   <Th>razão social</Th>
                   <Th>cnpj / cpf</Th>
+                  <Th>status</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -76,6 +78,7 @@ export function EmissorModal() {
                     <Td style={{ 'width': '.1rem' }} >
                       <Checkbox
                         isChecked={data.id === idEmissorSelecionado}
+                        isDisabled={data.status === 'Inativo'}
                         onChange={() => setIdEmissorSelecionado(data.id)}
                         id={data.id}
                       >
@@ -83,6 +86,11 @@ export function EmissorModal() {
                     </Td>
                     <Td>{data.razao}</Td>
                     <Td>{data.cnpjcpf}</Td>
+                    <Td style={{ 'textAlign': 'center' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                      <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
+                        {data.status}
+                      </Tag>
+                    </Td>
                   </Tr>
                 ))}
               </Tbody>
@@ -92,7 +100,7 @@ export function EmissorModal() {
         <ModalFooter>
           <Flex w="100%" justify="space-between" >
             <Button variant='solid' colorScheme="green" onClick={handleSaveEmissor}><Icon as={FiCheck} mr={1} />Salvar</Button>
-            <Button colorScheme='red' variant="outline" mr={3} onClick={handleEmissorSelecionado}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+            <Button colorScheme='red' variant="outline" mr={3} onClick={closeModal}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
           </Flex>
         </ModalFooter>
       </ModalContent>
