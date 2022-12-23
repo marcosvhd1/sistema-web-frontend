@@ -2,6 +2,7 @@ import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPane
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiCheck } from 'react-icons/fi';
+import { FormContainer } from '../../components/Form/FormContainer';
 import { useEmissorContext } from '../../Contexts/EmissorProvider';
 import { ApiException } from '../../services/api/ApiException';
 import { EmissorService, IEmissor } from '../../services/api/emissor/EmissorService';
@@ -18,9 +19,12 @@ interface FormUserProps {
   id: number
   isEditing: boolean
   setIdEmissor: (value: number[]) => void
+  setIsEditing: (value: boolean) => void
+  active: boolean
+  setActive: (value: boolean) => void
 }
 
-export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id, isEditing }: FormUserProps) {
+export function FormUser({ isDisabled, setIdEmissor, active, setActive, getUsers, dataToUpdate, id, isEditing, setIsEditing }: FormUserProps) {
   const { emissores, idEmissor, getEmissores, setIdEmissorSelecionado, getIdEmissoresByUser } = useEmissorContext();
   const [idEmpresa, setIdEmpresa] = useState<number>();
   const [isTipoAdminChecked, setIsTipoAdminChecked] = useState<boolean>(false);
@@ -33,6 +37,8 @@ export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id,
   const userInfo = userInfos();
   const permissao = userInfo.infos?.permissao;
   const HEADERS = userInfo.header;
+  const principal = userInfo.infos?.principal;
+
 
   const { empresa } = userInfo.infos;
 
@@ -43,6 +49,7 @@ export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id,
     });
     idEmissor.splice(0, idEmissor.length);
     setIsTipoAdminChecked(false);
+    setIsEditing(false);
   };
 
   const getIdEmpresa = (cnpjcpf: string, HEADERS: any) => {
@@ -85,7 +92,8 @@ export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id,
       'password': data.password,
       'tipo_admin': tipoAdmin,
       'ultimo_emissor_selecionado':idEmissor[0],
-      'usuario_principal': 'Não'
+      'usuario_principal': 'Não',
+      'status': active ? 'Ativo' : 'Inativo'
     };
     const isUsuarioCadastrado: IUsuario[] = await UsuarioService.getUserId(idEmpresa!, dataToCreate.email, HEADERS);
 
@@ -193,13 +201,13 @@ export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id,
         password: data.password,
         tipo_admin: tipoAdmin,
         ultimo_emissor_selecionado: dataToUpdate.ultimo_emissor_selecionado,
-        usuario_principal: dataToUpdate.usuario_principal
+        usuario_principal: dataToUpdate.usuario_principal,
+        status: active ? 'Ativo' : 'Inativo'
       };
       handleUpdateUsuario(dataToUpdates);
     }
     else {
       handleCreateUser(data);
-
     }
   };
 
@@ -255,9 +263,17 @@ export function FormUser({ isDisabled, setIdEmissor, getUsers, dataToUpdate, id,
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
-        <Checkbox isDisabled={isDisabled || permissao === 0} my='1rem' isChecked={isTipoAdminChecked} onChange={getPermissaoAdmin} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} >Permissão de Administrador</Checkbox>
+        <Checkbox isDisabled={isDisabled || permissao === 0 || principal === 'Sim'} my='1rem' isChecked={isTipoAdminChecked} onChange={getPermissaoAdmin} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
+          Permissão de Administrador
+        </Checkbox>
+        <Flex justify='flex-start' w='100%' my='1'>
+          <Checkbox size='md' id="status" isDisabled={isDisabled || permissao === 0} value={active ? 'Ativo' : 'Inativo'} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={() => setActive(!active)} isChecked={active} colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+            {active ? 'Ativo' : 'Inativo'}
+          </Checkbox>
+        </Flex>
         <Flex w="100%" justify='center' >
-          <Button w="100%" isDisabled={isDisabled} variant='outline' colorScheme="green" type="submit" size='sm'><Icon as={FiCheck} mr={1} />Salvar</Button>
+          <Button w="100%" isDisabled={isDisabled} variant='outline' colorScheme="green" type="submit" mr='2' size='sm'><Icon as={FiCheck} mr={1} />Salvar</Button>
+          <Button w="100%" isDisabled={isDisabled} variant='outline' colorScheme="red" onClick={clearForm} size='sm'><Icon as={FiCheck} mr={1} />Cancelar</Button>
         </Flex>
       </Flex>
     </form>

@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Td, Table, TableContainer, Tbody, Th, Thead, Tr, useDisclosure, useToast } from '@chakra-ui/react';
+import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Td, Table, TableContainer, Tbody, Th, Thead, Tr, useDisclosure, useToast, Tag } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { DataTable } from '../../components/Table/DataTable';
@@ -22,11 +22,13 @@ export function ModalUser() {
   const [data, setData] = useState<IUsuario[]>([]);
   const [dataToUpdate, setDataToUpdate] = useState<IUsuario>();
   const [isEditing, setIsEditing] = useState(false);
+  const [active, setActive] = useState<boolean>(true);
   const { setIdEmissor, setIdUsuarioSelecionado, getIdEmissoresByUser} = useEmissorContext();
   const methods = useForm();
 
   const headers: { key: string, label: string }[] = [
     { key: 'login', label: 'Login' },
+    { key: 'status', label: 'Status' },
   ];
 
   const userInfo = userInfos();
@@ -34,6 +36,7 @@ export function ModalUser() {
   const permissao = userInfo.infos?.permissao;
   const cnpjcpf = userInfo.infos?.empresa;
   const HEADERS = userInfo.header;
+
 
   const handleRegisterNewUser = () => {
     setIsDisabled(false);
@@ -87,6 +90,7 @@ export function ModalUser() {
       setDataToUpdate(userToUpdate);
       setIsEditing(true);
       setIsDisabled(false);
+      setActive(userToUpdate.status === 'Ativo');
       setIdUsuarioSelecionado(id);
       getIdEmissoresByUser();
     }
@@ -105,7 +109,7 @@ export function ModalUser() {
       closeOnOverlayClick={false}
       scrollBehavior={'inside'}
       motionPreset='slideInBottom'
-      size='xl'
+      size='2xl'
     >
       <ModalOverlay />
       <FormProvider {...methods}>
@@ -114,7 +118,7 @@ export function ModalUser() {
           <ModalCloseButton onClick={closeModal}/>
           <ModalBody>
             <Flex w='100%' h='22rem' p='.5rem' justify='space-between' borderBottom='.1rem solid #e1e1e3'>
-              <Flex w='50%' borderRight='.1rem solid #e1e1e3'>
+              <Flex w='55%' borderRight='.1rem solid #e1e1e3'>
                 <TableContainer  w="90%" borderRadius={8} overflowY='auto' >
                   <Table size="sm" variant='simple' >
                     <Thead bg="whiteAlpha.100">
@@ -129,6 +133,11 @@ export function ModalUser() {
                       {data != undefined ? data.map((data) => (
                         <Tr key={data.id}>
                           <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.email}</Td>
+                          <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} >
+                            <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
+                              {data.status}
+                            </Tag>
+                          </Td>
                           <Td style={{ 'textAlign': 'center' }}>
                             <Button variant="ghost" colorScheme="orange" isDisabled={permissao === 0 && data.id !== idUser} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditClient(data.id!)}>
                               <Icon color="orange.300" as={FiEdit} />
@@ -144,7 +153,7 @@ export function ModalUser() {
                 </TableContainer>
               </Flex>
               <Flex w='50%' justify='center'>
-                <FormUser id={id} setIdEmissor={setIdEmissor} isEditing={isEditing} dataToUpdate={dataToUpdate!} getUsers={getUsers} isDisabled={isDisabled}/>
+                <FormUser setActive={setActive} active={active} setIsEditing={setIsEditing} id={id} setIdEmissor={setIdEmissor} isEditing={isEditing} dataToUpdate={dataToUpdate!} getUsers={getUsers} isDisabled={isDisabled}/>
               </Flex>
             </Flex>
           </ModalBody>

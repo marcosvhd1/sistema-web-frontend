@@ -84,12 +84,9 @@ const getUltimoEmissorSelecionadoByUser = async (HEADERS: any) => {
     return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
   }
 };
-const deleteById = async (id: number, HEADERS: any): Promise<undefined | ApiException> => {
-  try {
-    await Api().delete(`/emissores/${id}`, HEADERS);
-  } catch (error) {
-    return new ApiException((error as ApiException).message || 'Erro ao apagar o registro.');
-  }
+const deleteById = async (id: number, HEADERS: any) => {
+  const response = await Api().delete(`/emissores/${id}`, HEADERS);
+  return response;
 };
 
 export const EmissorService = {

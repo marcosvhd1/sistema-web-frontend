@@ -1,4 +1,5 @@
 import {
+  Button,
   Divider,
   Flex,
   Input,
@@ -17,6 +18,8 @@ import { Contact } from './Contact';
 import { useColorMode } from '@chakra-ui/react';
 import moment from 'moment';
 import { IClient } from '../../../../../services/api/clientes/ClientService';
+import { validaCpfCnpj } from '../../../../../utils/validaCnpjCpf';
+import { formatCnpjCpf } from '../../../../../utils/formatarCnpjCpf';
 
 interface IFormFields {
   editCod: number
@@ -25,7 +28,7 @@ interface IFormFields {
   isEditing: boolean
 }
 export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
-  const { register, formState: { errors }, setFocus } = useFormContext<IClient>();
+  const { register, formState: { errors }, setFocus, getValues } = useFormContext<IClient>();
   const { colorMode } = useColorMode();
 
   useEffect(() => {
@@ -35,6 +38,14 @@ export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
       setFocus('razao');
     }, 100);
   }, []);
+
+  const validarCampo = () => {
+    const data = getValues('cnpjcpf');
+    const formatado = formatCnpjCpf(data);
+    console.log(formatado);
+    console.log(validaCpfCnpj(formatado));
+  };
+
 
   return (
     <Flex w="58rem" h="40rem" direction="column" justify="space-between">
@@ -119,6 +130,7 @@ export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
         <Divider />
         <Adress />
       </Stack>
+      <Button onClick={validarCampo}>tst</Button>
     </Flex>
   );
 }

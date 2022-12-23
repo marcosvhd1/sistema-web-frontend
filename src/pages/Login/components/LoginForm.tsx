@@ -58,7 +58,7 @@ export function LoginForm() {
     } catch (error: any) {
       toast({
         position: 'top',
-        description: 'Credencias inválidas',
+        description: error.response.data,
         status: 'error',
         duration: 2000,
         isClosable: true,

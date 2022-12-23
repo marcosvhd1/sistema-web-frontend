@@ -9,6 +9,7 @@ export interface IUsuario {
   tipo_admin?: number;
   ultimo_emissor_selecionado?: number;
   usuario_principal?: string;
+  status?: string;
 }
 
 const getAll = async () => {

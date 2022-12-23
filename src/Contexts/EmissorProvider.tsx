@@ -1,8 +1,8 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 import { ApiException } from '../services/api/ApiException';
 import { EmissorService, IEmissor } from '../services/api/emissor/EmissorService';
 import { UsuarioService } from '../services/api/usuarios/UsuarioService';
-import { getDecrypted, getEncrypted } from '../utils/crypto';
+import { getEncrypted } from '../utils/crypto';
 import { userInfos } from '../utils/header';
 
 type EmissorProviderProps = {

@@ -46,7 +46,7 @@ export function LoggedInUser({ showProfileData = true }: LoggedInUserProps) {
             </MenuButton>
           </Tooltip>
           <MenuList>
-            <MenuItem onClick={navigateTo}>Cadastrar Emissor</MenuItem>
+            <MenuItem onClick={navigateTo}>Gerenciar Emissores</MenuItem>
             <MenuItem onClick={managerUsers}>Gerenciar Usuários</MenuItem>
             <MenuItem onClick={OpenChangePassword}>Alterar Senha</MenuItem>
           </MenuList>

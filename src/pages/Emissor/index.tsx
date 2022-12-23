@@ -101,25 +101,32 @@ export function Emissor() {
       setActive(emissorToUpdate.status === 'Ativo' ? true : false);
     }
   };
-  const handleDeleteEmissor = (emissorId: number) => {
-    EmissorService.deleteById(emissorId, HEADERS)
-      .then((result) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          toast({
-            position: 'top',
-            title: 'Operação concluída.',
-            description: 'Emissor excluído com sucesso.',
-            status: 'success',
-            duration: 2000,
-            isClosable: true,
-          });
-          getEmissores('', seeActive);
-        }
+  const handleDeleteEmissor = async (emissorId: number) => {
+    const FK_ERROR = '23503';
+    const response = await EmissorService.deleteById(emissorId, HEADERS);
+
+    if (response.data.code === FK_ERROR) {
+      toast({
+        position: 'top',
+        title: 'Operação não permitida.',
+        description: 'Existem registros vinculados a esse emissor.',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
       });
+    } else {
+      toast({
+        position: 'top',
+        title: 'Operação concluída.',
+        description: 'Emissor excluído com sucesso.',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
+      getEmissores('', seeActive);
+      setTotalClients(totalClients - 1);
+    }
     onClose();
-    setTotalClients(totalClients - 1);
   };
 
   const handleOpenDialog = (id: number) => {
