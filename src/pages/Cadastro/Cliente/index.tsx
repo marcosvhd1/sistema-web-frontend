@@ -19,6 +19,7 @@ import { useAlertClientContext } from '../../../Contexts/AlertDialog/AlertClient
 import { useModalClient } from '../../../Contexts/Modal/ClientContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { getDecrypted } from '../../../utils/crypto';
+import { userInfos } from '../../../utils/header';
 
 
 export function Cliente() {
@@ -38,17 +39,8 @@ export function Cliente() {
   const toast = useToast();
   const { idEmissorSelecionado } = useEmissorContext();
   const [cod, setCod] = useState<number>(1);
-
-
-  const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
-  const TOKEN = LOCAL_DATA?.user.accessToken;
-
-  const HEADERS = {
-    headers: {
-      'Authorization': TOKEN
-    }
-  };
-
+  const userInfo = userInfos();
+  const HEADERS = userInfo.header;
 
   useEffect(() => {
     navigate(`?page=${currentPage}&limit=${limitRegistros}`);
