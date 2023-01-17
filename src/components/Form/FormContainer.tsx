@@ -9,13 +9,15 @@ interface FormContainerProps {
   isRequired?: boolean
   width?: string
   align?: string
-  mr?: string;
+  mt?: string
+  mr?: string
+  hidden?: boolean
 }
 
-export function FormContainer({ label, children, error, align, width = '100%', isRequired = false, mr }: FormContainerProps) {
+export function FormContainer({ label, children, error, align, width = '100%', isRequired = false, mr, hidden, mt = '2', }: FormContainerProps) {
   return (
-    <FormControl isInvalid={!!error} isRequired={isRequired} w={`${width}`}>
-      <Flex direction="column" align={`${align}`} mt="2" mr={`${mr}`}>
+    <FormControl isInvalid={!!error} isRequired={isRequired} w={`${width}`} visibility={`${hidden ? 'hidden' : 'visible'}`}>
+      <Flex direction="column" align={`${align}`} mt={`${mt}`} mr={`${mr}`}>
         <Text fontSize="sm" fontWeight='medium'>{label}</Text>
         {children}
         {!!error && (

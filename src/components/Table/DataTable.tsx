@@ -3,13 +3,16 @@ import { Flex, Table, TableContainer, Tbody, Th, Thead, Tr } from '@chakra-ui/re
 
 interface DataTableProps {
   children: ReactNode;
-  headers: { key: string, label: string }[]
+  headers: { key: string, label: string }[],
+  width?: string
+  mt?: string
+  mr?: string
 }
 
-export function DataTable({ children, headers }: DataTableProps) {
+export function DataTable({ children, headers, width = '90%', mt = '10', mr }: DataTableProps) {
   return (
-    <Flex w="100%" justify="center" mt="10">
-      <TableContainer  w="90%" borderRadius={8} >
+    <Flex w="100%" justify="center" mt={`${mt}`} mr={`${mr}`}>
+      <TableContainer w={`${width}`} borderRadius={8} >
         <Table size="sm" variant='simple' >
           <Thead bg="whiteAlpha.100">
             <Tr style={{'height': '2rem'}}>
