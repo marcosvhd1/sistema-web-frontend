@@ -32,6 +32,7 @@ export interface IClient {
   email1: string;
   email2: string;
   site: string;
+  pais: string;
 }
 
 const getClientsByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, idEmissorSelecionado: number, HEADERS: any): Promise<IClient[] | ApiException> => {

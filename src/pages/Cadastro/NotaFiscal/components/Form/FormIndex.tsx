@@ -4,7 +4,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Button, Flex, Grid, GridItem, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Textarea, useColorMode } from '@chakra-ui/react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import MainContent from '../../../../../components/MainContent';
-import { useModalNotaFiscal } from '../../../../../Contexts/Modal/NotaFiscalContext';
 import { SidebarContext } from '../../../../../Contexts/SidebarContext';
 import { SizeContext } from '../../../../../Contexts/SizeContext';
 import { INotaFiscal } from '../../../../../services/api/notafiscal/NotaFiscalService';
@@ -31,17 +30,10 @@ interface NotaProps {
 
 export function CadastroNotaFiscal({ isEditing, id, editCod, cod, refreshPage, getCod, changeEdit }: NotaProps) {
   const methods = useForm<INotaFiscal>();
-  const { onOpen } = useModalNotaFiscal();
   const { colorMode } = useColorMode();
-  const { smSize } = useContext(SizeContext);
+  
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
-
-  const openModal = () => {
-    getCod();
-    onOpen();
-    changeEdit(false);
-  };
 
   return (
     <FormProvider {...methods}>
@@ -106,7 +98,6 @@ export function CadastroNotaFiscal({ isEditing, id, editCod, cod, refreshPage, g
             </Flex>
           </GridItem>
         </Grid>
-        {/* <FormModal header={HEADERS} cod={cod} editCod={editCod} isEditing={isEditing} id={id} /> */}
       </MainContent>
     </FormProvider>
   );

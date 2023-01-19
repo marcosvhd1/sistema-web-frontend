@@ -5,17 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Icon, Td, Tr, useToast } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
 
-import { SearchBox } from './components/SearchBox';
-import { INotaFiscal } from '../../../services/api/notafiscal/NotaFiscalService';
-import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/AlertNotaFiscalContext';
-import { useModalNotaFiscal } from '../../../Contexts/Modal/NotaFiscalContext';
-import { useEmissorContext } from '../../../Contexts/EmissorProvider';
-import { userInfos } from '../../../utils/header';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
-import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
-
+import { useEmissorContext } from '../../../Contexts/EmissorProvider';
+import { INotaFiscal } from '../../../services/api/notafiscal/NotaFiscalService';
+import { userInfos } from '../../../utils/header';
+import { SearchBox } from './components/SearchBox';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
@@ -23,8 +19,6 @@ export function NotaFiscal() {
   const [id, setId] = useState<number>(0);
   const [isEditing, setIsEditing] = useState(false);
   const [editCod, setEditCod] = useState<number>(1);
-  const { onOpen, onClose, isOpen } = useAlertNotaFiscalContext();
-  const { onOpen: open } = useModalNotaFiscal();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('razao');
   const [totalNotas, setTotalNotas] = useState<number>(0);
@@ -171,7 +165,6 @@ export function NotaFiscal() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalNotas} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <DeleteAlertDialog label="Nota Fiscal" deleteFunction={handleDeleteNotaFiscal} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>
   );
