@@ -33,8 +33,8 @@ export function FormDadosPrincipais() {
           <Input type="text" readOnly {...register('serie')} />
         </FormContainer>
 
-        <FormContainer width='65%' label='Natureza de Operação' mr='3' {...register('natureza_operacao')}>
-          <Select>
+        <FormContainer width='65%' label='Natureza de Operação' mr='3'>
+          <Select {...register('natureza_operacao')}>
             <option value='razao'>Venda 5102</option>
             <option value='fantasia'>Compra 6204</option>
           </Select>
@@ -55,15 +55,15 @@ export function FormDadosPrincipais() {
       {/* OUTRAS INFOS */}
       <Flex w="100%" mb="4" mr="4" ml="4" align="center" justify="space-between">
 
-        <FormContainer width='35%' label='Tipo' mr='3' {...register('tipo')}>
-          <Select>
+        <FormContainer width='35%' label='Tipo' mr='3'>
+          <Select {...register('tipo')}>
             <option value='0'>0 - Entrada</option>
             <option value='1'>1 - Saída</option>
           </Select>
         </FormContainer>
 
-        <FormContainer width='40%' label='Forma de Emissão' mr='3' {...register('forma_emissao')}>
-          <Select>
+        <FormContainer width='40%' label='Forma de Emissão' mr='3'>
+          <Select {...register('forma_emissao')}>
             <option value='normal'>Normal</option>
             <option value='contingencia'>Contingência</option>
             <option value='contingencia_scan'>Contingência com SCAN</option>
@@ -75,8 +75,8 @@ export function FormDadosPrincipais() {
           </Select>
         </FormContainer>
 
-        <FormContainer width='40%' label='Finalidade' mr='3' {...register('finalidade')}>
-          <Select>
+        <FormContainer width='40%' label='Finalidade' mr='3'>
+          <Select {...register('finalidade')}>
             <option value='1'>1 - NF-e normal</option>
             <option value='2'>2 - NF-e complementar</option>
             <option value='3'>3 - NF-e de ajuste</option>
@@ -88,8 +88,8 @@ export function FormDadosPrincipais() {
           <Input type="text" readOnly {...register('modelo')} />
         </FormContainer>
 
-        <FormContainer width='30%' label='Consumidor Final' {...register('consumidor_final')}>
-          <Select>
+        <FormContainer width='30%' label='Consumidor Final' >
+          <Select {...register('consumidor_final')}>
             <option value='0'>0 - Não</option>
             <option value='1'>1 - Sim</option>
           </Select>
@@ -107,69 +107,69 @@ export function FormDadosPrincipais() {
           </Flex>
           <Flex align="center" justify="space-between">
 
-            <FormContainer width="20%" label='* Cód' mr='3' {...register('destinatario.cod')}>
-              <Input type="text" readOnly />
+            <FormContainer width="20%" label='* Cód' mr='3'>
+              <Input type="text" readOnly {...register('destinatario.cod')}/>
             </FormContainer>
 
-            <FormContainer width="55%" label='* Nome / Razão Social' mr='3' {...register('destinatario.razao')}>
-              <Input type="text" readOnly />
+            <FormContainer width="55%" label='* Nome / Razão Social' mr='3' >
+              <Input type="text" readOnly {...register('destinatario.razao')}/>
             </FormContainer>
 
-            <FormContainer width="25%" label='* CPF / CNPJ' {...register('destinatario.cnpjcpf')}>
-              <Input type="text" readOnly />
+            <FormContainer width="25%" label='* CPF / CNPJ' >
+              <Input type="text" readOnly {...register('destinatario.cnpjcpf')}/>
             </FormContainer>
 
           </Flex>
           <Flex align="center" justify="space-between">
             
-            <FormContainer width="40%" label='* Endereço' mr='3' {...register('destinatario.logradouro')}>
-              <Input type="text" readOnly />
+            <FormContainer width="40%" label='* Endereço' mr='3' >
+              <Input type="text" readOnly {...register('destinatario.logradouro')}/>
             </FormContainer>
 
-            <FormContainer width="15%" label='* Nº' mr='3' {...register('destinatario.numero')}>
-              <Input type="text" readOnly />
+            <FormContainer width="15%" label='* Nº' mr='3' >
+              <Input type="text" readOnly {...register('destinatario.numero')}/>
             </FormContainer>
 
-            <FormContainer width="20%" label='* Bairro' mr='3' {...register('destinatario.bairro')}>
-              <Input type="text" readOnly />
+            <FormContainer width="20%" label='* Bairro' mr='3' >
+              <Input type="text" readOnly {...register('destinatario.bairro')}/>
             </FormContainer>
 
-            <FormContainer width="25%" label='* CEP' {...register('destinatario.cep')}>
-              <Input type="text" readOnly />
-            </FormContainer>
-
-          </Flex>
-          <Flex align="center" justify="space-between">
-
-            <FormContainer width="30%" label='* Cidade' mr='3' {...register('destinatario.cidade')}>
-              <Input type="text" readOnly />
-            </FormContainer>
-
-            <FormContainer width="15%" label='* UF' mr='3' {...register('destinatario.uf')}>
-              <Input type="text" readOnly />
-            </FormContainer>
-
-            <FormContainer width="25%" label='Telefone' mr='3' {...register('destinatario.telefone1')}>
-              <Input type="text" readOnly />
-            </FormContainer>
-
-            <FormContainer width="30%" label='Inscrição Estadual' {...register('destinatario.ie')}>
-              <Input type="text" readOnly />
+            <FormContainer width="25%" label='* CEP' >
+              <Input type="text" readOnly {...register('destinatario.cep')}/>
             </FormContainer>
 
           </Flex>
           <Flex align="center" justify="space-between">
 
-            <FormContainer width="35%" label='Complemento' mr='3' {...register('destinatario.complemento')}>
-              <Input type="text" readOnly />
+            <FormContainer width="30%" label='* Cidade' mr='3' >
+              <Input type="text" readOnly {...register('destinatario.cidade')}/>
             </FormContainer>
 
-            <FormContainer width="25%" label='SUFRAMA' mr='3' {...register('destinatario.suframa')}>
-              <Input type="text" readOnly />
+            <FormContainer width="15%" label='* UF' mr='3' >
+              <Input type="text" readOnly {...register('destinatario.uf')}/>
             </FormContainer>
 
-            <FormContainer width="30%" label='País' mr='3' {...register('destinatario.pais')}>
-              <Input type="text" readOnly />
+            <FormContainer width="25%" label='Telefone' mr='3' >
+              <Input type="text" readOnly {...register('destinatario.telefone1')}/>
+            </FormContainer>
+
+            <FormContainer width="30%" label='Inscrição Estadual' >
+              <Input type="text" readOnly {...register('destinatario.ie')}/>
+            </FormContainer>
+
+          </Flex>
+          <Flex align="center" justify="space-between">
+
+            <FormContainer width="35%" label='Complemento' mr='3' >
+              <Input type="text" readOnly {...register('destinatario.complemento')}/>
+            </FormContainer>
+
+            <FormContainer width="25%" label='SUFRAMA' mr='3' >
+              <Input type="text" readOnly {...register('destinatario.suframa')}/>
+            </FormContainer>
+
+            <FormContainer width="30%" label='País' mr='3' >
+              <Input type="text" readOnly {...register('destinatario.pais')}/>
             </FormContainer>
 
             <Button w="15%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue"><Icon mr={2} as={FiSearch} />Buscar</Button>
@@ -182,16 +182,16 @@ export function FormDadosPrincipais() {
             <Divider />
           </Flex>
 
-          <FormContainer label='Data Emissão' {...register('data_emissao')}>
-            <Input type="date"/>
+          <FormContainer label='Data Emissão' >
+            <Input type="date" {...register('data_emissao')}/>
           </FormContainer>
 
-          <FormContainer label='Data Saída' {...register('data_saida')}>
-            <Input type="date"/>
+          <FormContainer label='Data Saída' >
+            <Input type="date" {...register('data_saida')}/>
           </FormContainer>
 
-          <FormContainer label='Hora Saída' {...register('hora')}>
-            <Input type="time" />
+          <FormContainer label='Hora Saída' >
+            <Input type="time" {...register('hora')}/>
           </FormContainer>
 
         </Flex>

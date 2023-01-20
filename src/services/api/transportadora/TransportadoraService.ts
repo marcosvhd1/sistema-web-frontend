@@ -23,6 +23,7 @@ export interface ITransportadora {
   anotacoes: string
   placa: string
   uf_placa: string
+  antt: string
 }
 
 const getTransportadoraByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, idEmissorSelecionado: number, HEADERS: any): Promise<ITransportadora[] | ApiException> => {

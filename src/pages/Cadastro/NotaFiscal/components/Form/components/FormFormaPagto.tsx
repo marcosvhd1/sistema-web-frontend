@@ -1,11 +1,14 @@
 import { Button, Divider, Flex, Icon, Select, Td, Text, Tr } from '@chakra-ui/react';
 import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../components/Form/FormContainer';
 import { DataTable } from '../../../../../../components/Table/DataTable';
+import { INotaFiscal } from '../../../../../../services/api/notafiscal/NotaFiscalService';
 
 
 export function FormFormaPagto() {
+  const { register, setFocus } = useFormContext<INotaFiscal>();
   const [data, setData] = useState<number[]>([]);
   const [duplicata, setDuplicata] = useState<number[]>([]);
 
@@ -26,7 +29,7 @@ export function FormFormaPagto() {
     <Flex w="100%" justify="center" align="center" direction="column" >
       <Flex w="100%" justify="flex-start" align="center" mb={2}>
         <FormContainer width='45%' label='Presença do comprador no momento da operação'>
-          <Select onChange={(e) => null}>
+          <Select {...register('presenca_comprador')}>
             <option value='0'>0 - Não se aplica (Para NF complementar ou de ajuste)</option>
             <option value='1'>1 - Operação presencial</option>
             <option value='2'>2 - Operação não presencial, pela Internet</option>

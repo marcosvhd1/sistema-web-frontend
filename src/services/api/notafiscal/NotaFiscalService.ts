@@ -1,6 +1,7 @@
 import { IClient } from "../clientes/ClientService";
 import { IProduct } from "../produtos/ProductService";
 import { IServico } from "../servicos/ServicoService";
+import { ITransportadora } from "../transportadora/TransportadoraService";
 
 export interface INotaFiscal {
     id: number;
@@ -63,6 +64,7 @@ export interface INotaFiscal {
     vencimento_duplicata: number;
     valor_duplicata: number;
     modalidade_frete: string;
+    transportadora: ITransportadora;
     quantidade_transporte: number;
     numero_transporte: number;
     especie_transporte: string;

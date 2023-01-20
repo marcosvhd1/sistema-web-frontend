@@ -7,9 +7,12 @@ import { IProduct } from '../../../../../../services/api/produtos/ProductService
 import { MdAdd } from 'react-icons/md';
 import { IServico } from '../../../../../../services/api/servicos/ServicoService';
 import { FormContainer } from '../../../../../../components/Form/FormContainer';
+import { useFormContext } from 'react-hook-form';
+import { INotaFiscal } from '../../../../../../services/api/notafiscal/NotaFiscalService';
 
 
 export function FormServicos() {
+  const { register, setFocus } = useFormContext<INotaFiscal>();
   const [data, setData] = useState<IServico[]>([]);
   const [servQtd, setServQtd] = useState<number>(1);
   const [valorUnt, setValorUnt] = useState<number>(0);
@@ -34,7 +37,7 @@ export function FormServicos() {
           <Text mr={3}>
             Competência:
           </Text>
-          <Input w="30%" type="date"/>
+          <Input w="30%" type="date" {...register('competencia')}/>
         </Flex>
         <Flex w="100%" justify="flex-end" align="center">
           <Button fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="outline" colorScheme="green" mr={3}>
