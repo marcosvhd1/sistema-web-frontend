@@ -1,13 +1,11 @@
-import { Button, Divider, Flex, Grid, GridItem, Icon, Input, Select, Text, Textarea, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Grid, GridItem, Select, Textarea, useColorMode } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
-import { FiSearch } from 'react-icons/fi';
-import { FormContainer } from '../../../../../../components/Form/FormContainer';
 import { INotaFiscal } from '../../../../../../services/api/notafiscal/NotaFiscalService';
 
 export function FormInfoAdicional() {
-  const { register, setFocus } = useFormContext<INotaFiscal>();
+  const { register } = useFormContext<INotaFiscal>();
   const { colorMode } = useColorMode();
-
+  
   return (
     <Grid
       templateAreas={`

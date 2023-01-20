@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Td, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Td, Tr } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
 
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
-import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { INotaFiscal } from '../../../services/api/notafiscal/NotaFiscalService';
 import { userInfos } from '../../../utils/header';
 import { SearchBox } from './components/SearchBox';
@@ -16,18 +15,12 @@ import { SearchBox } from './components/SearchBox';
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
   const [data, setData] = useState<INotaFiscal[]>([]);
-  const [id, setId] = useState<number>(0);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editCod, setEditCod] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('razao');
   const [totalNotas, setTotalNotas] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState(5);
   const [pages, setPages] = useState<number[]>([]);
   const navigate = useNavigate();
-  const toast = useToast();
-  const { idEmissorSelecionado } = useEmissorContext();
-  const [cod, setCod] = useState<number>(1);
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
 
@@ -36,32 +29,16 @@ export function NotaFiscal() {
   }, [currentPage, limitRegistros, totalNotas]);
 
   useEffect(() => {
-    //getClientsByFilter('');
+    getNotasFiscaisByFilter('');
   }, [currentPage]);
 
   useEffect(() => {
-    //getClientsByFilter('');
+    getNotasFiscaisByFilter('');
   }, [limitRegistros]);
 
   useEffect(() => {
     handleChangeTotalPage();
   }, [totalNotas, limitRegistros]);
-
-  const getLastCod = () => {
-    // NotaFiscalService.getLastCod(idEmissorSelecionado, HEADERS)
-    //   .then((result) => {
-    //     if (isEditing) {
-    //       setCod(editCod);
-    //     } else {
-    //       if (result === null) {
-    //         setCod(1);
-    //       } else {
-    //         setCod(parseInt(result) + 1);
-    //       }
-    //     }
-    //   });
-  };
-
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalNotas / limitRegistros);
@@ -72,54 +49,13 @@ export function NotaFiscal() {
     setPages(arrayPages);
   };
 
-  const getNotasFiscaisByFilter = (description: string) => {
-    // ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
-    //   .then((result: any) => {
-    //     if (result instanceof ApiException) {
-    //       console.log(result.message);
-    //     } else {
-    //       setData(result.data);
-    //       setTotalClients(parseInt(result.headers['qtd']));
-    //     }
-    //   });
-  };
+  const getNotasFiscaisByFilter = (description: string) => {null;};
 
-  const handleDeleteNotaFiscal = (clientId: number) => {
-    // ClientService.deleteById(clientId, idEmissorSelecionado, HEADERS)
-    //   .then((result) => {
-    //     if (result instanceof ApiException) {
-    //       alert(result.message);
-    //     } else {
-    //       toast({
-    //         position: 'top',
-    //         title: 'Operação concluída.',
-    //         description: 'Cliente excluido com sucesso.',
-    //         status: 'success',
-    //         duration: 2000,
-    //         isClosable: true,
-    //       });
-    //       getClientsByFilter('');
-    //     }
-    //   });
-    // onClose();
-    // setTotalClients(totalClients - 1);
-  };
+  const handleDeleteNotaFiscal = (clientId: number) => {null;};
 
-  const handleOpenDialog = (id: number) => {
-    // onOpen();
-    // setId(id);
-  };
+  const handleOpenDialog = (id: number) => {null;};
 
-  const handleEditNotaFiscal = (id: number) => {
-    // const clientToUpdate = data.find((client) => client.id === id);
-    // if (clientToUpdate) {
-    //   setId(id);
-    //   setEditCod(clientToUpdate?.cod);
-    //   methods.reset(clientToUpdate);
-    //   open();
-    //   setIsEditing(true);
-    // }
-  };
+  const handleEditNotaFiscal = (id: number) => {null;};
 
   const headers: { key: string, label: string }[] = [
     { key: 'modelo', label: 'Modelo' },
