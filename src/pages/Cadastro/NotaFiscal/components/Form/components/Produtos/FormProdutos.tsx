@@ -17,15 +17,11 @@ export function FormProdutos({ methods }: ProdutosProps) {
   const [produtos, setProdutos] = useState<INFProduct[]>([]);
   const { onOpen } = useModalNFProduct();
 
-  useEffect(() => {
-    handleSaveProduct;
-  }, [produtos]);
-  
-  const openModal = () => {
-    onOpen();
+  const handleAddProduct = (data: INFProduct) => {
+    setProdutos([...produtos, data]);
   };
 
-  const handleSaveProduct = () => {
+  const handleSaveProducts = () => {
     methods.setValue('produtos', produtos);
   };
 
@@ -44,7 +40,7 @@ export function FormProdutos({ methods }: ProdutosProps) {
   return (
     <Flex w="100%" justify="center" align="center" direction="column" >
       <Flex w="100%" justify="flex-end" align="center" mt={2}>
-        <Button fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="outline" colorScheme="green" onClick={openModal}>
+        <Button fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="outline" colorScheme="green" onClick={onOpen}>
           <Icon mr={2} as={MdAdd} />
           Incluir
         </Button>
@@ -72,7 +68,7 @@ export function FormProdutos({ methods }: ProdutosProps) {
           </Tr>
         )) : ''}
       </DataTable>
-      <ModalNFProduct methods={methods} produtos={produtos}/>
+      <ModalNFProduct addProduct={handleAddProduct}/>
     </Flex>
   );
 }

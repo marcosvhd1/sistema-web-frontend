@@ -33,7 +33,7 @@ export function ModalNFClient({ methods }: ModalNFClientProps) {
   const HEADERS = userInfo.header;
 
   const headers: { key: string, label: string }[] = [
-    { key: 'action', label: 'Incluir' },
+    { key: 'action', label: 'Ação' },
     { key: 'cod', label: 'Código' },
     { key: 'razao', label: 'Nome / Razão Social' },
     { key: 'fantasia', label: 'Nome Fantasia' },
