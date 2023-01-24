@@ -8,7 +8,7 @@ import { FormDadosPrincipais } from './components/Dados Principais/FormDadosPrin
 import { FormFormaPagto } from './components/FormFormaPagto';
 import { FormInfoAdicional } from './components/FormInfoAdicional';
 import { FormOutros } from './components/FormOutros';
-import { FormProdutos } from './components/FormProdutos';
+import { FormProdutos } from './components/Produtos/FormProdutos';
 import { FormServicos } from './components/FormServicos';
 import { FormTotais } from './components/FormTotais';
 import { FormTransporte } from './components/FormTransporte';
@@ -52,7 +52,7 @@ export function CadastroNotaFiscal() {
                   <FormDadosPrincipais methods={methods}/>
                 </TabPanel>
                 <TabPanel>
-                  <FormProdutos />
+                  <FormProdutos methods={methods}/>
                 </TabPanel>
                 <TabPanel>
                   <FormServicos />

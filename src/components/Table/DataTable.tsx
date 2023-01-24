@@ -7,9 +7,10 @@ interface DataTableProps {
   width?: string
   mt?: string
   mr?: string
+  trailing?: boolean
 }
 
-export function DataTable({ children, headers, width = '90%', mt = '10', mr }: DataTableProps) {
+export function DataTable({ children, headers, width = '90%', mt = '10', mr, trailing = true }: DataTableProps) {
   return (
     <Flex w="100%" justify="center" mt={`${mt}`} mr={`${mr}`}>
       <TableContainer w={`${width}`} borderRadius={8} >
@@ -19,7 +20,7 @@ export function DataTable({ children, headers, width = '90%', mt = '10', mr }: D
               {headers.map((row) => {
                 return (<Th fontSize="0.7rem"  key={row.key}>{row.label}</Th>);
               })}
-              <Th style={{'textAlign': 'center'}} fontSize="0.7rem">Ações</Th>
+              {trailing ? <Th style={{'textAlign': 'center'}} fontSize="0.7rem">Ações</Th> : null}
             </Tr>
           </Thead>
           <Tbody>

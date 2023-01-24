@@ -2,6 +2,7 @@ import { IClient } from "../clientes/ClientService";
 import { IProduct } from "../produtos/ProductService";
 import { IServico } from "../servicos/ServicoService";
 import { ITransportadora } from "../transportadora/TransportadoraService";
+import { INFProduct } from "./NFProduct";
 
 export interface INotaFiscal {
     id: number;
@@ -20,7 +21,7 @@ export interface INotaFiscal {
     data_emissao: Date;
     data_saida: Date;
     hora: Date;
-    produtos: IProduct[];
+    produtos: INFProduct[];
     competencia: Date;
     servicos: IServico[];
     base_calc_icms: number;

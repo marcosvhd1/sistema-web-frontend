@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react';
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Tab, TabList, TabPanel, TabPanels, Tabs, Td, Text, Tr, useColorMode, useToast } from '@chakra-ui/react';
-import { FieldValues, FormProvider, useForm, useFormContext } from 'react-hook-form';
-import { FiCheck, FiCheckSquare, FiChevronLeft, FiChevronRight, FiEdit, FiSearch, FiSlash, FiTrash2, FiUserCheck } from 'react-icons/fi';
-import { useModalNFClient } from '../../../../../../../Contexts/Modal/NotaFiscal/NFClientContext';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Td, Text, Tr } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
+import { FiCheck, FiChevronLeft, FiChevronRight, FiSearch, FiSlash, FiUserCheck } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { DataTable } from '../../../../../../../components/Table/DataTable';
 import { Pagination } from '../../../../../../../components/Table/Pagination';
-import { ClientService, IClient } from '../../../../../../../services/api/clientes/ClientService';
-import { MdAdd } from 'react-icons/md';
-import { ApiException } from '../../../../../../../services/api/ApiException';
 import { useEmissorContext } from '../../../../../../../Contexts/EmissorProvider';
-import { userInfos } from '../../../../../../../utils/header';
-import { useNavigate } from 'react-router-dom';
+import { useModalNFClient } from '../../../../../../../Contexts/Modal/NotaFiscal/NFClientContext';
+import { ApiException } from '../../../../../../../services/api/ApiException';
+import { ClientService, IClient } from '../../../../../../../services/api/clientes/ClientService';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
-import { UseFormReturn } from 'react-hook-form';
+import { userInfos } from '../../../../../../../utils/header';
 
 interface ModalNFClientProps {
   methods: UseFormReturn<INotaFiscal, any>
@@ -35,6 +33,7 @@ export function ModalNFClient({ methods }: ModalNFClientProps) {
   const HEADERS = userInfo.header;
 
   const headers: { key: string, label: string }[] = [
+    { key: 'action', label: 'Incluir' },
     { key: 'cod', label: 'Código' },
     { key: 'razao', label: 'Nome / Razão Social' },
     { key: 'fantasia', label: 'Nome Fantasia' },
@@ -122,9 +121,14 @@ export function ModalNFClient({ methods }: ModalNFClientProps) {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <DataTable headers={headers} mt="0" width='100%'>
+            <DataTable headers={headers} mt="0" width='100%' trailing={false}>
               {data !== undefined ? data.map((data) => (
                 <Tr key={data.id}>
+                  <Td style={{ 'textAlign': 'center' }}>
+                    <Button variant="ghost" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleSetClient(data)}>
+                      <Icon color="green.300" as={FiUserCheck} />
+                    </Button>
+                  </Td>
                   <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
                   <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.fantasia}</Td>
@@ -133,11 +137,6 @@ export function ModalNFClient({ methods }: ModalNFClientProps) {
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cidade}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.uf}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.categoria}</Td>
-                  <Td style={{ 'textAlign': 'center' }}>
-                    <Button variant="ghost" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleSetClient(data)}>
-                      <Icon color="green.300" as={FiUserCheck} />
-                    </Button>
-                  </Td>
                 </Tr>
               )) : ''}
             </DataTable>
