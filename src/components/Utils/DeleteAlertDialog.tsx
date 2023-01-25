@@ -1,9 +1,10 @@
 import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Flex } from '@chakra-ui/react';
 import { useRef } from 'react';
+import { INFProduct } from '../../services/api/notafiscal/NFProduct';
 
 interface AlertDialogProps {
-  id: number;
-  deleteFunction: (id: number) => void
+  id?: number;
+  deleteFunction: (id?: number) => void
   label: string
   isOpen: boolean
   onClose: () => void
@@ -30,7 +31,7 @@ export function DeleteAlertDialog({ id, deleteFunction, label, isOpen, onClose }
         </AlertDialogBody>
         <AlertDialogFooter>
           <Flex justify="space-between" w="100%">
-            <Button onClick={() => deleteFunction(id)} colorScheme='red'>Sim, Excluir {label}</Button>
+            <Button onClick={id !== null ? () => deleteFunction(id) : deleteFunction} colorScheme='red'>Sim, Excluir {label}</Button>
             <Button ref={cancelRef} onClick={onClose} ml={3}>
               Não, cancelar
             </Button>

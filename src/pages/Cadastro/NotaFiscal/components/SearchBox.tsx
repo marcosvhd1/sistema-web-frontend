@@ -35,7 +35,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter }: Se
             <Input placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
             <Button type="submit"><Icon as={FiSearch} /></Button>
           </Flex>
-          <Link as={ReactRouterLink} to={isEmissorSelected ? '/app/fiscal/nfe/cadastro' : ''}>
+          <Link style={{ textDecoration: 'none' }} as={ReactRouterLink} to={isEmissorSelected ? '/app/fiscal/nfe/cadastro' : ''}>
             <Button variant="outline" colorScheme="green">Cadastrar Nota Fiscal</Button>
           </Link>
         </Flex>

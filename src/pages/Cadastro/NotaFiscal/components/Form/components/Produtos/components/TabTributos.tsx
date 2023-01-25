@@ -1,11 +1,11 @@
 import { Button, Divider, Flex, Icon, Input, Select, Text } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 import { FiSearch } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../../components/Form/FormContainer';
 import { INFProduct } from '../../../../../../../../services/api/notafiscal/NFProduct';
 
 export function FormTabTributos() {
-  const { register } = useForm<INFProduct>();
+  const { register } = useFormContext<INFProduct>();
 
   return (
     <Flex w="100%" justify="center" align="center" direction="column">
