@@ -1,6 +1,6 @@
 import { Flex, Input, Select, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
-import { useForm, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../../../../../../components/Form/FormContainer';
 import { useEstados } from '../../../../../../../../hooks/useEstados';
 import { INFProduct } from '../../../../../../../../services/api/notafiscal/NFProduct';

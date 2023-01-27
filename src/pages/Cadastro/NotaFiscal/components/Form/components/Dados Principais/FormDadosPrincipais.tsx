@@ -1,4 +1,5 @@
 import { Button, Divider, Flex, Icon, Input, Select, Text } from '@chakra-ui/react';
+import moment from 'moment';
 import { useState } from 'react';
 import { FormProvider, useFormContext, UseFormReturn } from 'react-hook-form';
 import { FiCheckCircle, FiEdit, FiSearch } from 'react-icons/fi';
@@ -194,15 +195,15 @@ export function FormDadosPrincipais({ methods }: DadosPrincipaisProps) {
             </Flex>
 
             <FormContainer label='Data Emissão' >
-              <Input type="date" {...register('data_emissao')}/>
+              <Input type="date" {...register('data_emissao')} defaultValue={new Date().toISOString().split('T')[0]} />
             </FormContainer>
 
             <FormContainer label='Data Saída' >
-              <Input type="date" {...register('data_saida')}/>
+              <Input type="date" {...register('data_saida')} defaultValue={new Date().toISOString().split('T')[0]}/>
             </FormContainer>
 
             <FormContainer label='Hora Saída' >
-              <Input type="time" {...register('hora')}/>
+              <Input type="time" {...register('hora')} defaultValue={`${new Date().toLocaleTimeString().split(':')[0]}:${new Date().toLocaleTimeString().split(':')[1]}`}/>
             </FormContainer>
 
           </Flex>

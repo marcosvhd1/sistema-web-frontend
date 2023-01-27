@@ -1,5 +1,5 @@
-import { Button, Divider, Flex, Icon, Input, Select, Text } from '@chakra-ui/react';
-import { useForm, useFormContext } from 'react-hook-form';
+import { Button, Divider, Flex, Icon, Input, Text } from '@chakra-ui/react';
+import { useFormContext } from 'react-hook-form';
 import { FiSearch } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../../components/Form/FormContainer';
 import { INFProduct } from '../../../../../../../../services/api/notafiscal/NFProduct';

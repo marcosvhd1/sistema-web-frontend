@@ -1,5 +1,5 @@
 import { Divider, Flex, Input, Text } from '@chakra-ui/react';
-import { useForm, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../../../../../../components/Form/FormContainer';
 import { INFProduct } from '../../../../../../../../services/api/notafiscal/NFProduct';
 

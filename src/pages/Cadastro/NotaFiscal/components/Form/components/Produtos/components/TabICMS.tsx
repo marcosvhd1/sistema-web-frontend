@@ -32,15 +32,15 @@ export function FormTabICMS() {
         <Flex w="100%" align="center" justify="flex-start">
           <FormContainer label='Origem' mr='3'>
             <Select {...register('produto.origem')}>
-              <option value='0'>0 - Nacional, exceto as indicadas nos códigos 3 a 5</option>
-              <option value='1'>1 - Estrangeira - Importação direta, exceto a indicada no código 6</option>
-              <option value='2'>2 - Estrangeira - Adquirida no mercado interno, exceto a indicada no código 7</option>
-              <option value='3'>3 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 40%</option>
-              <option value='4'>4 - Nacional, cuja produção tenha sido feita em conformidade com os processos...</option>
-              <option value='5'>5 - Nacional, mercadoria ou bem com Conteúdo de Importação inferior ou igual a 40%</option>
-              <option value='6'>6 - Estrangeira - Importação direta, sem similar nacional, constante em lista de Resolução CAMEX</option>
-              <option value='7'>7 - Estrangeira - Adquirida no mercado interno, sem similar nacional, constante em lista de Resolução CAMEX</option>
-              <option value='8'>8 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 70%</option>
+              <option>0 - Nacional, exceto as indicadas nos códigos 3 a 5</option>
+              <option>1 - Estrangeira - Importação direta, exceto a indicada no código 6</option>
+              <option>2 - Estrangeira - Adquirida no mercado interno, exceto a indicada no código 7</option>
+              <option>3 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 40%</option>
+              <option>4 - Nacional, cuja produção tenha sido feita em conformidade com os processos...</option>
+              <option>5 - Nacional, mercadoria ou bem com Conteúdo de Importação inferior ou igual a 40%</option>
+              <option>6 - Estrangeira - Importação direta, sem similar nacional, constante em lista de Resolução CAMEX</option>
+              <option>7 - Estrangeira - Adquirida no mercado interno, sem similar nacional, constante em lista de Resolução CAMEX e gás natural</option>
+              <option>8 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 70%</option>
             </Select>
           </FormContainer>
           <FormContainer label='Mod. determinação da BC ICMS ST'>
