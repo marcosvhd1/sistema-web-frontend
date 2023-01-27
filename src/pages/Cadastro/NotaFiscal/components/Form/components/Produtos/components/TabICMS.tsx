@@ -31,7 +31,7 @@ export function FormTabICMS() {
       <Flex w="100%" align="center" justify="flex-start" direction="column">
         <Flex w="100%" align="center" justify="flex-start">
           <FormContainer label='Origem' mr='3'>
-            <Select {...register('produto.cst_icms')}>
+            <Select {...register('produto.origem')}>
               <option value='0'>0 - Nacional, exceto as indicadas nos códigos 3 a 5</option>
               <option value='1'>1 - Estrangeira - Importação direta, exceto a indicada no código 6</option>
               <option value='2'>2 - Estrangeira - Adquirida no mercado interno, exceto a indicada no código 7</option>

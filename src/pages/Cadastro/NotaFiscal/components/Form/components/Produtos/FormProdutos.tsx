@@ -18,19 +18,14 @@ interface ProdutosProps {
 
 export function FormProdutos({ methods: NF}: ProdutosProps) {
   const methods = useForm<INFProduct>();
-  const { onOpen:openModal } = useModalNFProduct();
+
+  const { onOpen: openModal } = useModalNFProduct();
   const { onOpen, onClose, isOpen } = useAlertNFProductContext();
+
   const [produtos, setProdutos] = useState<INFProduct[]>([]);
+  const [prodToDelete, setProdToDelete] = useState<INFProduct>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-  const handleAddProduct = (data: INFProduct) => {
-    setProdutos([...produtos, data]);
-  };
-
-  const handleEditProduct = (data: INFProduct, index: number) => {
-    produtos[index] = data;
-  };
 
   const openModalAdd = () => {
     methods.reset({});
@@ -44,16 +39,21 @@ export function FormProdutos({ methods: NF}: ProdutosProps) {
     setIsEditing(true);
   };
 
-  const handleOpenDeleteDialod = (index: number) => {
-    console.log(index);
-    setCurrentIndex(index);
+  const openAlertDeleteProd = (data: INFProduct) => {
+    setProdToDelete(data);
     onOpen();
   };
 
+  const handleAddProduct = (data: INFProduct) => {
+    setProdutos([...produtos, data]);
+  };
+
+  const handleEditProduct = (data: INFProduct, index: number) => {
+    produtos[index] = data;
+  };
+
   const handleDeleteProd = () => {
-    console.log(produtos);
-    const newArray = produtos.splice(currentIndex, 1);
-    console.log(produtos);
+    const newArray = produtos.filter(prod => prod !== prodToDelete);
     setProdutos(newArray);
     onClose();
   };
@@ -95,7 +95,7 @@ export function FormProdutos({ methods: NF}: ProdutosProps) {
                 <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => openModalEdit(index)}>
                   <Icon color="orange.300" as={FiEdit} />
                 </Button>
-                <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDeleteDialod(index)}>
+                <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => openAlertDeleteProd(data)}>
                   <Icon as={FiTrash2} color="red.400" />
                 </Button>
               </Td>
@@ -103,7 +103,7 @@ export function FormProdutos({ methods: NF}: ProdutosProps) {
           )) : ''}
         </DataTable>
         <ModalNFProduct addProduct={handleAddProduct} editProduct={handleEditProduct} index={currentIndex} isEditing={isEditing} setIsEditing={setIsEditing}/>
-        <DeleteAlertDialog label="Produto" deleteFunction={handleDeleteProd} onClose={onClose} isOpen={isOpen} id={currentIndex} />
+        <DeleteAlertDialog label="Produto" deleteFunction={handleDeleteProd} onClose={onClose} isOpen={isOpen} id={0}/>
       </Flex>
     </FormProvider>
   );

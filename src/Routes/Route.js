@@ -48,10 +48,13 @@ const ROLES = {
 export default function MainRoutes() {
   return (
     <BrowserRouter>
+
       <SizeProvider>
         <SidebarProvider>
           <SidebarDrawerProvider>
+
             <EmissorProvider>
+
               <ModalClientProvider>
                 <ModalProductProvider>
                   <ModalGroupProvider>
@@ -64,13 +67,15 @@ export default function MainRoutes() {
                                 <ModalNFClientProvider>
                                   <ModalNFProductProvider>
                                     <ModalNFSearchProductProvider> 
-                                      <AlertNFProductContextProvider>
-                                        <AlertClientContextProvider>
-                                          <AlertServiceContextProvider>
-                                            <AlertTransportadoraContextProvider>
-                                              <AlertProductContextProvider>
-                                                <AlertEmissorContextProvider>
-                                                  <AlertProductGroupContextProvider>
+
+                                      <AlertClientContextProvider>
+                                        <AlertServiceContextProvider>
+                                          <AlertTransportadoraContextProvider>
+                                            <AlertProductContextProvider>
+                                              <AlertEmissorContextProvider>
+                                                <AlertProductGroupContextProvider>
+                                                  <AlertNFProductContextProvider>
+
                                                     <ProductGroupProvider>
 
                                                       <Routes>
@@ -97,13 +102,15 @@ export default function MainRoutes() {
                                                       </Routes>
 
                                                     </ProductGroupProvider>
-                                                  </AlertProductGroupContextProvider>
-                                                </AlertEmissorContextProvider>
-                                              </AlertProductContextProvider>
-                                            </AlertTransportadoraContextProvider>
-                                          </AlertServiceContextProvider>
-                                        </AlertClientContextProvider>
-                                      </AlertNFProductContextProvider>
+
+                                                  </AlertNFProductContextProvider>
+                                                </AlertProductGroupContextProvider>
+                                              </AlertEmissorContextProvider>
+                                            </AlertProductContextProvider>
+                                          </AlertTransportadoraContextProvider>
+                                        </AlertServiceContextProvider>
+                                      </AlertClientContextProvider>
+
                                     </ModalNFSearchProductProvider>
                                   </ModalNFProductProvider>  
                                 </ModalNFClientProvider>
@@ -116,10 +123,13 @@ export default function MainRoutes() {
                   </ModalGroupProvider>
                 </ModalProductProvider>
               </ModalClientProvider>
+
             </EmissorProvider>
+
           </SidebarDrawerProvider>
         </SidebarProvider>
       </SizeProvider>
+
     </BrowserRouter>
   );
 }
