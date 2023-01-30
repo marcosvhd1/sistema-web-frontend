@@ -42,18 +42,67 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
 
   const onChangeQuantidade = (e: React.ChangeEvent<HTMLInputElement>) => {
     const quantidade = parseFloat(e.target.value);
+    const descTotal = methods.getValues('desconto_total');
     const valorUnitario = methods.watch('valor_unitario', 0);
     if (quantidade && valorUnitario) {
-      methods.setValue('valor_total', quantidade * valorUnitario);
+      methods.setValue('valor_total', (quantidade * valorUnitario) - descTotal);
     }
   };
 
   const onChangeValorUnitario = (e: React.ChangeEvent<HTMLInputElement>) => {
     const valorUnitario = parseFloat(e.target.value);
+    const descTotal = methods.getValues('desconto_total');
     const quantidade = methods.watch('quantidade', 0);
     if (quantidade && valorUnitario) {
-      methods.setValue('valor_total', quantidade * valorUnitario);
+      methods.setValue('valor_total', (quantidade * valorUnitario) - descTotal);
     }
+  };
+
+  const onChangeDescontoP = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const descP = parseFloat(e.target.value);
+    const quantidade = methods.getValues('quantidade');
+    const valorUnitario = methods.getValues('valor_unitario');
+    const valorTot = quantidade * valorUnitario;
+
+    const value = (valorTot * descP) / 100;
+  
+    if (descP > 0) {
+      methods.setValue('desconto_total', parseFloat(value.toFixed(2)));
+      calcTot();
+    } else {
+      methods.setValue('desconto_p', 0);
+      methods.setValue('desconto_total', 0);
+      calcTot();
+    }
+
+  };
+
+  const onChangeDescontoT = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const descT = parseFloat(e.target.value);
+    const quantidade = methods.getValues('quantidade');
+    const valorUnitario = methods.getValues('valor_unitario');
+    const valorTot = quantidade * valorUnitario;
+
+    const value = (descT / valorTot) * 100;
+    
+    if (descT > 0) {
+      methods.setValue('desconto_p', parseFloat(value.toFixed(2)));
+      calcTot();
+    } else {
+      methods.setValue('desconto_p', 0);
+      methods.setValue('desconto_total', 0);
+      calcTot();
+    }
+
+  };
+
+  const calcTot = () => {
+    const quantidade = methods.getValues('quantidade');
+    const valorUnitario = methods.getValues('valor_unitario');
+    const descT = methods.getValues('desconto_total');
+    const valorTot = quantidade * valorUnitario;
+
+    methods.setValue('valor_total', valorTot - descT);
   };
 
   return (
@@ -115,10 +164,10 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
                       <Input type="text" {...methods.register('produto.cest')} />
                     </FormContainer>
                     <FormContainer width='25%' label='Desconto %' mr='3'>
-                      <Input type="text" {...methods.register('desconto_p')} />
+                      <Input type="text" {...methods.register('desconto_p')} onChange={onChangeDescontoP}/>
                     </FormContainer>
                     <FormContainer width='25%' label='Desconto Total'>
-                      <Input type="text" {...methods.register('desconto_total')} />
+                      <Input type="text" {...methods.register('desconto_total')} onChange={onChangeDescontoT}/>
                     </FormContainer>
                   </Flex>
                   <Tabs variant='enclosed' colorScheme="gray" w="100%" mt={3}>
