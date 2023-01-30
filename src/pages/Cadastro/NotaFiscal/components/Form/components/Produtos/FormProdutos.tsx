@@ -16,7 +16,7 @@ interface ProdutosProps {
   methods: UseFormReturn<INotaFiscal, any>
 }
 
-export function FormProdutos({ methods: NF}: ProdutosProps) {
+export function FormProdutos({ methods: nfMethods}: ProdutosProps) {
   const methods = useForm<INFProduct>();
 
   const { onOpen: openModal } = useModalNFProduct();
@@ -46,16 +46,23 @@ export function FormProdutos({ methods: NF}: ProdutosProps) {
 
   const handleAddProduct = (data: INFProduct) => {
     setProdutos([...produtos, data]);
+    saveChanges();
   };
 
   const handleEditProduct = (data: INFProduct, index: number) => {
     produtos[index] = data;
+    saveChanges();
   };
 
   const handleDeleteProd = () => {
     const newArray = produtos.filter(prod => prod !== prodToDelete);
     setProdutos(newArray);
+    saveChanges();
     onClose();
+  };
+
+  const saveChanges = () => {
+    nfMethods.setValue('produtos', produtos);
   };
 
   const headers: { key: string, label: string }[] = [

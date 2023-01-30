@@ -121,10 +121,12 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
               <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
               <Flex w="100%" align="center" justify="flex-start" mt={5}>
                 <Text fontSize={16} mr={3}>Buscar por </Text>
-                <Select w="25%" mr="3" onChange={(e) => setFilter(e.target.value)}>
-                  <option value='razao'>Nome / Razão Social</option>
-                  <option value='fantasia'>Nome Fantasia</option>
-                  <option value='cnpjcpf'>CPF / CNPJ</option>
+                <Select w="20%" mr="3" onChange={(e) => setFilter(e.target.value)}>
+                  <option value='descricao'>Descrição</option>
+                  <option value='nprod'>Código</option>
+                  <option value='referencia'>Referência</option>
+                  <option value='marca'>Marca</option>
+                  <option value='ncm'>NCM</option>
                 </Select>
                 <Input placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
                 <Button type="submit"><Icon as={FiSearch} /></Button>
