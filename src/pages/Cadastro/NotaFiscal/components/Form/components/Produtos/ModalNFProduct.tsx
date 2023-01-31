@@ -98,9 +98,9 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
   const calcTot = () => {
     const quantidade = methods.getValues('quantidade');
     const valorUnitario = methods.getValues('valor_unitario');
-    const descT = methods.watch('desconto_total');
+    const descT = methods.getValues('desconto_total');
     const valorTot = quantidade * valorUnitario;
-
+    
     methods.setValue('valor_total', valorTot - descT);
   };
 
