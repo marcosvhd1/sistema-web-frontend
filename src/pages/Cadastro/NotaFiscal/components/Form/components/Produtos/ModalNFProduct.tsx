@@ -68,13 +68,12 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
   
     if (descP > 0) {
       methods.setValue('desconto_total', parseFloat(value.toFixed(2)));
-      calcTot();
     } else {
       methods.setValue('desconto_p', 0);
       methods.setValue('desconto_total', 0);
-      calcTot();
     }
-
+    
+    calcTot();
   };
 
   const onChangeDescontoT = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,19 +86,19 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
     
     if (descT > 0) {
       methods.setValue('desconto_p', parseFloat(value.toFixed(2)));
-      calcTot();
+      methods.setValue('desconto_total', parseFloat(descT.toFixed(2)));
     } else {
       methods.setValue('desconto_p', 0);
       methods.setValue('desconto_total', 0);
-      calcTot();
     }
-
+    
+    calcTot();
   };
 
   const calcTot = () => {
     const quantidade = methods.getValues('quantidade');
     const valorUnitario = methods.getValues('valor_unitario');
-    const descT = methods.getValues('desconto_total');
+    const descT = methods.watch('desconto_total');
     const valorTot = quantidade * valorUnitario;
 
     methods.setValue('valor_total', valorTot - descT);
@@ -166,7 +165,7 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
                     <FormContainer width='25%' label='Desconto %' mr='3'>
                       <Input type="text" {...methods.register('desconto_p')} onChange={onChangeDescontoP}/>
                     </FormContainer>
-                    <FormContainer width='25%' label='Desconto Total'>
+                    <FormContainer width='25%' label='Desconto R$'>
                       <Input type="text" {...methods.register('desconto_total')} onChange={onChangeDescontoT}/>
                     </FormContainer>
                   </Flex>

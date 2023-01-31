@@ -8,10 +8,10 @@ import { FormDadosPrincipais } from './components/Dados Principais/FormDadosPrin
 import { FormFormaPagto } from './components/FormFormaPagto';
 import { FormInfoAdicional } from './components/FormInfoAdicional';
 import { FormOutros } from './components/FormOutros';
-import { FormProdutos } from './components/Produtos/FormProdutos';
 import { FormServicos } from './components/FormServicos';
 import { FormTotais } from './components/FormTotais';
 import { FormTransporte } from './components/FormTransporte';
+import { FormProdutos } from './components/Produtos/FormProdutos';
 
 export function CadastroNotaFiscal() {
   const methods = useForm<INotaFiscal>();
@@ -49,10 +49,10 @@ export function CadastroNotaFiscal() {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <FormDadosPrincipais methods={methods}/>
+                  <FormDadosPrincipais />
                 </TabPanel>
                 <TabPanel>
-                  <FormProdutos methods={methods}/>
+                  <FormProdutos />
                 </TabPanel>
                 <TabPanel>
                   <FormServicos />

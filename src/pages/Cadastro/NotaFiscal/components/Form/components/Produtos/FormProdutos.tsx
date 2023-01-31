@@ -1,6 +1,6 @@
 import { Button, Flex, Icon, Td, Tr } from '@chakra-ui/react';
 import { useState } from 'react';
-import { FormProvider, useForm, UseFormReturn } from 'react-hook-form';
+import { FormProvider, useForm, useFormContext, UseFormReturn } from 'react-hook-form';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,12 +12,9 @@ import { INFProduct } from '../../../../../../../services/api/notafiscal/NFProdu
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ModalNFProduct } from './ModalNFProduct';
 
-interface ProdutosProps {
-  methods: UseFormReturn<INotaFiscal, any>
-}
-
-export function FormProdutos({ methods: nfMethods}: ProdutosProps) {
+export function FormProdutos() {
   const methods = useForm<INFProduct>();
+  const nfMethods = useFormContext<INotaFiscal>();
 
   const { onOpen: openModal } = useModalNFProduct();
   const { onOpen, onClose, isOpen } = useAlertNFProductContext();
@@ -45,7 +42,7 @@ export function FormProdutos({ methods: nfMethods}: ProdutosProps) {
   };
 
   const handleAddProduct = (data: INFProduct) => {
-    setProdutos([...produtos, data]);
+    produtos.push(data);
     saveChanges();
   };
 
@@ -63,6 +60,17 @@ export function FormProdutos({ methods: nfMethods}: ProdutosProps) {
 
   const saveChanges = () => {
     nfMethods.setValue('produtos', produtos);
+    calcTotalProd();
+  };
+
+  const calcTotalProd = () => {
+    let tot = 0;
+
+    for (let i = 0; i < produtos.length; i++) {
+      tot += produtos[i].valor_total;
+    }
+
+    nfMethods.setValue('total_produtos', tot);
   };
 
   const headers: { key: string, label: string }[] = [

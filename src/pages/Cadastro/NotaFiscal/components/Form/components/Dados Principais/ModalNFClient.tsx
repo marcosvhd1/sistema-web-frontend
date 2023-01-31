@@ -1,6 +1,6 @@
 import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Td, Text, Tr } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
+import { FieldValues, useForm, useFormContext } from 'react-hook-form';
 import { FiCheck, FiChevronLeft, FiChevronRight, FiSearch, FiSlash, FiUserCheck } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { DataTable } from '../../../../../../../components/Table/DataTable';
@@ -12,14 +12,12 @@ import { ClientService, IClient } from '../../../../../../../services/api/client
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { userInfos } from '../../../../../../../utils/header';
 
-interface ModalNFClientProps {
-  methods: UseFormReturn<INotaFiscal, any>
-}
+export function ModalNFClient() {
+  const methods = useFormContext<INotaFiscal>();
+  const { register, handleSubmit } = useForm();
 
-export function ModalNFClient({ methods }: ModalNFClientProps) {
   const { idEmissorSelecionado } = useEmissorContext();
   const { isOpen, onClose } = useModalNFClient();
-  const { register, handleSubmit } = useForm();
 
   const [data, setData] = useState<IClient[]>([]);
   const [filter, setFilter] = useState<string>('razao');
@@ -114,7 +112,7 @@ export function ModalNFClient({ methods }: ModalNFClientProps) {
                   <option value='fantasia'>Nome Fantasia</option>
                   <option value='cnpjcpf'>CPF / CNPJ</option>
                 </Select>
-                <Input placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
+                <Input placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
                 <Button type="submit"><Icon as={FiSearch} /></Button>
               </Flex>
             </Flex>
