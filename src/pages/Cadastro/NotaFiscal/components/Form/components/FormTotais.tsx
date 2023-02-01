@@ -1,13 +1,11 @@
-import { ReactNode } from 'react';
-import { FiCheck, FiCheckCircle, FiEdit, FiPhoneIncoming, FiSearch } from 'react-icons/fi';
-import { CgCalculator } from 'react-icons/cg';
-import { Button, Flex, Icon, Input, Select, Text, Link, Stack, InputGroup, InputLeftElement, Editable, InputRightElement, Divider } from '@chakra-ui/react';
-import { FormContainer } from '../../../../../../components/Form/FormContainer';
+import { Button, Flex, Icon, Input, Text } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
+import { CgCalculator } from 'react-icons/cg';
+import { FormContainer } from '../../../../../../components/Form/FormContainer';
 import { INotaFiscal } from '../../../../../../services/api/notafiscal/NotaFiscalService';
 
 export function FormTotais() {
-  const { register, setFocus } = useFormContext<INotaFiscal>();
+  const { register } = useFormContext<INotaFiscal>();
 
   return (
     <Flex w="100%" justify="center" align="center">
@@ -56,7 +54,7 @@ export function FormTotais() {
         </FormContainer>
         <Flex direction="column" mt="2" w="100%">
           <Text fontSize="sm" fontWeight='medium' ><strong>Total Produtos</strong></Text>
-          <Input type="number" readOnly {...register('total_produtos')}/>
+          <Input type="number" readOnly {...register('total_produtos')} />
         </Flex>
         <Flex direction="column" mt="2" w="100%">
           <Text fontSize="sm" fontWeight='medium'><strong>Total da Nota</strong></Text>
@@ -109,7 +107,7 @@ export function FormTotais() {
           <Input type="number" readOnly {...register('base_prev_social')}/>
         </FormContainer>
         <FormContainer label='Ret. Prev. Social' >
-          <Input type="number" readOnly {...register('total_produtos')}/>
+          <Input type="number" readOnly {...register('ret_prov_social')}/>
         </FormContainer>
         <FormContainer label='Partilha ICMS Dest.'>
           <Input type="number" readOnly {...register('partilha_icms_dest')}/>
