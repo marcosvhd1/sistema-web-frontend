@@ -33,6 +33,7 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
     } else {
       addProduct(data);  
     }
+    
     onClose();
   };
 
@@ -42,19 +43,17 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
 
   const onChangeQuantidade = (e: React.ChangeEvent<HTMLInputElement>) => {
     const quantidade = parseFloat(e.target.value);
-    const descTotal = methods.getValues('desconto_total');
     const valorUnitario = methods.watch('valor_unitario', 0);
     if (quantidade && valorUnitario) {
-      methods.setValue('valor_total', (quantidade * valorUnitario) - descTotal);
+      methods.setValue('valor_total', (quantidade * valorUnitario));
     }
   };
 
   const onChangeValorUnitario = (e: React.ChangeEvent<HTMLInputElement>) => {
     const valorUnitario = parseFloat(e.target.value);
-    const descTotal = methods.getValues('desconto_total');
     const quantidade = methods.watch('quantidade', 0);
     if (quantidade && valorUnitario) {
-      methods.setValue('valor_total', (quantidade * valorUnitario) - descTotal);
+      methods.setValue('valor_total', (quantidade * valorUnitario));
     }
   };
 
@@ -72,8 +71,6 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
       methods.setValue('desconto_p', 0);
       methods.setValue('desconto_total', 0);
     }
-    
-    calcTot();
   };
 
   const onChangeDescontoT = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,17 +88,6 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
       methods.setValue('desconto_p', 0);
       methods.setValue('desconto_total', 0);
     }
-    
-    calcTot();
-  };
-
-  const calcTot = () => {
-    const quantidade = methods.getValues('quantidade');
-    const valorUnitario = methods.getValues('valor_unitario');
-    const descT = methods.getValues('desconto_total');
-    const valorTot = quantidade * valorUnitario;
-    
-    methods.setValue('valor_total', valorTot - descT);
   };
 
   return (

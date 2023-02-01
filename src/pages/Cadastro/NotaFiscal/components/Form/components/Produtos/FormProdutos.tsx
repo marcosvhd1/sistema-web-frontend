@@ -60,17 +60,68 @@ export function FormProdutos() {
 
   const saveChanges = () => {
     nfMethods.setValue('produtos', produtos);
-    calcTotalProd();
+    calcTotais();
   };
 
-  const calcTotalProd = () => {
-    let tot = 0;
+  const calcTotais = () => {
+    let totBCICMS = 0;
+    let totICMS = 0;
+    let totBCICMSST = 0;
+    let totICMSST = 0;
+    let totII = 0;
+    let totIPI = 0;
+    let totPIS = 0;
+    let totCOFINS = 0;
+    let totDesc = 0;
+    let totProd = 0;
+    let totAliqCredICMS = 0;
+    let totCredICMS = 0;
+    let totPartilhaICMSDest = 0;
+    let totPartilhaICMSRem = 0;
+    let totFCPUFDest = 0;
+    let totIPIDevolvido = 0;
+    let totFCP = 0;
+    let totFCPST = 0;
 
     for (let i = 0; i < produtos.length; i++) {
-      tot += produtos[i].valor_total;
+      totBCICMS += produtos[i].produto.base_icms;
+      totICMS += produtos[i].valor_icms;
+      totBCICMSST += produtos[i].base_icms_st;
+      totICMSST += produtos[i].valor_icms_st;
+      totII += produtos[i].valor_ii;
+      totIPI += produtos[i].valor_ipi;
+      totPIS += produtos[i].valor_pis;
+      totCOFINS += produtos[i].valor_cofins;
+      totDesc += produtos[i].desconto_total;
+      totProd += produtos[i].valor_total;
+      totAliqCredICMS += produtos[i].p_aliquota_credito;
+      totCredICMS += produtos[i].credito_icms_aproveitado;
+      totPartilhaICMSDest += produtos[i].partilha_icms_valor_icms_uf_dest;
+      totPartilhaICMSRem += produtos[i].partilha_icms_valor_icms_uf_ori;
+      totFCPUFDest += produtos[i].partilha_icms_valor_fcp_uf_dest;
+      totIPIDevolvido += produtos[i].ipi_vlr_devolvido;
+      totFCP += produtos[i].fcp_valor;
+      totFCPST += produtos[i].fcp_valor_st;
     }
 
-    nfMethods.setValue('total_produtos', tot);
+    nfMethods.setValue('base_calc_icms', totBCICMS);
+    nfMethods.setValue('total_icms', totICMS);
+    nfMethods.setValue('base_icms_st', totBCICMSST);
+    nfMethods.setValue('total_icms_st', totICMSST);
+    nfMethods.setValue('total_ii', totII);
+    nfMethods.setValue('total_ipi', totIPI);
+    nfMethods.setValue('total_pis', totPIS);
+    nfMethods.setValue('total_cofins', totCOFINS);
+    nfMethods.setValue('total_desconto', totDesc);
+    nfMethods.setValue('total_produtos', totProd);
+    nfMethods.setValue('aliquota_credito', totAliqCredICMS);
+    nfMethods.setValue('valor_credito', totCredICMS);
+    nfMethods.setValue('partilha_icms_dest', totPartilhaICMSDest);
+    nfMethods.setValue('partilha_icms_rem', totPartilhaICMSRem);
+    nfMethods.setValue('fcp_uf_dest', totFCPUFDest);
+    nfMethods.setValue('total_ipi_devolvido', totIPIDevolvido);
+    nfMethods.setValue('total_fcp', totFCP);
+    nfMethods.setValue('total_fcp_st', totFCPST);
   };
 
   const headers: { key: string, label: string }[] = [

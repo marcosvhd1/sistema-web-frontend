@@ -1,7 +1,9 @@
 import { Button, Flex, Grid, GridItem, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
+import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import MainContent from '../../../../../components/MainContent';
+import { INFProduct } from '../../../../../services/api/notafiscal/NFProduct';
 import { INotaFiscal } from '../../../../../services/api/notafiscal/NotaFiscalService';
 import { userInfos } from '../../../../../utils/header';
 import { FormDadosPrincipais } from './components/Dados Principais/FormDadosPrincipais';
@@ -18,6 +20,24 @@ export function CadastroNotaFiscal() {
   
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
+
+  const handleTabChange = (tab: number) => {
+    if (tab === 3) {
+      calcTotalNota();
+    }
+  };
+
+  const calcTotalNota = () => {
+    const outrasDesp = parseFloat(methods.getValues('outras_despesas').toString().replace('.', '').replace(',', '.'));
+    const totalFrete = parseFloat(methods.getValues('total_frete').toString().replace('.', '').replace(',', '.'));
+    const valorSeguro = parseFloat(methods.getValues('valor_seguro').toString().replace('.', '').replace(',', '.'));
+    const totalProdutos = parseFloat(methods.getValues('total_produtos').toString().replace('.', '').replace(',', '.'));
+    const totalDescontoProd = parseFloat(methods.getValues('total_desconto').toString().replace('.', '').replace(',', '.'));
+
+    const totalGeral = (totalProdutos + valorSeguro + totalFrete + outrasDesp) - (totalDescontoProd);
+
+    methods.setValue('total_nota', totalGeral);
+  };
 
   return (
     <FormProvider {...methods}>
@@ -36,7 +56,7 @@ export function CadastroNotaFiscal() {
             </Flex>
           </GridItem>
           <GridItem area={'main'} overflowY="auto" pl="3" pr="3">
-            <Tabs variant='enclosed' colorScheme="gray" w="100%">
+            <Tabs variant='enclosed' colorScheme="gray" w="100%" onChange={handleTabChange}>
               <TabList>
                 <Tab>Dados Principais</Tab>
                 <Tab>Produtos</Tab>
