@@ -1,4 +1,4 @@
-import { Divider, Flex, Input, Text } from '@chakra-ui/react';
+import { Divider, Flex, Input, Select, Text } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../../../../../../components/Form/FormContainer';
 import { INFProduct } from '../../../../../../../../services/api/notafiscal/NFProduct';
@@ -63,10 +63,21 @@ export function FormTabDevolucao() {
           <Input type='text' {...register('partilha_icms_aliquota_interna_icms_uf_dest')}/>
         </FormContainer>
         <FormContainer label='Alíquota ICMS interestadual'>
-          <Input type='text' {...register('partilha_icms_aliquota_icms_interestadual')}/>
+          <Select {...register('partilha_icms_aliquota_icms_interestadual')}>
+            <option value='0'></option>
+            <option value='4'>4,00%</option>
+            <option value='7'>7,00%</option>
+            <option value='12'>12,00%</option>
+          </Select>
         </FormContainer>
         <FormContainer label='Percentual da partilha'>
-          <Input type='text' {...register('partilha_icms_p_partilha')}/>
+          <Select {...register('partilha_icms_p_partilha')}>
+            <option value='0'></option>
+            <option value='100'>100% destino e 0% origem (2019)</option>
+            <option value='80'>80% destino e 20% origem (2018)</option>
+            <option value='60'>60% destino e 40% origem (2017)</option>
+            <option value='40'>40% destino e 60% origem (2016)</option>
+          </Select>
         </FormContainer>
         <FormContainer label='Valor do ICMS da UF de destino'>
           <Input type='text' {...register('partilha_icms_valor_icms_uf_dest')}/>
