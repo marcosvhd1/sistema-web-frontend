@@ -28,13 +28,29 @@ export function CadastroNotaFiscal() {
   };
 
   const calcTotalNota = () => {
-    const outrasDesp = parseFloat(methods.getValues('outras_despesas').toString().replace('.', '').replace(',', '.'));
-    const totalFrete = parseFloat(methods.getValues('total_frete').toString().replace('.', '').replace(',', '.'));
-    const valorSeguro = parseFloat(methods.getValues('valor_seguro').toString().replace('.', '').replace(',', '.'));
     const totalProdutos = parseFloat(methods.getValues('total_produtos').toString().replace('.', '').replace(',', '.'));
+    const totalICMSST = parseFloat(methods.getValues('total_icms_st').toString().replace('.', '').replace(',', '.'));
+    const totalIPI = parseFloat(methods.getValues('total_ipi').toString().replace('.', '').replace(',', '.'));
+    const valorSeguro = parseFloat(methods.getValues('valor_seguro').toString().replace('.', '').replace(',', '.'));
+    const totalFrete = parseFloat(methods.getValues('total_frete').toString().replace('.', '').replace(',', '.'));
+    const outrasDesp = parseFloat(methods.getValues('outras_despesas').toString().replace('.', '').replace(',', '.'));
+    const totalII = parseFloat(methods.getValues('total_ii').toString().replace('.', '').replace(',', '.'));
+    const totalIPIDevolvido = parseFloat(methods.getValues('total_ipi_devolvido').toString().replace('.', '').replace(',', '.'));
+    const totalServ = parseFloat(methods.getValues('total_servicos').toString().replace('.', '').replace(',', '.'));
     const totalDescontoProd = parseFloat(methods.getValues('total_desconto').toString().replace('.', '').replace(',', '.'));
 
-    const totalGeral = (totalProdutos + valorSeguro + totalFrete + outrasDesp) - (totalDescontoProd);
+    const totalGeral = (totalProdutos + totalICMSST + totalIPI + valorSeguro + totalFrete + outrasDesp + totalII + totalIPIDevolvido + totalServ) - (totalDescontoProd);
+
+    console.log(totalProdutos);
+    console.log(totalICMSST);
+    console.log(totalIPI);
+    console.log(valorSeguro);
+    console.log(totalFrete);
+    console.log(outrasDesp);
+    console.log(totalII);
+    console.log(totalIPIDevolvido);
+    console.log(totalServ);
+    console.log(totalDescontoProd);
 
     methods.setValue('total_nota', totalGeral);
   };

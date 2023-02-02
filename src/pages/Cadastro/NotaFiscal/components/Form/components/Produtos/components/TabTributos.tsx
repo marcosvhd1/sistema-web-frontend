@@ -28,6 +28,9 @@ export function FormTabTributos() {
           <FormContainer label='Base de Cálculo'>
             <Input type='text' {...register('base_calc_ipi')}/>
           </FormContainer>
+          <FormContainer label='Valor IPI'>
+            <Input type='text' {...register('valor_ipi')}/>
+          </FormContainer>
           <FormContainer label='CNPJ Produtor'>
             <Input type='text' {...register('cnpj_produtor')}/>
           </FormContainer>
