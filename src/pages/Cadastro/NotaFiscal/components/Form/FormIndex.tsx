@@ -10,7 +10,7 @@ import { FormDadosPrincipais } from './components/Dados Principais/FormDadosPrin
 import { FormFormaPagto } from './components/FormFormaPagto';
 import { FormInfoAdicional } from './components/FormInfoAdicional';
 import { FormOutros } from './components/FormOutros';
-import { FormServicos } from './components/FormServicos';
+import { FormServicos } from './components/Servicos/FormServicos';
 import { FormTotais } from './components/FormTotais';
 import { FormTransporte } from './components/FormTransporte';
 import { FormProdutos } from './components/Produtos/FormProdutos';
@@ -40,17 +40,6 @@ export function CadastroNotaFiscal() {
     const totalDescontoProd = parseFloat(methods.getValues('total_desconto').toString().replace('.', '').replace(',', '.'));
 
     const totalGeral = (totalProdutos + totalICMSST + totalIPI + valorSeguro + totalFrete + outrasDesp + totalII + totalIPIDevolvido + totalServ) - (totalDescontoProd);
-
-    console.log(totalProdutos);
-    console.log(totalICMSST);
-    console.log(totalIPI);
-    console.log(valorSeguro);
-    console.log(totalFrete);
-    console.log(outrasDesp);
-    console.log(totalII);
-    console.log(totalIPIDevolvido);
-    console.log(totalServ);
-    console.log(totalDescontoProd);
 
     methods.setValue('total_nota', totalGeral);
   };

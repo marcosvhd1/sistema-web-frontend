@@ -104,6 +104,8 @@ export function FormProdutos() {
       totFCPST += produtos[i].fcp_valor_st;
     }
 
+    const nfTotDesc = parseFloat(`${nfMethods.getValues('total_desconto')}`);
+
     nfMethods.setValue('base_calc_icms', totBCICMS);
     nfMethods.setValue('total_icms', totICMS);
     nfMethods.setValue('base_icms_st', totBCICMSST);
@@ -112,7 +114,7 @@ export function FormProdutos() {
     nfMethods.setValue('total_ipi', totIPI);
     nfMethods.setValue('total_pis', totPIS);
     nfMethods.setValue('total_cofins', totCOFINS);
-    nfMethods.setValue('total_desconto', totDesc);
+    nfMethods.setValue('total_desconto', totDesc + nfTotDesc);
     nfMethods.setValue('total_produtos', totProd);
     nfMethods.setValue('aliquota_credito', totAliqCredICMS);
     nfMethods.setValue('valor_credito', totCredICMS);
