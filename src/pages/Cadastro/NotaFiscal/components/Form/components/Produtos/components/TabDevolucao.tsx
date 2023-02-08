@@ -1,6 +1,8 @@
 import { Divider, Flex, Input, Select, Text } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../../../../../../components/Form/FormContainer';
+import { MoneyAddon } from '../../../../../../../../components/Form/MoneyAddon';
+import { PorcentAddon } from '../../../../../../../../components/Form/PorcentAddon';
 import { INFProduct } from '../../../../../../../../services/api/notafiscal/NFProduct';
 
 export function FormTabDevolucao() {
@@ -15,10 +17,14 @@ export function FormTabDevolucao() {
           <Divider />
         </Flex>
         <FormContainer label='% Devolvida'>
-          <Input type='text' {...register('ipi_p_devolvida')}/>
+          <PorcentAddon>
+            <Input type='text' {...register('ipi_p_devolvida')}/>
+          </PorcentAddon>
         </FormContainer>
         <FormContainer label='R$ Devolvida'>
-          <Input type='text' {...register('ipi_vlr_devolvido')}/>
+          <MoneyAddon>
+            <Input type='text' {...register('ipi_vlr_devolvido')}/>
+          </MoneyAddon>
         </FormContainer>
         <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap" mt={3}>
           <Divider w="20%" />
@@ -26,22 +32,34 @@ export function FormTabDevolucao() {
           <Divider />
         </Flex>
         <FormContainer label='Base de Cálculo'>
-          <Input type='text' {...register('fcp_base_calc')}/>
+          <MoneyAddon>
+            <Input type='text' {...register('fcp_base_calc')}/>
+          </MoneyAddon>
         </FormContainer>
         <FormContainer label='% FCP'>
-          <Input type='text' {...register('fcp_p')}/>
+          <PorcentAddon>
+            <Input type='text' {...register('fcp_p')}/>
+          </PorcentAddon>
         </FormContainer>
         <FormContainer label='Valor FCP'>
-          <Input type='text' {...register('fcp_valor')}/>
+          <MoneyAddon>
+            <Input type='text' {...register('fcp_valor')}/>
+          </MoneyAddon>
         </FormContainer>
         <FormContainer label='Base de Cálculo ST'>
-          <Input type='text' {...register('fcp_base_calc_st')}/>
+          <MoneyAddon>
+            <Input type='text' {...register('fcp_base_calc_st')}/>
+          </MoneyAddon>
         </FormContainer>
         <FormContainer label='% FCP ST'>
-          <Input type='text' {...register('fcp_p_st')}/>
+          <PorcentAddon>
+            <Input type='text' {...register('fcp_p_st')}/>
+          </PorcentAddon>
         </FormContainer>
         <FormContainer label='Valor FCP ST'>
-          <Input type='text' {...register('fcp_valor_st')}/>
+          <MoneyAddon>
+            <Input type='text' {...register('fcp_valor_st')}/>
+          </MoneyAddon>
         </FormContainer>
       </Flex>
       <Flex w="50%" align="center" justify="center" direction="column">
@@ -51,16 +69,24 @@ export function FormTabDevolucao() {
           <Divider />
         </Flex>
         <FormContainer label='Base de cálculo da UF de destino'>
-          <Input type='text' {...register('partilha_icms_base_calc')}/>
+          <MoneyAddon>
+            <Input type='text' {...register('partilha_icms_base_calc')}/>
+          </MoneyAddon>
         </FormContainer>
         <FormContainer label='Alíquota FCP da UF de destino'>
-          <Input type='text' {...register('partilha_icms_aliquota_fcp_uf_dest')}/>
+          <PorcentAddon>
+            <Input type='text' {...register('partilha_icms_aliquota_fcp_uf_dest')}/>
+          </PorcentAddon>
         </FormContainer>
         <FormContainer label='Valor FCP na UF de destino'>
-          <Input type='text' {...register('partilha_icms_valor_fcp_uf_dest')}/>
+          <MoneyAddon>
+            <Input type='text' {...register('partilha_icms_valor_fcp_uf_dest')}/>
+          </MoneyAddon>
         </FormContainer>
         <FormContainer label='Alíquota interna ICMS da UF de destino'>
-          <Input type='text' {...register('partilha_icms_aliquota_interna_icms_uf_dest')}/>
+          <PorcentAddon>
+            <Input type='text' {...register('partilha_icms_aliquota_interna_icms_uf_dest')}/>
+          </PorcentAddon>
         </FormContainer>
         <FormContainer label='Alíquota ICMS interestadual'>
           <Select {...register('partilha_icms_aliquota_icms_interestadual')}>
@@ -80,10 +106,14 @@ export function FormTabDevolucao() {
           </Select>
         </FormContainer>
         <FormContainer label='Valor do ICMS da UF de destino'>
-          <Input type='text' {...register('partilha_icms_valor_icms_uf_dest')}/>
+          <MoneyAddon>
+            <Input type='text' {...register('partilha_icms_valor_icms_uf_dest')}/>
+          </MoneyAddon>
         </FormContainer>
         <FormContainer label='Valor do ICMS da UF de origem'>
-          <Input type='text' {...register('partilha_icms_valor_icms_uf_ori')}/>
+          <MoneyAddon>
+            <Input type='text' {...register('partilha_icms_valor_icms_uf_ori')}/>
+          </MoneyAddon>
         </FormContainer>
       </Flex>
     </Flex>

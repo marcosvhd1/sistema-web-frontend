@@ -29,6 +29,7 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
   const toast = useToast();
 
   const clearForm = () => {
+    setIsEditing(false);
     onClose();
     methods.reset({
       descricao: ''

@@ -11,6 +11,7 @@ export type IServico = {
   preco: number;
   anotacoes: string;
   base_iss: number;
+  valor_base_iss: number;
   aliquota_iss: number;
   situacao: string;
   item_lista: string;

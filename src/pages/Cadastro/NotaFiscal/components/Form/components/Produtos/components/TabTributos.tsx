@@ -2,6 +2,8 @@ import { Button, Divider, Flex, Icon, Input, Text } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FiSearch } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../../components/Form/FormContainer';
+import { MoneyAddon } from '../../../../../../../../components/Form/MoneyAddon';
+import { PorcentAddon } from '../../../../../../../../components/Form/PorcentAddon';
 import { INFProduct } from '../../../../../../../../services/api/notafiscal/NFProduct';
 
 export function FormTabTributos() {
@@ -23,13 +25,19 @@ export function FormTabTributos() {
             </Flex>
           </FormContainer>
           <FormContainer label='Alíquota IPI'>
-            <Input type='text' {...register('produto.aliquota_ipi')}/>
+            <PorcentAddon>
+              <Input type='text' {...register('produto.aliquota_ipi')}/>
+            </PorcentAddon>
           </FormContainer>
           <FormContainer label='Base de Cálculo'>
-            <Input type='text' {...register('base_calc_ipi')}/>
+            <MoneyAddon>
+              <Input type='text' {...register('base_calc_ipi')}/>
+            </MoneyAddon>
           </FormContainer>
           <FormContainer label='Valor IPI'>
-            <Input type='text' {...register('valor_ipi')}/>
+            <MoneyAddon>
+              <Input type='text' {...register('valor_ipi')}/>
+            </MoneyAddon>
           </FormContainer>
           <FormContainer label='CNPJ Produtor'>
             <Input type='text' {...register('cnpj_produtor')}/>
@@ -42,16 +50,24 @@ export function FormTabTributos() {
             <Divider />
           </Flex>
           <FormContainer label='Base de Cálculo'>
-            <Input type='text' {...register('base_calc_ii')}/>
+            <MoneyAddon>
+              <Input type='text' {...register('base_calc_ii')}/>
+            </MoneyAddon>
           </FormContainer>
           <FormContainer label='Desp. aduaneiras'>
-            <Input type='text' {...register('desp_aduaneiras')}/>
+            <MoneyAddon>
+              <Input type='text' {...register('desp_aduaneiras')}/>
+            </MoneyAddon>
           </FormContainer>
           <FormContainer label='Valor IOF'>
-            <Input type='text' {...register('valor_iof')}/>
+            <MoneyAddon>
+              <Input type='text' {...register('valor_iof')}/>
+            </MoneyAddon>
           </FormContainer>
           <FormContainer label='Valor II'>
-            <Input type='text' {...register('valor_ii')}/>
+            <MoneyAddon>
+              <Input type='text' {...register('valor_ii')}/>
+            </MoneyAddon>
           </FormContainer>
         </Flex>
       </Flex>
@@ -69,13 +85,19 @@ export function FormTabTributos() {
             </Flex>
           </FormContainer>
           <FormContainer label='Base de Cálculo'>
-            <Input type='text' {...register('base_calc_pis')}/>
+            <MoneyAddon>
+              <Input type='text' {...register('base_calc_pis')}/>
+            </MoneyAddon>
           </FormContainer>
           <FormContainer label='Alíquota PIS'>
-            <Input type='text' {...register('produto.aliquota_pis')}/>
+            <PorcentAddon>
+              <Input type='text' {...register('produto.aliquota_pis')}/>
+            </PorcentAddon>
           </FormContainer>
           <FormContainer label='Valor PIS'>
-            <Input type='text' {...register('valor_pis')}/>
+            <MoneyAddon>
+              <Input type='text' {...register('valor_pis')}/>
+            </MoneyAddon>
           </FormContainer>
         </Flex>
         <Flex w="50%" align="center" justify="flex-start" direction="column" mr={10}>
@@ -91,13 +113,19 @@ export function FormTabTributos() {
             </Flex>
           </FormContainer>
           <FormContainer label='Base de Cálculo'>
-            <Input type='text' {...register('base_calc_cofins')}/>
+            <MoneyAddon>
+              <Input type='text' {...register('base_calc_cofins')}/>
+            </MoneyAddon>
           </FormContainer>
           <FormContainer label='Alíquota COFINS'>
-            <Input type='text' {...register('produto.aliquota_cofins')}/>
+            <PorcentAddon>
+              <Input type='text' {...register('produto.aliquota_cofins')}/>
+            </PorcentAddon>
           </FormContainer>
           <FormContainer label='Valor COFINS'>
-            <Input type='text' {...register('valor_cofins')}/>
+            <MoneyAddon>
+              <Input type='text' {...register('valor_cofins')}/>
+            </MoneyAddon>
           </FormContainer>
         </Flex>
       </Flex>

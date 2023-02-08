@@ -3,6 +3,8 @@ import React from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { FiCheck, FiSearch, FiSlash } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
+import { MoneyAddon } from '../../../../../../../components/Form/MoneyAddon';
+import { PorcentAddon } from '../../../../../../../components/Form/PorcentAddon';
 import { useModalNFProduct } from '../../../../../../../Contexts/Modal/NotaFiscal/NFProductContext';
 import { useModalNFSearchProduct } from '../../../../../../../Contexts/Modal/NotaFiscal/NFProductSearchContext';
 import { INFProduct } from '../../../../../../../services/api/notafiscal/NFProduct';
@@ -43,17 +45,17 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
 
   const onChangeQuantidade = (e: React.ChangeEvent<HTMLInputElement>) => {
     const quantidade = parseFloat(e.target.value);
-    const valorUnitario = methods.watch('valor_unitario', 0);
+    const valorUnitario = parseFloat(methods.watch('valor_unitario', 0).toString().replace('.', '').replace(',', '.'));
     if (quantidade && valorUnitario) {
-      methods.setValue('valor_total', (quantidade * valorUnitario));
+      methods.setValue('valor_total', parseFloat((quantidade * valorUnitario).toFixed(2)));
     }
   };
 
   const onChangeValorUnitario = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valorUnitario = parseFloat(e.target.value);
+    const valorUnitario = parseFloat(e.target.value.replace('.', '').replace(',', '.'));
     const quantidade = methods.watch('quantidade', 0);
     if (quantidade && valorUnitario) {
-      methods.setValue('valor_total', (quantidade * valorUnitario));
+      methods.setValue('valor_total', parseFloat((quantidade * valorUnitario).toFixed(2)));
     }
   };
 
@@ -129,13 +131,17 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
                       <Input type="text" {...methods.register('produto.descricao')} />
                     </FormContainer>
                     <FormContainer width='15%' label='Quantidade' mr='3'>
-                      <Input type="text" {...methods.register('quantidade')} onChange={onChangeQuantidade} />
+                      <Input type="number" {...methods.register('quantidade')} onChange={onChangeQuantidade} />
                     </FormContainer>
                     <FormContainer width='20%' label='Valor Unitário' mr='3'>
-                      <Input type="text" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
+                      <MoneyAddon>
+                        <Input type="text" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
+                      </MoneyAddon>
                     </FormContainer>
                     <FormContainer width='20%' label='Valor Total'>
-                      <Input type="text" readOnly {...methods.register('valor_total')} />
+                      <MoneyAddon>
+                        <Input type="number" readOnly {...methods.register('valor_total')} />
+                      </MoneyAddon>
                     </FormContainer>
                   </Flex>
                   <Flex w="100%" justify="center" align="center">
@@ -143,16 +149,20 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
                       <Input type="text" {...methods.register('produto.un')} />
                     </FormContainer>
                     <FormContainer width='20%' label='NCM' mr='3'>
-                      <Input type="text" {...methods.register('produto.ncm')} />
+                      <Input type="number" {...methods.register('produto.ncm')} />
                     </FormContainer>
                     <FormContainer width='20%' label='CEST' mr='3'>
-                      <Input type="text" {...methods.register('produto.cest')} />
+                      <Input type="number" {...methods.register('produto.cest')} />
                     </FormContainer>
                     <FormContainer width='25%' label='Desconto %' mr='3'>
-                      <Input type="text" {...methods.register('desconto_p')} onChange={onChangeDescontoP}/>
+                      <PorcentAddon>
+                        <Input type="number" {...methods.register('desconto_p')} onChange={onChangeDescontoP}/>
+                      </PorcentAddon>
                     </FormContainer>
                     <FormContainer width='25%' label='Desconto R$'>
-                      <Input type="text" {...methods.register('desconto_total')} onChange={onChangeDescontoT}/>
+                      <MoneyAddon>
+                        <Input type="number" {...methods.register('desconto_total')} onChange={onChangeDescontoT}/>
+                      </MoneyAddon>
                     </FormContainer>
                   </Flex>
                   <Tabs variant='enclosed' colorScheme="gray" w="100%" mt={3}>

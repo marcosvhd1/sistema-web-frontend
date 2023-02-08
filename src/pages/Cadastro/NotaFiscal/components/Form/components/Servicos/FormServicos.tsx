@@ -64,18 +64,21 @@ export function FormServicos() {
   };
 
   const calcTotais = () => {
-    let totDesc = 0;
+    let totDescServ = 0;
     let totServ = 0;
 
     for (let i = 0; i < servicos.length; i++) {
-      totDesc += servicos[i].desconto_total;
-      totServ += servicos[i].valor_total;
+      if (servicos[i].desconto_total.toString().length > 0) {
+        totDescServ += parseFloat(`${servicos[i].desconto_total}`);
+      }
+
+      if (servicos[i].valor_total.toString().length > 0) {
+        totServ += parseFloat(`${servicos[i].valor_total}`);
+      }
     }
-    
-    const nfTotDesc = parseFloat(`${nfMethods.getValues('total_desconto')}`);
 
     nfMethods.setValue('total_servicos', totServ);
-    nfMethods.setValue('total_desconto', totDesc + nfTotDesc);
+    nfMethods.setValue('total_desconto_servicos', totDescServ);
   };
 
   const headers: { key: string, label: string }[] = [

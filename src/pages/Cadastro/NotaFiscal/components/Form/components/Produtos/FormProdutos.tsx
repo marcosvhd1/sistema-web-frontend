@@ -72,7 +72,7 @@ export function FormProdutos() {
     let totIPI = 0;
     let totPIS = 0;
     let totCOFINS = 0;
-    let totDesc = 0;
+    let totDescProd = 0;
     let totProd = 0;
     let totAliqCredICMS = 0;
     let totCredICMS = 0;
@@ -84,27 +84,77 @@ export function FormProdutos() {
     let totFCPST = 0;
 
     for (let i = 0; i < produtos.length; i++) {
-      totBCICMS += produtos[i].produto.base_icms;
-      totICMS += produtos[i].valor_icms;
-      totBCICMSST += produtos[i].base_icms_st;
-      totICMSST += produtos[i].valor_icms_st;
-      totII += produtos[i].valor_ii;
-      totIPI += produtos[i].valor_ipi;
-      totPIS += produtos[i].valor_pis;
-      totCOFINS += produtos[i].valor_cofins;
-      totDesc += produtos[i].desconto_total;
-      totProd += produtos[i].valor_total;
-      totAliqCredICMS += produtos[i].p_aliquota_credito;
-      totCredICMS += produtos[i].credito_icms_aproveitado;
-      totPartilhaICMSDest += produtos[i].partilha_icms_valor_icms_uf_dest;
-      totPartilhaICMSRem += produtos[i].partilha_icms_valor_icms_uf_ori;
-      totFCPUFDest += produtos[i].partilha_icms_valor_fcp_uf_dest;
-      totIPIDevolvido += produtos[i].ipi_vlr_devolvido;
-      totFCP += produtos[i].fcp_valor;
-      totFCPST += produtos[i].fcp_valor_st;
-    }
+      if (produtos[i].produto.base_icms.toString().length > 0) {
+        totBCICMS += parseFloat(`${produtos[i].produto.base_icms}`);
+      }
 
-    const nfTotDesc = parseFloat(`${nfMethods.getValues('total_desconto')}`);
+      if (produtos[i].valor_icms.toString().length > 0) {
+        totICMS += parseFloat(`${produtos[i].valor_icms}`);
+      }
+
+      if (produtos[i].base_icms_st.toString().length > 0) {
+        totBCICMSST += parseFloat(`${produtos[i].base_icms_st}`);
+      }
+
+      if (produtos[i].valor_icms_st.toString().length > 0) {
+        totICMSST += parseFloat(`${produtos[i].valor_icms_st}`);
+      }
+
+      if (produtos[i].valor_ii.toString().length > 0) {
+        totII += parseFloat(`${produtos[i].valor_ii}`);
+      }
+
+      if (produtos[i].valor_ipi.toString().length > 0) {
+        totIPI += parseFloat(`${produtos[i].valor_ipi}`);
+      }
+
+      if (produtos[i].valor_pis.toString().length > 0) {
+        totPIS += parseFloat(`${produtos[i].valor_pis}`);
+      }
+
+      if (produtos[i].valor_cofins.toString().length > 0) {
+        totCOFINS += parseFloat(`${produtos[i].valor_cofins}`);
+      }
+      if (produtos[i].desconto_total.toString().length > 0) {
+        totDescProd += parseFloat(`${produtos[i].desconto_total}`);
+      }
+
+      if (produtos[i].valor_total.toString().length > 0) {
+        totProd += parseFloat(`${produtos[i].valor_total}`);
+      }
+
+      if (produtos[i].p_aliquota_credito.toString().length > 0) {
+        totAliqCredICMS += parseFloat(`${produtos[i].p_aliquota_credito}`);
+      }
+      
+      if (produtos[i].credito_icms_aproveitado.toString().length > 0) {
+        totCredICMS += parseFloat(`${produtos[i].credito_icms_aproveitado}`);
+      }
+
+      if (produtos[i].partilha_icms_valor_icms_uf_dest.toString().length > 0) {
+        totPartilhaICMSDest += parseFloat(`${produtos[i].partilha_icms_valor_icms_uf_dest}`);
+      }
+      
+      if (produtos[i].partilha_icms_valor_icms_uf_ori.toString().length > 0) {
+        totPartilhaICMSRem += parseFloat(`${produtos[i].partilha_icms_valor_icms_uf_ori}`);
+      }
+
+      if (produtos[i].partilha_icms_valor_fcp_uf_dest.toString().length > 0) {
+        totFCPUFDest += parseFloat(`${produtos[i].partilha_icms_valor_fcp_uf_dest}`);
+      }
+
+      if (produtos[i].ipi_vlr_devolvido.toString().length > 0) {
+        totIPIDevolvido += parseFloat(`${produtos[i].ipi_vlr_devolvido}`);
+      }
+
+      if (produtos[i].fcp_valor.toString().length > 0) {
+        totFCP += parseFloat(`${produtos[i].fcp_valor}`);
+      }
+
+      if (produtos[i].fcp_valor_st.toString().length > 0) {
+        totFCPST += parseFloat(`${produtos[i].fcp_valor_st}`);
+      }
+    }
 
     nfMethods.setValue('base_calc_icms', totBCICMS);
     nfMethods.setValue('total_icms', totICMS);
@@ -114,7 +164,7 @@ export function FormProdutos() {
     nfMethods.setValue('total_ipi', totIPI);
     nfMethods.setValue('total_pis', totPIS);
     nfMethods.setValue('total_cofins', totCOFINS);
-    nfMethods.setValue('total_desconto', totDesc + nfTotDesc);
+    nfMethods.setValue('total_desconto_produtos', totDescProd);
     nfMethods.setValue('total_produtos', totProd);
     nfMethods.setValue('aliquota_credito', totAliqCredICMS);
     nfMethods.setValue('valor_credito', totCredICMS);

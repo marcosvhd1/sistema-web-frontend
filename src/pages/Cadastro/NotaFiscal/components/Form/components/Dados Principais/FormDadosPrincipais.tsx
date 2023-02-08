@@ -34,7 +34,7 @@ export function FormDadosPrincipais() {
           </Button>
 
           <FormContainer width='15%' label='Série' mr='3'>
-            <Input type="text" readOnly {...methods.register('serie')} />
+            <Input type="text" defaultValue={0} readOnly {...methods.register('serie')} />
           </FormContainer>
 
           <FormContainer width='65%' label='Natureza de Operação' mr='3'>
@@ -52,7 +52,7 @@ export function FormDadosPrincipais() {
           </Button>
 
           <FormContainer width='35%' label='Status'>
-            <Input type="text" readOnly {...methods.register('status')} />
+            <Input type="text" defaultValue={'Em digitação'} readOnly {...methods.register('status')} />
           </FormContainer>
         </Flex>
         {/* OUTRAS INFOS */}
@@ -86,7 +86,7 @@ export function FormDadosPrincipais() {
           </FormContainer>
 
           <FormContainer width='15%' label='Modelo' mr='3'>
-            <Input type="text" readOnly {...methods.register('modelo')} />
+            <Input type="text" defaultValue={55} readOnly {...methods.register('modelo')} />
           </FormContainer>
 
           <FormContainer width='30%' label='Consumidor Final' >

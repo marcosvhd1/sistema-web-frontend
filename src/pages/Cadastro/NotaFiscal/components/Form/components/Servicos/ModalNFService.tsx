@@ -3,6 +3,8 @@ import React from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { FiCheck, FiSearch, FiSlash } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
+import { MoneyAddon } from '../../../../../../../components/Form/MoneyAddon';
+import { PorcentAddon } from '../../../../../../../components/Form/PorcentAddon';
 import { useModalNFService } from '../../../../../../../Contexts/Modal/NotaFiscal/NFServiceContext';
 import { useModalNFSearchService } from '../../../../../../../Contexts/Modal/NotaFiscal/NFServiceSearchContext';
 import { INFService } from '../../../../../../../services/api/notafiscal/NFService';
@@ -115,10 +117,14 @@ export function ModalNFService({ addServ, editServ, setIsEditing, isEditing, ind
                       <Input type="text" {...methods.register('quantidade')} onChange={onChangeQuantidade} />
                     </FormContainer>
                     <FormContainer width='20%' label='Valor Unitário' mr='3'>
-                      <Input type="text" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
+                      <MoneyAddon>
+                        <Input type="text" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
+                      </MoneyAddon>
                     </FormContainer>
                     <FormContainer width='20%' label='Valor Total'>
-                      <Input type="text" readOnly {...methods.register('valor_total')} />
+                      <MoneyAddon>
+                        <Input type="text" readOnly {...methods.register('valor_total')} />
+                      </MoneyAddon>
                     </FormContainer>
                   </Flex>
                   <Flex w="100%" justify="center" align="center">
@@ -129,10 +135,14 @@ export function ModalNFService({ addServ, editServ, setIsEditing, isEditing, ind
                       <Input type="text" {...methods.register('servico.ncm')} />
                     </FormContainer>
                     <FormContainer width='30%' label='Desconto %' mr='3'>
-                      <Input type="text" {...methods.register('desconto_p')} onChange={onChangeDescontoP}/>
+                      <PorcentAddon>
+                        <Input type="text" {...methods.register('desconto_p')} onChange={onChangeDescontoP}/>
+                      </PorcentAddon>
                     </FormContainer>
                     <FormContainer width='30%' label='Desconto R$'>
-                      <Input type="text" {...methods.register('desconto_total')} onChange={onChangeDescontoT}/>
+                      <MoneyAddon>
+                        <Input type="text" {...methods.register('desconto_total')} onChange={onChangeDescontoT}/>
+                      </MoneyAddon>
                     </FormContainer>
                   </Flex>
                   <Flex w="100%" justify="center" align="center">
@@ -166,19 +176,29 @@ export function ModalNFService({ addServ, editServ, setIsEditing, isEditing, ind
                         </Select>
                       </FormContainer>
                       <FormContainer label='Alíquota'>
-                        <Input type="text" {...methods.register('servico.aliquota_iss')} />
+                        <PorcentAddon>
+                          <Input type="text" {...methods.register('servico.aliquota_iss')} />
+                        </PorcentAddon>
                       </FormContainer>
                       <FormContainer label='Base de Cálculo'>
-                        <Input type="text" {...methods.register('servico.base_iss')} />
+                        <PorcentAddon>
+                          <Input type="text" {...methods.register('servico.base_iss')} />
+                        </PorcentAddon>
                       </FormContainer>
                       <FormContainer label='Valor da Base de Cálculo'>
-                        <Input type="text" />
+                        <MoneyAddon>
+                          <Input type="text" {...methods.register('servico.valor_base_iss')}/>
+                        </MoneyAddon>
                       </FormContainer>
                       <FormContainer label='Valor ISS'>
-                        <Input type="text" {...methods.register('valor_iss')} />
+                        <MoneyAddon>
+                          <Input type="text" readOnly {...methods.register('valor_iss')} />
+                        </MoneyAddon>
                       </FormContainer>
                       <FormContainer label='Valor ISS Retido'>
-                        <Input type="text" {...methods.register('valor_iss_retido')} />
+                        <MoneyAddon>
+                          <Input type="text" {...methods.register('valor_iss_retido')} />
+                        </MoneyAddon>
                       </FormContainer>
                     </Flex>
                     <Flex w="50%" justify="center" align="center" direction="column">
@@ -201,13 +221,19 @@ export function ModalNFService({ addServ, editServ, setIsEditing, isEditing, ind
                         <Input type="text" {...methods.register('pis_cst')} />
                       </FormContainer>
                       <FormContainer label='Base de Cálculo'>
-                        <Input type="text" {...methods.register('pis_base_calc')} />
+                        <MoneyAddon>
+                          <Input type="text" {...methods.register('pis_base_calc')} />
+                        </MoneyAddon>
                       </FormContainer>
                       <FormContainer label='Alíquota'>
-                        <Input type="text" {...methods.register('pis_aliquota')} />
+                        <PorcentAddon>
+                          <Input type="text" {...methods.register('pis_aliquota')} />
+                        </PorcentAddon>
                       </FormContainer>
                       <FormContainer label='Valor'>
-                        <Input type="text" {...methods.register('pis_valor')} />
+                        <MoneyAddon>
+                          <Input type="text" readOnly {...methods.register('pis_valor')} />
+                        </MoneyAddon>
                       </FormContainer>
                     </Flex>
                     <Flex w="50%" justify="flex-start" align="flex-start" direction="column">
@@ -220,13 +246,19 @@ export function ModalNFService({ addServ, editServ, setIsEditing, isEditing, ind
                         <Input type="text" {...methods.register('cofins_cst')} />
                       </FormContainer>
                       <FormContainer label='Base de Cálculo'>
-                        <Input type="text" {...methods.register('cofins_base_calc')} />
+                        <MoneyAddon>
+                          <Input type="text" {...methods.register('cofins_base_calc')} />
+                        </MoneyAddon>
                       </FormContainer>
                       <FormContainer label='Alíquota'>
-                        <Input type="text" {...methods.register('cofins_aliquota')} />
+                        <PorcentAddon>
+                          <Input type="text" {...methods.register('cofins_aliquota')} />
+                        </PorcentAddon>
                       </FormContainer>
                       <FormContainer label='Valor'>
-                        <Input type="text" {...methods.register('cofins_valor')} />
+                        <MoneyAddon>
+                          <Input type="text" readOnly {...methods.register('cofins_valor')} />
+                        </MoneyAddon>
                       </FormContainer>
                     </Flex>
                   </Flex>

@@ -34,7 +34,9 @@ export interface INotaFiscal {
     total_ipi: number;
     total_pis: number;
     total_cofins: number;
-    total_desconto: number;
+    total_desconto_produtos: number;
+    total_desconto_servicos: number;
+    total_desconto_nf: number;
     total_produtos: number;
     total_nota: number;
     base_calc_iss: number;
