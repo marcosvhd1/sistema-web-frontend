@@ -145,7 +145,7 @@ export function CadastroNotaFiscal() {
                   <FormServicos />
                 </TabPanel>
                 <TabPanel>
-                  <FormTotais />
+                  <FormTotais recalcular={calcTotalNota} />
                 </TabPanel>
                 <TabPanel>
                   <FormFormaPagto />

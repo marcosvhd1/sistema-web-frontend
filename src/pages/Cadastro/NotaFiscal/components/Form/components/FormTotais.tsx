@@ -5,7 +5,11 @@ import { FormContainer } from '../../../../../../components/Form/FormContainer';
 import { MoneyAddon } from '../../../../../../components/Form/MoneyAddon';
 import { INotaFiscal } from '../../../../../../services/api/notafiscal/NotaFiscalService';
 
-export function FormTotais() {
+interface FormTotaisProps {
+  recalcular: () => void;
+}
+
+export function FormTotais({ recalcular }: FormTotaisProps) {
   const { register } = useFormContext<INotaFiscal>();
 
   return (
@@ -188,7 +192,7 @@ export function FormTotais() {
 
       {/* COLUNA 4 */}
       <Flex w="25%" justify="center" mt={7} align="center" direction="column" alignSelf='flex-start'>
-        <Button w="100%" fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="red">
+        <Button w="100%" fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="red" onClick={recalcular}>
           <Icon mr={2} as={CgCalculator} />
           Recalcular
         </Button>

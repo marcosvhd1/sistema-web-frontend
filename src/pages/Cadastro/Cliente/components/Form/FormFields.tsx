@@ -28,7 +28,7 @@ interface IFormFields {
   isEditing: boolean
 }
 export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
-  const { register, formState: { errors }, setFocus, getValues } = useFormContext<IClient>();
+  const { register, formState: { errors }, setFocus, getValues, setValue } = useFormContext<IClient>();
   const { colorMode } = useColorMode();
 
   useEffect(() => {
@@ -42,8 +42,9 @@ export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
   const validarCampo = () => {
     const data = getValues('cnpjcpf');
     const formatado = formatCnpjCpf(data);
-    console.log(formatado);
-    console.log(validaCpfCnpj(formatado));
+    if (validaCpfCnpj(formatado)) {
+      setValue('cnpjcpf', formatado);
+    }
   };
 
 
@@ -87,7 +88,9 @@ export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
         <Flex direction="column" w="50%" ml="6">
           <Flex>
             <FormContainer label="CPF / CNPJ">
-              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" w="14rem" {...register('cnpjcpf')} mr="3" />
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" w="14rem" {...register('cnpjcpf', {
+                onBlur: (event) => validarCampo()
+              })} mr="3" />
             </FormContainer>
             <FormContainer label="RG">
               <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="rg" type="text" w="14rem" {...register('rg')} />
@@ -130,7 +133,6 @@ export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
         <Divider />
         <Adress />
       </Stack>
-      <Button onClick={validarCampo}>tst</Button>
     </Flex>
   );
 }
