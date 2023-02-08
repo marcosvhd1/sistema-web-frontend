@@ -1,5 +1,7 @@
 import { IClient } from "../clientes/ClientService";
 import { ITransportadora } from "../transportadora/TransportadoraService";
+import { INFDuplicata } from "./NFDuplicata";
+import { INFFormaPagto } from "./NFFormaPagto";
 import { INFProduct } from "./NFProduct";
 import { INFService } from "./NFService";
 
@@ -58,13 +60,8 @@ export interface INotaFiscal {
     total_fcp: number;
     total_fcp_st: number;
     presenca_comprador: string;
-    forma_pagto: string;
-    valor_pagto: number;
-    bandeira_pagto: string;
-    obs_pagto: string;
-    numero_duplicata: string;
-    vencimento_duplicata: number;
-    valor_duplicata: number;
+    duplicata: INFDuplicata[];
+    forma_pagto: INFFormaPagto[];
     modalidade_frete: string;
     transportadora: ITransportadora;
     quantidade_transporte: number;

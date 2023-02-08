@@ -4,13 +4,14 @@ import { Flex, Input, Select, useColorMode } from '@chakra-ui/react';
 import { useEstados } from '../../../../../hooks/useEstados';
 import { useCidades } from '../../../../../hooks/useCidades';
 import { FormContainer } from '../../../../../components/Form/FormContainer';
+import { IClient } from '../../../../../services/api/clientes/ClientService';
 
 
 export function Adress() {
+  const { register } = useFormContext<IClient>();
   const [selectedEstado, setSelectedEstado] = useState('');
   const { estados } = useEstados();
   const { cidades } = useCidades({ uf: selectedEstado });
-  const { register } = useFormContext();
   const { colorMode } = useColorMode();
 
 
@@ -44,7 +45,7 @@ export function Adress() {
           </FormContainer>
           <FormContainer label="Cidade" width="22.5rem">
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cidade')} w="22.5rem">
-              {cidades.map(cidade => <option key={cidade.codigo_ibge}>{cidade.nome}</option>)}
+              {cidades.map(cidade => <option key={cidade.nome} value={cidade.nome}>{cidade.nome}</option>)}
             </Select>
           </FormContainer>
         </Flex>

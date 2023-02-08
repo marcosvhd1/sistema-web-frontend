@@ -34,6 +34,14 @@ const getTransportadoraByFilter = async (currentPage: number, limitRegistros: nu
   }
 };
 
+const getTransportadoraToComboBox = async (idEmissorSelecionado: number, HEADERS: any): Promise<ITransportadora[] | ApiException> => {
+  try {
+    return await Api().get(`/transportadoras/comboBox?id_emissor=${idEmissorSelecionado}`, HEADERS);
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
+  }
+};
+
 const create = async (dataToCreate: Omit<ITransportadora, 'id' | 'nserv'>, HEADERS: any): Promise<ITransportadora | ApiException> => {
   try {
     const { data } = await Api().post<ITransportadora>('/transportadoras', dataToCreate, HEADERS);
@@ -69,6 +77,7 @@ const getLastCod = async (idEmissorSelecionado: number, HEADERS: any) => {
 
 export const TransportadoraService = {
   getTransportadoraByFilter,
+  getTransportadoraToComboBox,
   create,
   updateById,
   deleteById,

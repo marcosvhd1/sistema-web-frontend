@@ -1,33 +1,67 @@
 import { Button, Flex, Icon, Input, Select } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { FiSlash } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../components/Form/FormContainer';
-import { useFormContext } from 'react-hook-form';
+import { useEmissorContext } from '../../../../../../Contexts/EmissorProvider';
+import { ApiException } from '../../../../../../services/api/ApiException';
 import { INotaFiscal } from '../../../../../../services/api/notafiscal/NotaFiscalService';
+import { ITransportadora, TransportadoraService } from '../../../../../../services/api/transportadora/TransportadoraService';
+import { userInfos } from '../../../../../../utils/header';
 
 export function FormTransporte() {
-  const { register, setFocus } = useFormContext<INotaFiscal>();
+  const { register, reset } = useFormContext<INotaFiscal>();
+  const { idEmissorSelecionado } = useEmissorContext();
+  const [transportadora, setTransportadora] = useState<ITransportadora[]>([]);
+
+  const userInfo = userInfos();
+  const HEADERS = userInfo.header;
+
+  useEffect(() => {
+    carregaTransp();
+  }, []);
+
+  const carregaTransp = () => {
+    TransportadoraService.getTransportadoraToComboBox(idEmissorSelecionado, HEADERS)
+      .then((result: any) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          setTransportadora(result.data);
+          return true;
+        }
+      });
+  };
+
+  const handleClearTransp = () => {
+    reset({transportadora: {}});
+  };
+
   return (
     <Flex w="100%" justify="center" align="center">
-
       {/* COLUNA 1 */}
       <Flex w="50%" justify="center" align="center" direction="column" mr={5}>
         <FormContainer label='Modalidade do Frete'>
           <Select {...register('modalidade_frete')}>
+            <option value='9'>Sem frete</option>
             <option value='0'>Por conta do remetente (CIF)</option>
             <option value='1'>Por conta do destinatário (FOB)</option>
             <option value='2'>Por conta de terceiros</option>
             <option value='3'>Transporte próprio - por conta do remetente</option>
             <option value='4'>Transporte próprio - por conta do destinatário</option>
-            <option value='9'>Sem frete</option>
           </Select>
         </FormContainer>
         <Flex w="100%" justify="center" align="center">
           <FormContainer label='Transportadora' mr='3'>
             <Select {...register('transportadora.razao')}>
               <option value='0'></option>
+              {transportadora.map(transp => <option key={transp.id} value={transp.razao}>{transp.razao}</option>)}
             </Select>
           </FormContainer>
-          <Button w="25%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="outline" colorScheme="red"><Icon mr={2} as={FiSlash} />Limpar</Button>
+          <Button w="25%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="outline" colorScheme="red" onClick={handleClearTransp}>
+            <Icon mr={2} as={FiSlash} />
+            Limpar
+          </Button>
         </Flex>
         <Flex w="100%" justify="center" align="center">
           <FormContainer label='CNPJ' mr='3'>
