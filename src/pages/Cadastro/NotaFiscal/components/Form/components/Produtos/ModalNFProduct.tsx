@@ -45,14 +45,14 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
 
   const onChangeQuantidade = (e: React.ChangeEvent<HTMLInputElement>) => {
     const quantidade = parseFloat(e.target.value);
-    const valorUnitario = parseFloat(methods.watch('valor_unitario', 0).toString().replace('.', '').replace(',', '.'));
+    const valorUnitario = methods.watch('valor_unitario', 0);
     if (quantidade && valorUnitario) {
       methods.setValue('valor_total', parseFloat((quantidade * valorUnitario).toFixed(2)));
     }
   };
 
   const onChangeValorUnitario = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valorUnitario = parseFloat(e.target.value.replace('.', '').replace(',', '.'));
+    const valorUnitario = parseFloat(e.target.value);
     const quantidade = methods.watch('quantidade', 0);
     if (quantidade && valorUnitario) {
       methods.setValue('valor_total', parseFloat((quantidade * valorUnitario).toFixed(2)));
@@ -135,7 +135,7 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
                     </FormContainer>
                     <FormContainer width='20%' label='Valor Unitário' mr='3'>
                       <MoneyAddon>
-                        <Input type="text" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
+                        <Input type="number" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
                       </MoneyAddon>
                     </FormContainer>
                     <FormContainer width='20%' label='Valor Total'>
