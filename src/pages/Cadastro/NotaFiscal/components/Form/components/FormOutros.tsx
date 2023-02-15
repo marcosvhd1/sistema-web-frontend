@@ -29,18 +29,9 @@ export function FormOutros() {
             <Input type="text" {...register('n_coo')}/>
           </FormContainer>
         </Flex>
-        <Flex w="100%" justify="center" align="center">
-          <FormContainer label='Caminho do XML' mr='3'>
-            <Input type="text" {...register('caminho_xml')}/>
-          </FormContainer>
-          <Button w="25%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="outline" colorScheme="blue"><Icon mr={2} as={FiSearch} />Localizar</Button>
-        </Flex>
-        <Flex w="100%" justify="center" align="center">
-          <FormContainer label='Chave de Acesso' mr='3'>
-            <Input type="text" {...register('chave_acesso')}/>
-          </FormContainer>
-          <Button w="25%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="outline" colorScheme="blue">Preencher</Button>
-        </Flex>
+        <FormContainer label='Chave de Acesso'>
+          <Input type="text" {...register('chave_acesso')}/>
+        </FormContainer>
       </Flex>
 
       {/* COLUNA 2 */}

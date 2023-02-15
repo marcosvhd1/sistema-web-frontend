@@ -60,12 +60,12 @@ export function SidebarNav() {
         <NavSection title='CADASTRO'>
           <NavItem icon={FcBusinessman} title='Clientes' rota={isEmissorSelected ? '/app/cadastro/clientes' : ''} click={checkPermission}/>
           <NavItem icon={FcPackage} title='Produtos' rota={isEmissorSelected ? '/app/cadastro/produtos' : ''} click={checkPermission} />
-          <NavItem icon={FcSupport} title='Serviços' rota={isEmissorSelected ? '/app/cadastro/servicos' : ''} click={checkPermission} />
+          {/* <NavItem icon={FcSupport} title='Serviços' rota={isEmissorSelected ? '/app/cadastro/servicos' : ''} click={checkPermission} /> */}
           <NavItem icon={FcInTransit} title='Transportadora' rota={isEmissorSelected ? '/app/cadastro/transportadora' : ''} click={checkPermission}/>
         </NavSection>
         <NavSection title='FISCAL'>
           <NavItem icon={FcDocument} title='NF-e/NFC-e' rota={isEmissorSelected ? '/app/fiscal/nfe' : ''} click={checkPermission}/>
-          <NavItem icon={FcDocument} title='MDF-e' rota={isEmissorSelected ? '/app/fiscal/mdfe' : ''} click={checkPermission}/>
+          {/* <NavItem icon={FcDocument} title='MDF-e' rota={isEmissorSelected ? '/app/fiscal/mdfe' : ''} click={checkPermission}/> */}
         </NavSection>
         <NavSection title={navSize == 'small' ? 'CONFIG' : 'CONFIGURAÇÃO'}>
           <NavItem icon={FcSettings} title='Configuração' rota={isEmissorSelected ? '/app/config' : ''} click={checkPermission} />

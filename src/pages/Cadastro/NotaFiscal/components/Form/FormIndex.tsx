@@ -8,7 +8,7 @@ import { FormFormaPagto } from './components/FormFormaPagto';
 import { FormInfoAdicional } from './components/FormInfoAdicional';
 import { FormOutros } from './components/FormOutros';
 import { FormTotais } from './components/FormTotais';
-import { FormTransporte } from './components/FormTransporte';
+import { FormTransporte } from './components/Transporte/FormTransporte';
 import { FormProdutos } from './components/Produtos/FormProdutos';
 import { FormServicos } from './components/Servicos/FormServicos';
 
@@ -30,9 +30,9 @@ export function CadastroNotaFiscal() {
     let outrasDesp = 0;
     let totalII = 0;
     let totalIPIDevolvido = 0;
-    let totalServ = 0;
+    // let totalServ = 0;
     let totalDescProd = 0;
-    let totalDescServ = 0;
+    // let totalDescServ = 0;
 
     if (methods.getValues('total_produtos') !== undefined) {
       if (methods.getValues('total_produtos').toString().length > 0) {
@@ -82,11 +82,11 @@ export function CadastroNotaFiscal() {
       }
     }
 
-    if (methods.getValues('total_servicos') !== undefined) {
-      if (methods.getValues('total_servicos').toString().length > 0) {
-        totalServ = parseFloat(`${methods.getValues('total_servicos')}`);
-      }
-    }
+    // if (methods.getValues('total_servicos') !== undefined) {
+    //   if (methods.getValues('total_servicos').toString().length > 0) {
+    //     totalServ = parseFloat(`${methods.getValues('total_servicos')}`);
+    //   }
+    // }
 
     if (methods.getValues('total_desconto_produtos') !== undefined) {
       if (methods.getValues('total_desconto_produtos').toString().length > 0) {
@@ -94,16 +94,17 @@ export function CadastroNotaFiscal() {
       }
     }
 
-    if (methods.getValues('total_desconto_servicos') !== undefined) {
-      if (methods.getValues('total_desconto_servicos').toString().length > 0) {
-        totalDescServ = parseFloat(`${methods.getValues('total_desconto_servicos')}`);
-      }
-    }
+    // if (methods.getValues('total_desconto_servicos') !== undefined) {
+    //   if (methods.getValues('total_desconto_servicos').toString().length > 0) {
+    //     totalDescServ = parseFloat(`${methods.getValues('total_desconto_servicos')}`);
+    //   }
+    // }
 
-    const totalGeral = (totalProdutos + totalICMSST + totalIPI + valorSeguro + totalFrete + outrasDesp + totalII + totalIPIDevolvido + totalServ) - (totalDescProd + totalDescServ);
+    const totalGeral = (totalProdutos + totalICMSST + totalIPI + valorSeguro + totalFrete + outrasDesp + totalII + totalIPIDevolvido) - (totalDescProd);
 
-    methods.setValue('total_desconto_nf', (totalDescProd + totalDescServ));
-    methods.setValue('total_nota', totalGeral);
+    // methods.setValue('total_desconto_nf', (totalDescProd + totalDescServ));
+    methods.setValue('total_desconto_nf', totalDescProd);
+    methods.setValue('total_nota', parseFloat(totalGeral.toFixed(2)));
   };
 
   return (
@@ -127,7 +128,7 @@ export function CadastroNotaFiscal() {
               <TabList>
                 <Tab>Dados Principais</Tab>
                 <Tab>Produtos</Tab>
-                <Tab>Serviços</Tab>
+                {/* <Tab>Serviços</Tab> */}
                 <Tab>Totais</Tab>
                 <Tab>Formas de Pagamento</Tab>
                 <Tab>Transporte</Tab>
@@ -141,11 +142,11 @@ export function CadastroNotaFiscal() {
                 <TabPanel>
                   <FormProdutos />
                 </TabPanel>
-                <TabPanel>
+                {/* <TabPanel>
                   <FormServicos />
-                </TabPanel>
+                </TabPanel> */}
                 <TabPanel>
-                  <FormTotais recalcular={calcTotalNota} />
+                  <FormTotais />
                 </TabPanel>
                 <TabPanel>
                   <FormFormaPagto />

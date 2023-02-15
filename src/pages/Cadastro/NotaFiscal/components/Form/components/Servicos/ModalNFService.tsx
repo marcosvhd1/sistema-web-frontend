@@ -40,14 +40,14 @@ export function ModalNFService({ addServ, editServ, setIsEditing, isEditing, ind
 
   const onChangeQuantidade = (e: React.ChangeEvent<HTMLInputElement>) => {
     const quantidade = parseFloat(e.target.value);
-    const valorUnitario = methods.watch('valor_unitario', 0);
+    const valorUnitario = parseFloat(methods.watch('valor_unitario', 0).toString().replace(',', '.'));
     if (quantidade && valorUnitario) {
       methods.setValue('valor_total', parseFloat((quantidade * valorUnitario).toFixed(2)));
     }
   };
 
   const onChangeValorUnitario = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valorUnitario = parseFloat(e.target.value);
+    const valorUnitario = parseFloat(e.target.value.toString().replace(',', '.'));
     const quantidade = methods.watch('quantidade', 0);
     if (quantidade && valorUnitario) {
       methods.setValue('valor_total', parseFloat((quantidade * valorUnitario).toFixed(2)));
@@ -116,9 +116,9 @@ export function ModalNFService({ addServ, editServ, setIsEditing, isEditing, ind
                     <FormContainer width='15%' label='Quantidade' mr='3'>
                       <Input type="number" {...methods.register('quantidade')} onChange={onChangeQuantidade} />
                     </FormContainer>
-                    <FormContainer width='20%' label='Valor Unitário' mr='3'>
+                    <FormContainer width='20%' label='Valor Unitário' mr='3' >
                       <MoneyAddon>
-                        <Input type="number" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
+                        <Input type="text" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
                       </MoneyAddon>
                     </FormContainer>
                     <FormContainer width='20%' label='Valor Total'>
