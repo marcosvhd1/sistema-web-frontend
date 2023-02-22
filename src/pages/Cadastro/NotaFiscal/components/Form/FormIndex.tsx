@@ -4,7 +4,7 @@ import { FiCheck, FiSlash } from 'react-icons/fi';
 import MainContent from '../../../../../components/MainContent';
 import { INotaFiscal } from '../../../../../services/api/notafiscal/NotaFiscalService';
 import { FormDadosPrincipais } from './components/Dados Principais/FormDadosPrincipais';
-import { FormFormaPagto } from './components/FormFormaPagto';
+import { FormFormaPagto } from './components/FormaPagto/FormFormaPagto';
 import { FormInfoAdicional } from './components/FormInfoAdicional';
 import { FormOutros } from './components/FormOutros';
 import { FormTotais } from './components/FormTotais';
