@@ -84,75 +84,112 @@ export function FormProdutos() {
     let totFCPST = 0;
 
     for (let i = 0; i < produtos.length; i++) {
-      if (produtos[i].produto.base_icms.toString().length > 0) {
-        totBCICMS += parseFloat(`${produtos[i].produto.base_icms}`);
+      if (produtos[i].produto.base_icms !== undefined) {
+        if (produtos[i].produto.base_icms.toString().length > 0) {
+          totBCICMS += parseFloat(`${produtos[i].produto.base_icms}`);
+        }
       }
 
-      if (produtos[i].valor_icms.toString().length > 0) {
-        totICMS += parseFloat(`${produtos[i].valor_icms}`);
+      if (produtos[i].valor_icms !== undefined) {
+        if (produtos[i].valor_icms.toString().length > 0) {
+          totICMS += parseFloat(`${produtos[i].valor_icms}`);
+        }
       }
 
-      if (produtos[i].base_icms_st.toString().length > 0) {
-        totBCICMSST += parseFloat(`${produtos[i].base_icms_st}`);
+      if (produtos[i].base_icms_st !== undefined) {
+        if (produtos[i].base_icms_st.toString().length > 0) {
+          totBCICMSST += parseFloat(`${produtos[i].base_icms_st}`);
+        }
       }
 
-      if (produtos[i].valor_icms_st.toString().length > 0) {
-        totICMSST += parseFloat(`${produtos[i].valor_icms_st}`);
+      if (produtos[i].valor_icms_st !== undefined) {
+        if (produtos[i].valor_icms_st.toString().length > 0) {
+          totICMSST += parseFloat(`${produtos[i].valor_icms_st}`);
+        }
       }
 
-      if (produtos[i].valor_ii.toString().length > 0) {
-        totII += parseFloat(`${produtos[i].valor_ii}`);
+      if (produtos[i].valor_ii !== undefined) {
+        if (produtos[i].valor_ii.toString().length > 0) {
+          totII += parseFloat(`${produtos[i].valor_ii}`);
+        }
       }
 
-      if (produtos[i].valor_ipi.toString().length > 0) {
-        totIPI += parseFloat(`${produtos[i].valor_ipi}`);
+      if (produtos[i].valor_ipi !== undefined) {
+        if (produtos[i].valor_ipi.toString().length > 0) {
+          totIPI += parseFloat(`${produtos[i].valor_ipi}`);
+        }
       }
 
-      if (produtos[i].valor_pis.toString().length > 0) {
-        totPIS += parseFloat(`${produtos[i].valor_pis}`);
-      }
-
-      if (produtos[i].valor_cofins.toString().length > 0) {
-        totCOFINS += parseFloat(`${produtos[i].valor_cofins}`);
-      }
-      if (produtos[i].desconto_total.toString().length > 0) {
-        totDescProd += parseFloat(`${produtos[i].desconto_total}`);
-      }
-
-      if (produtos[i].valor_total.toString().length > 0) {
-        totProd += parseFloat(`${produtos[i].valor_total}`);
-      }
-
-      if (produtos[i].p_aliquota_credito.toString().length > 0) {
-        totAliqCredICMS += parseFloat(`${produtos[i].p_aliquota_credito}`);
+      if (produtos[i].valor_pis !== undefined) {
+        if (produtos[i].valor_pis.toString().length > 0) {
+          totPIS += parseFloat(`${produtos[i].valor_pis}`);
+        }
       }
       
-      if (produtos[i].credito_icms_aproveitado.toString().length > 0) {
-        totCredICMS += parseFloat(`${produtos[i].credito_icms_aproveitado}`);
+      if (produtos[i].valor_cofins !== undefined) {
+        if (produtos[i].valor_cofins.toString().length > 0) {
+          totCOFINS += parseFloat(`${produtos[i].valor_cofins}`);
+        }
       }
 
-      if (produtos[i].partilha_icms_valor_icms_uf_dest.toString().length > 0) {
-        totPartilhaICMSDest += parseFloat(`${produtos[i].partilha_icms_valor_icms_uf_dest}`);
+      if (produtos[i].desconto_total !== undefined) {
+        if (produtos[i].desconto_total.toString().length > 0) {
+          totDescProd += parseFloat(`${produtos[i].desconto_total}`);
+        }
+      }
+
+      if (produtos[i].valor_total !== undefined) {
+        if (produtos[i].valor_total.toString().length > 0) {
+          totProd += parseFloat(`${produtos[i].valor_total}`);
+        }
+      }
+
+      if (produtos[i].p_aliquota_credito !== undefined) {
+        if (produtos[i].p_aliquota_credito.toString().length > 0) {
+          totAliqCredICMS += parseFloat(`${produtos[i].p_aliquota_credito}`);
+        }
       }
       
-      if (produtos[i].partilha_icms_valor_icms_uf_ori.toString().length > 0) {
-        totPartilhaICMSRem += parseFloat(`${produtos[i].partilha_icms_valor_icms_uf_ori}`);
+      if (produtos[i].credito_icms_aproveitado !== undefined) {
+        if (produtos[i].credito_icms_aproveitado.toString().length > 0) {
+          totCredICMS += parseFloat(`${produtos[i].credito_icms_aproveitado}`);
+        }
       }
 
-      if (produtos[i].partilha_icms_valor_fcp_uf_dest.toString().length > 0) {
-        totFCPUFDest += parseFloat(`${produtos[i].partilha_icms_valor_fcp_uf_dest}`);
+      if (produtos[i].partilha_icms_valor_icms_uf_dest !== undefined) {
+        if (produtos[i].partilha_icms_valor_icms_uf_dest.toString().length > 0) {
+          totPartilhaICMSDest += parseFloat(`${produtos[i].partilha_icms_valor_icms_uf_dest}`);
+        }
+      }
+      
+      if (produtos[i].partilha_icms_valor_icms_uf_ori !== undefined) {
+        if (produtos[i].partilha_icms_valor_icms_uf_ori.toString().length > 0) {
+          totPartilhaICMSRem += parseFloat(`${produtos[i].partilha_icms_valor_icms_uf_ori}`);
+        }
       }
 
-      if (produtos[i].ipi_vlr_devolvido.toString().length > 0) {
-        totIPIDevolvido += parseFloat(`${produtos[i].ipi_vlr_devolvido}`);
+      if (produtos[i].partilha_icms_valor_fcp_uf_dest !== undefined) {
+        if (produtos[i].partilha_icms_valor_fcp_uf_dest.toString().length > 0) {
+          totFCPUFDest += parseFloat(`${produtos[i].partilha_icms_valor_fcp_uf_dest}`);
+        }
       }
 
-      if (produtos[i].fcp_valor.toString().length > 0) {
-        totFCP += parseFloat(`${produtos[i].fcp_valor}`);
+      if (produtos[i].ipi_vlr_devolvido !== undefined) {
+        if (produtos[i].ipi_vlr_devolvido.toString().length > 0) {
+          totIPIDevolvido += parseFloat(`${produtos[i].ipi_vlr_devolvido}`);
+        }
       }
 
-      if (produtos[i].fcp_valor_st.toString().length > 0) {
-        totFCPST += parseFloat(`${produtos[i].fcp_valor_st}`);
+      if (produtos[i].fcp_valor !== undefined) {
+        if (produtos[i].fcp_valor.toString().length > 0) {
+          totFCP += parseFloat(`${produtos[i].fcp_valor}`);
+        }
+      }
+
+      if (produtos[i].fcp_valor_st !== undefined) {
+        if (produtos[i].fcp_valor_st.toString().length > 0) {
+          totFCPST += parseFloat(`${produtos[i].fcp_valor_st}`);
+        }
       }
     }
 

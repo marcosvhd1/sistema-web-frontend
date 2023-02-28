@@ -9,7 +9,7 @@ export function FormTabDevolucao() {
   const { register } = useFormContext<INFProduct>();
 
   return (
-    <Flex w="100%" justify="center" align="center">
+    <Flex w="100%" justify="center" align="flex-start">
       <Flex w="50%" align="center" justify="center" direction="column" mr={10}>
         <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap">
           <Divider w="20%" />

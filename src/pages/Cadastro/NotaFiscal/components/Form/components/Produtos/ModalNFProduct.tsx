@@ -8,11 +8,11 @@ import { PorcentAddon } from '../../../../../../../components/Form/PorcentAddon'
 import { useModalNFProduct } from '../../../../../../../Contexts/Modal/NotaFiscal/NFProductContext';
 import { useModalNFSearchProduct } from '../../../../../../../Contexts/Modal/NotaFiscal/NFProductSearchContext';
 import { INFProduct } from '../../../../../../../services/api/notafiscal/NFProduct';
+import { FormTabICMS } from './components/ICMS/TabICMS';
 import { FormTabDevolucao } from './components/TabDevolucao';
-import { FormTabICMS } from './components/TabICMS';
 import { FormTabInfoAdicional } from './components/TabInfoAdicional';
 import { FormTabOutros } from './components/TabOutros';
-import { FormTabTributos } from './components/TabTributos';
+import { FormTabTributos } from './components/Tributos/TabTributos';
 import { ModalNFSearchProduct } from './ModalNFSearchProduct';
 
 interface ModalNFProductProps {
