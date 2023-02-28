@@ -50,6 +50,7 @@ import { ModalNFFormaPagtoProvider } from '../Contexts/Modal/NotaFiscal/NFFormaP
 import { ModalNFDuplicataProvider } from '../Contexts/Modal/NotaFiscal/NFDuplicataContext';
 import { ModalNFApoioProvider } from '../Contexts/Modal/NotaFiscal/NFApoioContext';
 import { ModalNFApoioCSTProvider } from '../Contexts/Modal/NotaFiscal/NFApoioCSTContext';
+import { ModalConfigProvider } from '../Contexts/Modal/ConfigContext';
 
 const ROLES = {
   'normal': 0,
@@ -67,90 +68,92 @@ export default function MainRoutes() {
 
             <EmissorProvider>
 
-              <ModalClientProvider>
-                <ModalProductProvider>
-                  <ModalGroupProvider>
-                    <ModalServiceProvider>
-                      <ModalTransportadoraProvider>
-                        <ModalEmissorProvider>
-                          <ModalUserProvider>
-                            <ModalChangePasswordProvider>
-                              <ModalNewEmissorProvider>
-                                <ModalNFClientProvider>
-                                  <ModalNFProductProvider>
-                                    <ModalNFSearchProductProvider>
-                                      <ModalNFServiceProvider>
-                                        <ModalNFSearchServiceProvider>
-                                          <ModalNFTransporteProvider>
-                                            <ModalNFFormaPagtoProvider>
-                                              <ModalNFDuplicataProvider>
-                                                <ModalNFApoioProvider>
-                                                  <ModalNFApoioCSTProvider>
+              <ModalConfigProvider>
+                <ModalClientProvider>
+                  <ModalProductProvider>
+                    <ModalGroupProvider>
+                      <ModalServiceProvider>
+                        <ModalTransportadoraProvider>
+                          <ModalEmissorProvider>
+                            <ModalUserProvider>
+                              <ModalChangePasswordProvider>
+                                <ModalNewEmissorProvider>
+                                  <ModalNFClientProvider>
+                                    <ModalNFProductProvider>
+                                      <ModalNFSearchProductProvider>
+                                        <ModalNFServiceProvider>
+                                          <ModalNFSearchServiceProvider>
+                                            <ModalNFTransporteProvider>
+                                              <ModalNFFormaPagtoProvider>
+                                                <ModalNFDuplicataProvider>
+                                                  <ModalNFApoioProvider>
+                                                    <ModalNFApoioCSTProvider>
 
-                                                    <AlertClientContextProvider>
-                                                      <AlertServiceContextProvider>
-                                                        <AlertTransportadoraContextProvider>
-                                                          <AlertProductContextProvider>
-                                                            <AlertEmissorContextProvider>
-                                                              <AlertProductGroupContextProvider>
-                                                                <AlertNFProductContextProvider>
-                                                                  <AlertNFServiceContextProvider>                                                     
+                                                      <AlertClientContextProvider>
+                                                        <AlertServiceContextProvider>
+                                                          <AlertTransportadoraContextProvider>
+                                                            <AlertProductContextProvider>
+                                                              <AlertEmissorContextProvider>
+                                                                <AlertProductGroupContextProvider>
+                                                                  <AlertNFProductContextProvider>
+                                                                    <AlertNFServiceContextProvider>                                                     
 
-                                                                    <ProductGroupProvider>
+                                                                      <ProductGroupProvider>
 
-                                                                      <Routes>
-                                                                        <Route index element={<Login />} />
+                                                                        <Routes>
+                                                                          <Route index element={<Login />} />
 
-                                                                        <Route element={<RequireAuth allowedRoles={[ROLES.admin, ROLES.normal]} />}>
-                                                                          <Route path="/app" element={<Home />} />
-                                                                          <Route path="/app/unauthorized" element={<UnauthorizedUser />} />
-                                                                          <Route element={<RequireEmissor />}>
-                                                                            <Route path="/app/cadastro/clientes" element={<Cliente />} />
-                                                                            <Route path="/app/cadastro/produtos" element={<Produto />} />
-                                                                            <Route path="/app/cadastro/servicos" element={<Servico />} />
-                                                                            <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
-                                                                            <Route path="/app/fiscal/nfe" element={<NotaFiscal />} />
-                                                                            <Route path="/app/fiscal/nfe/cadastro" element={<CadastroNotaFiscal />} />
+                                                                          <Route element={<RequireAuth allowedRoles={[ROLES.admin, ROLES.normal]} />}>
+                                                                            <Route path="/app" element={<Home />} />
+                                                                            <Route path="/app/unauthorized" element={<UnauthorizedUser />} />
+                                                                            <Route element={<RequireEmissor />}>
+                                                                              <Route path="/app/cadastro/clientes" element={<Cliente />} />
+                                                                              <Route path="/app/cadastro/produtos" element={<Produto />} />
+                                                                              <Route path="/app/cadastro/servicos" element={<Servico />} />
+                                                                              <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
+                                                                              <Route path="/app/fiscal/nfe" element={<NotaFiscal />} />
+                                                                              <Route path="/app/fiscal/nfe/cadastro" element={<CadastroNotaFiscal />} />
+                                                                            </Route>
                                                                           </Route>
-                                                                        </Route>
 
-                                                                        <Route element={<RequireAuth allowedRoles={[ROLES.admin]} />}>
-                                                                          <Route path='/app/emissor' element={<Emissor />} />
-                                                                        </Route>
+                                                                          <Route element={<RequireAuth allowedRoles={[ROLES.admin]} />}>
+                                                                            <Route path='/app/emissor' element={<Emissor />} />
+                                                                          </Route>
 
-                                                                        <Route path="*" element={<PageNotFound />} />
-                                                                      </Routes>
+                                                                          <Route path="*" element={<PageNotFound />} />
+                                                                        </Routes>
 
-                                                                    </ProductGroupProvider>
+                                                                      </ProductGroupProvider>
 
-                                                                  </AlertNFServiceContextProvider>
-                                                                </AlertNFProductContextProvider>
-                                                              </AlertProductGroupContextProvider>
-                                                            </AlertEmissorContextProvider>
-                                                          </AlertProductContextProvider>
-                                                        </AlertTransportadoraContextProvider>
-                                                      </AlertServiceContextProvider>
-                                                    </AlertClientContextProvider>
-                                              
-                                                  </ModalNFApoioCSTProvider>
-                                                </ModalNFApoioProvider>
-                                              </ModalNFDuplicataProvider>
-                                            </ModalNFFormaPagtoProvider>
-                                          </ModalNFTransporteProvider>
-                                        </ModalNFSearchServiceProvider>
-                                      </ModalNFServiceProvider>
-                                    </ModalNFSearchProductProvider>
-                                  </ModalNFProductProvider>  
-                                </ModalNFClientProvider>
-                              </ModalNewEmissorProvider>
-                            </ModalChangePasswordProvider>
-                          </ModalUserProvider>
-                        </ModalEmissorProvider>
-                      </ModalTransportadoraProvider>
-                    </ModalServiceProvider>
-                  </ModalGroupProvider>
-                </ModalProductProvider>
-              </ModalClientProvider>
+                                                                    </AlertNFServiceContextProvider>
+                                                                  </AlertNFProductContextProvider>
+                                                                </AlertProductGroupContextProvider>
+                                                              </AlertEmissorContextProvider>
+                                                            </AlertProductContextProvider>
+                                                          </AlertTransportadoraContextProvider>
+                                                        </AlertServiceContextProvider>
+                                                      </AlertClientContextProvider>
+                                                
+                                                    </ModalNFApoioCSTProvider>
+                                                  </ModalNFApoioProvider>
+                                                </ModalNFDuplicataProvider>
+                                              </ModalNFFormaPagtoProvider>
+                                            </ModalNFTransporteProvider>
+                                          </ModalNFSearchServiceProvider>
+                                        </ModalNFServiceProvider>
+                                      </ModalNFSearchProductProvider>
+                                    </ModalNFProductProvider>  
+                                  </ModalNFClientProvider>
+                                </ModalNewEmissorProvider>
+                              </ModalChangePasswordProvider>
+                            </ModalUserProvider>
+                          </ModalEmissorProvider>
+                        </ModalTransportadoraProvider>
+                      </ModalServiceProvider>
+                    </ModalGroupProvider>
+                  </ModalProductProvider>
+                </ModalClientProvider>
+              </ModalConfigProvider>
 
             </EmissorProvider>
 

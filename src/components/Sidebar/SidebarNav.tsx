@@ -12,11 +12,14 @@ import { getDecrypted } from '../../utils/crypto';
 import { Emissor } from '../Emissor';
 import { NavItem } from './NavItem';
 import { NavSection } from './NavSection';
+import { useModalConfig } from '../../Contexts/Modal/ConfigContext';
+import { ModalConfig } from '../../pages/Configuracao/ModalConfig';
 
 export function SidebarNav() {
   const { smSize } = useContext(SizeContext);
   const { navSize } = useContext(SidebarContext);
   const { onOpen } = useModalEmissor();
+  const { onOpen: openModalConfig } = useModalConfig();
   const toast = useToast();
 
   const handleOpenModal = () => {
@@ -34,6 +37,16 @@ export function SidebarNav() {
         duration: 2000,
         isClosable: true,
       });
+
+      return false;
+    }
+
+    return true;
+  };
+
+  const openConfig = () => {
+    if(checkPermission()) {
+      openModalConfig();
     }
   };
 
@@ -68,7 +81,7 @@ export function SidebarNav() {
           {/* <NavItem icon={FcDocument} title='MDF-e' rota={isEmissorSelected ? '/app/fiscal/mdfe' : ''} click={checkPermission}/> */}
         </NavSection>
         <NavSection title={navSize == 'small' ? 'CONFIG' : 'CONFIGURAÇÃO'}>
-          <NavItem icon={FcSettings} title='Configuração' rota={isEmissorSelected ? '/app/config' : ''} click={checkPermission} />
+          <NavItem icon={FcSettings} title='Configuração' rota={''} click={openConfig} />
         </NavSection>
         <NavSection title='EMISSOR'>
           <Flex mt={4} display={!smSize[0] ? 'flex' : navSize == 'small' ? 'none' : 'flex'}>
@@ -79,6 +92,7 @@ export function SidebarNav() {
           )}
         </NavSection>
       </Flex>
+      <ModalConfig />
     </Flex>
   );
 }
