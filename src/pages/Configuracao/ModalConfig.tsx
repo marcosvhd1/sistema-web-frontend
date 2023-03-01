@@ -1,8 +1,7 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { FiCheck, FiSearch, FiSlash } from 'react-icons/fi';
-import { FormContainer } from '../../components/Form/FormContainer';
+import { FiCheck, FiSlash } from 'react-icons/fi';
+import { useEmissorContext } from '../../Contexts/EmissorProvider';
 import { useModalConfig } from '../../Contexts/Modal/ConfigContext';
 import { IConfig } from '../../services/api/config/ConfigService';
 import { TabCertificado } from './components/TabCertificado';
@@ -12,15 +11,38 @@ import { TabToken } from './components/TabToken';
 
 export function ModalConfig() {
   const { isOpen, onClose } = useModalConfig();
+  const { idEmissorSelecionado } = useEmissorContext();
 
   const methods = useForm<IConfig>();
 
   const handleSaveChanges = () => {
     const data = {
-      'n_serie': methods.getValues('ambiente'),
-      'validade': methods.getValues('forma_emi'),
+      'id_emissor': idEmissorSelecionado,
+      'n_serie': methods.getValues('n_serie'),
+      'validade': methods.getValues('validade'),
+      'ambiente': methods.getValues('ambiente'),
+      'tipo_imp': methods.getValues('tipo_imp'),
+      'forma_emi': methods.getValues('forma_emi'),
+      'finalidade': methods.getValues('finalidade'),
+      'id_nfce': methods.getValues('id_nfce'),
+      'token_nfce': methods.getValues('token_nfce'),
+      'serie_padrao': methods.getValues('serie_padrao'),
+      'aliq_aprov_icms': methods.getValues('aliq_aprov_icms'),
+      'email_remetente': methods.getValues('email_remetente'),
+      'email': methods.getValues('email'),
+      'host': methods.getValues('host'),
+      'usuario': methods.getValues('usuario'),
+      'senha': methods.getValues('senha'),
+      'porta': methods.getValues('porta'),
+      'copia': methods.getValues('copia'),
+      'assunto': methods.getValues('assunto'),
+      'mensagem': methods.getValues('mensagem'),
+      'autenticacao': methods.getValues('autenticacao'),
+      'ssl': methods.getValues('ssl'),
+      'tls': methods.getValues('tls'),
     };
 
+    //enviar data para o backend
     console.log(data);
   };
   
