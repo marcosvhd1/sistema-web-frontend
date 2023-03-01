@@ -13,18 +13,19 @@ import { getDecrypted } from '../../utils/crypto';
 import { userInfos } from '../../utils/header';
 
 interface FormUserProps {
+  id: number
   isDisabled: boolean
   getUsers: () => void
   dataToUpdate: IUsuario
-  id: number
+  active: boolean
   isEditing: boolean
+  isPrincipal: boolean
   setIdEmissor: (value: number[]) => void
   setIsEditing: (value: boolean) => void
-  active: boolean
   setActive: (value: boolean) => void
 }
 
-export function FormUser({ isDisabled, setIdEmissor, active, setActive, getUsers, dataToUpdate, id, isEditing, setIsEditing }: FormUserProps) {
+export function FormUser({ isDisabled, setIdEmissor, active, setActive, getUsers, dataToUpdate, id, isEditing, setIsEditing, isPrincipal }: FormUserProps) {
   const { emissores, idEmissor, getEmissores, setIdEmissorSelecionado, getIdEmissoresByUser } = useEmissorContext();
   const [idEmpresa, setIdEmpresa] = useState<number>();
   const [isTipoAdminChecked, setIsTipoAdminChecked] = useState<boolean>(false);
@@ -263,7 +264,7 @@ export function FormUser({ isDisabled, setIdEmissor, active, setActive, getUsers
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
-        <Checkbox isDisabled={isDisabled || permissao === 0 || principal === 'Sim'} my='1rem' isChecked={isTipoAdminChecked} onChange={getPermissaoAdmin} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
+        <Checkbox isDisabled={isDisabled || permissao === 0 || isPrincipal} my='1rem' isChecked={isTipoAdminChecked} onChange={getPermissaoAdmin} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
           Permissão de Administrador
         </Checkbox>
         <Flex justify='flex-start' w='100%' my='1'>

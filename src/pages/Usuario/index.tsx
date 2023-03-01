@@ -22,6 +22,7 @@ export function ModalUser() {
   const [data, setData] = useState<IUsuario[]>([]);
   const [dataToUpdate, setDataToUpdate] = useState<IUsuario>();
   const [isEditing, setIsEditing] = useState(false);
+  const [isPrincipal, setIsPrincipal] = useState(false);
   const [active, setActive] = useState<boolean>(true);
   const { setIdEmissor, setIdUsuarioSelecionado, getIdEmissoresByUser} = useEmissorContext();
   const methods = useForm();
@@ -90,6 +91,7 @@ export function ModalUser() {
       setDataToUpdate(userToUpdate);
       setIsEditing(true);
       setIsDisabled(false);
+      setIsPrincipal(userToUpdate.usuario_principal == 'Sim' ? true : false);
       setActive(userToUpdate.status === 'Ativo');
       setIdUsuarioSelecionado(id);
       getIdEmissoresByUser();
@@ -153,7 +155,7 @@ export function ModalUser() {
                 </TableContainer>
               </Flex>
               <Flex w='50%' justify='center'>
-                <FormUser setActive={setActive} active={active} setIsEditing={setIsEditing} id={id} setIdEmissor={setIdEmissor} isEditing={isEditing} dataToUpdate={dataToUpdate!} getUsers={getUsers} isDisabled={isDisabled}/>
+                <FormUser setActive={setActive} active={active} setIsEditing={setIsEditing} id={id} setIdEmissor={setIdEmissor} isEditing={isEditing} dataToUpdate={dataToUpdate!} getUsers={getUsers} isDisabled={isDisabled} isPrincipal={isPrincipal}/>
               </Flex>
             </Flex>
           </ModalBody>

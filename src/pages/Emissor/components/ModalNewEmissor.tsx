@@ -28,11 +28,7 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
 
   const clearForm = () => {
     onClose();
-    methods.reset({
-      razao: '',
-      cnpjcpf: '',
-      status: ''
-    });
+    methods.reset({});
     setActive(true);
     setIsEditing(false);
   };
@@ -41,7 +37,20 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
     const dataToCreate = {
       'cnpjcpf_principal': EMPRESA,
       'razao': data.razao,
+      'fantasia': data.fantasia,
       'cnpjcpf': data.cnpjcpf,
+      'ie': data.ie,
+      'im': data.im,
+      'endereco': data.endereco,
+      'numero': data.numero,
+      'bairro': data.bairro,
+      'complemento': data.complemento,
+      'cnae': data.cnae,
+      'telefone': data.telefone,
+      'uf': data.uf,
+      'cidade': data.cidade,
+      'cep': data.cep,
+      'regime': data.regime,
       'status': 'Ativo'
     };
     if (data.razao.trim().length === 0 || data.cnpjcpf.trim().length === 0) {
@@ -67,6 +76,7 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
   };
 
   const handleUpdateEmissor = (data: IEmissor) => {
+    console.log(data);
     data.status = active ? 'Ativo' : 'Inativo';
     EmissorService.update(data.id, data, HEADERS)
       .then((result) => {
@@ -89,23 +99,21 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
 
   return (
     <Modal
-      isCentered
-      onClose={clearForm}
       isOpen={isOpen}
+      onClose={clearForm}
       closeOnOverlayClick={false}
-      scrollBehavior={'inside'}
       motionPreset='slideInBottom'
-      size='md'
+      isCentered
+      scrollBehavior="inside"
+      size={{md: '4xl', lg: '5xl'}}
     >
       <ModalOverlay />
-      <ModalContent>
-        <form onSubmit={methods.handleSubmit(submitData)}>
+      <form onSubmit={methods.handleSubmit(submitData)}>
+        <ModalContent>
           <ModalHeader>Cadastro Emissor</ModalHeader>
           <ModalCloseButton/>
           <ModalBody>
-            <Flex w='100%' h='13srem' p='.5rem' justify='space-between' borderBottom='.1rem solid #e1e1e3'>
-              <FormEmissor isEditing={isEditing} active={active} setActive={setActive} />
-            </Flex>
+            <FormEmissor isEditing={isEditing} active={active} setActive={setActive} />
           </ModalBody>
           <ModalFooter>
             <Flex justify='space-between' w='100%'>
@@ -113,8 +121,8 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
               <Button variant='outline' colorScheme="red">Cancelar</Button>
             </Flex>
           </ModalFooter>
-        </form>
-      </ModalContent>
+        </ModalContent>
+      </form>
     </Modal>
   );
 }

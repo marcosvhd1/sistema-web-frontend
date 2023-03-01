@@ -10,14 +10,40 @@ export interface IEmissorUsuario {
 export interface IEmissor {
   id: number
   razao: string
+  fantasia: string
   cnpjcpf: string
+  ie: string
+  im: string
+  endereco: string
+  numero: string
+  bairro: string
+  complemento: string
+  cnae: string
+  telefone: string
+  uf: string
+  cidade: string
+  cep: string
+  regime: string
   status: string
 }
 
 export interface INewEmissor {
   cnpjcpf_principal: number
   razao: string
+  fantasia: string
   cnpjcpf: string
+  ie: string
+  im: string
+  endereco: string
+  numero: string
+  bairro: string
+  complemento: string
+  cnae: string
+  telefone: string
+  uf: string
+  cidade: string
+  cep: string
+  regime: string
 }
 
 const getEmissores = async (idUser: number, HEADERS: any): Promise<IEmissor[] | ApiException> => {

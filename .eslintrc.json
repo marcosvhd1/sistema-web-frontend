@@ -27,11 +27,7 @@
         ],
         "quotes": [
             "error",
-            "single",
-            {
-                "avoidEscape": true,
-                "allowTemplateLiterals": true
-            }
+            "single"
         ],
         "semi": [
             "error",
