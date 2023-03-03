@@ -99,9 +99,8 @@ export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
       </Flex>
       <Flex justify="space-between" align="center">
         <FormContainer label="UF" width="5rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf')} w="5rem" value={selectedEstado} onChange={(event) => setSelectedEstado(event.target.value)}>
-            <option value={''}></option>
-            {estados.map(estado => <option key={estado.id} value={estado.sigla}>{estado.sigla}</option>)}
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf')} w="5rem"  onChange={(event) => setSelectedEstado(event.target.value)}>
+            {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
           </Select>
         </FormContainer>
         <FormContainer label="Cidade" width="22.5rem">
@@ -121,8 +120,7 @@ export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
         </FormContainer>
         <FormContainer label="UF" width="5rem">
           <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf_placa')} w="5rem" value={selectedEstadoVeiculo} onChange={(event) => setSelectedEstadoVeiculo(event.target.value)}>
-            <option value={''}></option>
-            {estados.map(estado => <option key={estado.id} value={estado.sigla}>{estado.sigla}</option>)}
+            {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
           </Select>
         </FormContainer>
       </Flex>

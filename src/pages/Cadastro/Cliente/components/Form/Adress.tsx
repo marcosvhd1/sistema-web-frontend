@@ -38,9 +38,8 @@ export function Adress() {
       <Flex direction="column" w="50%"  ml="6">
         <Flex justify="space-between">
           <FormContainer label="UF" width="5rem">
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf')} w="5rem" value={selectedEstado} onChange={(event) => setSelectedEstado(event.target.value)}>
-              <option value={''}></option>
-              {estados.map(estado => <option key={estado.id} value={estado.sigla}>{estado.sigla}</option>)}
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf')} w="5rem" onChange={(event) => setSelectedEstado(event.target.value)}>
+              {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
             </Select>
           </FormContainer>
           <FormContainer label="Cidade" width="22.5rem">

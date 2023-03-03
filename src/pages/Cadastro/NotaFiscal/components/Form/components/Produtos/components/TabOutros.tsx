@@ -20,9 +20,8 @@ export function FormTabOutros() {
         <Input type='text' {...register('descricao_anp')}/>
       </FormContainer>
       <FormContainer label='UF Consumo' width='20%'>
-        <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf_consumo')} value={selectedEstado} onChange={(event) => setSelectedEstado(event.target.value)}>
-          <option value={''}></option>
-          {estados.map(estado => <option key={estado.id} value={estado.sigla}>{estado.sigla}</option>)}
+        <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf_consumo')} onChange={(event) => setSelectedEstado(event.target.value)}>
+          {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
         </Select>
       </FormContainer>
     </Flex>
