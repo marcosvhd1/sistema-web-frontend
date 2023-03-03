@@ -1,3 +1,5 @@
+import { Api } from '../ApiConfig';
+import { ApiException } from '../ApiException';
 
 export interface IConfig {
   id: number;
@@ -26,4 +28,25 @@ export interface IConfig {
   tls: boolean;
 }
 
-export const ConfigService = {};
+const create = async (dataToCreate: Omit<IConfig, 'id'>, HEADERS: any): Promise<IConfig | ApiException> => {
+  try {
+    const { data } = await Api().post<IConfig>('/config', dataToCreate, HEADERS);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao criar o registro.');
+  }
+};
+
+const getByEmissor = async (idEmissorSelecionado: number, HEADERS: any): Promise<IConfig | null > => {
+  try {
+    const { data } = await Api().get(`/config?id_emissor=${idEmissorSelecionado}`, HEADERS);
+    return data;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const ConfigService = {
+  create,
+  getByEmissor,
+};

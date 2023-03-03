@@ -1,9 +1,12 @@
 import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useEmissorContext } from '../../Contexts/EmissorProvider';
 import { useModalConfig } from '../../Contexts/Modal/ConfigContext';
-import { IConfig } from '../../services/api/config/ConfigService';
+import { ApiException } from '../../services/api/ApiException';
+import { ConfigService, IConfig } from '../../services/api/config/ConfigService';
+import { userInfos } from '../../utils/header';
 import { TabCertificado } from './components/TabCertificado';
 import { TabEmail } from './components/TabEmail';
 import { TabOutros } from './components/TabOutros';
@@ -14,6 +17,21 @@ export function ModalConfig() {
   const { idEmissorSelecionado } = useEmissorContext();
 
   const methods = useForm<IConfig>();
+  
+  const userInfo = userInfos();
+  const HEADERS = userInfo.header;
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    const response = await ConfigService.getByEmissor(idEmissorSelecionado, HEADERS);
+
+    if (response != null) {
+      methods.reset(response);
+    }
+  };
 
   const handleSaveChanges = () => {
     const data = {
@@ -42,8 +60,14 @@ export function ModalConfig() {
       'tls': methods.getValues('tls'),
     };
 
-    //enviar data para o backend
-    console.log(data);
+    ConfigService.create(data, HEADERS)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          onClose();
+        }
+      });
   };
   
   return (
