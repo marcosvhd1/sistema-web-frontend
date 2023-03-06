@@ -19,7 +19,7 @@ export function Telefone() {
     <Flex w="100%" direction="column">
       <Flex justify="space-between">
         <FormContainer label="Tipo" width="15rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="auto" mr="3" {...register('tipo_telefone1')}>
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="auto" mr="3" {...register('tipo_telefone1')}>
             <option>Celular</option>
             <option>Comercial</option>
             <option>Residencial</option>
@@ -31,7 +31,7 @@ export function Telefone() {
       </Flex>
       <Flex align="center" justify="center">
         <FormContainer label="Tipo" width="15rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="auto" mr="3" {...register('tipo_telefone2')}>
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="auto" mr="3" {...register('tipo_telefone2')}>
             <option>Celular</option>
             <option>Comercial</option>
             <option>Residencial</option>
@@ -43,7 +43,7 @@ export function Telefone() {
       </Flex>
       <Flex align="center" justify="center">
         <FormContainer label="Tipo" width="15rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="auto" mr="3" {...register('tipo_telefone3')}>
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="auto" mr="3" {...register('tipo_telefone3')}>
             <option>Celular</option>
             <option>Comercial</option>
             <option>Residencial</option>

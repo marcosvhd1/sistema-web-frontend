@@ -1,19 +1,19 @@
+import { Flex, Input, Select, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Flex, Input, Select, useColorMode } from '@chakra-ui/react';
-import { useEstados } from '../../../../../hooks/useEstados';
-import { useCidades } from '../../../../../hooks/useCidades';
 import { FormContainer } from '../../../../../components/Form/FormContainer';
+import { useCidades } from '../../../../../hooks/useCidades';
+import { useEstados } from '../../../../../hooks/useEstados';
 import { IClient } from '../../../../../services/api/clientes/ClientService';
 
 
 export function Adress() {
-  const { register } = useFormContext<IClient>();
   const [selectedEstado, setSelectedEstado] = useState('');
+  
+  const { register } = useFormContext<IClient>();
   const { estados } = useEstados();
-  const { cidades } = useCidades({ uf: selectedEstado });
   const { colorMode } = useColorMode();
-
+  const { cidades } = useCidades({ uf: selectedEstado });
 
   return (
     <Flex>
@@ -37,12 +37,12 @@ export function Adress() {
       </Flex>
       <Flex direction="column" w="50%"  ml="6">
         <Flex justify="space-between">
-          <FormContainer label="UF" width="5rem">
+          <FormContainer label="UF">
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf')} w="5rem" onChange={(event) => setSelectedEstado(event.target.value)}>
               {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
             </Select>
           </FormContainer>
-          <FormContainer label="Cidade" width="22.5rem">
+          <FormContainer label="Cidade">
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cidade')} w="22.5rem">
               {cidades.map(cidade => <option key={cidade.nome} value={cidade.nome}>{cidade.nome}</option>)}
             </Select>

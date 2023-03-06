@@ -1,4 +1,4 @@
-import { Button, Flex, FormControl, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
+import { Button, Flex, FormControl, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { FiCheck, FiSearch, FiSlash } from 'react-icons/fi';
@@ -27,6 +27,7 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
   const { isOpen, onClose } = useModalNFProduct();
   const { onOpen } = useModalNFSearchProduct();
   const methods = useFormContext<INFProduct>();
+  const { colorMode } = useColorMode();
 
   const onSubmit = (data: INFProduct) => {
     if (isEditing) {
@@ -113,10 +114,10 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
                   <Text fontFamily="Poppins" fontSize="xl">Cadastro de Produto</Text>
                   <Flex w="100%" justify="space-between" align="center">
                     <FormContainer width='55%' label='Código de Barras' mr='3'>
-                      <Input type="text" {...methods.register('produto.codbarras')} />
+                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('produto.codbarras')} />
                     </FormContainer>
                     <FormContainer width='25%' label='CFOP' mr='3'>
-                      <Input type="text" {...methods.register('produto.cfop')} />
+                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('produto.cfop')} />
                     </FormContainer>
                     <Button onClick={openModal} w="20%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
                       <Icon mr={2} as={FiSearch} />
@@ -125,43 +126,43 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
                   </Flex>
                   <Flex w="100%" justify="center" align="center">
                     <FormContainer width='15%' label='Código' mr='3'>
-                      <Input type="text" {...methods.register('produto.nprod')} />
+                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('produto.nprod')} />
                     </FormContainer>
                     <FormContainer width='30%' label='Descrição' mr='3'>
-                      <Input type="text" {...methods.register('produto.descricao')} />
+                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('produto.descricao')} />
                     </FormContainer>
                     <FormContainer width='15%' label='Quantidade' mr='3'>
-                      <Input type="number" {...methods.register('quantidade')} onChange={onChangeQuantidade} />
+                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...methods.register('quantidade')} onChange={onChangeQuantidade} />
                     </FormContainer>
                     <FormContainer width='20%' label='Valor Unitário' mr='3'>
                       <MoneyAddon>
-                        <Input type="text" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
+                        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
                       </MoneyAddon>
                     </FormContainer>
                     <FormContainer width='20%' label='Valor Total'>
                       <MoneyAddon>
-                        <Input type="number" readOnly {...methods.register('valor_total')} />
+                        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" readOnly {...methods.register('valor_total')} />
                       </MoneyAddon>
                     </FormContainer>
                   </Flex>
                   <Flex w="100%" justify="center" align="center">
                     <FormContainer width='10%' label='UN' mr='3'>
-                      <Input type="text" {...methods.register('produto.un')} />
+                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('produto.un')} />
                     </FormContainer>
                     <FormContainer width='20%' label='NCM' mr='3'>
-                      <Input type="number" {...methods.register('produto.ncm')} />
+                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...methods.register('produto.ncm')} />
                     </FormContainer>
                     <FormContainer width='20%' label='CEST' mr='3'>
-                      <Input type="number" {...methods.register('produto.cest')} />
+                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...methods.register('produto.cest')} />
                     </FormContainer>
                     <FormContainer width='25%' label='Desconto %' mr='3'>
                       <PorcentAddon>
-                        <Input type="number" {...methods.register('desconto_p')} onChange={onChangeDescontoP}/>
+                        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...methods.register('desconto_p')} onChange={onChangeDescontoP}/>
                       </PorcentAddon>
                     </FormContainer>
                     <FormContainer width='25%' label='Desconto R$'>
                       <MoneyAddon>
-                        <Input type="number" {...methods.register('desconto_total')} onChange={onChangeDescontoT}/>
+                        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...methods.register('desconto_total')} onChange={onChangeDescontoT}/>
                       </MoneyAddon>
                     </FormContainer>
                   </Flex>

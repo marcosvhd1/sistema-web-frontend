@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Icon, Select, Td, Text, Tr } from '@chakra-ui/react';
+import { Button, Divider, Flex, Icon, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -19,6 +19,7 @@ export function FormFormaPagto() {
 
   const { onOpen } = useModalNFFormaPagto();
   const { onOpen: openDuplicata } = useModalNFDuplicata();
+  const { colorMode } = useColorMode();
 
   const [formaPagtos, setFormaPagto] = useState<INFFormaPagto[]>([]);
   const [duplicatas, setDuplicatas] = useState<INFDuplicata[]>([]);
@@ -76,7 +77,7 @@ export function FormFormaPagto() {
       <Flex w="100%" justify="center" align="center" direction="column" >
         <Flex w="100%" justify="flex-start" align="center" mb={2}>
           <FormContainer width='45%' label='Presença do comprador no momento da operação'>
-            <Select {...methods.register('presenca_comprador')}>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('presenca_comprador')}>
               <option value='0'>0 - Não se aplica (Para NF complementar ou de ajuste)</option>
               <option value='1'>1 - Operação presencial</option>
               <option value='2'>2 - Operação não presencial, pela Internet</option>

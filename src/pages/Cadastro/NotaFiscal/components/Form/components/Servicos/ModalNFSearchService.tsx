@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Td, Text, Tr } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { FiCheck, FiChevronLeft, FiChevronRight, FiSearch, FiSlash } from 'react-icons/fi';
@@ -25,6 +25,7 @@ export function ModalNFSearchService({ methods }: ModalNFSearchServiceProps) {
   const { idEmissorSelecionado } = useEmissorContext();
   const { isOpen, onClose } = useModalNFSearchService();
   const { register, handleSubmit } = useForm<getServiceProps>();
+  const { colorMode } = useColorMode();
 
   const [data, setData] = useState<IServico[]>([]);
   const [filter, setFilter] = useState<string>('descricao');
@@ -116,12 +117,12 @@ export function ModalNFSearchService({ methods }: ModalNFSearchServiceProps) {
               <Text fontFamily="Poppins" fontSize="xl">Lista de Serviços</Text>
               <Flex w="100%" align="center" justify="flex-start" mt={5}>
                 <Text fontSize={16} mr={3}>Buscar por </Text>
-                <Select w="20%" mr="3" onChange={(e) => setFilter(e.target.value)}>
+                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="20%" mr="3" onChange={(e) => setFilter(e.target.value)}>
                   <option value='descricao'>Descrição</option>
                   <option value='nserv'>Código</option>
                   <option value='ncm'>NCM</option>
                 </Select>
-                <Input placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
+                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
                 <Button type="submit"><Icon as={FiSearch} /></Button>
               </Flex>
             </Flex>

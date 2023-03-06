@@ -72,7 +72,7 @@ export function FormEmissor({ isEditing, setActive, active }: IFormFields) {
         </FormContainer>
       </Flex>
       <FormContainer label='Regime Tributário'>
-        <Select {...methods.register('regime')}>
+        <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('regime')}>
           <option value='1'>Simples Nacional</option>
           <option value='2'>Simples Nacional (excesso de sublimite de receita bruta)</option>
           <option value='3'>Regime Normal</option>

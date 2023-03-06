@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Select, Text } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Select, Text, useColorMode } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FiSearch } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../../../../components/Form/FormContainer';
@@ -8,11 +8,12 @@ import { INFProduct } from '../../../../../../../../../../services/api/notafisca
 
 export function Fields500() {
   const { register } = useFormContext<INFProduct>();
+  const { colorMode } = useColorMode();
 
   return (
     <Flex w="100%" justify="center" align="center" direction="column">
       <FormContainer label='Origem' mr='3'>
-        <Select {...register('produto.origem')}>
+        <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('produto.origem')}>
           <option value="0">0 - Nacional, exceto as indicadas nos códigos 3 a 5</option>
           <option value="1">1 - Estrangeira - Importação direta, exceto a indicada no código 6</option>
           <option value="2">2 - Estrangeira - Adquirida no mercado interno, exceto a indicada no código 7</option>
@@ -26,23 +27,23 @@ export function Fields500() {
       </FormContainer>  
       <FormContainer label='Base de Cálculo ST retido anteriormente'>
         <MoneyAddon>
-          <Input type="number" {...register('base_calc_retido_ant')} />
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('base_calc_retido_ant')} />
         </MoneyAddon>
       </FormContainer>
       <FormContainer label='ICMS ST retido anteriormente'>
         <MoneyAddon>
-          <Input type="number" {...register('icms_st_retido_ant')} />
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('icms_st_retido_ant')} />
         </MoneyAddon>
       </FormContainer>
       <Flex w="100%" justify="space-between" >
         <FormContainer label='EAN (Código de barras)' mr='3'>
-          <Input type="number" {...register('ean')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('ean')}/>
         </FormContainer>
         <FormContainer label='N° Pedido de Compra' mr='3'>
-          <Input type="number" {...register('pedido_compra')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('pedido_compra')}/>
         </FormContainer>
         <FormContainer label='Item'>
-          <Input type="number" {...register('item')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('item')}/>
         </FormContainer>
       </Flex>
     </Flex>

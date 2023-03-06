@@ -1,10 +1,11 @@
 import { ReactNode } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
-import { Button, Flex, Icon, Input, Select, Text } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Select, Text, useColorMode } from '@chakra-ui/react';
 
 import { FiSearch } from 'react-icons/fi';
 import { useModalTransportadora } from '../../../../Contexts/Modal/TransportadoraContext';
+import { MdAdd } from 'react-icons/md';
 
 
 
@@ -20,6 +21,7 @@ interface SearchBoxProps {
 export function SearchBox({ children, changeEdit, stateFilter, getTransportadora, getCod}: SearchBoxProps) {
   const { onOpen } = useModalTransportadora();
   const { register, handleSubmit } = useForm();
+  const { colorMode } = useColorMode();
 
   const openModal = () => {
     getCod();
@@ -40,14 +42,14 @@ export function SearchBox({ children, changeEdit, stateFilter, getTransportadora
         <Flex w="90%" m="4" align="center" justify="space-between">
           <Flex w="60%" justify="center" align="center">
             <Text w="8rem">Buscar por </Text>
-            <Select w="50%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="50%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
               <option value='razao'>Nome / Razão Social</option>
               <option value='cnpjcpf'>CPF / CNPJ</option>
             </Select>
-            <Input placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
             <Button type="submit"><Icon as={FiSearch} /></Button>
           </Flex>
-          <Button variant="outline"  onClick={openModal} colorScheme="green">Cadastrar Transportadora</Button>
+          <Button variant="solid"  onClick={openModal} colorScheme="green"><Icon mr={2} as={MdAdd} />Cadastrar</Button>
         </Flex>
         {children}
       </Flex>

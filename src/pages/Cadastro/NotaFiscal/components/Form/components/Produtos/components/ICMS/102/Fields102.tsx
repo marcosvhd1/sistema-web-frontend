@@ -1,18 +1,16 @@
-import { Button, Flex, Icon, Input, Select, Text } from '@chakra-ui/react';
+import { Flex, Input, Select, useColorMode } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
-import { FiSearch } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../../../../components/Form/FormContainer';
-import { MoneyAddon } from '../../../../../../../../../../components/Form/MoneyAddon';
-import { PorcentAddon } from '../../../../../../../../../../components/Form/PorcentAddon';
 import { INFProduct } from '../../../../../../../../../../services/api/notafiscal/NFProduct';
 
 export function Fields102() {
   const { register } = useFormContext<INFProduct>();
+  const { colorMode } = useColorMode();
 
   return (
     <Flex w="100%" justify="center" align="center" direction="column">
       <FormContainer label='Origem' mr='3'>
-        <Select {...register('produto.origem')}>
+        <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('produto.origem')}>
           <option value="0">0 - Nacional, exceto as indicadas nos códigos 3 a 5</option>
           <option value="1">1 - Estrangeira - Importação direta, exceto a indicada no código 6</option>
           <option value="2">2 - Estrangeira - Adquirida no mercado interno, exceto a indicada no código 7</option>
@@ -26,13 +24,13 @@ export function Fields102() {
       </FormContainer>  
       <Flex w="100%" justify="space-between" >
         <FormContainer label='EAN (Código de barras)' mr='3'>
-          <Input type="number" {...register('ean')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('ean')}/>
         </FormContainer>
         <FormContainer label='N° Pedido de Compra' mr='3'>
-          <Input type="number" {...register('pedido_compra')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('pedido_compra')}/>
         </FormContainer>
         <FormContainer label='Item'>
-          <Input type="number" {...register('item')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('item')}/>
         </FormContainer>
       </Flex>
     </Flex>

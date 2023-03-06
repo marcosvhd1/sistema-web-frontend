@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useColorMode } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
@@ -14,6 +14,7 @@ export function ModalNFDuplicata({ addDuplicata }: ModalNFDuplicataProps) {
   const methods = useFormContext<INFDuplicata>();
 
   const { isOpen, onClose } = useModalNFDuplicata();
+  const { colorMode } = useColorMode();
 
   const onSubmit = (data: INFDuplicata) => {
     addDuplicata(data);  
@@ -43,15 +44,15 @@ export function ModalNFDuplicata({ addDuplicata }: ModalNFDuplicataProps) {
           <ModalBody>
             <Flex w='100%' justify='center' align='center'  direction='column'>
               <FormContainer label='Número'>
-                <Input type="text" {...methods.register('numero')} />
+                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('numero')} />
               </FormContainer>    
               <FormContainer label='Valor'>
                 <MoneyAddon>
-                  <Input type="text" {...methods.register('valor')} />
+                  <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor')} />
                 </MoneyAddon>
               </FormContainer>
               <FormContainer label='Vencimento'>
-                <Input type="date" {...methods.register('vencimento')} />
+                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('vencimento')} />
               </FormContainer>    
             </Flex>
           </ModalBody>

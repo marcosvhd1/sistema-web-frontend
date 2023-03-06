@@ -57,7 +57,7 @@ export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
       <Divider />
       <Flex justify="space-between">
         <FormContainer label="Tipo" width="15rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="auto" mr="3" {...register('tipo_telefone1')}>
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="auto" mr="3" {...register('tipo_telefone1')}>
             <option>Celular</option>
             <option>Comercial</option>
             <option>Residencial</option>
@@ -69,7 +69,7 @@ export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
       </Flex>
       <Flex align="center" justify="space-between">
         <FormContainer label="Tipo" width="15rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="auto" mr="3" {...register('tipo_telefone2')}>
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="auto" mr="3" {...register('tipo_telefone2')}>
             <option>Celular</option>
             <option>Comercial</option>
             <option>Residencial</option>
@@ -99,13 +99,13 @@ export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
       </Flex>
       <Flex justify="space-between" align="center">
         <FormContainer label="UF" width="5rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf')} w="5rem"  onChange={(event) => setSelectedEstado(event.target.value)}>
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  {...register('uf')} w="5rem"  onChange={(event) => setSelectedEstado(event.target.value)}>
             {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
           </Select>
         </FormContainer>
         <FormContainer label="Cidade" width="22.5rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cidade')} w="22.5rem">
-            {cidades.map(cidade => <option key={cidade.codigo_ibge}>{cidade.nome}</option>)}
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  {...register('cidade')} w="22.5rem">
+            {cidades.map(cidade => <option key={cidade.nome} value={cidade.nome}>{cidade.nome}</option>)}
           </Select>
         </FormContainer>
       </Flex>
@@ -119,7 +119,7 @@ export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
           <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="text" w="10rem" {...register('placa')} />
         </FormContainer>
         <FormContainer label="UF" width="5rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf_placa')} w="5rem" value={selectedEstadoVeiculo} onChange={(event) => setSelectedEstadoVeiculo(event.target.value)}>
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  {...register('uf_placa')} w="5rem" onChange={(event) => setSelectedEstadoVeiculo(event.target.value)}>
             {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
           </Select>
         </FormContainer>

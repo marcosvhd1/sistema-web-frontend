@@ -1,25 +1,30 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { CidadeService, ICidade } from '../services/api/cidades/CidadeService';
+import { userInfos } from '../utils/header';
 
-export interface Icidade {
-  nome: string;
-  codigo_ibge: string;
+interface ICidadeProps {
+  uf: string;
 }
 
-export function useCidades({ uf }: { uf: string }) {
-  const [cidades, setCidades] = useState<Icidade[]>([]);
+export function useCidades({ uf }: ICidadeProps) {
+  const [cidades, setCidades] = useState<ICidade[]>([]);
 
-  async function getCities() {
-    await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
-      .then((response) => setCidades(response.data));
-  }
+  const userInfo = userInfos();
+  const HEADERS = userInfo.header;
 
   useEffect(() => {
-    getCities();
+    getCidadesByUF();
   }, [uf]);
+  
+  const getCidadesByUF = async () => {
+    const data = await CidadeService.getByUF(uf, HEADERS);
+    
+    if (data != null) {
+      setCidades(data);
+    }
+  };
 
   return {
     cidades
   };
-
 }

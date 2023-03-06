@@ -58,13 +58,13 @@ export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
               <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" w="5rem" isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('cod')} />
             </FormContainer>
             <FormContainer label="Tipo" width="4rem">
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="4rem" {...register('tipo')}>
+              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="4rem" {...register('tipo')}>
                 <option value='f'>F</option>
                 <option value='j'>J</option>
               </Select>
             </FormContainer>
             <FormContainer label="Categoria" width="9rem">
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('categoria')}>
+              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  {...register('categoria')}>
                 <option value='cliente'>Cliente</option>
                 <option value='fornecedor'>Fornecedor</option>
                 <option value='outro'>Outro</option>
@@ -109,7 +109,7 @@ export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
               <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="suframa" type="text" w="14rem" {...register('suframa')} mr="3" />
             </FormContainer>
             <FormContainer label="Tipo de Contribuinte">
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="14rem" {...register('tipo_contribuinte')}>
+              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="14rem" {...register('tipo_contribuinte')}>
                 <option value=''></option>
                 <option value='contribuinteICMS'>Contribuinte ICMS</option>
                 <option value='isento'>Contribuinte ISENTO</option>

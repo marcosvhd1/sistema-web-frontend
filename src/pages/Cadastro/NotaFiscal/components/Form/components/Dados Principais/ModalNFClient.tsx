@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Td, Text, Tr } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm, useFormContext } from 'react-hook-form';
 import { FiCheck, FiChevronLeft, FiChevronRight, FiSearch, FiSlash, FiUserCheck } from 'react-icons/fi';
@@ -18,6 +18,7 @@ export function ModalNFClient() {
 
   const { idEmissorSelecionado } = useEmissorContext();
   const { isOpen, onClose } = useModalNFClient();
+  const { colorMode } = useColorMode();
 
   const [data, setData] = useState<IClient[]>([]);
   const [filter, setFilter] = useState<string>('razao');
@@ -107,12 +108,12 @@ export function ModalNFClient() {
               <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes / Fornecedores</Text>
               <Flex w="100%" align="center" justify="flex-start"  mt={5}>
                 <Text fontSize={16} mr={3}>Buscar por </Text>
-                <Select w="25%" mr="3" onChange={(e) => setFilter(e.target.value)}>
+                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="25%" mr="3" onChange={(e) => setFilter(e.target.value)}>
                   <option value='razao'>Nome / Razão Social</option>
                   <option value='fantasia'>Nome Fantasia</option>
                   <option value='cnpjcpf'>CPF / CNPJ</option>
                 </Select>
-                <Input placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
+                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
                 <Button type="submit"><Icon as={FiSearch} /></Button>
               </Flex>
             </Flex>

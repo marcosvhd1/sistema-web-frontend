@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Flex, Select, Stack, Text } from '@chakra-ui/react';
+import { Flex, Select, Stack, Text, useColorMode } from '@chakra-ui/react';
 
 interface IPagination {
   children: ReactNode
@@ -10,6 +10,8 @@ interface IPagination {
 }
 
 export function Pagination({ children, limitRegistros, currentPage, totalClients, changeLimitRegister }: IPagination) {
+  const { colorMode } = useColorMode();
+  
   return (
     <Stack
       direction="row"
@@ -29,7 +31,7 @@ export function Pagination({ children, limitRegistros, currentPage, totalClients
           align="center"
           gap="2"
         >
-          <Select onChange={(e) => changeLimitRegister(parseInt(e.target.value))} >
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => changeLimitRegister(parseInt(e.target.value))} >
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>

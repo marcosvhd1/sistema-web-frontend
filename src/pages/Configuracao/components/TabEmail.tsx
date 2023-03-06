@@ -1,4 +1,4 @@
-import { Checkbox, Flex, Input, Text, Textarea } from '@chakra-ui/react';
+import { Checkbox, Flex, Input, Text, Textarea, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../components/Form/FormContainer';
@@ -6,6 +6,7 @@ import { IConfig } from '../../../services/api/config/ConfigService';
 
 export function TabEmail() {
   const methods = useFormContext<IConfig>();
+  const { colorMode } = useColorMode();
 
   const [autenticacao, setAutenticacao] = useState<boolean>(false);
   const [ssl, setSSL] = useState<boolean>(false);
@@ -27,22 +28,22 @@ export function TabEmail() {
     <Flex w='100%' justify='center' align='flex-start'>
       <Flex w='100%' justify='center' align='flex-start' direction='column' mr={5}>
         <FormContainer label='Nome Remetente'>
-          <Input type='text' {...methods.register('email_remetente')} />
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('email_remetente')} />
         </FormContainer>
         <FormContainer label='Email'>
-          <Input type='email' {...methods.register('email')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='email' {...methods.register('email')}/>
         </FormContainer>
         <FormContainer label='Host (SMTP)'>
-          <Input type='text' {...methods.register('host')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('host')}/>
         </FormContainer>
         <FormContainer label='Usuário'>
-          <Input type='text' {...methods.register('usuario')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('usuario')}/>
         </FormContainer>
         <FormContainer label='Senha'>
-          <Input type='password' {...methods.register('senha')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='password' {...methods.register('senha')}/>
         </FormContainer>
         <FormContainer label='Porta'>
-          <Input type='number' {...methods.register('porta')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='number' {...methods.register('porta')}/>
         </FormContainer>
         <Flex w='100%' mt={5}>
           <Checkbox size='lg' mr='2' isChecked={autenticacao} onChange={handleChangeAutenticacao} />
@@ -57,10 +58,10 @@ export function TabEmail() {
       </Flex>
       <Flex w='100%' justify='flex-start' align='center' direction='column'>
         <FormContainer label='Copia para'>
-          <Input type='text' {...methods.register('copia')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('copia')}/>
         </FormContainer>
         <FormContainer label='Assunto Padrão'>
-          <Input type='email' {...methods.register('assunto')}/>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='email' {...methods.register('assunto')}/>
         </FormContainer>
         <FormContainer label='Mensagem Padrão'>
           <Textarea {...methods.register('mensagem')} />

@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useColorMode } from '@chakra-ui/react';
 import { useForm, useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
@@ -16,6 +16,7 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
   const methods = useFormContext<INFFormaPagto>();
 
   const { isOpen, onClose } = useModalNFFormaPagto();
+  const { colorMode } = useColorMode();
 
   const onSubmit = (data: INFFormaPagto) => {
     addFormaPagto(data);  
@@ -45,7 +46,7 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
           <ModalBody>
             <Flex w='100%' justify='center' align='center'  direction='column'>
               <FormContainer label='Forma de Pagamento'>
-                <Select {...methods.register('forma')}>
+                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('forma')}>
                   <option value="Dinheiro">Dinheiro</option>
                   <option value="Cheque">Cheque</option>
                   <option value="Cartão de Crédito">Cartão de Crédito</option>
@@ -62,11 +63,11 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
               </FormContainer>    
               <FormContainer label='Valor'>
                 <MoneyAddon>
-                  <Input type="text" {...methods.register('valor')} />
+                  <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor')} />
                 </MoneyAddon>
               </FormContainer>    
               <FormContainer label='Bandeira'>
-                <Select {...methods.register('bandeira')}>
+                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('bandeira')}>
                   <option value=""></option>
                   <option value="Visa">Visa</option>
                   <option value="Mastercard">Mastercard</option>
@@ -80,7 +81,7 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
                 </Select>
               </FormContainer>    
               <FormContainer label='Observação'>
-                <Input type="text" {...methods.register('observacao')} />
+                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('observacao')} />
               </FormContainer>    
             </Flex>
           </ModalBody>

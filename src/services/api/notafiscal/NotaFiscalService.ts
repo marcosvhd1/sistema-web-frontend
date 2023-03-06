@@ -1,9 +1,9 @@
-import { IClient } from "../clientes/ClientService";
-import { ITransportadora } from "../transportadora/TransportadoraService";
-import { INFDuplicata } from "./NFDuplicata";
-import { INFFormaPagto } from "./NFFormaPagto";
-import { INFProduct } from "./NFProduct";
-import { INFService } from "./NFService";
+import { IClient } from '../clientes/ClientService';
+import { ITransportadora } from '../transportadora/TransportadoraService';
+import { INFDuplicata } from './NFDuplicata';
+import { INFFormaPagto } from './NFFormaPagto';
+import { INFProduct } from './NFProduct';
+import { INFService } from './NFService';
 
 export interface INotaFiscal {
     id: number;
@@ -22,7 +22,7 @@ export interface INotaFiscal {
     data_emissao: Date;
     data_saida: Date;
     hora: Date;
-    produtos: INFProduct[];
+    produtos: INFProduct[]; //colocar no back em NFProduto
     competencia: Date;
     servicos: INFService[];
     base_calc_icms: number;
@@ -60,10 +60,10 @@ export interface INotaFiscal {
     total_fcp: number;
     total_fcp_st: number;
     presenca_comprador: string;
-    duplicata: INFDuplicata[];
-    forma_pagto: INFFormaPagto[];
+    duplicata: INFDuplicata[]; //colocar no back em NFFPagto
+    forma_pagto: INFFormaPagto[]; //colocar no back em NFFPagto
     modalidade_frete: string;
-    transportadora: ITransportadora;
+    transportadora: ITransportadora; //colocar no back em NFTransportadora
     quantidade_transporte: number;
     numero_transporte: number;
     especie_transporte: string;

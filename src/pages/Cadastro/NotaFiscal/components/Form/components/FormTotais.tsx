@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Text } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Text, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { CgDetailsMore } from 'react-icons/cg';
@@ -9,6 +9,7 @@ import { INotaFiscal } from '../../../../../../services/api/notafiscal/NotaFisca
 export function FormTotais() {
   const { register } = useFormContext<INotaFiscal>();
   const [details, setDetails] = useState<boolean>(true);
+  const { colorMode } = useColorMode();
 
   const handleChangeDetails = () => {
     setDetails(!details);
@@ -21,57 +22,57 @@ export function FormTotais() {
       <Flex w="30%" justify="center" align="center" direction="column" mr={3}>
         <FormContainer label='Base Cálc. ICMS'>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('base_calc_icms')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('base_calc_icms')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total do ICMS' >
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_icms')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_icms')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Base ICMS ST' >
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('base_icms_st')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('base_icms_st')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total do ICMS ST'>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_icms_st')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_icms_st')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total do Frete' >
           <MoneyAddon>
-            <Input type="number" defaultValue={0} {...register('total_frete')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} {...register('total_frete')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Valor do Seguro' >
           <MoneyAddon>
-            <Input type="number" defaultValue={0} {...register('valor_seguro')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} {...register('valor_seguro')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Outras Despesas' >
           <MoneyAddon>
-            <Input type="number" defaultValue={0} {...register('outras_despesas')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} {...register('outras_despesas')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total IPI' >
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_ipi')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_ipi')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total do II' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_ii')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_ii')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total PIS' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_pis')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_pis')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total COFINS' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_cofins')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_cofins')}/>
           </MoneyAddon>
         </FormContainer>
       </Flex>
@@ -80,68 +81,68 @@ export function FormTotais() {
       <Flex w="30%" justify="center" align="center" direction="column" mr={3}>
         <FormContainer label='Total Desconto'>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_desconto_nf')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_desconto_nf')}/>
           </MoneyAddon>
         </FormContainer>
         <Flex direction="column" mt="2" w="100%">
           <Text fontSize="sm" fontWeight='medium' ><strong>Total Produtos</strong></Text>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_produtos')} />
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_produtos')} />
           </MoneyAddon>
         </Flex>
         <Flex direction="column" mt="2" w="100%">
           <Text fontSize="sm" fontWeight='medium'><strong>Total da Nota</strong></Text>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_nota')}  />
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_nota')}  />
           </MoneyAddon>
         </Flex>
         <FormContainer label='Hidden' hidden>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly />
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly />
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total FCP' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_fcp')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_fcp')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total FCP ST' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_fcp_st')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_fcp_st')}/>
           </MoneyAddon>
         </FormContainer>
         {/* <FormContainer label='Base Cálc. ISS'>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('base_calc_iss')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('base_calc_iss')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total do ISS'>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_iss')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_iss')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total Serviços'>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_servicos')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_servicos')}/>
           </MoneyAddon>
         </FormContainer> */}
         <FormContainer label='Hidden' hidden>
-          <Input type="number" defaultValue={0} readOnly />
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly />
         </FormContainer>
         <FormContainer label='Hidden' hidden>
-          <Input type="number" defaultValue={0} readOnly />
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly />
         </FormContainer>
         <FormContainer label='Hidden' hidden>
-          <Input type="number" defaultValue={0} readOnly />
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly />
         </FormContainer>
         <FormContainer label='Alíquota Crédito ICMS' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('aliquota_credito')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('aliquota_credito')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Valor Crédito ICMS' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('valor_credito')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('valor_credito')}/>
           </MoneyAddon>
         </FormContainer>
       </Flex>
@@ -150,57 +151,57 @@ export function FormTotais() {
       <Flex w="30%" justify="center" align="center" direction="column" mr={3}>
         <FormContainer label='Retenção PIS' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('retencao_pis')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('retencao_pis')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Retenção COFINS' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly  {...register('retencao_cofins')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly  {...register('retencao_cofins')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Retenção CSLL' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('retencao_csll')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('retencao_csll')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Base Cálc. IRRF' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('base_calc_irrf')} />
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('base_calc_irrf')} />
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Retenção IRRF' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('retencao_irrf')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('retencao_irrf')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Base Prev. Social' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('base_prev_social')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('base_prev_social')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Ret. Prev. Social' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('ret_prov_social')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('ret_prov_social')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Partilha ICMS Dest.' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('partilha_icms_dest')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('partilha_icms_dest')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Partilha ICMS Rem.' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('partilha_icms_rem')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('partilha_icms_rem')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='FCP da UF Dest.' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('fcp_uf_dest')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('fcp_uf_dest')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Total IPI Devolvido' hidden={details}>
           <MoneyAddon>
-            <Input type="number" defaultValue={0} readOnly {...register('total_ipi_devolvido')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly {...register('total_ipi_devolvido')}/>
           </MoneyAddon>
         </FormContainer>
       </Flex>

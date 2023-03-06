@@ -1,5 +1,6 @@
-import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast } from '@chakra-ui/react';
+import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast } from '@chakra-ui/react';
 import { FormProvider, useFormContext } from 'react-hook-form';
+import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useModalNewEmissor } from '../../../Contexts/Modal/NewEmissorContext';
 import { ApiException } from '../../../services/api/ApiException';
 import { EmissorService, IEmissor, INewEmissor } from '../../../services/api/emissor/EmissorService';
@@ -117,8 +118,8 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
           </ModalBody>
           <ModalFooter>
             <Flex justify='space-between' w='100%'>
-              <Button variant='outline' colorScheme="green" type='submit'>{isEditing ? 'Editar' : 'Cadastrar'}</Button>
-              <Button variant='outline' colorScheme="red">Cancelar</Button>
+              <Button variant='outline' colorScheme="green" type='submit'><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
+              <Button variant='outline' colorScheme="red" onClick={clearForm}><Icon as={FiSlash} mr={1} />Cancelar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>

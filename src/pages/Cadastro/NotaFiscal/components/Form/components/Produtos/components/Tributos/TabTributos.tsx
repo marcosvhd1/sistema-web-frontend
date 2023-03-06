@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Icon, Input, Text } from '@chakra-ui/react';
+import { Button, Divider, Flex, Icon, Input, Text, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiSearch } from 'react-icons/fi';
@@ -14,6 +14,7 @@ export function FormTabTributos() {
   const [content, setContent] = useState<string>('');
 
   const { onOpen } = useModalNFApoio();
+  const { colorMode } = useColorMode();
 
   const handleOpenModal = (index: number) => {
     switch (index) {
@@ -128,27 +129,27 @@ export function FormTabTributos() {
           </Flex>
           <FormContainer label='CST'>
             <Flex>
-              <Input type='text' mr={3} {...register('produto.cst_ipi')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' mr={3} {...register('produto.cst_ipi')}/>
               <Button onClick={() => handleOpenModal(1)}><Icon as={FiSearch} /></Button>
             </Flex>
           </FormContainer>
           <FormContainer label='Alíquota IPI'>
             <PorcentAddon>
-              <Input type='text' {...register('produto.aliquota_ipi')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('produto.aliquota_ipi')}/>
             </PorcentAddon>
           </FormContainer>
           <FormContainer label='Base de Cálculo'>
             <MoneyAddon>
-              <Input type='text' {...register('base_calc_ipi')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('base_calc_ipi')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Valor IPI'>
             <MoneyAddon>
-              <Input type='text' {...register('valor_ipi')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('valor_ipi')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='CNPJ Produtor'>
-            <Input type='text' {...register('cnpj_produtor')}/>
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('cnpj_produtor')}/>
           </FormContainer>
         </Flex>
         <Flex w="50%" align="center" justify="flex-start" direction="column" mr={7}>
@@ -159,27 +160,27 @@ export function FormTabTributos() {
           </Flex>
           <FormContainer label='Base de Cálculo'>
             <MoneyAddon>
-              <Input type='text' {...register('base_calc_ii')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('base_calc_ii')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Desp. aduaneiras'>
             <MoneyAddon>
-              <Input type='text' {...register('desp_aduaneiras')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('desp_aduaneiras')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Valor IOF'>
             <MoneyAddon>
-              <Input type='text' {...register('valor_iof')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('valor_iof')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Valor II'>
             <MoneyAddon>
-              <Input type='text' {...register('valor_ii')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('valor_ii')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Hidden' hidden>
             <MoneyAddon>
-              <Input type="number" defaultValue={0} readOnly />
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" defaultValue={0} readOnly />
             </MoneyAddon>
           </FormContainer>
         </Flex>
@@ -193,23 +194,23 @@ export function FormTabTributos() {
           </Flex>
           <FormContainer label='CST'>
             <Flex>
-              <Input type='text' mr={3} {...register('produto.cst_pis')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' mr={3} {...register('produto.cst_pis')}/>
               <Button onClick={() => handleOpenModal(2)}><Icon as={FiSearch} /></Button>
             </Flex>
           </FormContainer>
           <FormContainer label='Base de Cálculo'>
             <MoneyAddon>
-              <Input type='text' {...register('base_calc_pis')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('base_calc_pis')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Alíquota PIS'>
             <PorcentAddon>
-              <Input type='text' {...register('produto.aliquota_pis')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('produto.aliquota_pis')}/>
             </PorcentAddon>
           </FormContainer>
           <FormContainer label='Valor PIS'>
             <MoneyAddon>
-              <Input type='text' {...register('valor_pis')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('valor_pis')}/>
             </MoneyAddon>
           </FormContainer>
         </Flex>
@@ -221,23 +222,23 @@ export function FormTabTributos() {
           </Flex>
           <FormContainer label='CST'>
             <Flex>
-              <Input type='text' mr={3} {...register('produto.cst_cofins')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' mr={3} {...register('produto.cst_cofins')}/>
               <Button onClick={() => handleOpenModal(3)}><Icon as={FiSearch} /></Button>
             </Flex>
           </FormContainer>
           <FormContainer label='Base de Cálculo'>
             <MoneyAddon>
-              <Input type='text' {...register('base_calc_cofins')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('base_calc_cofins')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Alíquota COFINS'>
             <PorcentAddon>
-              <Input type='text' {...register('produto.aliquota_cofins')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('produto.aliquota_cofins')}/>
             </PorcentAddon>
           </FormContainer>
           <FormContainer label='Valor COFINS'>
             <MoneyAddon>
-              <Input type='text' {...register('valor_cofins')}/>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('valor_cofins')}/>
             </MoneyAddon>
           </FormContainer>
         </Flex>

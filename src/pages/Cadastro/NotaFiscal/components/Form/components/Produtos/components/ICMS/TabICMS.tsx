@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Select, Text } from '@chakra-ui/react';
+import { Button, Flex, Icon, Select, Text, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiSearch } from 'react-icons/fi';
@@ -17,6 +17,7 @@ export function FormTabICMS() {
   const [selected, setSelected] = useState<string>('');
 
   const { onOpen } = useModalNFApoioCST();
+  const { colorMode } = useColorMode();
 
   const cst = ['00', '10', '20', '30', '40', '41', '50', '51', '60', '70', '90'];
   const csosn = ['101', '102', '103', '201', '202', '203', '300', '400', '500', '900'];
@@ -68,7 +69,7 @@ export function FormTabICMS() {
         <Text mr={3}>
           <strong>Situação Tributária (CST/CSOSN):</strong>
         </Text>
-        <Select w="15%" mr={3} {...register('produto.cst_icms')} onChange={(index) => handleOnChange(index)}>
+        <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="15%" mr={3} {...register('produto.cst_icms')} onChange={(index) => handleOnChange(index)}>
           {csosn.map((data) => (<option key={data} value={data}>{data}</option>))}
         </Select>
         <Button onClick={onOpen}>
