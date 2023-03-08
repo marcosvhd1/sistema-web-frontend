@@ -1,3 +1,5 @@
+import { Api } from '../ApiConfig';
+import { ApiException } from '../ApiException';
 import { IClient } from '../clientes/ClientService';
 import { ITransportadora } from '../transportadora/TransportadoraService';
 import { INFDuplicata } from './NFDuplicata';
@@ -86,4 +88,43 @@ export interface INotaFiscal {
     data_di: Date;
 }
 
-export const NotaFiscalService = {};
+const getNFByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, idEmissorSelecionado: number, HEADERS: any): Promise<INotaFiscal[] | ApiException> => {
+  try {
+    return await Api().get(`/notas?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&id_emissor=${idEmissorSelecionado}`, HEADERS);
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
+  }
+};
+
+const create = async (dataToCreate: Omit<INotaFiscal, 'id' | 'cod'>, HEADERS: any): Promise<INotaFiscal | ApiException> => {
+  try {
+    const { data } = await Api().post<INotaFiscal>('/notas', dataToCreate, HEADERS);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao criar o registro.');
+  }
+};
+
+const updateById = async (id: number, dataToUpdate: INotaFiscal, HEADERS: any): Promise<INotaFiscal | ApiException> => {
+  try {
+    const { data } = await Api().put(`/notas/${id}`, dataToUpdate, HEADERS);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
+  }
+};
+
+const deleteById = async (id: number, idEmissorSelecionado: number, HEADERS: any): Promise<undefined | ApiException> => {
+  try {
+    await Api().delete(`/notas/${id}?id_emissor=${idEmissorSelecionado}`, HEADERS);
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao apagar o registro.');
+  }
+};
+
+export const NotaFiscalService = {
+  getNFByFilter,
+  create,
+  updateById,
+  deleteById,
+};

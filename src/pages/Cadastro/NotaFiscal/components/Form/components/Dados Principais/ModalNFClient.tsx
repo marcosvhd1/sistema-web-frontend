@@ -32,7 +32,7 @@ export function ModalNFClient() {
   const HEADERS = userInfo.header;
 
   const headers: { key: string, label: string }[] = [
-    { key: 'action', label: 'Ação' },
+    { key: 'action', label: 'Adicionar' },
     { key: 'cod', label: 'Código' },
     { key: 'razao', label: 'Nome / Razão Social' },
     { key: 'fantasia', label: 'Nome Fantasia' },
@@ -122,13 +122,14 @@ export function ModalNFClient() {
           <ModalBody>
             <DataTable headers={headers} mt="0" width='100%' trailing={false}>
               {data !== undefined ? data.map((data) => (
-                <Tr key={data.id}>
+                <Tr key={data.id} onDoubleClick={() => handleSetClient(data)}>
                   <Td style={{ 'textAlign': 'center' }}>
-                    <Button variant="ghost" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleSetClient(data)}>
-                      <Icon color="green.300" as={FiUserCheck} />
+                    <Button variant="solid" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleSetClient(data)}>
+                      <Icon as={FiUserCheck} mr={1}/>
+                      Incluir
                     </Button>
                   </Td>
-                  <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
                   <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.fantasia}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
@@ -145,8 +146,7 @@ export function ModalNFClient() {
             </Pagination>
           </ModalBody>
           <ModalFooter>
-            <Flex w="100%" justify="space-between" >
-              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{'Salvar'}</Button>
+            <Flex w="100%" justify="flex-end" >
               <Button colorScheme='red' variant="outline" mr={3} onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
             </Flex>
           </ModalFooter>

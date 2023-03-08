@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Td, Tr } from '@chakra-ui/react';
+import { Button, Icon, Td, Tr, useToast } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
 
 import MainContent from '../../../components/MainContent';
@@ -11,16 +11,32 @@ import { Pagination } from '../../../components/Table/Pagination';
 import { INotaFiscal } from '../../../services/api/notafiscal/NotaFiscalService';
 import { userInfos } from '../../../utils/header';
 import { SearchBox } from './components/SearchBox';
+import { NotaFiscalService } from '../../../services/api/notafiscal/NotaFiscalService';
+import { useEmissorContext } from '../../../Contexts/EmissorProvider';
+import { ApiException } from '../../../services/api/ApiException';
+import { useModalNotaFiscal } from '../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
+import { ModalNotaFiscal } from './components/Form/FormIndex';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
+
   const [data, setData] = useState<INotaFiscal[]>([]);
+  const [filter, setFilter] = useState<string>('nome_cliente');
+  
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [id, setId] = useState<number>(0);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [filter, setFilter] = useState<string>('razao');
   const [totalNotas, setTotalNotas] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState(5);
   const [pages, setPages] = useState<number[]>([]);
+  
+  const { idEmissorSelecionado } = useEmissorContext();
+  const { onOpen } = useModalNotaFiscal();
+  
   const navigate = useNavigate();
+  const toast = useToast();
+
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
 
@@ -29,11 +45,11 @@ export function NotaFiscal() {
   }, [currentPage, limitRegistros, totalNotas]);
 
   useEffect(() => {
-    getNotasFiscaisByFilter('');
+    getNF('');
   }, [currentPage]);
 
   useEffect(() => {
-    getNotasFiscaisByFilter('');
+    getNF('');
   }, [limitRegistros]);
 
   useEffect(() => {
@@ -49,17 +65,49 @@ export function NotaFiscal() {
     setPages(arrayPages);
   };
 
-  const getNotasFiscaisByFilter = (description: string) => {null;};
+  const getNF = (description: string) => {
+    NotaFiscalService.getNFByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
+      .then((result: any) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          setData(result.data);
+          setTotalNotas(parseInt(result.headers['qtd']));
+        }
+      });
+  };
 
-  const handleDeleteNotaFiscal = (clientId: number) => {null;};
+  const handleEditNF = async (idNf: number) => {
+    const nfToUpdate = data.find((prod) => prod.id === idNf);
+    if (nfToUpdate) {
+      onOpen();
+      methods.reset(nfToUpdate);
+      setIsEditing(true);
+      setId(idNf);
+    }
+  };
 
-  const handleOpenDialog = (id: number) => {null;};
-
-  const handleEditNotaFiscal = (id: number) => {null;};
+  const handleDeleteNF = (nfId: number) => {
+    NotaFiscalService.deleteById(nfId, idEmissorSelecionado, HEADERS)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          toast({
+            position: 'top',
+            title: 'Operação concluída.',
+            description: 'Produto excluído com sucesso.',
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+          });
+          getNF('');
+          setTotalNotas(totalNotas - 1);
+        }
+      });
+  };
 
   const headers: { key: string, label: string }[] = [
-    { key: 'modelo', label: 'Modelo' },
-    { key: 'tipo', label: 'Tipo' },
     { key: 'data_emissao', label: 'Emissão' },
     { key: 'cod', label: 'Número' },
     { key: 'serie', label: 'Série' },
@@ -72,24 +120,22 @@ export function NotaFiscal() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox getNotasFiscaisByFilter={getNotasFiscaisByFilter} stateFilter={setFilter}>
-          <DataTable headers={headers} >
+        <SearchBox getNotasFiscaisByFilter={getNF} stateFilter={setFilter}>
+          <DataTable headers={headers}>
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.modelo}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.tipo}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.data_emissao.toString()}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.serie}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.natureza_operacao}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.destinatario.razao}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>Cliente</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.status}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.total_nota}</Td>
                 <Td style={{ 'textAlign': 'center' }}>
-                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditNotaFiscal(data.id)}>
+                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditNF(data.id)}>
                     <Icon color="orange.300" as={FiEdit} />
                   </Button>
-                  <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
+                  <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleDeleteNF(data.id)}>
                     <Icon as={FiTrash2} color="red.400" />
                   </Button>
                 </Td>
@@ -101,6 +147,7 @@ export function NotaFiscal() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalNotas} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
+        <ModalNotaFiscal isEditing={isEditing} id={id} getNF={getNF}/>
       </MainContent>
     </FormProvider>
   );

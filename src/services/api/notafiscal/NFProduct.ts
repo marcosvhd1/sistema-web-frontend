@@ -1,4 +1,4 @@
-import { IProduct } from "../produtos/ProductService";
+import { IProduct } from '../produtos/ProductService';
 
 export interface INFProduct {
   produto: IProduct
@@ -55,4 +55,4 @@ export interface INFProduct {
   uf_consumo: string
 }
 
-export const NotaFiscalService = {};
+export const NFProdutoService = {};

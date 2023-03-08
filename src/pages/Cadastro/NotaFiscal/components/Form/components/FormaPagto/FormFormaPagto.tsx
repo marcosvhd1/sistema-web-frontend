@@ -94,7 +94,7 @@ export function FormFormaPagto() {
               <Divider w="10%" />
               <Text w="max" ml={3}>Forma de Pagamento</Text>
               <Divider w="40%" mr={3} ml={3} />
-              <Button variant="outline" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }} onClick={openModalForma}>
+              <Button variant="solid" colorScheme="blue" fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }} onClick={openModalForma}>
                 <Icon mr={2} as={MdAdd} />
                 Adicionar
               </Button>
@@ -120,7 +120,7 @@ export function FormFormaPagto() {
               <Divider w="10%" />
               <Text w="max" ml={3}>Duplicatas</Text>
               <Divider w="50%" mr={3} ml={3} />
-              <Button variant="outline" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }} onClick={openModalDuplicata}>
+              <Button variant="solid" colorScheme="blue" fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }} onClick={openModalDuplicata}>
                 <Icon mr={2} as={MdAdd} />
                 Adicionar
               </Button>

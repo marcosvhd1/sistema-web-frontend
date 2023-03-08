@@ -5,6 +5,9 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { Button, Flex, Icon, Input, Select, Text, Link, useColorMode } from '@chakra-ui/react';
 import { getDecrypted } from '../../../../utils/crypto';
 import { MdAdd } from 'react-icons/md';
+import { useModalNotaFiscal } from '../../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
+import { useFormContext } from 'react-hook-form';
+import { INotaFiscal } from '../../../../services/api/notafiscal/NotaFiscalService';
 
 interface SearchBoxProps {
   children: ReactNode;
@@ -14,12 +17,19 @@ interface SearchBoxProps {
 
 export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter }: SearchBoxProps) {
   const { register, handleSubmit } = useForm();
-  const isEmissorSelected = getDecrypted(localStorage.getItem('emissor')) !== undefined;
+  const methods = useFormContext<INotaFiscal>();
   const { colorMode } = useColorMode();
+  const { onOpen } = useModalNotaFiscal();
+  const isEmissorSelected = getDecrypted(localStorage.getItem('emissor')) !== undefined;
 
   const handleGetNotasFiscaisByFilter = async (data: FieldValues) => {
     const { description } = data;
     getNotasFiscaisByFilter(description);
+  };
+
+  const handleOpenModal = () => {
+    methods.reset({});
+    onOpen();
   };
 
 
@@ -31,15 +41,12 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter }: Se
           <Flex w="60%" justify="center" align="center">
             <Text w="8rem">Buscar por </Text>
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="50%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
-              <option value='razao'>N° da Nota</option>
-              <option value='fantasia'>Destinatário</option>
+              <option value='cod'>N° da Nota</option>
             </Select>
             <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
             <Button type="submit"><Icon as={FiSearch} /></Button>
           </Flex>
-          <Link style={{ textDecoration: 'none' }} as={ReactRouterLink} to={isEmissorSelected ? '/app/fiscal/nfe/cadastro' : ''}>
-            <Button variant="solid" colorScheme="green"><Icon mr={2} as={MdAdd} />Cadastrar</Button>
-          </Link>
+          <Button variant="solid" colorScheme="green" onClick={handleOpenModal}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
         </Flex>
         {children}
       </Flex>

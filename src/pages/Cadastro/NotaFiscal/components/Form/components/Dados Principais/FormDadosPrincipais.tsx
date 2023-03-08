@@ -31,7 +31,7 @@ export function FormDadosPrincipais() {
             <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly={block} {...methods.register('cod')} />
           </FormContainer>
           <Button variant="ghost" colorScheme="orange" onClick={handleBlockInputCod} mt={7} ml={1} mr={3} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }}>
-            <Icon color="orange.300" as={FiEdit} />
+            <Icon color="orange" as={FiEdit} />
           </Button>
 
           <FormContainer width='15%' label='Série' mr='3'>
@@ -40,8 +40,8 @@ export function FormDadosPrincipais() {
 
           <FormContainer width='65%' label='Natureza de Operação' mr='3'>
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('natureza_operacao')}>
-              <option value='razao'>Venda 5102</option>
-              <option value='fantasia'>Compra 6204</option>
+              <option value='venda'>Venda 5102</option>
+              <option value='compra'>Compra 6204</option>
             </Select>
           </FormContainer>
 
@@ -49,7 +49,7 @@ export function FormDadosPrincipais() {
             <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cfop')} />
           </FormContainer>
           <Button variant="ghost" colorScheme="green" onClick={() => null} mt={7} ml={1} mr={3} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }}>
-            <Icon color="green.300" as={FiCheckCircle} />
+            <Icon color="green" as={FiCheckCircle} />
           </Button>
 
           <FormContainer width='35%' label='Status'>
@@ -169,11 +169,11 @@ export function FormDadosPrincipais() {
                 <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.suframa')}/>
               </FormContainer>
 
-              <FormContainer width="30%" label='País' mr='3' >
+              <FormContainer width="25%" label='País' mr='3' >
                 <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.pais')}/>
               </FormContainer>
 
-              <Button onClick={onOpen} w="15%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
+              <Button onClick={onOpen} w="20%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
                 <Icon mr={2} as={FiSearch} />
                 Buscar
               </Button>

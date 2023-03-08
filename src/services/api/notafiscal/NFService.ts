@@ -1,4 +1,4 @@
-import { IServico } from "../servicos/ServicoService";
+import { IServico } from '../servicos/ServicoService';
 
 export interface INFService {
   servico: IServico

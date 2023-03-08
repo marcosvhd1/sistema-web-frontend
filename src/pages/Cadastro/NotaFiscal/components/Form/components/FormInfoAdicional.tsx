@@ -19,7 +19,7 @@ export function FormInfoAdicional() {
           <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="35%" mr={3}>
             <option value='0'></option>
           </Select>
-          <Button w="15%" fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="outline" colorScheme="green">Inserir</Button>
+          <Button w="10%" fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">Inserir</Button>
         </Flex>
       </GridItem>
 
