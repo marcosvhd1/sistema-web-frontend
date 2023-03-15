@@ -25,7 +25,7 @@ interface getProductProps {
 export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
   const { idEmissorSelecionado } = useEmissorContext();
   const { isOpen, onClose } = useModalNFSearchProduct();
-  const { register, handleSubmit } = useForm<getProductProps>();
+  const { register, handleSubmit, getValues } = useForm<getProductProps>();
   const { colorMode } = useColorMode();
 
   const [data, setData] = useState<IProduct[]>([]);
@@ -40,7 +40,7 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
   const HEADERS = userInfo.header;
 
   const headers: { key: string, label: string }[] = [
-    { key: 'acao', label: 'Ação' },
+    { key: 'acao', label: 'Adicionar' },
     { key: 'id', label: 'Código' },
     { key: 'descricao', label: 'Descrição' },
     { key: 'preco', label: 'Preço' },
@@ -80,8 +80,8 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
       });
   };
 
-  const handleGetProductsByFilter = async (data: FieldValues) => {
-    const { description } = data;
+  const handleGetProductsByFilter = async () => {
+    const description = getValues('description');
     getProductsByFilter(description);
   };
 
@@ -115,64 +115,63 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
       size={{ md: '4xl', lg: '5xl' }}
     >
       <ModalOverlay />
-      <form onSubmit={handleSubmit((data) => handleGetProductsByFilter(data))}>
-        <ModalContent>
-          <ModalHeader>
-            <Flex w="100%" justify="center" align="center" direction="column">
-              <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
-              <Flex w="100%" align="center" justify="flex-start" mt={5}>
-                <Text fontSize={16} mr={3}>Buscar por </Text>
-                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="20%" mr="3" onChange={(e) => setFilter(e.target.value)}>
-                  <option value='descricao'>Descrição</option>
-                  <option value='nprod'>Código</option>
-                  <option value='referencia'>Referência</option>
-                  <option value='marca'>Marca</option>
-                  <option value='ncm'>NCM</option>
-                </Select>
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
-                <Button type="submit"><Icon as={FiSearch} /></Button>
-              </Flex>
+      <ModalContent>
+        <ModalHeader>
+          <Flex w="100%" justify="center" align="center" direction="column">
+            <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
+            <Flex w="100%" align="center" justify="flex-start" mt={5}>
+              <Text fontSize={16} mr={3}>Buscar por </Text>
+              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="20%" mr="3" onChange={(e) => setFilter(e.target.value)}>
+                <option value='descricao'>Descrição</option>
+                <option value='nprod'>Código</option>
+                <option value='referencia'>Referência</option>
+                <option value='marca'>Marca</option>
+                <option value='ncm'>NCM</option>
+              </Select>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
+              <Button onClick={handleGetProductsByFilter}><Icon as={FiSearch} /></Button>
             </Flex>
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <DataTable headers={headers} mt="0" width='100%' trailing={false}>
-              {data !== undefined ? data.map((data) => (
-                <Tr key={data.id}>
-                  <Td style={{ 'textAlign': 'center' }}>
-                    <Button variant="ghost" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleSetProduct(data)}>
-                      <Icon color="green.300" as={MdAdd} />
-                    </Button>
-                  </Td>
-                  <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.nprod).slice(-4)}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + (data.preco).toString().replace('.', ',') : ''}</Td>
-                  <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.referencia}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.marca}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.grupo}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.un}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.ncm}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
-                    <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
-                      {data.status}
-                    </Tag>
-                  </Td>
-                </Tr>
-              )) : ''}
-            </DataTable>
-            <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalProducts} changeLimitRegister={setLimitRegistros}>
-              <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
-              <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalProducts} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
-            </Pagination>
-          </ModalBody>
-          <ModalFooter>
-            <Flex w="100%" justify="space-between" >
-              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{'Salvar'}</Button>
-              <Button colorScheme='red' variant="outline" mr={3} onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
-            </Flex>
-          </ModalFooter>
-        </ModalContent>
-      </form>
+          </Flex>
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <DataTable headers={headers} mt="0" width='100%' trailing={false}>
+            {data !== undefined ? data.map((data) => (
+              <Tr key={data.id}>
+                <Td style={{ 'textAlign': 'center' }}>
+                  <Button variant="solid" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleSetProduct(data)}>
+                    <Icon as={MdAdd} mr={1} />
+                      Adicionar
+                  </Button>
+                </Td>
+                <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.nprod).slice(-4)}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + (data.preco).toString().replace('.', ',') : ''}</Td>
+                <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.referencia}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.marca}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.grupo}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.un}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.ncm}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                  <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
+                    {data.status}
+                  </Tag>
+                </Td>
+              </Tr>
+            )) : ''}
+          </DataTable>
+          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalProducts} changeLimitRegister={setLimitRegistros}>
+            <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
+            <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalProducts} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
+          </Pagination>
+        </ModalBody>
+        <ModalFooter>
+          <Flex w="100%" justify="space-between" >
+            <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{'Salvar'}</Button>
+            <Button colorScheme='red' variant="outline" mr={3} onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+          </Flex>
+        </ModalFooter>
+      </ModalContent>
     </Modal>
   );
 }

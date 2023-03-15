@@ -14,7 +14,7 @@ import { userInfos } from '../../../../../../../utils/header';
 
 export function ModalNFClient() {
   const methods = useFormContext<INotaFiscal>();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, getValues } = useForm();
 
   const { idEmissorSelecionado } = useEmissorContext();
   const { isOpen, onClose } = useModalNFClient();
@@ -71,13 +71,15 @@ export function ModalNFClient() {
       });
   };
 
-  const handleGetClientsByFilter = async (data: FieldValues) => {
-    const { description } = data;
+  const handleGetClientsByFilter = async () => {
+    const description = getValues('description');
     getClientsByFilter(description);
   };
 
   const handleSetClient = async (data: IClient) => {
     methods.setValue('destinatario', data);
+    methods.setValue('nome_destinatario', data.razao);
+    methods.setValue('id_destinatario', `${data.id}`);
     onClose();
   };
 
@@ -101,57 +103,55 @@ export function ModalNFClient() {
       size={{md: '4xl', lg: '5xl'}}
     >
       <ModalOverlay />
-      <form onSubmit={handleSubmit((data) => handleGetClientsByFilter(data))}>
-        <ModalContent>
-          <ModalHeader>
-            <Flex w="100%" justify="center" align="center" direction="column">
-              <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes / Fornecedores</Text>
-              <Flex w="100%" align="center" justify="flex-start"  mt={5}>
-                <Text fontSize={16} mr={3}>Buscar por </Text>
-                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="25%" mr="3" onChange={(e) => setFilter(e.target.value)}>
-                  <option value='razao'>Nome / Razão Social</option>
-                  <option value='fantasia'>Nome Fantasia</option>
-                  <option value='cnpjcpf'>CPF / CNPJ</option>
-                </Select>
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
-                <Button type="submit"><Icon as={FiSearch} /></Button>
-              </Flex>
+      <ModalContent>
+        <ModalHeader>
+          <Flex w="100%" justify="center" align="center" direction="column">
+            <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes / Fornecedores</Text>
+            <Flex w="100%" align="center" justify="flex-start"  mt={5}>
+              <Text fontSize={16} mr={3}>Buscar por </Text>
+              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="25%" mr="3" onChange={(e) => setFilter(e.target.value)}>
+                <option value='razao'>Nome / Razão Social</option>
+                <option value='fantasia'>Nome Fantasia</option>
+                <option value='cnpjcpf'>CPF / CNPJ</option>
+              </Select>
+              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
+              <Button onClick={handleGetClientsByFilter}><Icon as={FiSearch} /></Button>
             </Flex>
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <DataTable headers={headers} mt="0" width='100%' trailing={false}>
-              {data !== undefined ? data.map((data) => (
-                <Tr key={data.id} onDoubleClick={() => handleSetClient(data)}>
-                  <Td style={{ 'textAlign': 'center' }}>
-                    <Button variant="solid" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleSetClient(data)}>
-                      <Icon as={FiUserCheck} mr={1}/>
+          </Flex>
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <DataTable headers={headers} mt="0" width='100%' trailing={false}>
+            {data !== undefined ? data.map((data) => (
+              <Tr key={data.id} onDoubleClick={() => handleSetClient(data)}>
+                <Td style={{ 'textAlign': 'center' }}>
+                  <Button variant="solid" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleSetClient(data)}>
+                    <Icon as={FiUserCheck} mr={1}/>
                       Incluir
-                    </Button>
-                  </Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
-                  <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.fantasia}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.bairro}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cidade}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.uf}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.categoria}</Td>
-                </Tr>
-              )) : ''}
-            </DataTable>
-            <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
-              <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
-              <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
-            </Pagination>
-          </ModalBody>
-          <ModalFooter>
-            <Flex w="100%" justify="flex-end" >
-              <Button colorScheme='red' variant="outline" mr={3} onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
-            </Flex>
-          </ModalFooter>
-        </ModalContent>
-      </form>
+                  </Button>
+                </Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
+                <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.fantasia}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.bairro}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cidade}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.uf}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.categoria}</Td>
+              </Tr>
+            )) : ''}
+          </DataTable>
+          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
+            <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
+            <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
+          </Pagination>
+        </ModalBody>
+        <ModalFooter>
+          <Flex w="100%" justify="flex-end" >
+            <Button colorScheme='red' variant="outline" mr={3} onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+          </Flex>
+        </ModalFooter>
+      </ModalContent>
     </Modal>
   );
 }

@@ -1,5 +1,6 @@
 import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useToast } from '@chakra-ui/react';
 import { FormProvider, useFormContext } from 'react-hook-form';
+import { useState, useEffect } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 import { useModalNotaFiscal } from '../../../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
@@ -13,32 +14,46 @@ import { FormOutros } from './components/FormOutros';
 import { FormTotais } from './components/FormTotais';
 import { FormProdutos } from './components/Produtos/FormProdutos';
 import { FormTransporte } from './components/Transporte/FormTransporte';
+import { INFFormaPagto, NFPagtoService } from '../../../../../services/api/notafiscal/NFFormaPagto';
 
 interface ModalNotaFiscalProps {
-  isEditing: boolean
   id: number
+  isEditing: boolean
+  setIsEditing: (value: boolean) => void,
   getNF: (description: string) => void
 }
 
-export function ModalNotaFiscal({ isEditing, id, getNF}: ModalNotaFiscalProps) {
+export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNotaFiscalProps) {
   const toast = useToast();
   const methods = useFormContext<INotaFiscal>();
+
   const { isOpen, onClose } = useModalNotaFiscal();
   const { idEmissorSelecionado } = useEmissorContext();
+
+  const [formaPagtos, setFormaPagto] = useState<INFFormaPagto[]>([]);
   
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
 
-  const submitData = (data: INotaFiscal) => {
-    if (isEditing)
-      handleUpdateNF(data);
-    else
-      handleCreateNF(data);
+  const clearData = () => {
+    setFormaPagto([]);
+
+    onClose();
+    getNF('');
   };
 
-  const handleCreateNF = (data: INotaFiscal) => {
+  const submitData = (data: INotaFiscal) => {
+    if (isEditing) 
+      handleUpdateNF(data);
+    else 
+      handleCreateNF(data);
+    
+    clearData();
+  };
+
+  const handleCreateNF = async (data: INotaFiscal) => {
     data.id_emissor = idEmissorSelecionado;
-    if (data.destinatario === null || data.destinatario == undefined) {
+    if (data.nome_destinatario === null || data.nome_destinatario == undefined) {
       toast({
         position: 'top',
         title: 'Erro ao cadastrar.',
@@ -48,34 +63,50 @@ export function ModalNotaFiscal({ isEditing, id, getNF}: ModalNotaFiscalProps) {
         isClosable: true,
       });
     } else {
-      NotaFiscalService.create(data, HEADERS)
-        .then((result) => {
-          if (result instanceof ApiException) {
-            console.log(result.message);
-          } else {
-            onClose();
-            getNF('');
-          }
+      const retorno = await NotaFiscalService.create(data, HEADERS);
+
+      if (retorno instanceof ApiException) {
+        console.log(retorno.message);
+      } else {
+        formaPagtos.forEach(async (element) => {
+          element.id_nfe = retorno.id;
+          await NFPagtoService.createNFPagto(element, HEADERS);
         });
+      }
     }
   };
 
-  const handleUpdateNF = (data: INotaFiscal) => {
-    NotaFiscalService.updateById(id, data, HEADERS)
-      .then((result) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          onClose();
-          getNF('');
-        }
+  const handleUpdateNF = async (data: INotaFiscal) => {
+    const retorno = await NotaFiscalService.updateById(id, data, HEADERS);
+
+    if (retorno instanceof ApiException) {
+      console.log(retorno.message);
+    } else {
+      setIsEditing(false);
+
+      await NFPagtoService.deleteNFPagtoById(id, HEADERS);
+
+      formaPagtos.forEach(async (element) => {
+        element.id_nfe = id;
+        await NFPagtoService.createNFPagto(element, HEADERS);
       });
+    }
   };
 
   const handleTabChange = (tab: number) => {
-    if (tab === 3) {
+    if (tab === 2) {
       calcTotalNota();
     }
+  };
+
+  const verify = (value: any) => {
+    if (value !== null && value !== undefined) {
+      if (value.toString().length > 0) {
+        return true;
+      }
+    }
+
+    return false;
   };
 
   const calcTotalNota = () => {
@@ -87,79 +118,46 @@ export function ModalNotaFiscal({ isEditing, id, getNF}: ModalNotaFiscalProps) {
     let outrasDesp = 0;
     let totalII = 0;
     let totalIPIDevolvido = 0;
-    // let totalServ = 0;
     let totalDescProd = 0;
-    // let totalDescServ = 0;
 
-    if (methods.getValues('total_produtos') !== undefined) {
-      if (methods.getValues('total_produtos').toString().length > 0) {
-        totalProdutos = parseFloat(`${methods.getValues('total_produtos')}`);
-      }
+    if (verify(methods.getValues('total_produtos'))) {
+      totalProdutos = parseFloat(`${methods.getValues('total_produtos')}`);
     }
 
-    if (methods.getValues('total_icms_st') !== undefined) {
-      if (methods.getValues('total_icms_st').toString().length > 0) {
-        totalICMSST = parseFloat(`${methods.getValues('total_icms_st')}`);
-      }
+    if (verify(methods.getValues('total_icms_st'))) {
+      totalICMSST = parseFloat(`${methods.getValues('total_icms_st')}`);
     }
 
-    if (methods.getValues('total_ipi') !== undefined) {
-      if (methods.getValues('total_ipi').toString().length > 0) {
-        totalIPI = parseFloat(`${methods.getValues('total_ipi')}`);
-      }
+    if (verify(methods.getValues('total_ipi'))) {
+      totalIPI = parseFloat(`${methods.getValues('total_ipi')}`);
     }
 
-    if (methods.getValues('valor_seguro') !== undefined) {
-      if (methods.getValues('valor_seguro').toString().length > 0) {
-        valorSeguro = parseFloat(`${methods.getValues('valor_seguro')}`);
-      }
+    if (verify(methods.getValues('valor_seguro'))) {
+      valorSeguro = parseFloat(`${methods.getValues('valor_seguro')}`);
     }
 
-    if (methods.getValues('total_frete') !== undefined) {
-      if (methods.getValues('total_frete').toString().length > 0) {
-        totalFrete = parseFloat(`${methods.getValues('total_frete')}`);
-      }
+    if (verify(methods.getValues('total_frete'))) {
+      totalFrete = parseFloat(`${methods.getValues('total_frete')}`);
     }
 
-    if (methods.getValues('outras_despesas') !== undefined) {
-      if (methods.getValues('outras_despesas').toString().length > 0) {
-        outrasDesp = parseFloat(`${methods.getValues('outras_despesas')}`);
-      }
+    if (verify(methods.getValues('outras_despesas'))) {
+      outrasDesp = parseFloat(`${methods.getValues('outras_despesas')}`);
     }
 
-    if (methods.getValues('total_ii') !== undefined) {
-      if (methods.getValues('total_ii').toString().length > 0) {
-        totalII = parseFloat(`${methods.getValues('total_ii')}`);
-      }
+    if (verify(methods.getValues('total_ii'))) {
+      totalII = parseFloat(`${methods.getValues('total_ii')}`);
     }
 
-    if (methods.getValues('total_ipi_devolvido') !== undefined) {
-      if (methods.getValues('total_ipi_devolvido').toString().length > 0) {
-        totalIPIDevolvido = parseFloat(`${methods.getValues('total_ipi_devolvido')}`);
-      }
+    if (verify(methods.getValues('total_ipi_devolvido'))) {
+      totalIPIDevolvido = parseFloat(`${methods.getValues('total_ipi_devolvido')}`);
     }
 
-    // if (methods.getValues('total_servicos') !== undefined) {
-    //   if (methods.getValues('total_servicos').toString().length > 0) {
-    //     totalServ = parseFloat(`${methods.getValues('total_servicos')}`);
-    //   }
-    // }
-
-    if (methods.getValues('total_desconto_produtos') !== undefined) {
-      if (methods.getValues('total_desconto_produtos').toString().length > 0) {
-        totalDescProd = parseFloat(`${methods.getValues('total_desconto_produtos')}`);
-      }
+    if (verify(methods.getValues('total_desconto_produtos'))) {
+      totalDescProd = parseFloat(`${methods.getValues('total_desconto_produtos')}`);
     }
-
-    // if (methods.getValues('total_desconto_servicos') !== undefined) {
-    //   if (methods.getValues('total_desconto_servicos').toString().length > 0) {
-    //     totalDescServ = parseFloat(`${methods.getValues('total_desconto_servicos')}`);
-    //   }
-    // }
 
     const totalGeral = (totalProdutos + totalICMSST + totalIPI + valorSeguro + totalFrete + outrasDesp + totalII + totalIPIDevolvido) - (totalDescProd);
 
-    // methods.setValue('total_desconto_nf', (totalDescProd + totalDescServ));
     methods.setValue('total_desconto_nf', totalDescProd);
     methods.setValue('total_nota', parseFloat(totalGeral.toFixed(2)));
   };
@@ -181,12 +179,10 @@ export function ModalNotaFiscal({ isEditing, id, getNF}: ModalNotaFiscalProps) {
             <ModalHeader>Nota Fiscal</ModalHeader>
             <ModalCloseButton onClick={onClose} />
             <ModalBody>
-            
               <Tabs variant='enclosed' colorScheme="gray" w="100%" onChange={handleTabChange}>
                 <TabList>
                   <Tab>Dados Principais</Tab>
                   <Tab>Produtos</Tab>
-                  {/* <Tab>Serviços</Tab> */}
                   <Tab>Totais</Tab>
                   <Tab>Formas de Pagamento</Tab>
                   <Tab>Transporte</Tab>
@@ -195,19 +191,16 @@ export function ModalNotaFiscal({ isEditing, id, getNF}: ModalNotaFiscalProps) {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <FormDadosPrincipais />
+                    <FormDadosPrincipais isEditing={isEditing} setFormaPagto={setFormaPagto} />
                   </TabPanel>
                   <TabPanel>
                     <FormProdutos />
                   </TabPanel>
-                  {/* <TabPanel>
-                  <FormServicos />
-                </TabPanel> */}
                   <TabPanel>
                     <FormTotais />
                   </TabPanel>
                   <TabPanel>
-                    <FormFormaPagto />
+                    <FormFormaPagto addForma={setFormaPagto} formaPagtos={formaPagtos} isEditing={isEditing} />
                   </TabPanel>
                   <TabPanel>
                     <FormTransporte />
@@ -224,7 +217,7 @@ export function ModalNotaFiscal({ isEditing, id, getNF}: ModalNotaFiscalProps) {
             <ModalFooter>
               <Flex w="100%" justify="space-between" align="center"h="8vh">
                 <Button variant='solid' colorScheme="green" type='submit'><Icon as={FiCheck} mr={1} />Salvar</Button>
-                <Button colorScheme='red' variant="outline" onClick={onClose}><Icon as={FiSlash} mr={1} />Cancelar</Button>
+                <Button colorScheme='red' variant="outline" onClick={clearData}><Icon as={FiSlash} mr={1} />Cancelar</Button>
               </Flex>
             </ModalFooter>
           </ModalContent>

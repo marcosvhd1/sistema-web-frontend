@@ -136,7 +136,6 @@ export function Transportadora() {
   const handleOpenDialog = (id2: number) => {
     onOpen();
     setId(id2);
-    console.log(id);
   };
 
   const handleEditTransportadora = (id: number) => {

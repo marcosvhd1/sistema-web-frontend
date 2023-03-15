@@ -21,6 +21,8 @@ export interface INotaFiscal {
     modelo: number;
     consumidor_final: string;
     destinatario: IClient;
+    id_destinatario: string;
+    nome_destinatario: string;
     data_emissao: Date;
     data_saida: Date;
     hora: Date;
@@ -62,10 +64,11 @@ export interface INotaFiscal {
     total_fcp: number;
     total_fcp_st: number;
     presenca_comprador: string;
-    duplicata: INFDuplicata[]; //colocar no back em NFFPagto
+    duplicata: INFDuplicata[];
     forma_pagto: INFFormaPagto[]; //colocar no back em NFFPagto
     modalidade_frete: string;
-    transportadora: ITransportadora; //colocar no back em NFTransportadora
+    id_transportadora: string;
+    transportadora: ITransportadora;
     quantidade_transporte: number;
     numero_transporte: number;
     especie_transporte: string;

@@ -77,7 +77,6 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
   };
 
   const handleUpdateEmissor = (data: IEmissor) => {
-    console.log(data);
     data.status = active ? 'Ativo' : 'Inativo';
     EmissorService.update(data.id, data, HEADERS)
       .then((result) => {

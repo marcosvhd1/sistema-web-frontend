@@ -1,5 +1,6 @@
-import { Button, Flex, Grid, GridItem, Select, Textarea, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Grid, GridItem, Icon, Select, Textarea, useColorMode } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
+import { MdAdd } from 'react-icons/md';
 import { INotaFiscal } from '../../../../../../services/api/notafiscal/NotaFiscalService';
 
 export function FormInfoAdicional() {
@@ -19,7 +20,7 @@ export function FormInfoAdicional() {
           <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="35%" mr={3}>
             <option value='0'></option>
           </Select>
-          <Button w="10%" fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">Inserir</Button>
+          <Button w="10%" fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue"><Icon mr={2} as={MdAdd} />Inserir</Button>
         </Flex>
       </GridItem>
 

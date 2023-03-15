@@ -1,7 +1,7 @@
 import { Button, Divider, Flex, Icon, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { FiTrash2 } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
@@ -14,14 +14,20 @@ import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFi
 import { ModalNFDuplicata } from './ModalNFDuplicataPagto';
 import { ModalNFFormaPagto } from './ModalNFFormaPagto';
 
-export function FormFormaPagto() {
+interface FormFormaPagtoProps {
+  isEditing: boolean,
+  formaPagtos: INFFormaPagto[],
+  addForma: (forma: INFFormaPagto[]) => void
+}
+
+export function FormFormaPagto({ isEditing, formaPagtos, addForma }: FormFormaPagtoProps) {
   const methods = useFormContext<INotaFiscal>();
 
   const { onOpen } = useModalNFFormaPagto();
   const { onOpen: openDuplicata } = useModalNFDuplicata();
   const { colorMode } = useColorMode();
 
-  const [formaPagtos, setFormaPagto] = useState<INFFormaPagto[]>([]);
+
   const [duplicatas, setDuplicatas] = useState<INFDuplicata[]>([]);
 
   const openModalForma = () => {
@@ -37,19 +43,15 @@ export function FormFormaPagto() {
 
   const handleAddForma = (data: INFFormaPagto) => {
     formaPagtos.push(data);
-
-    //methods.setValue('forma_pagto', formaPagtos);
   };
 
   const handleDeleteForma = (data: INFFormaPagto) => {
     const newArray = formaPagtos.filter(forma => forma !== data);
-    setFormaPagto(newArray);
+    addForma(newArray);
   };
 
   const handleAddDuplicata = (data: INFDuplicata) => {
     duplicatas.push(data);
-
-    //methods.setValue('forma_pagto', formaPagtos);
   };
 
   const handleDeleteDuplicata = (data: INFDuplicata) => {

@@ -1,5 +1,6 @@
 import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useColorMode } from '@chakra-ui/react';
 import { useForm, useFormContext } from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 import { MoneyAddon } from '../../../../../../../components/Form/MoneyAddon';
@@ -18,24 +19,32 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
   const { isOpen, onClose } = useModalNFFormaPagto();
   const { colorMode } = useColorMode();
 
-  const onSubmit = (data: INFFormaPagto) => {
+  const onSubmit = () => {
+    const data: INFFormaPagto = {
+      'id_nfe': 0,
+      'forma': methods.getValues('forma'),
+      'valor': methods.getValues('valor'),
+      'bandeira': methods.getValues('bandeira'),
+      'observacao': methods.getValues('observacao'),
+    };
+
     addFormaPagto(data);  
     
     onClose();
   };
   
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      closeOnOverlayClick={false}
-      motionPreset='slideInBottom'
-      isCentered
-      scrollBehavior='inside'
-      size={{md: '4xl', lg: '5xl'}}
-    >
-      <ModalOverlay />
-      <form onSubmit={methods.handleSubmit((data) => onSubmit(data))}>
+    <FormProvider {...methods}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        closeOnOverlayClick={false}
+        motionPreset='slideInBottom'
+        isCentered
+        scrollBehavior='inside'
+        size={{md: '4xl', lg: '5xl'}}
+      >
+        <ModalOverlay />
         <ModalContent>
           <ModalHeader>
             <Flex w='100%' justify='center' align='center'>
@@ -87,12 +96,12 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
           </ModalBody>
           <ModalFooter>
             <Flex w='100%' justify='space-between' >
-              <Button variant='solid' colorScheme='green' type='submit'><Icon as={FiCheck} mr={1} />Salvar</Button>
+              <Button variant='solid' colorScheme='green' onClick={onSubmit}><Icon as={FiCheck} mr={1} />Salvar</Button>
               <Button colorScheme='red' variant='outline' mr={3} onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>
-      </form>
-    </Modal>
+      </Modal>
+    </FormProvider>
   );
 }

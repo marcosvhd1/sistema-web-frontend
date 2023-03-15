@@ -1,18 +1,30 @@
 import { Button, Divider, Flex, Icon, Input, Select, Text, useColorMode } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { FiCheckCircle, FiEdit, FiSearch } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 import { useModalNFClient } from '../../../../../../../Contexts/Modal/NotaFiscal/NFClientContext';
+import { INFFormaPagto } from '../../../../../../../services/api/notafiscal/NFFormaPagto';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ModalNFClient } from './ModalNFClient';
 
-export function FormDadosPrincipais() {
+interface FormDadosPrincipaisProps {
+  isEditing: boolean,
+  setFormaPagto: (value: INFFormaPagto[]) => void
+}
+
+export function FormDadosPrincipais({ isEditing, setFormaPagto }: FormDadosPrincipaisProps) {
   const methods = useFormContext<INotaFiscal>();
 
   const { onOpen } = useModalNFClient();
   const [block, setBlock] = useState<boolean>(true);
   const { colorMode } = useColorMode();
+
+  useEffect(() => {
+    if (isEditing) {
+      setFormaPagto(methods.getValues('forma_pagto'));
+    }
+  }, []);
 
   const handleBlockInputCod = () => {
     setBlock(!block);

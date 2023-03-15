@@ -16,12 +16,16 @@ import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { ApiException } from '../../../services/api/ApiException';
 import { useModalNotaFiscal } from '../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
 import { ModalNotaFiscal } from './components/Form/FormIndex';
+import { ClientService } from '../../../services/api/clientes/ClientService';
+import { IClient } from '../../../services/api/clientes/ClientService';
+import { TransportadoraService } from '../../../services/api/transportadora/TransportadoraService';
+import { NFPagtoService } from '../../../services/api/notafiscal/NFFormaPagto';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
 
   const [data, setData] = useState<INotaFiscal[]>([]);
-  const [filter, setFilter] = useState<string>('nome_cliente');
+  const [filter, setFilter] = useState<string>('nome_destinatario');
   
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [id, setId] = useState<number>(0);
@@ -79,9 +83,38 @@ export function NotaFiscal() {
 
   const handleEditNF = async (idNf: number) => {
     const nfToUpdate = data.find((prod) => prod.id === idNf);
+
     if (nfToUpdate) {
-      onOpen();
       methods.reset(nfToUpdate);
+
+      await ClientService.getClientsByFilter(currentPage, limitRegistros, 'id', nfToUpdate.id_destinatario, idEmissorSelecionado, HEADERS)
+        .then((result: any) => {
+          if (result instanceof ApiException) {
+            console.log(result.message);
+          } else {
+            methods.setValue('destinatario', (result.data[0]));
+          }
+        });
+
+      await TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, 'id', nfToUpdate.id_transportadora, idEmissorSelecionado, HEADERS)
+        .then((result: any) => {
+          if (result instanceof ApiException) {
+            console.log(result.message);
+          } else {
+            methods.setValue('transportadora', (result.data[0]));
+          }
+        });
+
+      await NFPagtoService.getNFPagtoByNF(idNf, HEADERS)
+        .then((result: any) => {
+          if (result instanceof ApiException) {
+            console.log(result.message);
+          } else {
+            methods.setValue('forma_pagto', result.data);
+          }
+        });
+
+      onOpen();
       setIsEditing(true);
       setId(idNf);
     }
@@ -96,7 +129,7 @@ export function NotaFiscal() {
           toast({
             position: 'top',
             title: 'Operação concluída.',
-            description: 'Produto excluído com sucesso.',
+            description: 'Nota excluída com sucesso.',
             status: 'success',
             duration: 2000,
             isClosable: true,
@@ -128,7 +161,7 @@ export function NotaFiscal() {
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.serie}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.natureza_operacao}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>Cliente</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.nome_destinatario}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.status}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.total_nota}</Td>
                 <Td style={{ 'textAlign': 'center' }}>
@@ -147,7 +180,7 @@ export function NotaFiscal() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalNotas} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <ModalNotaFiscal isEditing={isEditing} id={id} getNF={getNF}/>
+        <ModalNotaFiscal isEditing={isEditing} setIsEditing={setIsEditing} id={id} getNF={getNF}/>
       </MainContent>
     </FormProvider>
   );
