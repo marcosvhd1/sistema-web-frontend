@@ -40,7 +40,6 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
   const HEADERS = userInfo.header;
 
   const headers: { key: string, label: string }[] = [
-    { key: 'acao', label: 'Adicionar' },
     { key: 'id', label: 'Código' },
     { key: 'descricao', label: 'Descrição' },
     { key: 'preco', label: 'Preço' },
@@ -137,13 +136,7 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
         <ModalBody>
           <DataTable headers={headers} mt="0" width='100%' trailing={false}>
             {data !== undefined ? data.map((data) => (
-              <Tr key={data.id}>
-                <Td style={{ 'textAlign': 'center' }}>
-                  <Button variant="solid" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleSetProduct(data)}>
-                    <Icon as={MdAdd} mr={1} />
-                      Adicionar
-                  </Button>
-                </Td>
+              <Tr key={data.id} onClick={() => handleSetProduct(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
                 <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.nprod).slice(-4)}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + (data.preco).toString().replace('.', ',') : ''}</Td>

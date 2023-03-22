@@ -15,6 +15,7 @@ import { FormTotais } from './components/FormTotais';
 import { FormProdutos } from './components/Produtos/FormProdutos';
 import { FormTransporte } from './components/Transporte/FormTransporte';
 import { INFFormaPagto, NFPagtoService } from '../../../../../services/api/notafiscal/NFFormaPagto';
+import { INFProduct, NFProdutoService } from '../../../../../services/api/notafiscal/NFProduct';
 
 interface ModalNotaFiscalProps {
   id: number
@@ -30,6 +31,7 @@ export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNota
   const { isOpen, onClose } = useModalNotaFiscal();
   const { idEmissorSelecionado } = useEmissorContext();
 
+  const [produtos, setProdutos] = useState<INFProduct[]>([]);
   const [formaPagtos, setFormaPagto] = useState<INFFormaPagto[]>([]);
   
   const userInfo = userInfos();
@@ -68,6 +70,11 @@ export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNota
       if (retorno instanceof ApiException) {
         console.log(retorno.message);
       } else {
+        produtos.forEach(async (element) => {
+          element.id_nfe = retorno.id;
+          await NFProdutoService.create(element, HEADERS);
+        });
+
         formaPagtos.forEach(async (element) => {
           element.id_nfe = retorno.id;
           await NFPagtoService.createNFPagto(element, HEADERS);
@@ -194,7 +201,7 @@ export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNota
                     <FormDadosPrincipais isEditing={isEditing} setFormaPagto={setFormaPagto} />
                   </TabPanel>
                   <TabPanel>
-                    <FormProdutos />
+                    <FormProdutos produtos={produtos} addProduto={setProdutos} />
                   </TabPanel>
                   <TabPanel>
                     <FormTotais />

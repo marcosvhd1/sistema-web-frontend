@@ -27,23 +27,23 @@ export function Fields500() {
       </FormContainer>  
       <FormContainer label='Base de Cálculo ST retido anteriormente'>
         <MoneyAddon>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('base_calc_retido_ant')} />
+          <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('base_calc_retido_ant')} />
         </MoneyAddon>
       </FormContainer>
       <FormContainer label='ICMS ST retido anteriormente'>
         <MoneyAddon>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('icms_st_retido_ant')} />
+          <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('icms_st_retido_ant')} />
         </MoneyAddon>
       </FormContainer>
       <Flex w="100%" justify="space-between" >
         <FormContainer label='EAN (Código de barras)' mr='3'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('ean')}/>
+          <Input defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('ean')}/>
         </FormContainer>
         <FormContainer label='N° Pedido de Compra' mr='3'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('pedido_compra')}/>
+          <Input defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('pedido_compra')}/>
         </FormContainer>
         <FormContainer label='Item'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('item')}/>
+          <Input defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('item')}/>
         </FormContainer>
       </Flex>
     </Flex>

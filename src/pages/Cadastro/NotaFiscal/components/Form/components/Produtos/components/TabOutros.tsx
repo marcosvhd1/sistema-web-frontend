@@ -14,10 +14,10 @@ export function FormTabOutros() {
   return (
     <Flex w="100%" justify="center" align="center">
       <FormContainer label='Código Produto ANP' width='40%' mr='3'>
-        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('cod_anp')}/>
+        <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('cod_anp')}/>
       </FormContainer>
       <FormContainer label='Descrição ANP' width='40%' mr='3'>
-        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('descricao_anp')}/>
+        <Input defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('descricao_anp')}/>
       </FormContainer>
       <FormContainer label='UF Consumo' width='20%'>
         <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  {...register('uf_consumo')} onChange={(event) => setSelectedEstado(event.target.value)}>

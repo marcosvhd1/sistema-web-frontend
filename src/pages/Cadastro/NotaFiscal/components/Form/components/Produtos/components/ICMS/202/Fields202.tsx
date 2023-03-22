@@ -37,39 +37,39 @@ export function Fields202() {
         </FormContainer>
         <FormContainer label='Percentual margem de valor adic. ICMS ST'>
           <PorcentAddon>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('p_margem_vlr_adc_icms_st')}/>
+            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('p_margem_vlr_adc_icms_st')}/>
           </PorcentAddon>
         </FormContainer>
         <FormContainer label='Percentual de redução de base ICMS ST'>
           <PorcentAddon>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('p_reducao_base_icms_st')} />
+            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('p_reducao_base_icms_st')} />
           </PorcentAddon>
         </FormContainer>
         <FormContainer label='Base de Cálculo ST'>
           <MoneyAddon>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('base_icms_st')}/>
+            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('base_icms_st')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Alíquota ICMS ST'>
           <PorcentAddon>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('aliquota_icms_st')}/>
+            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('aliquota_icms_st')}/>
           </PorcentAddon>
         </FormContainer>
         <FormContainer label='Valor ICMS ST'>
           <MoneyAddon>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('valor_icms_st')}/>
+            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('valor_icms_st')}/>
           </MoneyAddon>
         </FormContainer>
       </Flex>
       <Flex w="100%" justify="space-between" >
         <FormContainer label='EAN (Código de barras)' mr='3'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('ean')}/>
+          <Input defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('ean')}/>
         </FormContainer>
         <FormContainer label='N° Pedido de Compra' mr='3'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('pedido_compra')}/>
+          <Input defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('pedido_compra')}/>
         </FormContainer>
         <FormContainer label='Item'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('item')}/>
+          <Input defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('item')}/>
         </FormContainer>
       </Flex>
     </Flex>

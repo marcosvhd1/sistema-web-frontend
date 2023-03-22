@@ -12,14 +12,18 @@ import { INFProduct } from '../../../../../../../services/api/notafiscal/NFProdu
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ModalNFProduct } from './ModalNFProduct';
 
-export function FormProdutos() {
+interface FormProdutosProps {
+  produtos: INFProduct[],
+  addProduto: (forma: INFProduct[]) => void
+}
+
+export function FormProdutos({ produtos, addProduto }: FormProdutosProps) {
   const methods = useForm<INFProduct>();
   const nfMethods = useFormContext<INotaFiscal>();
 
   const { onOpen: openModal } = useModalNFProduct();
   const { onOpen, onClose, isOpen } = useAlertNFProductContext();
 
-  const [produtos, setProdutos] = useState<INFProduct[]>([]);
   const [prodToDelete, setProdToDelete] = useState<INFProduct>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -53,7 +57,7 @@ export function FormProdutos() {
 
   const handleDeleteProd = () => {
     const newArray = produtos.filter(prod => prod !== prodToDelete);
-    setProdutos(newArray);
+    addProduto(newArray);
     saveChanges();
     onClose();
   };

@@ -32,7 +32,6 @@ export function ModalNFClient() {
   const HEADERS = userInfo.header;
 
   const headers: { key: string, label: string }[] = [
-    { key: 'action', label: 'Adicionar' },
     { key: 'cod', label: 'Código' },
     { key: 'razao', label: 'Nome / Razão Social' },
     { key: 'fantasia', label: 'Nome Fantasia' },
@@ -123,13 +122,7 @@ export function ModalNFClient() {
         <ModalBody>
           <DataTable headers={headers} mt="0" width='100%' trailing={false}>
             {data !== undefined ? data.map((data) => (
-              <Tr key={data.id} onDoubleClick={() => handleSetClient(data)}>
-                <Td style={{ 'textAlign': 'center' }}>
-                  <Button variant="solid" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleSetClient(data)}>
-                    <Icon as={FiUserCheck} mr={1}/>
-                      Incluir
-                  </Button>
-                </Td>
+              <Tr key={data.id} onClick={() => handleSetClient(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
                 <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.fantasia}</Td>

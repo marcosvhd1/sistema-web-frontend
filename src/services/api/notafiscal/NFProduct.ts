@@ -1,6 +1,10 @@
+import { Api } from '../ApiConfig';
+import { ApiException } from '../ApiException';
 import { IProduct } from '../produtos/ProductService';
 
 export interface INFProduct {
+  id?: number;
+  id_nfe: number;
   produto: IProduct
   quantidade: number
   valor_unitario: number
@@ -55,4 +59,16 @@ export interface INFProduct {
   uf_consumo: string
 }
 
-export const NFProdutoService = {};
+const create = async (dataToCreate: Omit<INFProduct, 'id' | 'cod'>, HEADERS: any): Promise<INFProduct | ApiException> => {
+  try {
+    const { data } = await Api().post<INFProduct>('/nf_produtos', dataToCreate, HEADERS);
+    
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao criar o registro.');
+  }
+};
+
+export const NFProdutoService = {
+  create
+};

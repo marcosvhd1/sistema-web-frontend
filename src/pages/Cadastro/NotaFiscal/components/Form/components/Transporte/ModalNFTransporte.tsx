@@ -36,7 +36,6 @@ export function ModalNFTransporte() {
   const HEADERS = userInfo.header;
 
   const headers: { key: string, label: string }[] = [
-    { key: 'action', label: 'Adicionar' },
     { key: 'cod', label: 'Código' },
     { key: 'razao', label: 'Nome / Razão Social' },
     { key: 'cnpjcpf', label: 'CPF / CNPJ' },
@@ -123,13 +122,7 @@ export function ModalNFTransporte() {
         <ModalBody>
           <DataTable headers={headers} mt="0" width='100%' trailing={false}>
             {data !== undefined ? data.map((data) => (
-              <Tr key={data.id} onDoubleClick={() => handleSetTransp(data)}>
-                <Td style={{ 'textAlign': 'center' }}>
-                  <Button variant="solid" colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleSetTransp(data)}>
-                    <Icon as={FiTruck} mr={1}/>
-                      Incluir
-                  </Button>
-                </Td>
+              <Tr key={data.id} onClick={() => handleSetTransp(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
                 <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
