@@ -1,11 +1,31 @@
-import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useToast } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Icon,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useToast,
+} from '@chakra-ui/react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 import { useModalNotaFiscal } from '../../../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
 import { ApiException } from '../../../../../services/api/ApiException';
-import { INotaFiscal, NotaFiscalService } from '../../../../../services/api/notafiscal/NotaFiscalService';
+import {
+  INotaFiscal,
+  NotaFiscalService,
+} from '../../../../../services/api/notafiscal/NotaFiscalService';
 import { userInfos } from '../../../../../utils/header';
 import { FormDadosPrincipais } from './components/Dados Principais/FormDadosPrincipais';
 import { FormFormaPagto } from './components/FormaPagto/FormFormaPagto';
@@ -14,17 +34,28 @@ import { FormOutros } from './components/FormOutros';
 import { FormTotais } from './components/FormTotais';
 import { FormProdutos } from './components/Produtos/FormProdutos';
 import { FormTransporte } from './components/Transporte/FormTransporte';
-import { INFFormaPagto, NFPagtoService } from '../../../../../services/api/notafiscal/NFFormaPagto';
-import { INFProduct, NFProdutoService } from '../../../../../services/api/notafiscal/NFProduct';
+import {
+  INFFormaPagto,
+  NFPagtoService,
+} from '../../../../../services/api/notafiscal/NFFormaPagto';
+import {
+  INFProduct,
+  NFProdutoService,
+} from '../../../../../services/api/notafiscal/NFProduct';
 
 interface ModalNotaFiscalProps {
-  id: number
-  isEditing: boolean
-  setIsEditing: (value: boolean) => void,
-  getNF: (description: string) => void
+  id: number;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
+  getNF: (description: string) => void;
 }
 
-export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNotaFiscalProps) {
+export function ModalNotaFiscal({
+  isEditing,
+  setIsEditing,
+  id,
+  getNF,
+}: ModalNotaFiscalProps) {
   const toast = useToast();
   const methods = useFormContext<INotaFiscal>();
 
@@ -33,29 +64,35 @@ export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNota
 
   const [produtos, setProdutos] = useState<INFProduct[]>([]);
   const [formaPagtos, setFormaPagto] = useState<INFFormaPagto[]>([]);
-  
+
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
 
   const clearData = () => {
-    setFormaPagto([]);
+    const auxForma: INFFormaPagto[] = [];
+    const auxProd: INFProduct[] = [];
+
+    setFormaPagto(auxForma);
+    setProdutos(auxProd);
+    setIsEditing(false);
 
     onClose();
     getNF('');
   };
 
   const submitData = (data: INotaFiscal) => {
-    if (isEditing) 
-      handleUpdateNF(data);
-    else 
-      handleCreateNF(data);
-    
+    if (isEditing) handleUpdateNF(data);
+    else handleCreateNF(data);
+
     clearData();
   };
 
   const handleCreateNF = async (data: INotaFiscal) => {
     data.id_emissor = idEmissorSelecionado;
-    if (data.nome_destinatario === null || data.nome_destinatario == undefined) {
+    if (
+      data.nome_destinatario === null ||
+      data.nome_destinatario == undefined
+    ) {
       toast({
         position: 'top',
         title: 'Erro ao cadastrar.',
@@ -70,15 +107,19 @@ export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNota
       if (retorno instanceof ApiException) {
         console.log(retorno.message);
       } else {
-        produtos.forEach(async (element) => {
-          element.id_nfe = retorno.id;
-          await NFProdutoService.create(element, HEADERS);
-        });
+        if (produtos.length > 0) {
+          produtos.forEach(async (element) => {
+            element.id_nfe = retorno.id;
+            await NFProdutoService.create(element, HEADERS);
+          });
+        }
 
-        formaPagtos.forEach(async (element) => {
-          element.id_nfe = retorno.id;
-          await NFPagtoService.createNFPagto(element, HEADERS);
-        });
+        if (formaPagtos.length > 0) {
+          formaPagtos.forEach(async (element) => {
+            element.id_nfe = retorno.id;
+            await NFPagtoService.createNFPagto(element, HEADERS);
+          });
+        }
       }
     }
   };
@@ -116,7 +157,7 @@ export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNota
     return false;
   };
 
-  const calcTotalNota = () => {
+  const calcTotalNota = async () => {
     let totalProdutos = 0;
     let totalICMSST = 0;
     let totalIPI = 0;
@@ -156,14 +197,27 @@ export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNota
     }
 
     if (verify(methods.getValues('total_ipi_devolvido'))) {
-      totalIPIDevolvido = parseFloat(`${methods.getValues('total_ipi_devolvido')}`);
+      totalIPIDevolvido = parseFloat(
+        `${methods.getValues('total_ipi_devolvido')}`
+      );
     }
 
     if (verify(methods.getValues('total_desconto_produtos'))) {
-      totalDescProd = parseFloat(`${methods.getValues('total_desconto_produtos')}`);
+      totalDescProd = parseFloat(
+        `${methods.getValues('total_desconto_produtos')}`
+      );
     }
 
-    const totalGeral = (totalProdutos + totalICMSST + totalIPI + valorSeguro + totalFrete + outrasDesp + totalII + totalIPIDevolvido) - (totalDescProd);
+    const totalGeral =
+      totalProdutos +
+      totalICMSST +
+      totalIPI +
+      valorSeguro +
+      totalFrete +
+      outrasDesp +
+      totalII +
+      totalIPIDevolvido -
+      totalDescProd;
 
     methods.setValue('total_desconto_nf', totalDescProd);
     methods.setValue('total_nota', parseFloat(totalGeral.toFixed(2)));
@@ -175,10 +229,10 @@ export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNota
         isOpen={isOpen}
         onClose={onClose}
         closeOnOverlayClick={false}
-        motionPreset='slideInBottom'
+        motionPreset="slideInBottom"
         isCentered
         scrollBehavior="inside"
-        size={{md: '6xl', lg: '6xl'}}
+        size={{ md: '6xl', lg: '6xl' }}
       >
         <ModalOverlay />
         <form onSubmit={methods.handleSubmit(submitData)}>
@@ -186,7 +240,12 @@ export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNota
             <ModalHeader>Nota Fiscal</ModalHeader>
             <ModalCloseButton onClick={onClose} />
             <ModalBody>
-              <Tabs variant='enclosed' colorScheme="gray" w="100%" onChange={handleTabChange}>
+              <Tabs
+                variant="enclosed"
+                colorScheme="gray"
+                w="100%"
+                onChange={handleTabChange}
+              >
                 <TabList>
                   <Tab>Dados Principais</Tab>
                   <Tab>Produtos</Tab>
@@ -198,16 +257,26 @@ export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNota
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <FormDadosPrincipais isEditing={isEditing} setFormaPagto={setFormaPagto} />
+                    <FormDadosPrincipais
+                      isEditing={isEditing}
+                      setFormaPagto={setFormaPagto}
+                    />
                   </TabPanel>
                   <TabPanel>
-                    <FormProdutos produtos={produtos} addProduto={setProdutos} />
+                    <FormProdutos
+                      produtos={produtos}
+                      addProduto={setProdutos}
+                    />
                   </TabPanel>
                   <TabPanel>
                     <FormTotais />
                   </TabPanel>
                   <TabPanel>
-                    <FormFormaPagto addForma={setFormaPagto} formaPagtos={formaPagtos} isEditing={isEditing} />
+                    <FormFormaPagto
+                      addForma={setFormaPagto}
+                      formaPagtos={formaPagtos}
+                      isEditing={isEditing}
+                    />
                   </TabPanel>
                   <TabPanel>
                     <FormTransporte />
@@ -215,16 +284,22 @@ export function ModalNotaFiscal({ isEditing, setIsEditing, id, getNF}: ModalNota
                   <TabPanel>
                     <FormInfoAdicional />
                   </TabPanel>
-                  <TabPanel>  
+                  <TabPanel>
                     <FormOutros />
                   </TabPanel>
                 </TabPanels>
               </Tabs>
             </ModalBody>
             <ModalFooter>
-              <Flex w="100%" justify="space-between" align="center"h="8vh">
-                <Button variant='solid' colorScheme="green" type='submit'><Icon as={FiCheck} mr={1} />Salvar</Button>
-                <Button colorScheme='red' variant="outline" onClick={clearData}><Icon as={FiSlash} mr={1} />Cancelar</Button>
+              <Flex w="100%" justify="space-between" align="center" h="8vh">
+                <Button variant="solid" colorScheme="green" type="submit">
+                  <Icon as={FiCheck} mr={1} />
+                  Salvar
+                </Button>
+                <Button colorScheme="red" variant="outline" onClick={clearData}>
+                  <Icon as={FiSlash} mr={1} />
+                  Cancelar
+                </Button>
               </Flex>
             </ModalFooter>
           </ModalContent>

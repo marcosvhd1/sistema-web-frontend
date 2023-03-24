@@ -12,10 +12,11 @@ import { INotaFiscal } from '../../../../services/api/notafiscal/NotaFiscalServi
 interface SearchBoxProps {
   children: ReactNode;
   getNotasFiscaisByFilter: (description: string) => void;
+  setIsEditing: (value: boolean) => void;
   stateFilter: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter }: SearchBoxProps) {
+export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setIsEditing }: SearchBoxProps) {
   const { register, handleSubmit, getValues } = useForm();
   const methods = useFormContext<INotaFiscal>();
   const { colorMode } = useColorMode();
@@ -27,6 +28,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter }: Se
   };
 
   const handleOpenModal = () => {
+    setIsEditing(false);
     methods.reset({});
     onOpen();
   };

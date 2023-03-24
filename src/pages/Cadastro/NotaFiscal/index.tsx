@@ -153,7 +153,7 @@ export function NotaFiscal() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox getNotasFiscaisByFilter={getNF} stateFilter={setFilter}>
+        <SearchBox getNotasFiscaisByFilter={getNF} stateFilter={setFilter} setIsEditing={setIsEditing}>
           <DataTable headers={headers}>
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>

@@ -29,61 +29,327 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
   const methods = useFormContext<INFProduct>();
   const { colorMode } = useColorMode();
 
+  const verify = (value: any) => {
+    if (value !== null && value !== undefined) {
+      if (value.toString().length > 0) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   const onSubmit = () => {
+    let qtd = 0;
+    let valorUnit = 0;
+    let valorTot = 0;
+    let descP = 0;
+    let descTot = 0;
+    let pRedBICMS = 0;
+    let valorICMS = 0;
+    let pAliqCred = 0;
+    let credICMSAprov = 0;
+    let modDetBICMS = '';
+    let modDetBICMSST = '';
+    let pMargValorAdcICMSST = 0;
+    let pRedBICMSST = 0;
+    let bICMSST = 0;
+    let aliqICMSST = 0;
+    let valorICMSST = 0;
+    let bRetAnt = 0;
+    let icmsSTRetAnt = 0;
+    let ean = '';
+    let pedCompra = '';
+    let item = '';
+    let bIPI = 0;
+    let valorIPI = 0;
+    let cnpjP = '';
+    let bII = 0;
+    let despAd = 0;
+    let valorIOF = 0;
+    let valorII = 0;
+    let bPIS = 0;
+    let valorPIS = 0;
+    let bCOFINS = 0;
+    let valorCOFINS = 0;
+    let IPIPDev = 0;
+    let IPIValorDev = 0;
+    let FCPb = 0;
+    let FCPp = 0;
+    let FCPvalor = 0;
+    let FCPbST = 0;
+    let FCPpST = 0;
+    let FCPvalorST = 0;
+    let partICMSb = 0;
+    let partICMSAliqFCPUFDest = 0;
+    let partICMSValorFCPUFDest = 0;
+    let partICMSAliqIntICMSUFDest = 0;
+    let partICMSAliqICMSInter = 0;
+    let partICMSpPart = '';
+    let partICMSvalorICMSUFDest = 0;
+    let partICMSvalorICMSUFOri = 0;
+    let codANP = '';
+    let descANP = '';
+    let ufCons = '';
+
+    if (verify(methods.getValues('quantidade'))) {
+      qtd = methods.getValues('quantidade');
+    }
+
+    if (verify(methods.getValues('valor_unitario'))) {
+      valorUnit = methods.getValues('valor_unitario');
+    }
+
+    if (verify(methods.getValues('valor_total'))) {
+      valorTot = methods.getValues('valor_total');
+    }
+
+    if (verify(methods.getValues('desconto_p'))) {
+      descP = methods.getValues('desconto_p');
+    }
+
+    if (verify(methods.getValues('desconto_total'))) {
+      descTot = methods.getValues('desconto_total');
+    }
+
+    if (verify(methods.getValues('p_reducao_base_icms'))) {
+      pRedBICMS = methods.getValues('p_reducao_base_icms');
+    }
+
+    if (verify(methods.getValues('valor_icms'))) {
+      valorICMS = methods.getValues('valor_icms');
+    }
+
+    if (verify(methods.getValues('p_aliquota_credito'))) {
+      pAliqCred = methods.getValues('p_aliquota_credito');
+    }
+
+    if (verify(methods.getValues('credito_icms_aproveitado'))) {
+      credICMSAprov = methods.getValues('credito_icms_aproveitado');
+    }
+
+    if (verify(methods.getValues('mod_det_bc_icms'))) {
+      modDetBICMS = methods.getValues('mod_det_bc_icms');
+    }
+
+    if (verify(methods.getValues('mod_det_bc_icms_st'))) {
+      modDetBICMSST = methods.getValues('mod_det_bc_icms_st');
+    }
+
+    if (verify(methods.getValues('p_margem_vlr_adc_icms_st'))) {
+      pMargValorAdcICMSST = methods.getValues('p_margem_vlr_adc_icms_st');
+    }
+
+    if (verify(methods.getValues('p_reducao_base_icms_st'))) {
+      pRedBICMSST = methods.getValues('p_reducao_base_icms_st');
+    }
+
+    if (verify(methods.getValues('base_icms_st'))) {
+      bICMSST = methods.getValues('base_icms_st');
+    }
+
+    if (verify(methods.getValues('aliquota_icms_st'))) {
+      aliqICMSST = methods.getValues('aliquota_icms_st');
+    }
+
+    if (verify(methods.getValues('valor_icms_st'))) {
+      valorICMSST = methods.getValues('valor_icms_st');
+    }
+
+    if (verify(methods.getValues('base_calc_retido_ant'))) {
+      bRetAnt = methods.getValues('base_calc_retido_ant');
+    }
+
+    if (verify(methods.getValues('icms_st_retido_ant'))) {
+      icmsSTRetAnt = methods.getValues('icms_st_retido_ant');
+    }
+
+    if (verify(methods.getValues('ean'))) {
+      ean = methods.getValues('ean');
+    }
+
+    if (verify(methods.getValues('pedido_compra'))) {
+      pedCompra = methods.getValues('pedido_compra');
+    }
+
+    if (verify(methods.getValues('item'))) {
+      item = methods.getValues('item');
+    }
+
+    if (verify(methods.getValues('base_calc_ipi'))) {
+      bIPI = methods.getValues('base_calc_ipi');
+    }
+
+    if (verify(methods.getValues('valor_ipi'))) {
+      valorIPI = methods.getValues('valor_ipi');
+    }
+
+    if (verify(methods.getValues('cnpj_produtor'))) {
+      cnpjP = methods.getValues('cnpj_produtor');
+    }
+
+    if (verify(methods.getValues('base_calc_ii'))) {
+      bII = methods.getValues('base_calc_ii');
+    }
+    
+    if (verify(methods.getValues('desp_aduaneiras'))) {
+      despAd = methods.getValues('desp_aduaneiras');
+    }
+    
+    if (verify(methods.getValues('valor_iof'))) {
+      valorIOF = methods.getValues('valor_iof');
+    }
+    
+    if (verify(methods.getValues('valor_ii'))) {
+      valorII = methods.getValues('valor_ii');
+    }
+    
+    if (verify(methods.getValues('base_calc_pis'))) {
+      bPIS = methods.getValues('base_calc_pis');
+    }
+    
+    if (verify(methods.getValues('valor_pis'))) {
+      valorPIS = methods.getValues('valor_pis');
+    }
+    
+    if (verify(methods.getValues('base_calc_cofins'))) {
+      bCOFINS = methods.getValues('base_calc_cofins');
+    }
+    
+    if (verify(methods.getValues('valor_cofins'))) {
+      valorCOFINS = methods.getValues('valor_cofins');
+    }
+    
+    if (verify(methods.getValues('ipi_p_devolvida'))) {
+      IPIPDev = methods.getValues('ipi_p_devolvida');
+    }
+    
+    if (verify(methods.getValues('ipi_vlr_devolvido'))) {
+      IPIValorDev = methods.getValues('ipi_vlr_devolvido');
+    }
+    
+    if (verify(methods.getValues('fcp_base_calc'))) {
+      FCPb = methods.getValues('fcp_base_calc');
+    }
+    
+    if (verify(methods.getValues('fcp_p'))) {
+      FCPp = methods.getValues('fcp_p');
+    }
+    
+    if (verify(methods.getValues('fcp_valor'))) {
+      FCPvalor = methods.getValues('fcp_valor');
+    }
+    
+    if (verify(methods.getValues('fcp_base_calc_st'))) {
+      FCPbST = methods.getValues('fcp_base_calc_st');
+    }
+    
+    if (verify(methods.getValues('fcp_p_st'))) {
+      FCPpST = methods.getValues('fcp_p_st');
+    }
+    
+    if (verify(methods.getValues('fcp_valor_st'))) {
+      FCPvalorST = methods.getValues('fcp_valor_st');
+    }
+    
+    if (verify(methods.getValues('partilha_icms_base_calc'))) {
+      partICMSb = methods.getValues('partilha_icms_base_calc');
+    }
+    
+    if (verify(methods.getValues('partilha_icms_aliquota_fcp_uf_dest'))) {
+      partICMSAliqFCPUFDest = methods.getValues('partilha_icms_aliquota_fcp_uf_dest');
+    }
+    
+    if (verify(methods.getValues('partilha_icms_valor_fcp_uf_dest'))) {
+      partICMSValorFCPUFDest = methods.getValues('partilha_icms_valor_fcp_uf_dest');
+    }
+    
+    if (verify(methods.getValues('partilha_icms_aliquota_interna_icms_uf_dest'))) {
+      partICMSAliqIntICMSUFDest = methods.getValues('partilha_icms_aliquota_interna_icms_uf_dest');
+    }
+    
+    if (verify(methods.getValues('partilha_icms_aliquota_icms_interestadual'))) {
+      partICMSAliqICMSInter = methods.getValues('partilha_icms_aliquota_icms_interestadual');
+    }
+    
+    if (verify(methods.getValues('partilha_icms_p_partilha'))) {
+      partICMSpPart = methods.getValues('partilha_icms_p_partilha');
+    }
+    
+    if (verify(methods.getValues('partilha_icms_valor_icms_uf_dest'))) {
+      partICMSvalorICMSUFDest = methods.getValues('partilha_icms_valor_icms_uf_dest');
+    }
+    
+    if (verify(methods.getValues('partilha_icms_valor_icms_uf_ori'))) {
+      partICMSvalorICMSUFOri = methods.getValues('partilha_icms_valor_icms_uf_ori');
+    }
+    
+    if (verify(methods.getValues('cod_anp'))) {
+      codANP = methods.getValues('cod_anp');
+    }
+    
+    if (verify(methods.getValues('descricao_anp'))) {
+      descANP = methods.getValues('descricao_anp');
+    }
+    
+    if (verify(methods.getValues('uf_consumo'))) {
+      ufCons = methods.getValues('uf_consumo');
+    }
+
     const data: INFProduct = {
       'id_nfe': 0,
       'produto': methods.getValues('produto'),
-      'quantidade': methods.getValues('quantidade'),
-      'valor_unitario': methods.getValues('valor_unitario'),
-      'valor_total': methods.getValues('valor_total'),
-      'desconto_p': methods.getValues('desconto_p'),
-      'desconto_total': methods.getValues('desconto_total'),
-      'p_reducao_base_icms': methods.getValues('p_reducao_base_icms'),
-      'valor_icms': methods.getValues('valor_icms'),
-      'p_aliquota_credito': methods.getValues('p_aliquota_credito'),
-      'credito_icms_aproveitado': methods.getValues('credito_icms_aproveitado'),
-      'mod_det_bc_icms': methods.getValues('mod_det_bc_icms'),
-      'mod_det_bc_icms_st': methods.getValues('mod_det_bc_icms_st'),
-      'p_margem_vlr_adc_icms_st': methods.getValues('p_margem_vlr_adc_icms_st'),
-      'p_reducao_base_icms_st': methods.getValues('p_reducao_base_icms_st'),
-      'base_icms_st': methods.getValues('base_icms_st'),
-      'aliquota_icms_st': methods.getValues('aliquota_icms_st'),
-      'valor_icms_st': methods.getValues('valor_icms_st'),
-      'base_calc_retido_ant': methods.getValues('base_calc_retido_ant'),
-      'icms_st_retido_ant': methods.getValues('icms_st_retido_ant'),
-      'ean': methods.getValues('ean'),
-      'pedido_compra': methods.getValues('pedido_compra'),
-      'item': methods.getValues('item'),
-      'base_calc_ipi': methods.getValues('base_calc_ipi'),
-      'valor_ipi': methods.getValues('valor_ipi'),
-      'cnpj_produtor': methods.getValues('cnpj_produtor'),
-      'base_calc_ii': methods.getValues('base_calc_ii'),
-      'desp_aduaneiras': methods.getValues('desp_aduaneiras'),
-      'valor_iof': methods.getValues('valor_iof'),
-      'valor_ii': methods.getValues('valor_ii'),
-      'base_calc_pis': methods.getValues('base_calc_pis'),
-      'valor_pis': methods.getValues('valor_pis'),
-      'base_calc_cofins': methods.getValues('base_calc_cofins'),
-      'valor_cofins': methods.getValues('valor_cofins'),
-      'ipi_p_devolvida': methods.getValues('ipi_p_devolvida'),
-      'ipi_vlr_devolvido': methods.getValues('ipi_vlr_devolvido'),
-      'fcp_base_calc': methods.getValues('fcp_base_calc'),
-      'fcp_p': methods.getValues('fcp_p'),
-      'fcp_valor': methods.getValues('fcp_valor'),
-      'fcp_base_calc_st': methods.getValues('fcp_base_calc_st'),
-      'fcp_p_st': methods.getValues('fcp_p_st'),
-      'fcp_valor_st': methods.getValues('fcp_valor_st'),
-      'partilha_icms_base_calc': methods.getValues('partilha_icms_base_calc'),
-      'partilha_icms_aliquota_fcp_uf_dest': methods.getValues('partilha_icms_aliquota_fcp_uf_dest'),
-      'partilha_icms_valor_fcp_uf_dest': methods.getValues('partilha_icms_valor_fcp_uf_dest'),
-      'partilha_icms_aliquota_interna_icms_uf_dest': methods.getValues('partilha_icms_aliquota_interna_icms_uf_dest'),
-      'partilha_icms_aliquota_icms_interestadual': methods.getValues('partilha_icms_aliquota_icms_interestadual'),
-      'partilha_icms_p_partilha': methods.getValues('partilha_icms_p_partilha'),
-      'partilha_icms_valor_icms_uf_dest': methods.getValues('partilha_icms_valor_icms_uf_dest'),
-      'partilha_icms_valor_icms_uf_ori': methods.getValues('partilha_icms_valor_icms_uf_ori'),
-      'cod_anp': methods.getValues('cod_anp'),
-      'descricao_anp': methods.getValues('descricao_anp'),
-      'uf_consumo': methods.getValues('uf_consumo'),
+      'quantidade': qtd,
+      'valor_unitario': valorUnit,
+      'valor_total': valorTot,
+      'desconto_p': descP,
+      'desconto_total': descTot,
+      'p_reducao_base_icms': pRedBICMS,
+      'valor_icms': valorICMS,
+      'p_aliquota_credito': pAliqCred,
+      'credito_icms_aproveitado': credICMSAprov,
+      'mod_det_bc_icms': modDetBICMS,
+      'mod_det_bc_icms_st': modDetBICMSST,
+      'p_margem_vlr_adc_icms_st': pMargValorAdcICMSST,
+      'p_reducao_base_icms_st': pRedBICMSST,
+      'base_icms_st': bICMSST,
+      'aliquota_icms_st': aliqICMSST,
+      'valor_icms_st': valorICMSST,
+      'base_calc_retido_ant': bRetAnt,
+      'icms_st_retido_ant': icmsSTRetAnt,
+      'ean': ean,
+      'pedido_compra': pedCompra,
+      'item': item,
+      'base_calc_ipi': bIPI,
+      'valor_ipi': valorIPI,
+      'cnpj_produtor': cnpjP,
+      'base_calc_ii': bII,
+      'desp_aduaneiras': despAd,
+      'valor_iof': valorIOF,
+      'valor_ii': valorII,
+      'base_calc_pis': bPIS,
+      'valor_pis': valorPIS,
+      'base_calc_cofins': bCOFINS,
+      'valor_cofins': valorCOFINS,
+      'ipi_p_devolvida': IPIPDev,
+      'ipi_vlr_devolvido': IPIValorDev,
+      'fcp_base_calc': FCPb,
+      'fcp_p': FCPp,
+      'fcp_valor': FCPvalor,
+      'fcp_base_calc_st': FCPbST,
+      'fcp_p_st': FCPpST,
+      'fcp_valor_st': FCPvalorST,
+      'partilha_icms_base_calc': partICMSb,
+      'partilha_icms_aliquota_fcp_uf_dest': partICMSAliqFCPUFDest,
+      'partilha_icms_valor_fcp_uf_dest': partICMSValorFCPUFDest,
+      'partilha_icms_aliquota_interna_icms_uf_dest': partICMSAliqIntICMSUFDest,
+      'partilha_icms_aliquota_icms_interestadual': partICMSAliqICMSInter,
+      'partilha_icms_p_partilha': partICMSpPart,
+      'partilha_icms_valor_icms_uf_dest': partICMSvalorICMSUFDest,
+      'partilha_icms_valor_icms_uf_ori': partICMSvalorICMSUFOri,
+      'cod_anp': codANP,
+      'descricao_anp': descANP,
+      'uf_consumo': ufCons,
     };
 
     if (isEditing) {
