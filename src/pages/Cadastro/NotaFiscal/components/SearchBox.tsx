@@ -17,7 +17,7 @@ interface SearchBoxProps {
 }
 
 export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setIsEditing }: SearchBoxProps) {
-  const { register, handleSubmit, getValues } = useForm();
+  const { register, getValues } = useForm();
   const methods = useFormContext<INotaFiscal>();
   const { colorMode } = useColorMode();
   const { onOpen } = useModalNotaFiscal();

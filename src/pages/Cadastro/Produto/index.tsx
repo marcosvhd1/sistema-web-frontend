@@ -53,8 +53,6 @@ export function Produto() {
   const [active, setActive] = useState<boolean>(true);
   const [seeActive, setSeeActive] = useState<string>('Ativo');
 
-
-
   const userInfo = userInfos();
 
   const HEADERS = userInfo.header;

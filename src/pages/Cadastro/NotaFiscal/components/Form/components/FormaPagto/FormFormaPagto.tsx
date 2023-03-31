@@ -1,5 +1,4 @@
 import { Button, Divider, Flex, Icon, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
-import { useState } from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { FiTrash2 } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';
@@ -15,24 +14,20 @@ import { ModalNFDuplicata } from './ModalNFDuplicataPagto';
 import { ModalNFFormaPagto } from './ModalNFFormaPagto';
 
 interface FormFormaPagtoProps {
-  isEditing: boolean,
   formaPagtos: INFFormaPagto[],
   addForma: (forma: INFFormaPagto[]) => void
+  duplicatas: INFDuplicata[],
+  addDuplicata: (forma: INFDuplicata[]) => void
 }
 
-export function FormFormaPagto({ isEditing, formaPagtos, addForma }: FormFormaPagtoProps) {
+export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata }: FormFormaPagtoProps) {
   const methods = useFormContext<INotaFiscal>();
 
   const { onOpen } = useModalNFFormaPagto();
   const { onOpen: openDuplicata } = useModalNFDuplicata();
   const { colorMode } = useColorMode();
 
-
-  const [duplicatas, setDuplicatas] = useState<INFDuplicata[]>([]);
-
   const openModalForma = () => {
-    methods.reset({});
-
     onOpen();
   };
   const openModalDuplicata = () => {
@@ -50,16 +45,7 @@ export function FormFormaPagto({ isEditing, formaPagtos, addForma }: FormFormaPa
     addForma(newArray);
   };
 
-  const handleAddDuplicata = (data: INFDuplicata) => {
-    duplicatas.push(data);
-  };
-
-  const handleDeleteDuplicata = (data: INFDuplicata) => {
-    const newArray = duplicatas.filter(doc => doc !== data);
-    setDuplicatas(newArray);
-  };
-
-  const headers: { key: string, label: string }[] = [
+  const headersForma: { key: string, label: string }[] = [
     { key: 'formapagto', label: 'Forma de Pagto' },
     { key: 'valor', label: 'Valor' },
     { key: 'bandeira', label: 'Bandeira' },
@@ -67,7 +53,7 @@ export function FormFormaPagto({ isEditing, formaPagtos, addForma }: FormFormaPa
     { key: 'acoes', label: 'Excluir' },
   ];
 
-  const headers2: { key: string, label: string }[] = [
+  const headersDuplicata: { key: string, label: string }[] = [
     { key: 'numero', label: 'Número' },
     { key: 'vencimento', label: 'Vencimento' },
     { key: 'valor', label: 'Valor' },
@@ -101,8 +87,8 @@ export function FormFormaPagto({ isEditing, formaPagtos, addForma }: FormFormaPa
                 Adicionar
               </Button>
             </Flex>
-            <DataTable width='100%' headers={headers} trailing={false} mt='3'>
-              {formaPagtos !== undefined ? formaPagtos.map((data, index) => (
+            <DataTable width='100%' headers={headersForma} trailing={false} mt='3'>
+              {formaPagtos !== undefined ? formaPagtos.map((data) => (
                 <Tr key={uuidv4()}>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.forma}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + data.valor}</Td>
@@ -122,19 +108,20 @@ export function FormFormaPagto({ isEditing, formaPagtos, addForma }: FormFormaPa
               <Divider w="10%" />
               <Text w="max" ml={3}>Duplicatas</Text>
               <Divider w="50%" mr={3} ml={3} />
-              <Button variant="solid" colorScheme="blue" fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }} onClick={openModalDuplicata}>
+              {/* <Button variant="solid" colorScheme="blue" fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }} onClick={openModalDuplicata}> */}
+              <Button variant="solid" colorScheme="blue" fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }}>
                 <Icon mr={2} as={MdAdd} />
                 Adicionar
               </Button>
             </Flex>
-            <DataTable width='100%' headers={headers2} trailing={false} mt='3'>
-              {duplicatas !== undefined ? duplicatas.map((data, index) => (
+            <DataTable width='100%' headers={headersDuplicata} trailing={false} mt='3'>
+              {duplicatas !== undefined ? duplicatas.map((data) => (
                 <Tr key={uuidv4()}>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.numero}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.vencimento}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + data.valor}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
-                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleDeleteDuplicata(data)}>
+                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => null}>
                       <Icon as={FiTrash2} color="red.400" />
                     </Button>
                   </Td>
@@ -144,7 +131,7 @@ export function FormFormaPagto({ isEditing, formaPagtos, addForma }: FormFormaPa
           </Flex>
         </Flex>
         <ModalNFFormaPagto addFormaPagto={handleAddForma} />
-        <ModalNFDuplicata addDuplicata={handleAddDuplicata} />
+        {/* <ModalNFDuplicata addDuplicata={handleAddDuplicata} /> */}
       </Flex>
     </FormProvider>
   );

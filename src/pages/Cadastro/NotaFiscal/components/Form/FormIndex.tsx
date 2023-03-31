@@ -42,6 +42,7 @@ import {
   INFProduct,
   NFProdutoService,
 } from '../../../../../services/api/notafiscal/NFProduct';
+import { INFDuplicata } from '../../../../../services/api/notafiscal/NFDuplicata';
 
 interface ModalNotaFiscalProps {
   id: number;
@@ -50,12 +51,7 @@ interface ModalNotaFiscalProps {
   getNF: (description: string) => void;
 }
 
-export function ModalNotaFiscal({
-  isEditing,
-  setIsEditing,
-  id,
-  getNF,
-}: ModalNotaFiscalProps) {
+export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaFiscalProps) {
   const toast = useToast();
   const methods = useFormContext<INotaFiscal>();
 
@@ -64,9 +60,15 @@ export function ModalNotaFiscal({
 
   const [produtos, setProdutos] = useState<INFProduct[]>([]);
   const [formaPagtos, setFormaPagto] = useState<INFFormaPagto[]>([]);
+  const [duplicatas, setDuplicatas] = useState<INFDuplicata[]>([]);
 
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
+
+  useEffect(() => {
+    if (isEditing) setProdutos(methods.getValues('produtos'));
+    if (isEditing) setFormaPagto(methods.getValues('forma_pagto'));
+  }, [isOpen]);
 
   const clearData = () => {
     const auxForma: INFFormaPagto[] = [];
@@ -89,10 +91,11 @@ export function ModalNotaFiscal({
 
   const handleCreateNF = async (data: INotaFiscal) => {
     data.id_emissor = idEmissorSelecionado;
-    if (
-      data.nome_destinatario === null ||
-      data.nome_destinatario == undefined
-    ) {
+
+    data.nome_destinatario = data.destinatario.razao;
+    data.id_destinatario = `${data.destinatario.id}`;
+
+    if (data.nome_destinatario === null || data.nome_destinatario == undefined) {
       toast({
         position: 'top',
         title: 'Erro ao cadastrar.',
@@ -108,17 +111,17 @@ export function ModalNotaFiscal({
         console.log(retorno.message);
       } else {
         if (produtos.length > 0) {
-          produtos.forEach(async (element) => {
+          for (const element of produtos) {
             element.id_nfe = retorno.id;
             await NFProdutoService.create(element, HEADERS);
-          });
+          }
         }
 
         if (formaPagtos.length > 0) {
-          formaPagtos.forEach(async (element) => {
+          for (const element of formaPagtos) {
             element.id_nfe = retorno.id;
             await NFPagtoService.createNFPagto(element, HEADERS);
-          });
+          }
         }
       }
     }
@@ -132,12 +135,18 @@ export function ModalNotaFiscal({
     } else {
       setIsEditing(false);
 
+      await NFProdutoService.deleteNFProdByIDNF(id, HEADERS);
       await NFPagtoService.deleteNFPagtoById(id, HEADERS);
 
-      formaPagtos.forEach(async (element) => {
-        element.id_nfe = id;
-        await NFPagtoService.createNFPagto(element, HEADERS);
-      });
+      for (const produto of produtos) {
+        produto.id_nfe = id;
+        await NFProdutoService.create(produto, HEADERS);
+      }
+
+      for (const forma of formaPagtos) {
+        forma.id_nfe = id;
+        await NFPagtoService.createNFPagto(forma, HEADERS);
+      }
     }
   };
 
@@ -238,7 +247,7 @@ export function ModalNotaFiscal({
         <form onSubmit={methods.handleSubmit(submitData)}>
           <ModalContent>
             <ModalHeader>Nota Fiscal</ModalHeader>
-            <ModalCloseButton onClick={onClose} />
+            <ModalCloseButton onClick={clearData} />
             <ModalBody>
               <Tabs
                 variant="enclosed"
@@ -257,15 +266,13 @@ export function ModalNotaFiscal({
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <FormDadosPrincipais
-                      isEditing={isEditing}
-                      setFormaPagto={setFormaPagto}
-                    />
+                    <FormDadosPrincipais isEditing={isEditing} />
                   </TabPanel>
                   <TabPanel>
                     <FormProdutos
                       produtos={produtos}
                       addProduto={setProdutos}
+                      calcTotalNota={calcTotalNota}
                     />
                   </TabPanel>
                   <TabPanel>
@@ -275,7 +282,8 @@ export function ModalNotaFiscal({
                     <FormFormaPagto
                       addForma={setFormaPagto}
                       formaPagtos={formaPagtos}
-                      isEditing={isEditing}
+                      duplicatas={duplicatas}
+                      addDuplicata={setDuplicatas}
                     />
                   </TabPanel>
                   <TabPanel>

@@ -77,8 +77,7 @@ export function ModalNFClient() {
 
   const handleSetClient = async (data: IClient) => {
     methods.setValue('destinatario', data);
-    methods.setValue('nome_destinatario', data.razao);
-    methods.setValue('id_destinatario', `${data.id}`);
+
     onClose();
   };
 

@@ -8,6 +8,7 @@ import { useModalNFClient } from '../../../../../../../Contexts/Modal/NotaFiscal
 import { useModalNFFormaPagto } from '../../../../../../../Contexts/Modal/NotaFiscal/NFFormaPagtoContext';
 import { INFFormaPagto } from '../../../../../../../services/api/notafiscal/NFFormaPagto';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
+import { useEffect } from 'react';
 
 interface ModalNFFormaPagtoProps {
   addFormaPagto: (data: INFFormaPagto) => void
@@ -18,6 +19,12 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
 
   const { isOpen, onClose } = useModalNFFormaPagto();
   const { colorMode } = useColorMode();
+
+  useEffect(() => {
+    methods.setValue('valor', '0');
+    methods.setValue('bandeira', '');
+    methods.setValue('observacao', '');
+  }, [isOpen === true]);
 
   const onSubmit = () => {
     const data: INFFormaPagto = {

@@ -2,37 +2,49 @@ import { Button, Divider, Flex, Icon, Input, Select, Text, useColorMode } from '
 import { useState, useEffect } from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { FiCheckCircle, FiEdit, FiSearch } from 'react-icons/fi';
-import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 import { useModalNFClient } from '../../../../../../../Contexts/Modal/NotaFiscal/NFClientContext';
-import { INFFormaPagto } from '../../../../../../../services/api/notafiscal/NFFormaPagto';
-import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
+import { FormContainer } from '../../../../../../../components/Form/FormContainer';
+import { INotaFiscal, NotaFiscalService } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ModalNFClient } from './ModalNFClient';
+import { userInfos } from '../../../../../../../utils/header';
+import { useEmissorContext } from '../../../../../../../Contexts/EmissorProvider';
 
 interface FormDadosPrincipaisProps {
   isEditing: boolean,
-  setFormaPagto: (value: INFFormaPagto[]) => void
 }
 
-export function FormDadosPrincipais({ isEditing, setFormaPagto }: FormDadosPrincipaisProps) {
+export function FormDadosPrincipais({ isEditing }: FormDadosPrincipaisProps) {
   const methods = useFormContext<INotaFiscal>();
 
   const { onOpen } = useModalNFClient();
-  const [block, setBlock] = useState<boolean>(true);
   const { colorMode } = useColorMode();
+  const { idEmissorSelecionado } = useEmissorContext();
 
-  useEffect(() => {
-    if (isEditing) {
-      setFormaPagto(methods.getValues('forma_pagto'));
-    }
-  }, []);
+  const [block, setBlock] = useState<boolean>(true);
+
+  const userInfo = userInfos();
+  const HEADERS = userInfo.header;
 
   const handleBlockInputCod = () => {
     setBlock(!block);
 
-    if (block) {
-      methods.setFocus('cod');
+    if (block) methods.setFocus('cod');
+  };
+
+  const getCod = async () => {
+    if (!isEditing) {
+      const respose = await NotaFiscalService.getLastCod(idEmissorSelecionado, HEADERS);
+
+      const newNumber = parseInt(respose) + 1;
+
+      if (respose !== null) methods.setValue('cod', (`0000${newNumber}`).slice(-4));
+      else methods.setValue('cod', '0001');
     }
   };
+
+  useEffect(() => {
+    getCod();
+  }, [isEditing]);
 
   return (
     <FormProvider {...methods}>

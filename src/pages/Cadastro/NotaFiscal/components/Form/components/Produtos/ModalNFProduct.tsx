@@ -428,7 +428,7 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={onClose}/>
           <ModalBody>
             <FormControl>
               <Flex w="100%" justify="center" align="center" direction="column">

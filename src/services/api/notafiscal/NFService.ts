@@ -21,4 +21,4 @@ export interface INFService {
   cofins_valor: number
 }
 
-export const NotaFiscalService = {};
+export const NFServicoService = {};

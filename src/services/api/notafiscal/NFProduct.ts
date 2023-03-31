@@ -59,6 +59,14 @@ export interface INFProduct {
   uf_consumo: string
 }
 
+const getNFProdByNF = async (idNF: number, HEADERS: any): Promise<INFProduct[] | ApiException> => {
+  try {
+    return await Api().get(`/nf_produtos?id_nfe=${idNF}`, HEADERS);
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
+  }
+};
+
 const create = async (dataToCreate: Omit<INFProduct, 'id' | 'cod'>, HEADERS: any): Promise<INFProduct | ApiException> => {
   try {
     const { data } = await Api().post<INFProduct>('/nf_produtos', dataToCreate, HEADERS);
@@ -69,6 +77,16 @@ const create = async (dataToCreate: Omit<INFProduct, 'id' | 'cod'>, HEADERS: any
   }
 };
 
+const deleteNFProdByIDNF = async (idNf: number, HEADERS: any): Promise<undefined | ApiException> => {
+  try {
+    await Api().delete(`/nf_produtos?id_nfe=${idNf}`, HEADERS);
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao apagar o registro.');
+  }
+};
+
 export const NFProdutoService = {
-  create
+  create,
+  getNFProdByNF,
+  deleteNFProdByIDNF
 };

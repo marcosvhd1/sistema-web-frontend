@@ -1,5 +1,5 @@
 import { Button, Flex, Icon, Td, Tr } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormContext, UseFormReturn } from 'react-hook-form';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';
@@ -15,9 +15,10 @@ import { ModalNFProduct } from './ModalNFProduct';
 interface FormProdutosProps {
   produtos: INFProduct[],
   addProduto: (forma: INFProduct[]) => void
+  calcTotalNota: () => void
 }
 
-export function FormProdutos({ produtos, addProduto }: FormProdutosProps) {
+export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdutosProps) {
   const methods = useForm<INFProduct>();
   const nfMethods = useFormContext<INotaFiscal>();
 
@@ -48,6 +49,7 @@ export function FormProdutos({ produtos, addProduto }: FormProdutosProps) {
   const handleAddProduct = (data: INFProduct) => {
     produtos.push(data);
     saveChanges();
+    calcTotalNota();
   };
 
   const handleEditProduct = (data: INFProduct, index: number) => {

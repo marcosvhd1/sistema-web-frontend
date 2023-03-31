@@ -27,15 +27,6 @@ const createNFPagto = async (dataToCreate: Omit<INFFormaPagto, 'id' | 'cod'>, HE
   }
 };
 
-const updateNFPagtoById = async (id: number, dataToUpdate: INFFormaPagto, HEADERS: any): Promise<INFFormaPagto | ApiException> => {
-  try {
-    const { data } = await Api().put(`/nf_pagto/${id}`, dataToUpdate, HEADERS);
-    return data;
-  } catch (error) {
-    return new ApiException((error as ApiException).message || 'Erro ao atualizar o registro.');
-  }
-};
-
 const deleteNFPagtoById = async (id: number, HEADERS: any): Promise<undefined | ApiException> => {
   try {
     await Api().delete(`/nf_pagto?id_nfe=${id}`, HEADERS);
@@ -47,6 +38,5 @@ const deleteNFPagtoById = async (id: number, HEADERS: any): Promise<undefined | 
 export const NFPagtoService = {
   getNFPagtoByNF,
   createNFPagto,
-  updateNFPagtoById,
   deleteNFPagtoById
 };

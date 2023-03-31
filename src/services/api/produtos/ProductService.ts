@@ -43,9 +43,19 @@ const getProductByFilter = async (currentPage: number, limitRegistros: number, f
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }
 };
+
 const getProductByGroup = async (currentPage: number, limitRegistros: number, filter: string, description: string, group: string, idEmissorSelecionado: number, status: string, HEADERS: any): Promise<IProduct[] | ApiException> => {
   try {
     return await Api().get(`/produtos/group?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&group=${group}&id_emissor=${idEmissorSelecionado}&status=${status}`, HEADERS);
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
+  }
+};
+
+const getProductByID = async (idProd: number, HEADERS: any): Promise<IProduct | ApiException> => {
+  try {
+    const { data } = await Api().get(`/produtos/${idProd}`, HEADERS);
+    return data[0];
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }
@@ -87,6 +97,7 @@ const getLastCod = async (idEmissorSelecionado: number, HEADERS: any) => {
 export const ProductService = {
   getProductByFilter,
   getProductByGroup,
+  getProductByID,
   create,
   updateById,
   deleteById,

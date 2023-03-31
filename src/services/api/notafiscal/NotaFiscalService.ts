@@ -10,7 +10,7 @@ import { INFService } from './NFService';
 export interface INotaFiscal {
     id: number;
     id_emissor: number;
-    cod: number;
+    cod: string;
     tipo: string;
     serie: number;
     natureza_operacao: string;
@@ -125,9 +125,16 @@ const deleteById = async (id: number, idEmissorSelecionado: number, HEADERS: any
   }
 };
 
+const getLastCod = async (idEmissorSelecionado: number, HEADERS: any) => {
+  const response = await Api().get(`/notas/max?id_emissor=${idEmissorSelecionado}`, HEADERS);
+  const { max } = response.data[0];
+  return max;
+};
+
 export const NotaFiscalService = {
   getNFByFilter,
   create,
   updateById,
   deleteById,
+  getLastCod
 };
