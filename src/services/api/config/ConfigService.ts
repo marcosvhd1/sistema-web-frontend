@@ -40,7 +40,7 @@ const create = async (dataToCreate: Omit<IConfig, 'id'>, HEADERS: any): Promise<
 const getByEmissor = async (idEmissorSelecionado: number, HEADERS: any): Promise<IConfig | null > => {
   try {
     const { data } = await Api().get(`/config?id_emissor=${idEmissorSelecionado}`, HEADERS);
-    return data;
+    return data[0];
   } catch (error) {
     return null;
   }

@@ -1,4 +1,4 @@
-import { Button, Flex, FormControl, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, FormControl, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { FiCheck, FiSearch, FiSlash } from 'react-icons/fi';
@@ -428,11 +428,15 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
       >
         <ModalOverlay />
         <ModalContent>
+          <ModalHeader>
+            <Flex w="100%" justify="center" align="center">
+              <Text>Informações do Produto</Text>
+            </Flex>
+          </ModalHeader>
           <ModalCloseButton onClick={onClose}/>
           <ModalBody>
             <FormControl>
               <Flex w="100%" justify="center" align="center" direction="column">
-                <Text fontFamily="Poppins" fontSize="xl">Cadastro de Produto</Text>
                 <Flex w="100%" justify="space-between" align="center">
                   <FormContainer width='55%' label='Código de Barras' mr='3'>
                     <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('produto.codbarras')} />

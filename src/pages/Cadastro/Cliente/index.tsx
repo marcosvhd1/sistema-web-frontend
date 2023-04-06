@@ -58,8 +58,6 @@ export function Cliente() {
     handleChangeTotalPage();
   }, [totalClients, limitRegistros]);
 
-
-
   const getLastCod = () => {
     ClientService.getLastCod(idEmissorSelecionado, HEADERS)
       .then((result) => {

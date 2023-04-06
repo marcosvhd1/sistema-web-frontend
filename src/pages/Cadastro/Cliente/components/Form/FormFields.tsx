@@ -22,12 +22,14 @@ import { validaCpfCnpj } from '../../../../../utils/validaCnpjCpf';
 import { formatCnpjCpf } from '../../../../../utils/formatarCnpjCpf';
 
 interface IFormFields {
+  id: number
   editCod: number
   getCod: () => void
   cod: number
   isEditing: boolean
 }
-export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
+
+export function FormFields({ id, editCod, isEditing, cod, getCod }: IFormFields) {
   const { register, formState: { errors }, setFocus, getValues, setValue } = useFormContext<IClient>();
   const { colorMode } = useColorMode();
 
@@ -131,7 +133,7 @@ export function FormFields({ editCod, isEditing, cod, getCod }: IFormFields) {
       <Stack mt="5">
         <Text fontSize="xl" >Endereço</Text>
         <Divider />
-        <Adress />
+        <Adress id={id}/>
       </Stack>
     </Flex>
   );

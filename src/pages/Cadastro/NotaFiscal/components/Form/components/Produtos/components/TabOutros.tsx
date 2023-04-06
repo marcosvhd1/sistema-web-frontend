@@ -2,12 +2,10 @@ import { Flex, Input, Select, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../../../../../../components/Form/FormContainer';
-import { useEstados } from '../../../../../../../../hooks/useEstados';
 import { INFProduct } from '../../../../../../../../services/api/notafiscal/NFProduct';
 
 export function FormTabOutros() {
   const { register } = useFormContext<INFProduct>();
-  const { estados } = useEstados();
   const [ selectedEstado, setSelectedEstado ] = useState('');
   const { colorMode } = useColorMode();
 
@@ -19,11 +17,11 @@ export function FormTabOutros() {
       <FormContainer label='Descrição ANP' width='40%' mr='3'>
         <Input defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('descricao_anp')}/>
       </FormContainer>
-      <FormContainer label='UF Consumo' width='20%'>
+      {/* <FormContainer label='UF Consumo' width='20%'>
         <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  {...register('uf_consumo')} onChange={(event) => setSelectedEstado(event.target.value)}>
           {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
         </Select>
-      </FormContainer>
+      </FormContainer> */}
     </Flex>
   );
 }

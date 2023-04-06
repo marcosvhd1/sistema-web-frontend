@@ -14,6 +14,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Text,
   useToast,
 } from '@chakra-ui/react';
 import { FormProvider, useFormContext } from 'react-hook-form';
@@ -43,6 +44,8 @@ import {
   NFProdutoService,
 } from '../../../../../services/api/notafiscal/NFProduct';
 import { INFDuplicata } from '../../../../../services/api/notafiscal/NFDuplicata';
+import { ConfigService } from '../../../../../services/api/config/ConfigService';
+import { ICFOP, ICFOPService } from '../../../../../services/api/cfop/CFOPService';
 
 interface ModalNotaFiscalProps {
   id: number;
@@ -58,6 +61,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
   const { isOpen, onClose } = useModalNotaFiscal();
   const { idEmissorSelecionado } = useEmissorContext();
 
+  const [cfops, setCfops] = useState<ICFOP[]>([]);
   const [produtos, setProdutos] = useState<INFProduct[]>([]);
   const [formaPagtos, setFormaPagto] = useState<INFFormaPagto[]>([]);
   const [duplicatas, setDuplicatas] = useState<INFDuplicata[]>([]);
@@ -68,6 +72,36 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
   useEffect(() => {
     if (isEditing) setProdutos(methods.getValues('produtos'));
     if (isEditing) setFormaPagto(methods.getValues('forma_pagto'));
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen === true && isEditing === false) {
+      ConfigService.getByEmissor(idEmissorSelecionado, HEADERS).then((result) => {
+        if (result !== null) {
+          if (result.serie_padrao.length > 0) {
+            methods.setValue('serie', parseInt(result.serie_padrao));
+          } else {
+            methods.setValue('serie', 0);
+          }
+        }
+      });
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen === true) {
+      ICFOPService.get(idEmissorSelecionado, HEADERS).then((result) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          setCfops(result);
+
+          if (!isEditing) {
+            methods.setValue('cfop', result[0].cfop_dentro);
+          }
+        } 
+      });
+    }
   }, [isOpen]);
 
   const clearData = () => {
@@ -246,7 +280,11 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
         <ModalOverlay />
         <form onSubmit={methods.handleSubmit(submitData)}>
           <ModalContent>
-            <ModalHeader>Nota Fiscal</ModalHeader>
+            <ModalHeader>
+              <Flex w="100%" justify="center" align="center">
+                <Text>Nota Fiscal</Text>
+              </Flex>
+            </ModalHeader>
             <ModalCloseButton onClick={clearData} />
             <ModalBody>
               <Tabs
@@ -266,7 +304,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <FormDadosPrincipais isEditing={isEditing} />
+                    <FormDadosPrincipais isEditing={isEditing} cfops={cfops} />
                   </TabPanel>
                   <TabPanel>
                     <FormProdutos

@@ -55,7 +55,7 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
         <ModalContent>
           <ModalHeader>
             <Flex w='100%' justify='center' align='center'>
-              <Text fontFamily='Poppins' fontSize='xl'>Forma de Pagamento</Text>
+              <Text>Forma de Pagamento</Text>
             </Flex>
           </ModalHeader>
           <ModalCloseButton />

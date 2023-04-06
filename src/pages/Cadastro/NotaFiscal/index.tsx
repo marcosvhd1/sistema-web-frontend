@@ -32,12 +32,14 @@ import { TransportadoraService } from '../../../services/api/transportadora/Tran
 import { NFPagtoService } from '../../../services/api/notafiscal/NFFormaPagto';
 import { IProduct, ProductService } from '../../../services/api/produtos/ProductService';
 import { INFDuplicata } from '../../../services/api/notafiscal/NFDuplicata';
+import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
+import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
 
   const [data, setData] = useState<INotaFiscal[]>([]);
-  const [filter, setFilter] = useState<string>('nome_destinatario');
+  const [filter, setFilter] = useState<string>('cod');
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [id, setId] = useState<number>(0);
@@ -50,6 +52,7 @@ export function NotaFiscal() {
   const [prods, setProds] = useState<INFProduct[]>([]);
 
   const { idEmissorSelecionado } = useEmissorContext();
+  const { onOpen: openAlert, onClose, isOpen } = useAlertNotaFiscalContext();
   const { onOpen } = useModalNotaFiscal();
 
   const navigate = useNavigate();
@@ -245,9 +248,15 @@ export function NotaFiscal() {
           });
           getNF('');
           setTotalNotas(totalNotas - 1);
+          onClose();
         }
       }
     );
+  };
+
+  const handleOpenDialog = (id: number) => {
+    openAlert();
+    setId(id);
   };
 
   const headers: { key: string; label: string }[] = [
@@ -308,7 +317,7 @@ export function NotaFiscal() {
                       colorScheme="red"
                       fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
                       w="2rem"
-                      onClick={() => handleDeleteNF(data.id)}
+                      onClick={() => handleOpenDialog(data.id)}
                     >
                       <Icon as={FiTrash2} color="red.400" />
                     </Button>
@@ -355,6 +364,7 @@ export function NotaFiscal() {
           id={id}
           getNF={getNF}
         />
+        <DeleteAlertDialog label="Nota Fiscal" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>
   );

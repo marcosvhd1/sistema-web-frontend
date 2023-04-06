@@ -1,5 +1,5 @@
 import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useEmissorContext } from '../../Contexts/EmissorProvider';
@@ -11,25 +11,36 @@ import { TabCertificado } from './components/TabCertificado';
 import { TabEmail } from './components/TabEmail';
 import { TabOutros } from './components/TabOutros';
 import { TabToken } from './components/TabToken';
+import { TabCFOP } from './components/CFOP/TabCFOP';
 
 export function ModalConfig() {
+  const methods = useForm<IConfig>();
+
   const { isOpen, onClose } = useModalConfig();
   const { idEmissorSelecionado } = useEmissorContext();
 
-  const methods = useForm<IConfig>();
+  const [autenticacao, setAutenticacao] = useState<boolean>(false);
+  const [ssl, setSSL] = useState<boolean>(false);
+  const [tls, setTLS] = useState<boolean>(false);
   
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [isOpen]);
 
   const loadData = async () => {
     const response = await ConfigService.getByEmissor(idEmissorSelecionado, HEADERS);
 
     if (response != null) {
       methods.reset(response);
+      
+      if (isOpen === true) {
+        setAutenticacao(methods.getValues('autenticacao'));
+        setSSL(methods.getValues('ssl'));
+        setTLS(methods.getValues('tls')); 
+      } 
     }
   };
 
@@ -55,9 +66,9 @@ export function ModalConfig() {
       'copia': methods.getValues('copia'),
       'assunto': methods.getValues('assunto'),
       'mensagem': methods.getValues('mensagem'),
-      'autenticacao': methods.getValues('autenticacao'),
-      'ssl': methods.getValues('ssl'),
-      'tls': methods.getValues('tls'),
+      'autenticacao': autenticacao,
+      'ssl': ssl,
+      'tls': tls,
     };
 
     ConfigService.create(data, HEADERS)
@@ -93,6 +104,7 @@ export function ModalConfig() {
                 <Tab>Certificado</Tab>
                 <Tab>Token NFCe</Tab>
                 <Tab>Email</Tab>
+                <Tab>CFOP</Tab>
                 <Tab>Outros</Tab>
               </TabList>
               <TabPanels>
@@ -103,7 +115,10 @@ export function ModalConfig() {
                   <TabToken />
                 </TabPanel>
                 <TabPanel>
-                  <TabEmail />
+                  <TabEmail isOpen={isOpen} autenticacao={autenticacao} setAutenticacao={setAutenticacao} ssl={ssl} setSSL={setSSL} tls={tls} setTLS={setTLS}/>
+                </TabPanel>
+                <TabPanel>
+                  <TabCFOP />
                 </TabPanel>
                 <TabPanel>
                   <TabOutros />

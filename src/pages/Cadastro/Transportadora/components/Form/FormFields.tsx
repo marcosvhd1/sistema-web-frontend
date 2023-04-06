@@ -2,25 +2,34 @@ import { Divider, Flex, Input, Select, Text, Textarea, useColorMode } from '@cha
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../../../components/Form/FormContainer';
-import { useCidades } from '../../../../../hooks/useCidades';
+import { ITransportadora, TransportadoraService } from '../../../../../services/api/transportadora/TransportadoraService';
 import { useEstados } from '../../../../../hooks/useEstados';
-import { ITransportadora } from '../../../../../services/api/transportadora/TransportadoraService';
+import { useCidades } from '../../../../../hooks/useCidades';
+import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
+import { userInfos } from '../../../../../utils/header';
+import { ApiException } from '../../../../../services/api/ApiException';
 
 interface IFormFields {
+  id: number
   editCod: number
   isEditing: boolean
   getCod: () => void
   cod: number
 }
 
-export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
-  const [selectedEstadoVeiculo, setSelectedEstadoVeiculo] = useState<string>('');
-  const [selectedEstado, setSelectedEstado] = useState<string>('');
-  const { estados } = useEstados();
-  const { cidades } = useCidades({ uf: selectedEstado });
-  const { register, setFocus } = useFormContext<ITransportadora>();
+export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) {
+  const { register, setFocus, getValues, setValue } = useFormContext<ITransportadora>();
   const { colorMode } = useColorMode();
 
+  const [selectedEstado, setSelectedEstado] = useState(getValues('uf'));
+  
+  const { estados } = useEstados();
+  const { cidades } = useCidades({ uf: selectedEstado });
+
+  const { idEmissorSelecionado } = useEmissorContext();
+  
+  const userInfo = userInfos();
+  const HEADERS = userInfo.header;
 
   useEffect(() => {
     getCod();
@@ -29,6 +38,17 @@ export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
       setFocus('razao');
     }, 100);
   }, []);
+
+  useEffect(() => {
+    TransportadoraService.getTransportadoraByFilter(1, 1, 'id', `${id}`, idEmissorSelecionado, HEADERS)
+      .then((result: any) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          setValue('cidade', result.data[0].cidade);
+        }
+      });
+  }, [id]);
 
   return (
     <Flex direction="column" justify="space-between">
@@ -98,14 +118,14 @@ export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
         </FormContainer>
       </Flex>
       <Flex justify="space-between" align="center">
-        <FormContainer label="UF" width="5rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  {...register('uf')} w="5rem"  onChange={(event) => setSelectedEstado(event.target.value)}>
+        <FormContainer label="UF">
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf')} w="5rem" onChange={(event) => setSelectedEstado(event.target.value)}>
             {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
           </Select>
         </FormContainer>
-        <FormContainer label="Cidade" width="22.5rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  {...register('cidade')} w="22.5rem">
-            {cidades.map(cidade => <option key={cidade.nome} value={cidade.nome}>{cidade.nome}</option>)}
+        <FormContainer label="Cidade">
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cidade')} w="22.5rem">
+            {cidades.map((cidade, index) => <option key={index} value={cidade.nome}>{cidade.nome}</option>)}
           </Select>
         </FormContainer>
       </Flex>
@@ -118,8 +138,8 @@ export function FormFields({ editCod, isEditing, cod, getCod }:IFormFields) {
         <FormContainer label="Placa" width="10rem">
           <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="text" w="10rem" {...register('placa')} />
         </FormContainer>
-        <FormContainer label="UF" width="5rem">
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  {...register('uf_placa')} w="5rem" onChange={(event) => setSelectedEstadoVeiculo(event.target.value)}>
+        <FormContainer label="UF">
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf_placa')} w="5rem">
             {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
           </Select>
         </FormContainer>

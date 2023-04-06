@@ -117,7 +117,7 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
       <ModalContent>
         <ModalHeader>
           <Flex w="100%" justify="center" align="center" direction="column">
-            <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
+            <Text>Listagem de Produtos</Text>
             <Flex w="100%" align="center" justify="flex-start" mt={5}>
               <Text fontSize={16} mr={3}>Buscar por </Text>
               <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="20%" mr="3" onChange={(e) => setFilter(e.target.value)}>

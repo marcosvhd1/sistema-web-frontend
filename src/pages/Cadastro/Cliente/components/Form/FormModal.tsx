@@ -149,7 +149,7 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, ge
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <FormFields getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing}/>
+                  <FormFields getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} id={id}/>
                 </TabPanel>
                 <TabPanel>
                   <Textarea borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} h="37rem" placeholder='Observações...' {...methods.register('observacao')} />

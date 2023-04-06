@@ -8,12 +8,14 @@ import { INotaFiscal, NotaFiscalService } from '../../../../../../../services/ap
 import { ModalNFClient } from './ModalNFClient';
 import { userInfos } from '../../../../../../../utils/header';
 import { useEmissorContext } from '../../../../../../../Contexts/EmissorProvider';
+import { ICFOP } from '../../../../../../../services/api/cfop/CFOPService';
 
 interface FormDadosPrincipaisProps {
   isEditing: boolean,
+  cfops: ICFOP[]
 }
 
-export function FormDadosPrincipais({ isEditing }: FormDadosPrincipaisProps) {
+export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisProps) {
   const methods = useFormContext<INotaFiscal>();
 
   const { onOpen } = useModalNFClient();
@@ -46,6 +48,11 @@ export function FormDadosPrincipais({ isEditing }: FormDadosPrincipaisProps) {
     getCod();
   }, [isEditing]);
 
+  const onChangeNatureza = (data: any) => {
+    const cfop = cfops.find((cfop) => cfop.natureza === data.target.value);
+    if (cfop !== undefined) methods.setValue('cfop', cfop.cfop_dentro ?? '');
+  };
+
   return (
     <FormProvider {...methods}>
       <Flex w="100%" justify="center" align="center" direction="column" >
@@ -59,22 +66,21 @@ export function FormDadosPrincipais({ isEditing }: FormDadosPrincipaisProps) {
           </Button>
 
           <FormContainer width='15%' label='Série' mr='3'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" defaultValue={0} readOnly {...methods.register('serie')} />
+            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('serie')} />
           </FormContainer>
 
           <FormContainer width='65%' label='Natureza de Operação' mr='3'>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('natureza_operacao')}>
-              <option value='venda'>Venda 5102</option>
-              <option value='compra'>Compra 6204</option>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('natureza_operacao')} onChange={(data) => onChangeNatureza(data)}>
+              {cfops.map((data) => (<option key={data.id} value={data.natureza}>{data.natureza}</option>))}
             </Select>
           </FormContainer>
 
-          <FormContainer width='20%' label='CFOP'>
+          <FormContainer width='20%' label='CFOP' mr='3'>
             <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cfop')} />
           </FormContainer>
-          <Button variant="ghost" colorScheme="green" onClick={() => null} mt={7} ml={1} mr={3} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }}>
+          {/* <Button variant="ghost" colorScheme="green" onClick={() => null} mt={7} ml={1} mr={3} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }}>
             <Icon color="green" as={FiCheckCircle} />
-          </Button>
+          </Button> */}
 
           <FormContainer width='35%' label='Status'>
             <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" defaultValue={'Em digitação'} readOnly {...methods.register('status')} />

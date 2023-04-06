@@ -1,16 +1,21 @@
 import { Checkbox, Flex, Input, Text, Textarea, useColorMode } from '@chakra-ui/react';
-import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../components/Form/FormContainer';
 import { IConfig } from '../../../services/api/config/ConfigService';
 
-export function TabEmail() {
+interface TabEmailProps {
+  isOpen: boolean;
+  autenticacao: boolean;
+  ssl: boolean;
+  tls: boolean;
+  setAutenticacao: (value: boolean) => void;
+  setSSL: (value: boolean) => void;
+  setTLS: (value: boolean) => void;
+}
+
+export function TabEmail({ autenticacao, ssl, tls, setAutenticacao, setSSL, setTLS }: TabEmailProps) {
   const methods = useFormContext<IConfig>();
   const { colorMode } = useColorMode();
-
-  const [autenticacao, setAutenticacao] = useState<boolean>(false);
-  const [ssl, setSSL] = useState<boolean>(false);
-  const [tls, setTLS] = useState<boolean>(false);
 
   const handleChangeAutenticacao = () => {
     setAutenticacao(!autenticacao);

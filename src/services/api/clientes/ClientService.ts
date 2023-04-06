@@ -43,7 +43,6 @@ const getClientsByFilter = async (currentPage: number, limitRegistros: number, f
   }
 };
 
-
 const create = async (dataToCreate: Omit<IClient, 'id' | 'cod'>, HEADERS: any): Promise<IClient | ApiException> => {
   try {
     const { data } = await Api().post<IClient>('/clientes', dataToCreate, HEADERS);

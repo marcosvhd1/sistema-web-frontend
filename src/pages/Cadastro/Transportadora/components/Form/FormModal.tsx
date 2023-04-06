@@ -120,7 +120,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod, cod, getCod, he
           <ModalHeader>Cadastro de Transportadora</ModalHeader>
           <ModalCloseButton onClick={clearForm}/>
           <ModalBody>
-            <FormFields getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} />
+            <FormFields getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} id={id}/>
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">

@@ -12,7 +12,7 @@ export function getEncrypted(dataToCrypto: any) {
 
 export function getDecrypted(cryptoData: any) {
   try {
-    const deCryptoData = AES.decrypt(cryptoData, SECRET_KEY).toString(enc.Utf8);
+    const deCryptoData = AES?.decrypt(cryptoData, SECRET_KEY).toString(enc.Utf8);
 
     return JSON.parse(JSON.parse(deCryptoData));
 
