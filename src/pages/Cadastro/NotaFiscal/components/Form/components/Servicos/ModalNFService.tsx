@@ -109,52 +109,52 @@ export function ModalNFService({ addServ, editServ, setIsEditing, isEditing, ind
                   <Text fontFamily="Poppins" fontSize="xl">Cadastro de Serviço</Text>
                   <Flex w="100%" justify="center" align="center">
                     <FormContainer width='15%' label='Código' mr='3'>
-                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.nserv')} />
+                      <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.nserv')} />
                     </FormContainer>
                     <FormContainer width='30%' label='Descrição' mr='3'>
-                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.descricao')} />
+                      <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.descricao')} />
                     </FormContainer>
                     <FormContainer width='15%' label='Quantidade' mr='3'>
-                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...methods.register('quantidade')} onChange={onChangeQuantidade} />
+                      <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...methods.register('quantidade')} onChange={onChangeQuantidade} />
                     </FormContainer>
                     <FormContainer width='20%' label='Valor Unitário' mr='3' >
                       <MoneyAddon>
-                        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
+                        <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
                       </MoneyAddon>
                     </FormContainer>
                     <FormContainer width='20%' label='Valor Total'>
                       <MoneyAddon>
-                        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" readOnly {...methods.register('valor_total')} />
+                        <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" readOnly {...methods.register('valor_total')} />
                       </MoneyAddon>
                     </FormContainer>
                   </Flex>
                   <Flex w="100%" justify="center" align="center">
                     <FormContainer width='15%' label='UN' mr='3'>
-                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.un')} />
+                      <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.un')} />
                     </FormContainer>
                     <FormContainer width='25%' label='NCM' mr='3'>
-                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.ncm')} />
+                      <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.ncm')} />
                     </FormContainer>
                     <FormContainer width='30%' label='Desconto %' mr='3'>
                       <PorcentAddon>
-                        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('desconto_p')} onChange={onChangeDescontoP}/>
+                        <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('desconto_p')} onChange={onChangeDescontoP}/>
                       </PorcentAddon>
                     </FormContainer>
                     <FormContainer width='30%' label='Desconto R$'>
                       <MoneyAddon>
-                        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('desconto_total')} onChange={onChangeDescontoT}/>
+                        <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('desconto_total')} onChange={onChangeDescontoT}/>
                       </MoneyAddon>
                     </FormContainer>
                   </Flex>
                   <Flex w="100%" justify="center" align="center">
                     <FormContainer width='20%' label='Item Lista Serviço' mr='3'>
-                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.item_lista')} />
+                      <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.item_lista')} />
                     </FormContainer>
                     <FormContainer width='20%' label='CFOP' mr='3'>
-                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cfop')} />
+                      <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cfop')} />
                     </FormContainer>
                     <FormContainer width='40%' label='EAN (Código de Barras)' mr='3'>
-                      <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('ean')} />
+                      <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('ean')} />
                     </FormContainer>
                     <Button onClick={openModal} w="20%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
                       <Icon mr={2} as={FiSearch} />
@@ -178,27 +178,27 @@ export function ModalNFService({ addServ, editServ, setIsEditing, isEditing, ind
                       </FormContainer>
                       <FormContainer label='Alíquota'>
                         <PorcentAddon>
-                          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.aliquota_iss')} />
+                          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.aliquota_iss')} />
                         </PorcentAddon>
                       </FormContainer>
                       <FormContainer label='Base de Cálculo'>
                         <PorcentAddon>
-                          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.base_iss')} />
+                          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.base_iss')} />
                         </PorcentAddon>
                       </FormContainer>
                       <FormContainer label='Valor da Base de Cálculo'>
                         <MoneyAddon>
-                          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.valor_base_iss')}/>
+                          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('servico.valor_base_iss')}/>
                         </MoneyAddon>
                       </FormContainer>
                       <FormContainer label='Valor ISS'>
                         <MoneyAddon>
-                          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('valor_iss')} />
+                          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('valor_iss')} />
                         </MoneyAddon>
                       </FormContainer>
                       <FormContainer label='Valor ISS Retido'>
                         <MoneyAddon>
-                          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor_iss_retido')} />
+                          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor_iss_retido')} />
                         </MoneyAddon>
                       </FormContainer>
                     </Flex>
@@ -219,21 +219,21 @@ export function ModalNFService({ addServ, editServ, setIsEditing, isEditing, ind
                         <Divider />
                       </Flex>
                       <FormContainer label='CST'>
-                        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('pis_cst')} />
+                        <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('pis_cst')} />
                       </FormContainer>
                       <FormContainer label='Base de Cálculo'>
                         <MoneyAddon>
-                          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('pis_base_calc')} />
+                          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('pis_base_calc')} />
                         </MoneyAddon>
                       </FormContainer>
                       <FormContainer label='Alíquota'>
                         <PorcentAddon>
-                          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('pis_aliquota')} />
+                          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('pis_aliquota')} />
                         </PorcentAddon>
                       </FormContainer>
                       <FormContainer label='Valor'>
                         <MoneyAddon>
-                          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('pis_valor')} />
+                          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('pis_valor')} />
                         </MoneyAddon>
                       </FormContainer>
                     </Flex>
@@ -244,21 +244,21 @@ export function ModalNFService({ addServ, editServ, setIsEditing, isEditing, ind
                         <Divider />
                       </Flex>
                       <FormContainer label='CST'>
-                        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cofins_cst')} />
+                        <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cofins_cst')} />
                       </FormContainer>
                       <FormContainer label='Base de Cálculo'>
                         <MoneyAddon>
-                          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cofins_base_calc')} />
+                          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cofins_base_calc')} />
                         </MoneyAddon>
                       </FormContainer>
                       <FormContainer label='Alíquota'>
                         <PorcentAddon>
-                          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cofins_aliquota')} />
+                          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cofins_aliquota')} />
                         </PorcentAddon>
                       </FormContainer>
                       <FormContainer label='Valor'>
                         <MoneyAddon>
-                          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('cofins_valor')} />
+                          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('cofins_valor')} />
                         </MoneyAddon>
                       </FormContainer>
                     </Flex>

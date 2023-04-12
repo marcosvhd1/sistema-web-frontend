@@ -43,18 +43,18 @@ export function Adress({ id }: AdressProps) {
       <Flex w="50%" direction="column">
         <Flex justify="space-between">
           <FormContainer label="Rua" width="21.5rem">
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="rua" type="text" {...methods.register('logradouro')} width="21.5rem"/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="rua" type="text" {...methods.register('logradouro')} width="21.5rem"/>
           </FormContainer>
           <FormContainer label="N°" width="6rem">
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="numero" type="text" {...methods.register('numero')} width="6rem"/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="numero" type="text" {...methods.register('numero')} width="6rem"/>
           </FormContainer>
         </Flex>
         <Flex justify="space-between">
           <FormContainer label="Bairro" width="17.5rem">
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="bairro" type="text" {...methods.register('bairro')} width="17.5rem"/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="bairro" type="text" {...methods.register('bairro')} width="17.5rem"/>
           </FormContainer>
           <FormContainer label="CEP" width="10rem">
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cep" type="number" w="10rem" {...methods.register('cep')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cep" type="number" w="10rem" {...methods.register('cep')}/>
           </FormContainer>
         </Flex>
       </Flex>
@@ -72,7 +72,7 @@ export function Adress({ id }: AdressProps) {
           </FormContainer>
         </Flex>
         <FormContainer label="Complemento">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="complemento" {...methods.register('complemento')}/>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="complemento" {...methods.register('complemento')}/>
         </FormContainer>
       </Flex>
     </Flex>

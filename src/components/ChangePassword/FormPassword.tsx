@@ -20,10 +20,10 @@ export function FormPassword({ isInvalid }: IFormPassword) {
     <Flex w='100%' h='100%' direction='column' justify='space-around'>
       <FormControl isInvalid={isInvalid}>
         <FormContainer label='Nova Senha'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='password' autoComplete="new-password" isInvalid={isInvalid} {...methods.register('newPassword')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='password' autoComplete="new-password" isInvalid={isInvalid} {...methods.register('newPassword')} />
         </FormContainer>
         <FormContainer label='Confirmar Senha'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='password' autoComplete="new-password" isInvalid={isInvalid} {...methods.register('confirmationPassword')}/>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='password' autoComplete="new-password" isInvalid={isInvalid} {...methods.register('confirmationPassword')}/>
         </FormContainer>
         <FormErrorMessage>As senhas devem ser iguais!</FormErrorMessage>
       </FormControl>

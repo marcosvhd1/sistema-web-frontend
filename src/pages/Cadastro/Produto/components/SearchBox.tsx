@@ -66,7 +66,7 @@ export function SearchBox({ children, setFilter, getProduct, getProductByGroup, 
               <option value='marca'>Marca</option>
               <option value='ncm'>NCM</option>
             </Select>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Selecione o Grupo" w="40%" mr="3" {...register('group')}>
               {
                 data != undefined ? data.map((data) => (

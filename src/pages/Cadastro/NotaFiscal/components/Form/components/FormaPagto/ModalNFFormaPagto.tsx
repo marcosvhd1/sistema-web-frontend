@@ -79,7 +79,7 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
               </FormContainer>    
               <FormContainer label='Valor'>
                 <MoneyAddon>
-                  <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor')} />
+                  <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor')} />
                 </MoneyAddon>
               </FormContainer>    
               <FormContainer label='Bandeira'>
@@ -97,7 +97,7 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
                 </Select>
               </FormContainer>    
               <FormContainer label='Observação'>
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('observacao')} />
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('observacao')} />
               </FormContainer>    
             </Flex>
           </ModalBody>

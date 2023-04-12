@@ -112,7 +112,7 @@ export function ModalNFClient() {
                 <option value='fantasia'>Nome Fantasia</option>
                 <option value='cnpjcpf'>CPF / CNPJ</option>
               </Select>
-              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
               <Button onClick={handleGetClientsByFilter}><Icon as={FiSearch} /></Button>
             </Flex>
           </Flex>

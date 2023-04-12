@@ -30,6 +30,7 @@ import { ApiException } from '../../../../../services/api/ApiException';
 import { ClientService } from '../../../../../services/api/clientes/ClientService';
 import { IClient } from '../../../../../services/api/clientes/ClientService';
 import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
+import { useState } from 'react';
 
 interface ModalProps {
   // changeEdit: (value: React.SetStateAction<any>) => void
@@ -43,11 +44,14 @@ interface ModalProps {
 }
 
 export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, getCod }: ModalProps) {
-  const { isOpen, onClose } = useModalClient();
   const methods = useFormContext<IClient>();
-  const { colorMode } = useColorMode();
   const toast = useToast();
+
+  const { isOpen, onClose } = useModalClient();
+  const { colorMode } = useColorMode();
   const { idEmissorSelecionado } = useEmissorContext();
+
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const clearForm = () => {
     onClose();
@@ -80,6 +84,7 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, ge
       tipo_telefone3: '',
       uf: '',
     });
+    setFormSubmitted(false);
   };
 
 
@@ -120,10 +125,10 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, ge
   };
 
   const submitData = (data: IClient) => {
-    if (isEditing)
-      handleUpdateClient(data);
-    else
-      handleCreateNewClient(data);
+    setFormSubmitted(true);
+    
+    if (isEditing) handleUpdateClient(data);
+    else handleCreateNewClient(data);
   };
 
   return (
@@ -152,14 +157,14 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, ge
                   <FormFields getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} id={id}/>
                 </TabPanel>
                 <TabPanel>
-                  <Textarea borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} h="37rem" placeholder='Observações...' {...methods.register('observacao')} />
+                  <Textarea maxLength={5000} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} h="37rem" placeholder='Observações...' {...methods.register('observacao')} />
                 </TabPanel>
               </TabPanels>
             </Tabs>
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">
-              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
+              <Button variant='solid' colorScheme="green" type="submit" disabled={formSubmitted}><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
               <Button colorScheme='red' variant="outline" mr={3} onClick={() => clearForm()}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
             </Flex>
           </ModalFooter>

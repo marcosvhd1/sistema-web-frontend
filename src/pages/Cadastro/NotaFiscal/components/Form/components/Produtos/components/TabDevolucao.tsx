@@ -19,12 +19,12 @@ export function FormTabDevolucao() {
         </Flex>
         <FormContainer label='% Devolvida'>
           <PorcentAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('ipi_p_devolvida')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('ipi_p_devolvida')}/>
           </PorcentAddon>
         </FormContainer>
         <FormContainer label='R$ Devolvida'>
           <MoneyAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('ipi_vlr_devolvido')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('ipi_vlr_devolvido')}/>
           </MoneyAddon>
         </FormContainer>
         <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap" mt={3}>
@@ -34,32 +34,32 @@ export function FormTabDevolucao() {
         </Flex>
         <FormContainer label='Base de Cálculo'>
           <MoneyAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_base_calc')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_base_calc')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='% FCP'>
           <PorcentAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_p')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_p')}/>
           </PorcentAddon>
         </FormContainer>
         <FormContainer label='Valor FCP'>
           <MoneyAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_valor')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_valor')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Base de Cálculo ST'>
           <MoneyAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_base_calc_st')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_base_calc_st')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='% FCP ST'>
           <PorcentAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_p_st')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_p_st')}/>
           </PorcentAddon>
         </FormContainer>
         <FormContainer label='Valor FCP ST'>
           <MoneyAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_valor_st')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('fcp_valor_st')}/>
           </MoneyAddon>
         </FormContainer>
       </Flex>
@@ -71,22 +71,22 @@ export function FormTabDevolucao() {
         </Flex>
         <FormContainer label='Base de cálculo da UF de destino'>
           <MoneyAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_base_calc')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_base_calc')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Alíquota FCP da UF de destino'>
           <PorcentAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_aliquota_fcp_uf_dest')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_aliquota_fcp_uf_dest')}/>
           </PorcentAddon>
         </FormContainer>
         <FormContainer label='Valor FCP na UF de destino'>
           <MoneyAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_valor_fcp_uf_dest')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_valor_fcp_uf_dest')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Alíquota interna ICMS da UF de destino'>
           <PorcentAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_aliquota_interna_icms_uf_dest')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_aliquota_interna_icms_uf_dest')}/>
           </PorcentAddon>
         </FormContainer>
         <FormContainer label='Alíquota ICMS interestadual'>
@@ -108,12 +108,12 @@ export function FormTabDevolucao() {
         </FormContainer>
         <FormContainer label='Valor do ICMS da UF de destino'>
           <MoneyAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_valor_icms_uf_dest')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_valor_icms_uf_dest')}/>
           </MoneyAddon>
         </FormContainer>
         <FormContainer label='Valor do ICMS da UF de origem'>
           <MoneyAddon>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_valor_icms_uf_ori')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...register('partilha_icms_valor_icms_uf_ori')}/>
           </MoneyAddon>
         </FormContainer>
       </Flex>

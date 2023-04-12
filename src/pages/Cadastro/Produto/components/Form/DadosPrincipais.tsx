@@ -82,28 +82,28 @@ export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod,
         <Flex direction="column" w="50%" mr={6}>
           <Flex gap="2">
             <FormContainer label="Código" width="5rem">
-              <Input id="nprod" type="text" w="5rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('nprod')} />
+              <Input maxLength={255} id="nprod" type="text" w="5rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('nprod')} />
             </FormContainer>
             <FormContainer label="Descrição">
-              <Input id="descricao" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('descricao')} />
+              <Input maxLength={500} id="descricao" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('descricao')} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
             <FormContainer label="Referência" >
-              <Input id="referencia" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('referencia')} />
+              <Input maxLength={255} id="referencia" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('referencia')} />
             </FormContainer>
             <FormContainer label="Código de Barras">
-              <Input id="codbarras" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('codbarras')} />
+              <Input maxLength={255} id="codbarras" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('codbarras')} />
             </FormContainer>
           </Flex>
           <Flex gap="2">
             <FormContainer label="Preço">
-              <Input id="preco" placeholder="R$0,00"type="number" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} step={0.01} {...register('preco', {
+              <Input maxLength={255} id="preco" placeholder="R$0,00"type="number" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} step={0.01} {...register('preco', {
                 setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
             <FormContainer label="UN">
-              <Input id="un" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('un')} />
+              <Input maxLength={255} id="un" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('un')} />
             </FormContainer>
           </Flex>
         </Flex>
@@ -156,16 +156,16 @@ export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod,
               </Checkbox>
             </FormContainer>
             <FormContainer width="8rem" label="Cadastrado" >
-              <Input id="cadastrado" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="8rem" isReadOnly value={moment().format('DD/MM/YYYY')} />
+              <Input maxLength={255} id="cadastrado" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="8rem" isReadOnly value={moment().format('DD/MM/YYYY')} />
             </FormContainer>
             <FormContainer width="8rem" label="Alterado" >
-              <Input id="alterado" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="8rem" isReadOnly value={moment().format('DD/MM/YYYY')} />
+              <Input maxLength={255} id="alterado" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="8rem" isReadOnly value={moment().format('DD/MM/YYYY')} />
             </FormContainer>
           </Flex>
         </Flex>
       </Flex>
       <FormContainer label="Anotações">
-        <Textarea id="anotacoes" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('anotacoes')}/>
+        <Textarea maxLength={5000} id="anotacoes" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('anotacoes')}/>
       </FormContainer>
       <GroupModal refreshData={getDados} header={header} isMarca={isMarca}/>
     </Flex>

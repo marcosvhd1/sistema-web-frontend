@@ -113,7 +113,7 @@ export function ModalNFTransporte() {
                 <option value='razao'>Razão Social</option>
                 <option value='cnpjcpf'>CPF / CNPJ</option>
               </Select>
-              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
               <Button onClick={handleGetTranspByFilter}><Icon as={FiSearch} /></Button>
             </Flex>
           </Flex>

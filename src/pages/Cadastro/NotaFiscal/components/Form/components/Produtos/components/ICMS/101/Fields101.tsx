@@ -27,23 +27,23 @@ export function Fields101() {
       </FormContainer>  
       <FormContainer label='Alíquota aplicável de cálculo de crédito' mr='3'>
         <PorcentAddon>
-          <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('p_aliquota_credito')} />
+          <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('p_aliquota_credito')} />
         </PorcentAddon>
       </FormContainer>
       <FormContainer label='Crédito ICMS que pode ser aproveitado' mr='3'>
         <MoneyAddon>
-          <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('credito_icms_aproveitado')} />
+          <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('credito_icms_aproveitado')} />
         </MoneyAddon>
       </FormContainer>
       <Flex w="100%" justify="space-between" >
         <FormContainer label='EAN (Código de barras)' mr='3'>
-          <Input defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('ean')}/>
+          <Input maxLength={255} defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('ean')}/>
         </FormContainer>
         <FormContainer label='N° Pedido de Compra' mr='3'>
-          <Input defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('pedido_compra')}/>
+          <Input maxLength={255} defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('pedido_compra')}/>
         </FormContainer>
         <FormContainer label='Item'>
-          <Input defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('item')}/>
+          <Input maxLength={255} defaultValue={''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...register('item')}/>
         </FormContainer>
       </Flex>
     </Flex>

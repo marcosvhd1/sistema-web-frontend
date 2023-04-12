@@ -90,7 +90,7 @@ export function LoginForm() {
             <InputLeftAddon borderColor="blackAlpha.500" color="gray.700">
               <FiUser />
             </InputLeftAddon>
-            <Input
+            <Input maxLength={255}
               borderColor="blackAlpha.500"
               type="text"
               placeholder="CNPJ"
@@ -104,7 +104,7 @@ export function LoginForm() {
             <InputLeftAddon borderColor="blackAlpha.500" color="gray.700" >
               <FiAtSign />
             </InputLeftAddon>
-            <Input
+            <Input maxLength={255}
               borderColor="blackAlpha.500"
               focusBorderColor="orange.400"
               type="text"
@@ -119,7 +119,7 @@ export function LoginForm() {
             <InputLeftAddon borderColor="blackAlpha.500" color="gray.700" >
               <FiLock />
             </InputLeftAddon>
-            <Input
+            <Input maxLength={255}
               borderColor="blackAlpha.500"
               type="password"
               placeholder="Senha"

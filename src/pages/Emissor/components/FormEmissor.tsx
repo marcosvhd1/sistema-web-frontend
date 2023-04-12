@@ -54,46 +54,46 @@ export function FormEmissor({ isEditing, setActive, active, id }: IFormFields) {
     <Flex w='100%' justify='center' align='flex-start' direction='column'>
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label='Razão' mr='3' width='70%'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('razao')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('razao')}/>
         </FormContainer>
         <FormContainer label='CPF / CNPJ'  width='30%'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cnpjcpf')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cnpjcpf')}/>
         </FormContainer>
       </Flex>
 
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label='Nome Fantasia' width='50%' mr='3'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('fantasia')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('fantasia')}/>
         </FormContainer>
         <FormContainer label='Inscrição Estadual'  width='25%' mr='3'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('ie')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('ie')}/>
         </FormContainer>
         <FormContainer label='Inscrição Municipal'  width='25%'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('im')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('im')}/>
         </FormContainer>
       </Flex>
 
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label='Endereço' width='45%' mr='3'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('endereco')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('endereco')}/>
         </FormContainer>
         <FormContainer label='Número'  width='20%' mr='3'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('numero')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('numero')}/>
         </FormContainer>
         <FormContainer label='CNAE'  width='35%'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cnae')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cnae')}/>
         </FormContainer>
       </Flex>
 
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label='Complemento' width='35%' mr='3'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('complemento')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('complemento')}/>
         </FormContainer>
         <FormContainer label='Bairro'  width='35%' mr='3'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('bairro')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('bairro')}/>
         </FormContainer>
         <FormContainer label='Telefone'  width='30%'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('telefone')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('telefone')}/>
         </FormContainer>
       </Flex>
 
@@ -109,7 +109,7 @@ export function FormEmissor({ isEditing, setActive, active, id }: IFormFields) {
           </Select>
         </FormContainer>
         <FormContainer label='CEP' width='30%'>
-          <Input type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cep')}/>
+          <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cep')}/>
         </FormContainer>
       </Flex>
       <FormContainer label='Regime Tributário'>

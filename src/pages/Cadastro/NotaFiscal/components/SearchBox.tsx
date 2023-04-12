@@ -44,7 +44,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
             <option value='cod'>N° da Nota</option>
             <option value='nome_destinatario'>Destinatario</option>
           </Select>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
           <Button onClick={handleGetNotasFiscaisByFilter}><Icon as={FiSearch} /></Button>
         </Flex>
         <Button variant="solid" colorScheme="green" onClick={handleOpenModal}><Icon mr={2} as={MdAdd} />Cadastrar</Button>

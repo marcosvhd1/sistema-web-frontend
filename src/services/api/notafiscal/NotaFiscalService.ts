@@ -5,6 +5,7 @@ import { ITransportadora } from '../transportadora/TransportadoraService';
 import { INFDuplicata } from './NFDuplicata';
 import { INFFormaPagto } from './NFFormaPagto';
 import { INFProduct } from './NFProduct';
+import { INFReferenciada } from './NFReferenciada';
 import { INFService } from './NFService';
 
 export interface INotaFiscal {
@@ -65,7 +66,8 @@ export interface INotaFiscal {
     total_fcp_st: number;
     presenca_comprador: string;
     duplicata: INFDuplicata[];
-    forma_pagto: INFFormaPagto[]; //colocar no back em NFFPagto
+    forma_pagto: INFFormaPagto[];
+    chaves_ref: INFReferenciada[];
     modalidade_frete: string;
     id_transportadora: string;
     transportadora: ITransportadora;
@@ -77,7 +79,6 @@ export interface INotaFiscal {
     peso_liquido: number;
     info_adicionais: string;
     fonte_valor_aprox_tributos: string;
-    nfe_referenciada: string;
     ecf_referenciado: string;
     n_coo: string;
     caminho_xml: string;

@@ -10,10 +10,10 @@ export function TabOutros() {
   return (
     <Flex w='100%' justify='center' align='flex-start'>
       <FormContainer label='Série Padrão' mr='3'>
-        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('serie_padrao')}/>
+        <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('serie_padrao')}/>
       </FormContainer>
       <FormContainer label='Aliq. de Aproveitamento de ICMS'>
-        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('aliq_aprov_icms')}/>
+        <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('aliq_aprov_icms')}/>
       </FormContainer>
     </Flex>
   );

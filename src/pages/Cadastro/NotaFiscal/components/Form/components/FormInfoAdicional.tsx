@@ -25,7 +25,7 @@ export function FormInfoAdicional() {
       </GridItem>
 
       <GridItem area={'main'} mt={3}>
-        <Textarea h="100%" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder='Informações adicionais...' {...register('info_adicionais')} />
+        <Textarea maxLength={5000} h="100%" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder='Informações adicionais...' {...register('info_adicionais')} />
       </GridItem>
     </Grid>
   );

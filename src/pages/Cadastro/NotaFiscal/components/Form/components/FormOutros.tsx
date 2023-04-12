@@ -1,11 +1,10 @@
-import { Button, Divider, Flex, Icon, Input, Select, Text, useColorMode } from '@chakra-ui/react';
+import { Divider, Flex, Input, Select, Text, useColorMode } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
-import { FiSearch } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../components/Form/FormContainer';
 import { INotaFiscal } from '../../../../../../services/api/notafiscal/NotaFiscalService';
 
 export function FormOutros() {
-  const { register, setFocus } = useFormContext<INotaFiscal>();
+  const { register } = useFormContext<INotaFiscal>();
   const { colorMode } = useColorMode();
 
   return (
@@ -19,19 +18,16 @@ export function FormOutros() {
             <option value='1'>Própria</option>
           </Select>
         </FormContainer>
-        <FormContainer label='NFe Referenciada - Chave de Acesso'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('nfe_referenciada')} />
-        </FormContainer>
         <Flex w="100%" justify="center" align="center">
           <FormContainer width='65%' label='ECF Referenciado - N° ECF' mr='3'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('ecf_referenciado')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('ecf_referenciado')}/>
           </FormContainer>
           <FormContainer width='35%' label='N° COO'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('n_coo')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('n_coo')}/>
           </FormContainer>
         </Flex>
         <FormContainer label='Chave de Acesso'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('chave_acesso')}/>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('chave_acesso')}/>
         </FormContainer>
       </Flex>
 
@@ -44,29 +40,29 @@ export function FormOutros() {
         </Flex>
         <Flex w="100%" justify="center" align="center">
           <FormContainer width='20%' label='UF Emb.' mr='3'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('uf_embarque')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('uf_embarque')}/>
           </FormContainer>
           <FormContainer width='40%' label='Local de Embarque' mr='3'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('local_embarque')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('local_embarque')}/>
           </FormContainer>
           <FormContainer width='40%' label='Local de Despacho'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('local_despacho')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('local_despacho')}/>
           </FormContainer>
         </Flex>
         <Flex w="100%" justify="center" align="center">
           <FormContainer width='25%' label='UF Saída' mr='3'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('uf_saida')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('uf_saida')}/>
           </FormContainer>
           <FormContainer label='Local de Saída'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('local_saida')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('local_saida')}/>
           </FormContainer>
         </Flex>
         <Flex w="100%" justify="center" align="center">
           <FormContainer width='65%' label='N° da DI' mr='3'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('num_di')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('num_di')}/>
           </FormContainer>
           <FormContainer width='35%' label='Data da DI'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...register('data_di')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...register('data_di')}/>
           </FormContainer>
         </Flex>
       </Flex>

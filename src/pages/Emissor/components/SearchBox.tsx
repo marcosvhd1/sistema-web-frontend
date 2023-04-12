@@ -47,7 +47,7 @@ export function SearchBox({ children, getEmissores, changeEdit, setFilter, seeAc
               <option value='razao'>Emissor</option>
               <option value='cnpjcpf'>CPF / CNPJ</option>
             </Select>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
             <Button type='submit'><Icon as={FiSearch} /></Button>
             <Checkbox size='lg' mx='2' onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
             <Text fontSize={{base: 'sm', lg: 'lg'}} w='20%' onClick={handleSeeActiveProducts}>Visualizar inativos</Text>

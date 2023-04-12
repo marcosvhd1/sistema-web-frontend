@@ -44,15 +44,15 @@ export function ModalNFDuplicata({ addDuplicata }: ModalNFDuplicataProps) {
           <ModalBody>
             <Flex w='100%' justify='center' align='center'  direction='column'>
               <FormContainer label='Número'>
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('numero')} />
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('numero')} />
               </FormContainer>    
               <FormContainer label='Valor'>
                 <MoneyAddon>
-                  <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor')} />
+                  <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor')} />
                 </MoneyAddon>
               </FormContainer>
               <FormContainer label='Vencimento'>
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('vencimento')} />
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('vencimento')} />
               </FormContainer>    
             </Flex>
           </ModalBody>

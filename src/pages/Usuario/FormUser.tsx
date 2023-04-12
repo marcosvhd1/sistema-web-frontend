@@ -26,14 +26,16 @@ interface FormUserProps {
 }
 
 export function FormUser({ isDisabled, setIdEmissor, active, setActive, getUsers, dataToUpdate, id, isEditing, setIsEditing, isPrincipal }: FormUserProps) {
-  const { emissores, idEmissor, getEmissores, setIdEmissorSelecionado, getIdEmissoresByUser } = useEmissorContext();
+  const methods = useFormContext();
+  const toast = useToast();
+
   const [idEmpresa, setIdEmpresa] = useState<number>();
   const [isTipoAdminChecked, setIsTipoAdminChecked] = useState<boolean>(false);
   const [tipoAdmin, setTipoAdmin] = useState<number>(0);
-
-  const toast = useToast();
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  
+  const { emissores, idEmissor, getEmissores, setIdEmissorSelecionado, getIdEmissoresByUser } = useEmissorContext();
   const { colorMode } = useColorMode();
-  const methods = useFormContext();
 
   const userInfo = userInfos();
   const permissao = userInfo.infos?.permissao;
@@ -51,6 +53,7 @@ export function FormUser({ isDisabled, setIdEmissor, active, setActive, getUsers
     idEmissor.splice(0, idEmissor.length);
     setIsTipoAdminChecked(false);
     setIsEditing(false);
+    setFormSubmitted(false);
   };
 
   const getIdEmpresa = (cnpjcpf: string, HEADERS: any) => {
@@ -194,6 +197,8 @@ export function FormUser({ isDisabled, setIdEmissor, active, setActive, getUsers
   };
 
   const submitData = (data: IUsuario) => {
+    setFormSubmitted(true);
+
     if (isEditing) {
       const dataToUpdates = {
         id: dataToUpdate.id,
@@ -239,11 +244,11 @@ export function FormUser({ isDisabled, setIdEmissor, active, setActive, getUsers
       <Flex direction='column' w='100%' h='100%' p='.5rem' align='center' justify='space-between' overflowY='auto'>
         <Flex direction='column' >
           <Text fontSize="sm" fontWeight='medium'>Login</Text>
-          <Input type='text' isDisabled={isDisabled} {...methods.register('email')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isRequired/>
+          <Input maxLength={255} type='text' isDisabled={isDisabled} {...methods.register('email')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isRequired/>
         </Flex>
         <Flex direction='column'>
           <Text fontSize="sm" fontWeight='medium'>Senha</Text>
-          <Input type='password' isDisabled={isDisabled} {...methods.register('password')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isRequired/>
+          <Input maxLength={255} type='password' isDisabled={isDisabled} {...methods.register('password')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isRequired/>
         </Flex>
         <Accordion defaultIndex={[-1]} w='100%' allowToggle my='1rem' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
           <AccordionItem isDisabled={isDisabled || permissao === 0}>
@@ -273,7 +278,7 @@ export function FormUser({ isDisabled, setIdEmissor, active, setActive, getUsers
           </Checkbox>
         </Flex>
         <Flex w="100%" justify='center' >
-          <Button w="100%" isDisabled={isDisabled} variant='outline' colorScheme="green" type="submit" mr='2' size='sm'><Icon as={FiCheck} mr={1} />Salvar</Button>
+          <Button w="100%" isDisabled={isDisabled} variant='outline' colorScheme="green" type="submit" mr='2' size='sm' disabled={formSubmitted}><Icon as={FiCheck} mr={1} />Salvar</Button>
           <Button w="100%" isDisabled={isDisabled} variant='outline' colorScheme="red" onClick={clearForm} size='sm'><Icon as={FiCheck} mr={1} />Cancelar</Button>
         </Flex>
       </Flex>

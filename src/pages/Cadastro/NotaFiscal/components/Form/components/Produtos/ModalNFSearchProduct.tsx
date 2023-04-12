@@ -127,7 +127,7 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
                 <option value='marca'>Marca</option>
                 <option value='ncm'>NCM</option>
               </Select>
-              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
               <Button onClick={handleGetProductsByFilter}><Icon as={FiSearch} /></Button>
             </Flex>
           </Flex>

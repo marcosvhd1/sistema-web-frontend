@@ -12,13 +12,13 @@ export function TabCertificado() {
     <Flex w='100%' justify='center' align='center' direction='column'>
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label='N° de série' mr='3'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' readOnly {...methods.register('n_serie')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' readOnly {...methods.register('n_serie')} />
         </FormContainer>
         <Button mt={7} mr={7}>
           <Icon as={FiSearch} />
         </Button>
         <FormContainer width='30%' label='Validade'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='date' readOnly {...methods.register('validade')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='date' readOnly {...methods.register('validade')} />
         </FormContainer>
       </Flex>
       <Flex w='100%' justify='center' align='flex-start'>

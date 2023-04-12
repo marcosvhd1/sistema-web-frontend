@@ -46,6 +46,8 @@ import {
 import { INFDuplicata } from '../../../../../services/api/notafiscal/NFDuplicata';
 import { ConfigService } from '../../../../../services/api/config/ConfigService';
 import { ICFOP, ICFOPService } from '../../../../../services/api/cfop/CFOPService';
+import { INFReferenciada, NFRefService } from '../../../../../services/api/notafiscal/NFReferenciada';
+import { FormNFRef } from './components/NFRef/FormNFRef';
 
 interface ModalNotaFiscalProps {
   id: number;
@@ -65,6 +67,8 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
   const [produtos, setProdutos] = useState<INFProduct[]>([]);
   const [formaPagtos, setFormaPagto] = useState<INFFormaPagto[]>([]);
   const [duplicatas, setDuplicatas] = useState<INFDuplicata[]>([]);
+  const [chavesRef, setChavesRef] = useState<INFReferenciada[]>([]);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
@@ -72,6 +76,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
   useEffect(() => {
     if (isEditing) setProdutos(methods.getValues('produtos'));
     if (isEditing) setFormaPagto(methods.getValues('forma_pagto'));
+    if (isEditing) setChavesRef(methods.getValues('chaves_ref'));
   }, [isOpen]);
 
   useEffect(() => {
@@ -106,17 +111,22 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
 
   const clearData = () => {
     const auxForma: INFFormaPagto[] = [];
+    const auxRef: INFReferenciada[] = [];
     const auxProd: INFProduct[] = [];
 
     setFormaPagto(auxForma);
+    setChavesRef(auxRef);
     setProdutos(auxProd);
     setIsEditing(false);
+    setFormSubmitted(false);
 
     onClose();
     getNF('');
   };
 
   const submitData = (data: INotaFiscal) => {
+    setFormSubmitted(true);
+    
     if (isEditing) handleUpdateNF(data);
     else handleCreateNF(data);
 
@@ -157,6 +167,13 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
             await NFPagtoService.createNFPagto(element, HEADERS);
           }
         }
+
+        if (chavesRef.length > 0) {
+          for (const element of chavesRef) {
+            element.id_nfe = retorno.id;
+            await NFRefService.createNFRef(element, HEADERS);
+          }
+        }
       }
     }
   };
@@ -171,6 +188,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
 
       await NFProdutoService.deleteNFProdByIDNF(id, HEADERS);
       await NFPagtoService.deleteNFPagtoById(id, HEADERS);
+      await NFRefService.deleteNFRefById(id, HEADERS);
 
       for (const produto of produtos) {
         produto.id_nfe = id;
@@ -180,6 +198,11 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
       for (const forma of formaPagtos) {
         forma.id_nfe = id;
         await NFPagtoService.createNFPagto(forma, HEADERS);
+      }
+
+      for (const chave of chavesRef) {
+        chave.id_nfe = id;
+        await NFRefService.createNFRef(chave, HEADERS);
       }
     }
   };
@@ -267,90 +290,95 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
   };
 
   return (
-    <FormProvider {...methods}>
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        closeOnOverlayClick={false}
-        motionPreset="slideInBottom"
-        isCentered
-        scrollBehavior="inside"
-        size={{ md: '6xl', lg: '6xl' }}
-      >
-        <ModalOverlay />
-        <form onSubmit={methods.handleSubmit(submitData)}>
-          <ModalContent>
-            <ModalHeader>
-              <Flex w="100%" justify="center" align="center">
-                <Text>Nota Fiscal</Text>
-              </Flex>
-            </ModalHeader>
-            <ModalCloseButton onClick={clearData} />
-            <ModalBody>
-              <Tabs
-                variant="enclosed"
-                colorScheme="gray"
-                w="100%"
-                onChange={handleTabChange}
-              >
-                <TabList>
-                  <Tab>Dados Principais</Tab>
-                  <Tab>Produtos</Tab>
-                  <Tab>Totais</Tab>
-                  <Tab>Formas de Pagamento</Tab>
-                  <Tab>Transporte</Tab>
-                  <Tab>Informações Adicionais</Tab>
-                  <Tab>Outros</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel>
-                    <FormDadosPrincipais isEditing={isEditing} cfops={cfops} />
-                  </TabPanel>
-                  <TabPanel>
-                    <FormProdutos
-                      produtos={produtos}
-                      addProduto={setProdutos}
-                      calcTotalNota={calcTotalNota}
-                    />
-                  </TabPanel>
-                  <TabPanel>
-                    <FormTotais />
-                  </TabPanel>
-                  <TabPanel>
-                    <FormFormaPagto
-                      addForma={setFormaPagto}
-                      formaPagtos={formaPagtos}
-                      duplicatas={duplicatas}
-                      addDuplicata={setDuplicatas}
-                    />
-                  </TabPanel>
-                  <TabPanel>
-                    <FormTransporte />
-                  </TabPanel>
-                  <TabPanel>
-                    <FormInfoAdicional />
-                  </TabPanel>
-                  <TabPanel>
-                    <FormOutros />
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </ModalBody>
-            <ModalFooter>
-              <Flex w="100%" justify="space-between" align="center" h="8vh">
-                <Button variant="solid" colorScheme="green" type="submit">
-                  <Icon as={FiCheck} mr={1} />
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      closeOnOverlayClick={false}
+      motionPreset="slideInBottom"
+      isCentered
+      scrollBehavior="inside"
+      size={{ md: '6xl', lg: '6xl' }}
+    >
+      <ModalOverlay />
+      <form onSubmit={methods.handleSubmit(submitData)}>
+        <ModalContent>
+          <ModalHeader>
+            <Flex w="100%" justify="center" align="center">
+              <Text>Nota Fiscal</Text>
+            </Flex>
+          </ModalHeader>
+          <ModalCloseButton onClick={clearData} />
+          <ModalBody>
+            <Tabs
+              variant="enclosed"
+              colorScheme="gray"
+              w="100%"
+              onChange={handleTabChange}
+            >
+              <TabList>
+                <Tab>Dados Principais</Tab>
+                <Tab>Produtos</Tab>
+                <Tab>Totais</Tab>
+                <Tab>Formas de Pagto</Tab>
+                <Tab>Transporte</Tab>
+                <Tab>Info Adicional</Tab>
+                <Tab>Chaves Referenciadas</Tab>
+                <Tab>Outros</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <FormDadosPrincipais isEditing={isEditing} cfops={cfops} />
+                </TabPanel>
+                <TabPanel>
+                  <FormProdutos
+                    produtos={produtos}
+                    addProduto={setProdutos}
+                    calcTotalNota={calcTotalNota}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  <FormTotais />
+                </TabPanel>
+                <TabPanel>
+                  <FormFormaPagto
+                    addForma={setFormaPagto}
+                    formaPagtos={formaPagtos}
+                    duplicatas={duplicatas}
+                    addDuplicata={setDuplicatas}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  <FormTransporte />
+                </TabPanel>
+                <TabPanel>
+                  <FormInfoAdicional />
+                </TabPanel>
+                <TabPanel>
+                  <FormNFRef
+                    addChave={setChavesRef}
+                    chaves={chavesRef}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  <FormOutros />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </ModalBody>
+          <ModalFooter>
+            <Flex w="100%" justify="space-between" align="center" h="8vh">
+              <Button variant="solid" colorScheme="green" type="submit" disabled={formSubmitted}>
+                <Icon as={FiCheck} mr={1} />
                   Salvar
-                </Button>
-                <Button colorScheme="red" variant="outline" onClick={clearData}>
-                  <Icon as={FiSlash} mr={1} />
+              </Button>
+              <Button colorScheme="red" variant="outline" onClick={clearData}>
+                <Icon as={FiSlash} mr={1} />
                   Cancelar
-                </Button>
-              </Flex>
-            </ModalFooter>
-          </ModalContent>
-        </form>
-      </Modal>
-    </FormProvider>
+              </Button>
+            </Flex>
+          </ModalFooter>
+        </ModalContent>
+      </form>
+    </Modal>
   );
 }

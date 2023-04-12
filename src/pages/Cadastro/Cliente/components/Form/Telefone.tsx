@@ -26,7 +26,7 @@ export function Telefone() {
           </Select>
         </FormContainer>
         <FormContainer label="Número" width="auto">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone1')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone1')} />
         </FormContainer>
       </Flex>
       <Flex align="center" justify="center">
@@ -38,7 +38,7 @@ export function Telefone() {
           </Select>
         </FormContainer>
         <FormContainer label="Número" width="auto">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone2')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone2')} />
         </FormContainer>
       </Flex>
       <Flex align="center" justify="center">
@@ -50,7 +50,7 @@ export function Telefone() {
           </Select>
         </FormContainer>
         <FormContainer label="Número" width="auto">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone3')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone3')} />
         </FormContainer>
       </Flex>
     </Flex>

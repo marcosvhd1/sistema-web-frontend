@@ -59,14 +59,14 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
         {/* DADOS PRINCIPAIS */}
         <Flex w="100%" mr="4" ml='4' align="center" justify="space-between">
           <FormContainer width='20%' label='Nº da NF'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly={block} {...methods.register('cod')} />
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly={block} {...methods.register('cod')} />
           </FormContainer>
           <Button variant="ghost" colorScheme="orange" onClick={handleBlockInputCod} mt={7} ml={1} mr={3} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }}>
             <Icon color="orange" as={FiEdit} />
           </Button>
 
           <FormContainer width='15%' label='Série' mr='3'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('serie')} />
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('serie')} />
           </FormContainer>
 
           <FormContainer width='65%' label='Natureza de Operação' mr='3'>
@@ -76,14 +76,14 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
           </FormContainer>
 
           <FormContainer width='20%' label='CFOP' mr='3'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cfop')} />
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cfop')} />
           </FormContainer>
           {/* <Button variant="ghost" colorScheme="green" onClick={() => null} mt={7} ml={1} mr={3} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }}>
             <Icon color="green" as={FiCheckCircle} />
           </Button> */}
 
           <FormContainer width='35%' label='Status'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" defaultValue={'Em digitação'} readOnly {...methods.register('status')} />
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" defaultValue={'Em digitação'} readOnly {...methods.register('status')} />
           </FormContainer>
         </Flex>
         {/* OUTRAS INFOS */}
@@ -117,7 +117,7 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
           </FormContainer>
 
           <FormContainer width='15%' label='Modelo' mr='3'>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" defaultValue={55} readOnly {...methods.register('modelo')} />
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" defaultValue={55} readOnly {...methods.register('modelo')} />
           </FormContainer>
 
           <FormContainer width='30%' label='Consumidor Final' >
@@ -139,68 +139,68 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
             <Flex align="center" justify="space-between">
 
               <FormContainer width="20%" label='* Cód' mr='3'>
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.cod')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.cod')}/>
               </FormContainer>
 
               <FormContainer width="55%" label='* Nome / Razão Social' mr='3' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.razao')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.razao')}/>
               </FormContainer>
 
               <FormContainer width="25%" label='* CPF / CNPJ' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.cnpjcpf')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.cnpjcpf')}/>
               </FormContainer>
 
             </Flex>
             <Flex align="center" justify="space-between">
               
               <FormContainer width="40%" label='* Endereço' mr='3' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.logradouro')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.logradouro')}/>
               </FormContainer>
 
               <FormContainer width="15%" label='* Nº' mr='3' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.numero')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.numero')}/>
               </FormContainer>
 
               <FormContainer width="20%" label='* Bairro' mr='3' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.bairro')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.bairro')}/>
               </FormContainer>
 
               <FormContainer width="25%" label='* CEP' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.cep')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.cep')}/>
               </FormContainer>
 
             </Flex>
             <Flex align="center" justify="space-between">
 
               <FormContainer width="30%" label='* Cidade' mr='3' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.cidade')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.cidade')}/>
               </FormContainer>
 
               <FormContainer width="15%" label='* UF' mr='3' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.uf')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.uf')}/>
               </FormContainer>
 
               <FormContainer width="25%" label='Telefone' mr='3' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.telefone1')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.telefone1')}/>
               </FormContainer>
 
               <FormContainer width="30%" label='Inscrição Estadual' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.ie')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.ie')}/>
               </FormContainer>
 
             </Flex>
             <Flex align="center" justify="space-between">
 
               <FormContainer width="35%" label='Complemento' mr='3' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.complemento')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.complemento')}/>
               </FormContainer>
 
               <FormContainer width="25%" label='SUFRAMA' mr='3' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.suframa')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.suframa')}/>
               </FormContainer>
 
               <FormContainer width="25%" label='País' mr='3' >
-                <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.pais')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.pais')}/>
               </FormContainer>
 
               <Button onClick={onOpen} w="20%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
@@ -217,15 +217,15 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
             </Flex>
 
             <FormContainer label='Data Emissão' >
-              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('data_emissao')} defaultValue={new Date().toISOString().split('T')[0]} />
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('data_emissao')} defaultValue={new Date().toISOString().split('T')[0]} />
             </FormContainer>
 
             <FormContainer label='Data Saída' >
-              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('data_saida')} defaultValue={new Date().toISOString().split('T')[0]}/>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('data_saida')} defaultValue={new Date().toISOString().split('T')[0]}/>
             </FormContainer>
 
             <FormContainer label='Hora Saída' >
-              <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="time" {...methods.register('hora')} defaultValue={`${new Date().toLocaleTimeString().split(':')[0]}:${new Date().toLocaleTimeString().split(':')[1]}`}/>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="time" {...methods.register('hora')} defaultValue={`${new Date().toLocaleTimeString().split(':')[0]}:${new Date().toLocaleTimeString().split(':')[1]}`}/>
             </FormContainer>
 
           </Flex>

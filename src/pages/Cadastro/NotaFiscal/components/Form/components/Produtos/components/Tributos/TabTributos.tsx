@@ -168,27 +168,27 @@ export function FormTabTributos() {
           </Flex>
           <FormContainer label='CST'>
             <Flex>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' mr={3} {...methods.register('produto.cst_ipi')}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' mr={3} {...methods.register('produto.cst_ipi')}/>
               <Button onClick={() => handleOpenModal(1)}><Icon as={FiSearch} /></Button>
             </Flex>
           </FormContainer>
           <FormContainer label='Alíquota IPI'>
             <PorcentAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('produto.aliquota_ipi')} onChange={onChangeAliqIPI}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('produto.aliquota_ipi')} onChange={onChangeAliqIPI}/>
             </PorcentAddon>
           </FormContainer>
           <FormContainer label='Base de Cálculo'>
             <MoneyAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('base_calc_ipi')} onChange={onChangeBaseIPI}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('base_calc_ipi')} onChange={onChangeBaseIPI}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Valor IPI'>
             <MoneyAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('valor_ipi')}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('valor_ipi')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='CNPJ Produtor'>
-            <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('cnpj_produtor')}/>
+            <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('cnpj_produtor')}/>
           </FormContainer>
         </Flex>
         <Flex w="50%" align="center" justify="flex-start" direction="column" mr={7}>
@@ -199,27 +199,27 @@ export function FormTabTributos() {
           </Flex>
           <FormContainer label='Base de Cálculo'>
             <MoneyAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('base_calc_ii')}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('base_calc_ii')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Desp. aduaneiras'>
             <MoneyAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('desp_aduaneiras')}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('desp_aduaneiras')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Valor IOF'>
             <MoneyAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('valor_iof')}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('valor_iof')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Valor II'>
             <MoneyAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('valor_ii')}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('valor_ii')}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Hidden' hidden>
             <MoneyAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" readOnly />
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" readOnly />
             </MoneyAddon>
           </FormContainer>
         </Flex>
@@ -233,23 +233,23 @@ export function FormTabTributos() {
           </Flex>
           <FormContainer label='CST'>
             <Flex>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' mr={3} {...methods.register('produto.cst_pis')}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' mr={3} {...methods.register('produto.cst_pis')}/>
               <Button onClick={() => handleOpenModal(2)}><Icon as={FiSearch} /></Button>
             </Flex>
           </FormContainer>
           <FormContainer label='Alíquota PIS'>
             <PorcentAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('produto.aliquota_pis')} onChange={onChangeAliqPIS}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('produto.aliquota_pis')} onChange={onChangeAliqPIS}/>
             </PorcentAddon>
           </FormContainer>
           <FormContainer label='Base de Cálculo'>
             <MoneyAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('base_calc_pis')} onChange={onChangeBasePIS}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('base_calc_pis')} onChange={onChangeBasePIS}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Valor PIS'>
             <MoneyAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('valor_pis')}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('valor_pis')}/>
             </MoneyAddon>
           </FormContainer>
         </Flex>
@@ -261,23 +261,23 @@ export function FormTabTributos() {
           </Flex>
           <FormContainer label='CST'>
             <Flex>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' mr={3} {...methods.register('produto.cst_cofins')}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' mr={3} {...methods.register('produto.cst_cofins')}/>
               <Button onClick={() => handleOpenModal(3)}><Icon as={FiSearch} /></Button>
             </Flex>
           </FormContainer>
           <FormContainer label='Alíquota COFINS'>
             <PorcentAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('produto.aliquota_cofins')} onChange={onChangeAliqCOFINS}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('produto.aliquota_cofins')} onChange={onChangeAliqCOFINS}/>
             </PorcentAddon>
           </FormContainer>
           <FormContainer label='Base de Cálculo'>
             <MoneyAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('base_calc_cofins')} onChange={onChangeBaseCOFINS}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('base_calc_cofins')} onChange={onChangeBaseCOFINS}/>
             </MoneyAddon>
           </FormContainer>
           <FormContainer label='Valor COFINS'>
             <MoneyAddon>
-              <Input defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('valor_cofins')}/>
+              <Input maxLength={255} defaultValue={0} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('valor_cofins')}/>
             </MoneyAddon>
           </FormContainer>
         </Flex>

@@ -46,7 +46,7 @@ export function SearchBox({ children, changeEdit, stateFilter, getTransportadora
               <option value='razao'>Nome / Razão Social</option>
               <option value='cnpjcpf'>CPF / CNPJ</option>
             </Select>
-            <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
             <Button type="submit"><Icon as={FiSearch} /></Button>
           </Flex>
           <Button variant="solid"  onClick={openModal} colorScheme="green"><Icon mr={2} as={MdAdd} />Cadastrar</Button>

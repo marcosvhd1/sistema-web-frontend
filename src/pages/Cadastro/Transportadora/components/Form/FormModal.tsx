@@ -18,6 +18,7 @@ import { useModalTransportadora } from '../../../../../Contexts/Modal/Transporta
 import { ApiException } from '../../../../../services/api/ApiException';
 import { ITransportadora, TransportadoraService } from '../../../../../services/api/transportadora/TransportadoraService';
 import { FormFields } from './FormFields';
+import { useState } from 'react';
 
 interface ModalProps {
   // changeEdit: (value: React.SetStateAction<any>) => void;
@@ -31,10 +32,12 @@ interface ModalProps {
 }
 
 export function FormModal({ isEditing, id, refreshPage, editCod, cod, getCod, header }: ModalProps) {
-  const { isOpen, onClose } = useModalTransportadora();
   const methods = useFormContext<ITransportadora>();
   const toast = useToast();
+  const { isOpen, onClose } = useModalTransportadora();
   const { idEmissorSelecionado } = useEmissorContext();
+
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const clearForm = () => {
     onClose();
@@ -58,7 +61,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod, cod, getCod, he
       placa: '',
       uf_placa: '',
     });
-
+    setFormSubmitted(false);
   };
 
   const handleCreateNewTransportadora = (data: ITransportadora) => {
@@ -98,10 +101,10 @@ export function FormModal({ isEditing, id, refreshPage, editCod, cod, getCod, he
   };
 
   const submitData = (data: ITransportadora) => {
-    if (isEditing)
-      handleUpdateTransportadora(data);
-    else
-      handleCreateNewTransportadora(data);
+    setFormSubmitted(true);
+
+    if (isEditing) handleUpdateTransportadora(data);
+    else handleCreateNewTransportadora(data);
   };
 
   return (
@@ -124,7 +127,7 @@ export function FormModal({ isEditing, id, refreshPage, editCod, cod, getCod, he
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">
-              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} /> {isEditing ? 'Editar' : 'Cadastrar'}</Button>
+              <Button variant='solid' colorScheme="green" type="submit" disabled={formSubmitted}><Icon as={FiCheck} mr={1} /> {isEditing ? 'Editar' : 'Cadastrar'}</Button>
               <Button colorScheme='red' variant="outline" mr={3} onClick={() => clearForm()}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
             </Flex>
           </ModalFooter>

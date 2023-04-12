@@ -33,22 +33,22 @@ export function TabEmail({ autenticacao, ssl, tls, setAutenticacao, setSSL, setT
     <Flex w='100%' justify='center' align='flex-start'>
       <Flex w='100%' justify='center' align='flex-start' direction='column' mr={5}>
         <FormContainer label='Nome Remetente'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('email_remetente')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('email_remetente')} />
         </FormContainer>
         <FormContainer label='Email'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='email' {...methods.register('email')}/>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='email' {...methods.register('email')}/>
         </FormContainer>
         <FormContainer label='Host (SMTP)'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('host')}/>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('host')}/>
         </FormContainer>
         <FormContainer label='Usuário'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('usuario')}/>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('usuario')}/>
         </FormContainer>
         <FormContainer label='Senha'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='password' {...methods.register('senha')}/>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='password' {...methods.register('senha')}/>
         </FormContainer>
         <FormContainer label='Porta'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='number' {...methods.register('porta')}/>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='number' {...methods.register('porta')}/>
         </FormContainer>
         <Flex w='100%' mt={5}>
           <Checkbox size='lg' mr='2' isChecked={autenticacao} onChange={handleChangeAutenticacao} />
@@ -63,10 +63,10 @@ export function TabEmail({ autenticacao, ssl, tls, setAutenticacao, setSSL, setT
       </Flex>
       <Flex w='100%' justify='flex-start' align='center' direction='column'>
         <FormContainer label='Copia para'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('copia')}/>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('copia')}/>
         </FormContainer>
         <FormContainer label='Assunto Padrão'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='email' {...methods.register('assunto')}/>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='email' {...methods.register('assunto')}/>
         </FormContainer>
         <FormContainer label='Mensagem Padrão'>
           <Textarea {...methods.register('mensagem')} />

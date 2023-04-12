@@ -56,21 +56,21 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
       <Divider />
       <Flex gap="3" align="center">
         <FormContainer label="Código" width="5rem">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" w="5rem" isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('cod')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" w="5rem" isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('cod')} />
         </FormContainer>
         <FormContainer label="Nome / Razão Social" isRequired={true}>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('razao')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('razao')} />
         </FormContainer>
       </Flex>
       <Flex>
         <FormContainer label="CPF / CNPJ">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" w="12rem" {...register('cnpjcpf')} mr="3" />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" w="12rem" {...register('cnpjcpf')} mr="3" />
         </FormContainer>
         <FormContainer label="Inscrição Estadual (IE)">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="text" w="10rem" {...register('ie')} mr="3" />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="text" w="10rem" {...register('ie')} mr="3" />
         </FormContainer>
         <FormContainer label="RNTRC">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="antt" type="text" {...register('rntrc')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="antt" type="text" {...register('rntrc')} />
         </FormContainer>
       </Flex>
       <Text fontSize="xl" mt="5">Contatos</Text>
@@ -84,7 +84,7 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
           </Select>
         </FormContainer>
         <FormContainer label="Número" width="auto">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone1')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone1')} />
         </FormContainer>
       </Flex>
       <Flex align="center" justify="space-between">
@@ -96,25 +96,25 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
           </Select>
         </FormContainer>
         <FormContainer label="Número" width="auto">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone2')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone2')} />
         </FormContainer>
       </Flex>
       <Text fontSize="xl" mt="5">Endereço</Text>
       <Divider />
       <Flex gap="3" align="center">
         <FormContainer label="Rua">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="logradouro" type="text" {...register('logradouro')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="logradouro" type="text" {...register('logradouro')} />
         </FormContainer>
         <FormContainer label="Nº" width="5rem">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="numero" type="text" w="5rem" {...register('numero')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="numero" type="text" w="5rem" {...register('numero')} />
         </FormContainer>
       </Flex>
       <Flex gap="3" align="center">
         <FormContainer label="Bairro">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="bairro" type="text" {...register('bairro')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="bairro" type="text" {...register('bairro')} />
         </FormContainer>
         <FormContainer label="CEP" width="10rem">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cep" type="number" w="10rem" {...register('cep')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cep" type="number" w="10rem" {...register('cep')} />
         </FormContainer>
       </Flex>
       <Flex justify="space-between" align="center">
@@ -130,13 +130,13 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
         </FormContainer>
       </Flex>
       <FormContainer label="Complemento">
-        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="complemento" {...register('complemento')} />
+        <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="complemento" {...register('complemento')} />
       </FormContainer>
       <Text fontSize="xl" mt="5">Veículo</Text>
       <Divider />
       <Flex gap="2" align="center">
         <FormContainer label="Placa" width="10rem">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="text" w="10rem" {...register('placa')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="text" w="10rem" {...register('placa')} />
         </FormContainer>
         <FormContainer label="UF">
           <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf_placa')} w="5rem">
@@ -145,7 +145,7 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
         </FormContainer>
       </Flex>
       <FormContainer label="Anotações Gerais">
-        <Textarea borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder='Observações...' {...register('anotacoes')} />
+        <Textarea maxLength={5000} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder='Observações...' {...register('anotacoes')} />
       </FormContainer>
     </Flex>
   );

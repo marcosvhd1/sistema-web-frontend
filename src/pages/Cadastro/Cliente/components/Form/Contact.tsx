@@ -20,7 +20,7 @@ export function Contact() {
       <Flex direction="column" w="50%" ml="6">
         <Email />
         <FormContainer label="Site">
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('site')}/>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('site')}/>
         </FormContainer>
       </Flex>
     </Flex>

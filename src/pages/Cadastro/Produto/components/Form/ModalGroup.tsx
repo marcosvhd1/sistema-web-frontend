@@ -145,7 +145,7 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
         <ModalBody>
           <TableContainer w="90%" >
             <Flex gap='3' align='center' mb='1rem'>
-              <Input {...methods.register('descricao')} placeholder={isMarca ? 'Adicionar Marca' : 'Adicionar Grupo'} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} />
+              <Input maxLength={255} {...methods.register('descricao')} placeholder={isMarca ? 'Adicionar Marca' : 'Adicionar Grupo'} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} />
               {
                 isEditing
                   ?

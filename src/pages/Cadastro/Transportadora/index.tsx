@@ -112,7 +112,7 @@ export function Transportadora() {
       });
   };
 
-  const handleDeleteService = (transportadoraId: number) => {
+  const handleDeleteTransp = (transportadoraId: number) => {
     TransportadoraService.deleteById(transportadoraId, idEmissorSelecionado, HEADERS)
       .then((result) => {
         if (result instanceof ApiException) {
@@ -181,7 +181,7 @@ export function Transportadora() {
           </Pagination>
         </SearchBox>
         <FormModal getCod={getLastCod} header={HEADERS} cod={cod} editCod={editCod} refreshPage={getTransportadora} id={id} isEditing={isEditing} />
-        <DeleteAlertDialog label="Transportadora" deleteFunction={handleDeleteService} onClose={onClose} isOpen={isOpen} id={id} />
+        <DeleteAlertDialog label="Transportadora" deleteFunction={handleDeleteTransp} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>
   );

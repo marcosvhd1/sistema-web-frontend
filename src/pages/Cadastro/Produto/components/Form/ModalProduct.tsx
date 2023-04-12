@@ -26,11 +26,14 @@ interface ModalProps {
 
 
 export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, cod, header, getCod, setActive, active, seeActive }: ModalProps) {
-  const { isOpen, onClose } = useModalProduct();
   const methods = useFormContext<IProduct>();
-  const { colorMode } = useColorMode();
   const toast = useToast();
+
+  const { isOpen, onClose } = useModalProduct();
+  const { colorMode } = useColorMode();
   const { idEmissorSelecionado } = useEmissorContext();
+
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const clearForm = () => {
     onClose();
@@ -66,6 +69,7 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
       peso_liquido: 0,
     });
     setActive(true);
+    setFormSubmitted(false);
   };
 
   const handleCreateNewProduct = (data: IProduct) => {
@@ -106,10 +110,11 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
 
   const submitData = (data: IProduct) => {
     data.status = active ? 'Ativo' : 'Inativo';
-    if (isEditing)
-      handleUpdateProduct(data);
-    else
-      handleCreateNewProduct(data);
+
+    setFormSubmitted(true);
+
+    if (isEditing) handleUpdateProduct(data);
+    else handleCreateNewProduct(data);
   };
 
   return (
@@ -145,7 +150,7 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between" >
-              <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
+              <Button variant='solid' colorScheme="green" type="submit" disabled={formSubmitted}><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
               <Button colorScheme='red' variant="outline" mr={3} onClick={clearForm}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
             </Flex>
           </ModalFooter>

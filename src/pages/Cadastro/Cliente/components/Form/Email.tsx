@@ -14,10 +14,10 @@ export function Email() {
   return (
     <Flex direction="column" align="center" justify="center">
       <FormContainer label="E-mail 01">
-        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="email" {...register('email1')}/>
+        <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="email" {...register('email1')}/>
       </FormContainer>
       <FormContainer label="E-mail 02">
-        <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="email" {...register('email2')}/>
+        <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="email" {...register('email2')}/>
       </FormContainer>
     </Flex>
   );

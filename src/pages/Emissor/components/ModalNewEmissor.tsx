@@ -7,6 +7,7 @@ import { EmissorService, IEmissor, INewEmissor } from '../../../services/api/emi
 import { getDecrypted } from '../../../utils/crypto';
 import { userInfos } from '../../../utils/header';
 import { FormEmissor } from './FormEmissor';
+import { useState } from 'react';
 
 interface ModalProps {
   refreshPage: (description: string, status: string) => void
@@ -24,6 +25,8 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
   const methods = useFormContext<IEmissor>();
   const userInfo = userInfos();
   const toast = useToast();
+
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const EMPRESA = userInfo.infos?.empresa;
   const HEADERS = userInfo.header;
@@ -49,6 +52,7 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
     });
     setActive(true);
     setIsEditing(false);
+    setFormSubmitted(false);
   };
 
   const handleCreateNewEmissor = (data: INewEmissor) => {
@@ -99,6 +103,8 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
   };
 
   const submitData = (data: any) => {
+    setFormSubmitted(true);
+
     if (isEditing) handleUpdateEmissor(data);
     else handleCreateNewEmissor(data);
     
@@ -125,7 +131,7 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
           </ModalBody>
           <ModalFooter>
             <Flex justify='space-between' w='100%'>
-              <Button variant='outline' colorScheme="green" type='submit'><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
+              <Button variant='outline' colorScheme="green" type='submit' disabled={formSubmitted}><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
               <Button variant='outline' colorScheme="red" onClick={clearForm}><Icon as={FiSlash} mr={1} />Cancelar</Button>
             </Flex>
           </ModalFooter>
