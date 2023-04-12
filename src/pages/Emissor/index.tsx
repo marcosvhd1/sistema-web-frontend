@@ -164,7 +164,7 @@ export function Emissor() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <ModalNewEmissor seeActive={seeActive} active={active} setActive={setActive} refreshPage={getEmissores} isEditing={isEditing} setIsEditing={setIsEditing} />
+        <ModalNewEmissor seeActive={seeActive} active={active} setActive={setActive} refreshPage={getEmissores} isEditing={isEditing} setIsEditing={setIsEditing} id={id}/>
         <DeleteAlertDialog label="Emissor" deleteFunction={handleDeleteEmissor} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

@@ -150,6 +150,15 @@ export function NotaFiscal() {
                 prod.ncm = element.ncm;
                 prod.un = element.un;
                 prod.cest = element.cest;
+                
+                prod.aliquota_cofins = element.aliquota_cofins;
+                prod.aliquota_icms = element.aliquota_icms;
+                prod.aliquota_ipi = element.aliquota_ipi;
+                prod.aliquota_pis = element.aliquota_pis;
+                prod.cst_cofins = element.cst_cofins;
+                prod.cst_icms = element.cst_icms;
+                prod.cst_ipi = element.cst_ipi;
+                prod.cst_pis = element.cst_pis;
 
                 const NFprod: INFProduct = {
                   id: element.id,
@@ -305,7 +314,7 @@ export function NotaFiscal() {
                     {data.status}
                   </Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
-                    {data.total_nota}
+                    {'R$ ' + (data.total_nota).toString().replace('.', ',')}
                   </Td>
                   <Td style={{ textAlign: 'center' }}>
                     <Button

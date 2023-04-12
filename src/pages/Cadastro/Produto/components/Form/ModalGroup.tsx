@@ -221,10 +221,6 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
           </TableContainer>
         </ModalBody>
         <ModalFooter>
-          <Flex w="100%" justify="space-between" >
-            <Button variant='solid' colorScheme="green" onClick={clearForm}><Icon as={FiCheck} mr={1} />Salvar</Button>
-            <Button onClick={clearForm} colorScheme='red' variant="outline" mr={3}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
-          </Flex>
         </ModalFooter>
       </ModalContent>
       <DeleteAlertDialog label={isMarca ? 'Marca' : 'Grupo'} deleteFunction={handleDeleteGroup} onClose={aoFechar} isOpen={isAberto} id={id} />

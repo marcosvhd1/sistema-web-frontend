@@ -15,10 +15,11 @@ interface ModalProps {
   setActive: (value: boolean) => void
   seeActive: string
   setIsEditing: (value: boolean) => void
+  id: number
 }
 
 
-export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeActive, setIsEditing }: ModalProps) {
+export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeActive, setIsEditing, id }: ModalProps) {
   const { onClose, isOpen } = useModalNewEmissor();
   const methods = useFormContext<IEmissor>();
   const userInfo = userInfos();
@@ -29,7 +30,23 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
 
   const clearForm = () => {
     onClose();
-    methods.reset({});
+    methods.reset({
+      razao: '',
+      cnpjcpf: '',
+      fantasia: '',
+      ie: '',
+      im: '',
+      endereco: '',
+      numero: '',
+      cnae: '',
+      complemento: '',
+      bairro: '',
+      telefone: '',
+      uf: '',
+      cidade: '',
+      cep: '',
+      regime: '',
+    });
     setActive(true);
     setIsEditing(false);
   };
@@ -66,12 +83,8 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
     } else {
       EmissorService.create(dataToCreate, HEADERS)
         .then((result) => {
-          if (result instanceof ApiException) {
-            console.log(result.message);
-          } else {
-            clearForm();
-            refreshPage('', seeActive);
-          }
+          if (result instanceof ApiException) console.log(result.message);
+          else refreshPage('', seeActive);
         });
     }
   };
@@ -80,21 +93,16 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
     data.status = active ? 'Ativo' : 'Inativo';
     EmissorService.update(data.id, data, HEADERS)
       .then((result) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          clearForm();
-          refreshPage('', seeActive);
-        }
+        if (result instanceof ApiException) console.log(result.message);
+        else refreshPage('', seeActive);
       });
   };
 
   const submitData = (data: any) => {
-    if (isEditing) {
-      handleUpdateEmissor(data);
-    } else {
-      handleCreateNewEmissor(data);
-    }
+    if (isEditing) handleUpdateEmissor(data);
+    else handleCreateNewEmissor(data);
+    
+    clearForm();
   };
 
   return (
@@ -113,7 +121,7 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
           <ModalHeader>Cadastro Emissor</ModalHeader>
           <ModalCloseButton/>
           <ModalBody>
-            <FormEmissor isEditing={isEditing} active={active} setActive={setActive} />
+            <FormEmissor isEditing={isEditing} active={active} setActive={setActive} id={id}/>
           </ModalBody>
           <ModalFooter>
             <Flex justify='space-between' w='100%'>

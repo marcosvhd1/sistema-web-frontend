@@ -77,12 +77,9 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
   useEffect(() => {
     if (isOpen === true && isEditing === false) {
       ConfigService.getByEmissor(idEmissorSelecionado, HEADERS).then((result) => {
-        if (result !== null) {
-          if (result.serie_padrao.length > 0) {
-            methods.setValue('serie', parseInt(result.serie_padrao));
-          } else {
-            methods.setValue('serie', 0);
-          }
+        if (result !== null && result !== undefined) {
+          if (result.serie_padrao.length > 0) methods.setValue('serie', parseInt(result.serie_padrao));
+          else methods.setValue('serie', 0);
         }
       });
     }
@@ -94,11 +91,13 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
         if (result instanceof ApiException) {
           console.log(result.message);
         } else {
-          setCfops(result);
+          if (result.length > 0) {
+            setCfops(result);
 
-          if (!isEditing) {
-            methods.setValue('natureza_operacao', result[0].natureza);
-            methods.setValue('cfop', result[0].cfop_dentro);
+            if (!isEditing) {
+              methods.setValue('natureza_operacao', result[0].natureza);
+              methods.setValue('cfop', result[0].cfop_dentro);
+            }
           }
         } 
       });
@@ -129,7 +128,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
 
     data.nome_destinatario = data.destinatario.razao;
     data.id_destinatario = `${data.destinatario.id}`;
-
+    
     if (data.nome_destinatario === null || data.nome_destinatario == undefined) {
       toast({
         position: 'top',
