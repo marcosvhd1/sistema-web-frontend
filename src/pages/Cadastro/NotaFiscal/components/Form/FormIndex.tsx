@@ -97,6 +97,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
           setCfops(result);
 
           if (!isEditing) {
+            methods.setValue('natureza_operacao', result[0].natureza);
             methods.setValue('cfop', result[0].cfop_dentro);
           }
         } 

@@ -368,14 +368,14 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
 
   const onChangeQuantidade = (e: React.ChangeEvent<HTMLInputElement>) => {
     const quantidade = parseFloat(e.target.value);
-    const valorUnitario = parseFloat(methods.watch('valor_unitario', 0).toString().replace(',', '.'));
+    const valorUnitario = parseFloat(methods.watch('valor_unitario', 0).toString().replace('.', '').replace(',', '.'));
     if (quantidade && valorUnitario) {
       methods.setValue('valor_total', parseFloat((quantidade * valorUnitario).toFixed(2)));
     }
   };
 
   const onChangeValorUnitario = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valorUnitario = parseFloat(e.target.value.toString().replace(',', '.'));
+    const valorUnitario = parseFloat(e.target.value.toString().replace('.', '').replace(',', '.'));
     const quantidade = methods.watch('quantidade', 0);
     if (quantidade && valorUnitario) {
       methods.setValue('valor_total', parseFloat((quantidade * valorUnitario).toFixed(2)));

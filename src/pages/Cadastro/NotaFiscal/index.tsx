@@ -259,6 +259,11 @@ export function NotaFiscal() {
     setId(id);
   };
 
+  const formatDate = (date: string) => {
+    const aux = date.split('-');
+    return `${aux[2]}/${aux[1]}/${aux[0]}`;
+  };
+
   const headers: { key: string; label: string }[] = [
     { key: 'data_emissao', label: 'Emissão' },
     { key: 'cod', label: 'Número' },
@@ -282,7 +287,7 @@ export function NotaFiscal() {
               ? data.map((data) => (
                 <Tr key={data.id}>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
-                    {data.data_emissao.toString()}
+                    {formatDate(data.data_emissao.toString())}
                   </Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
                     {('0000' + data.cod).slice(-4)}

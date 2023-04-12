@@ -33,7 +33,7 @@ export function Adress({ id }: AdressProps) {
         if (result instanceof ApiException) {
           console.log(result.message);
         } else {
-          methods.setValue('cidade', result.data[0].cidade);
+          if (result.data[0] !== undefined) methods.setValue('cidade', result.data[0].cidade);
         }
       });
   }, [id]);
