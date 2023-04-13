@@ -117,7 +117,7 @@ export function ModalNFClient() {
             </Flex>
           </Flex>
         </ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton onClick={onClose} />
         <ModalBody>
           <DataTable headers={headers} mt="0" width='100%' trailing={false}>
             {data !== undefined ? data.map((data) => (
@@ -138,11 +138,6 @@ export function ModalNFClient() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </ModalBody>
-        <ModalFooter>
-          <Flex w="100%" justify="flex-end" >
-            <Button colorScheme='red' variant="outline" mr={3} onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
-          </Flex>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );

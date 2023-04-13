@@ -237,7 +237,7 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
         <Flex w="100%" justify="flex-end" align="center" mt={2}>
           <Button fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue" onClick={openModalAdd}>
             <Icon mr={2} as={MdAdd} />
-            Incluir
+            Adicionar
           </Button>
         </Flex>
         <DataTable width='100%' headers={headers} mt="5">

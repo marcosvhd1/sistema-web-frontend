@@ -132,7 +132,7 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
             </Flex>
           </Flex>
         </ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton onClick={onClose} />
         <ModalBody>
           <DataTable headers={headers} mt="0" width='100%' trailing={false}>
             {data !== undefined ? data.map((data) => (
@@ -158,12 +158,6 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalProducts} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </ModalBody>
-        <ModalFooter>
-          <Flex w="100%" justify="space-between" >
-            <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{'Salvar'}</Button>
-            <Button colorScheme='red' variant="outline" mr={3} onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
-          </Flex>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );

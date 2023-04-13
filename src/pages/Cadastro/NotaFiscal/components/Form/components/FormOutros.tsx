@@ -33,11 +33,6 @@ export function FormOutros() {
 
       {/* COLUNA 2 */}
       <Flex w="50%" justify="center" align="center" direction="column" alignSelf="flex-end">
-        <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap" mb={2} mt={2}>
-          <Divider w="20%" />
-          <Text w="max" mr={3} ml={3}>Importação / Exportação</Text>
-          <Divider />
-        </Flex>
         <Flex w="100%" justify="center" align="center">
           <FormContainer width='20%' label='UF Emb.' mr='3'>
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('uf_embarque')}/>

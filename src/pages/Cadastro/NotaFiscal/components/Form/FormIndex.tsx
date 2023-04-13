@@ -125,6 +125,10 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
   };
 
   const submitData = (data: INotaFiscal) => {
+    data.nome_destinatario = data.destinatario.razao;
+    data.id_destinatario = `${data.destinatario.id}`;
+    data.modelo = 55;
+    
     setFormSubmitted(true);
     
     if (isEditing) handleUpdateNF(data);
@@ -135,9 +139,6 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
 
   const handleCreateNF = async (data: INotaFiscal) => {
     data.id_emissor = idEmissorSelecionado;
-
-    data.nome_destinatario = data.destinatario.razao;
-    data.id_destinatario = `${data.destinatario.id}`;
     
     if (data.nome_destinatario === null || data.nome_destinatario == undefined) {
       toast({
