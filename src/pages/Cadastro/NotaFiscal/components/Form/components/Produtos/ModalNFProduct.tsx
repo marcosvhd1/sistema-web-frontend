@@ -97,7 +97,7 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
     }
 
     if (verify(methods.getValues('valor_unitario'))) {
-      valorUnit = methods.getValues('valor_unitario');
+      valorUnit = parseFloat(methods.getValues('valor_unitario').toString());
     }
 
     if (verify(methods.getValues('valor_total'))) {
@@ -368,14 +368,14 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
 
   const onChangeQuantidade = (e: React.ChangeEvent<HTMLInputElement>) => {
     const quantidade = parseFloat(e.target.value);
-    const valorUnitario = parseFloat(methods.watch('valor_unitario', 0).toString().replace('.', '').replace(',', '.'));
+    const valorUnitario = parseFloat(methods.watch('valor_unitario', 0).toString());
     if (quantidade && valorUnitario) {
       methods.setValue('valor_total', parseFloat((quantidade * valorUnitario).toFixed(2)));
     }
   };
 
   const onChangeValorUnitario = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valorUnitario = parseFloat(e.target.value.toString().replace('.', '').replace(',', '.'));
+    const valorUnitario = parseFloat(e.target.value.toString());
     const quantidade = methods.watch('quantidade', 0);
     if (quantidade && valorUnitario) {
       methods.setValue('valor_total', parseFloat((quantidade * valorUnitario).toFixed(2)));
@@ -461,7 +461,7 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
                   </FormContainer>
                   <FormContainer width='20%' label='Valor Unitário' mr='3'>
                     <MoneyAddon>
-                      <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
+                      <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="number" {...methods.register('valor_unitario')} onChange={onChangeValorUnitario} />
                     </MoneyAddon>
                   </FormContainer>
                   <FormContainer width='20%' label='Valor Total'>

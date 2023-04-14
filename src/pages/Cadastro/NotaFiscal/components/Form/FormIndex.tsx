@@ -120,8 +120,8 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     setIsEditing(false);
     setFormSubmitted(false);
 
-    onClose();
     getNF('');
+    onClose();
   };
 
   const submitData = (data: INotaFiscal) => {
@@ -130,17 +130,8 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     data.modelo = 55;
     
     setFormSubmitted(true);
-    
-    if (isEditing) handleUpdateNF(data);
-    else handleCreateNF(data);
 
-    clearData();
-  };
-
-  const handleCreateNF = async (data: INotaFiscal) => {
-    data.id_emissor = idEmissorSelecionado;
-    
-    if (data.nome_destinatario === null || data.nome_destinatario == undefined) {
+    if (data.nome_destinatario === '') {
       toast({
         position: 'top',
         title: 'Erro ao cadastrar.',
@@ -149,31 +140,42 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
         duration: 2000,
         isClosable: true,
       });
+
+      setFormSubmitted(false);
     } else {
-      const retorno = await NotaFiscalService.create(data, HEADERS);
+      if (isEditing) handleUpdateNF(data);
+      else handleCreateNF(data);
 
-      if (retorno instanceof ApiException) {
-        console.log(retorno.message);
-      } else {
-        if (produtos.length > 0) {
-          for (const element of produtos) {
-            element.id_nfe = retorno.id;
-            await NFProdutoService.create(element, HEADERS);
-          }
+      clearData();
+    }
+  };
+
+  const handleCreateNF = async (data: INotaFiscal) => {
+    data.id_emissor = idEmissorSelecionado;
+    
+    const retorno = await NotaFiscalService.create(data, HEADERS);
+
+    if (retorno instanceof ApiException) {
+      console.log(retorno.message);
+    } else {
+      if (produtos.length > 0) {
+        for (const element of produtos) {
+          element.id_nfe = retorno.id;
+          await NFProdutoService.create(element, HEADERS);
         }
+      }
 
-        if (formaPagtos.length > 0) {
-          for (const element of formaPagtos) {
-            element.id_nfe = retorno.id;
-            await NFPagtoService.createNFPagto(element, HEADERS);
-          }
+      if (formaPagtos.length > 0) {
+        for (const element of formaPagtos) {
+          element.id_nfe = retorno.id;
+          await NFPagtoService.createNFPagto(element, HEADERS);
         }
+      }
 
-        if (chavesRef.length > 0) {
-          for (const element of chavesRef) {
-            element.id_nfe = retorno.id;
-            await NFRefService.createNFRef(element, HEADERS);
-          }
+      if (chavesRef.length > 0) {
+        for (const element of chavesRef) {
+          element.id_nfe = retorno.id;
+          await NFRefService.createNFRef(element, HEADERS);
         }
       }
     }

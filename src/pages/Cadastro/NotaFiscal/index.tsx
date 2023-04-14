@@ -34,6 +34,7 @@ import { IProduct, ProductService } from '../../../services/api/produtos/Product
 import { INFDuplicata } from '../../../services/api/notafiscal/NFDuplicata';
 import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
 import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
+import { NFRefService } from '../../../services/api/notafiscal/NFReferenciada';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
@@ -232,6 +233,16 @@ export function NotaFiscal() {
             console.log(result.message);
           } else {
             methods.setValue('forma_pagto', result.data);
+          }
+        });
+
+      // Carrega as chaves de acesso da nota
+      await NFRefService.getNFRefByNF(idNf, HEADERS)
+        .then((result: any) => {
+          if (result instanceof ApiException) {
+            console.log(result.message);
+          } else {
+            methods.setValue('chaves_ref', result.data);
           }
         });
 

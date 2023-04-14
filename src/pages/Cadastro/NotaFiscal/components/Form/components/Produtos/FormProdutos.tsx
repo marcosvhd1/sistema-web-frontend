@@ -11,6 +11,7 @@ import { useModalNFProduct } from '../../../../../../../Contexts/Modal/NotaFisca
 import { INFProduct } from '../../../../../../../services/api/notafiscal/NFProduct';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ModalNFProduct } from './ModalNFProduct';
+import formatMoney from '../../../../../../../utils/formatarValor';
 
 interface FormProdutosProps {
   produtos: INFProduct[],
@@ -250,8 +251,8 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
               <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.produto.cst_icms}</Td>
               <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.produto.un}</Td>
               <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.quantidade}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.valor_unitario ? 'R$ ' + (data.valor_unitario).toString().replace('.', ',') : ''}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.valor_total ? 'R$ ' + (data.valor_total).toString().replace('.', ',') : ''}</Td>
+              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor_unitario)}</Td>
+              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor_total)}</Td>
               <Td style={{ 'textAlign': 'center' }}>
                 <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => openModalEdit(index)}>
                   <Icon color="orange.300" as={FiEdit} />

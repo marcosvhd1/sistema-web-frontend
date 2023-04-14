@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Td, Tr, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Td, Tr, useColorMode, useToast } from '@chakra-ui/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { MdAdd } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
@@ -13,7 +13,9 @@ interface FormNFRefProps {
 }
 
 export function FormNFRef({ chaves, addChave }: FormNFRefProps) {
+  const toast = useToast();
   const methods = useForm<INFReferenciada>();
+
   const { colorMode } = useColorMode();
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -25,10 +27,23 @@ export function FormNFRef({ chaves, addChave }: FormNFRefProps) {
   };
 
   const submitData = () => {
-    if (isEditing) handleEditChave();
-    else handleAddChave();
+    const description = methods.getValues('descricao');
 
-    clearData();
+    if (description.length === 44) {
+      if (isEditing) handleEditChave();
+      else handleAddChave();
+
+      clearData();
+    } else {
+      toast({
+        position: 'top',
+        title: 'Erro ao cadastrar.',
+        description: 'A chave precisa ter 44 dígitos',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+    }
   };
 
   const loadChaveToEdit = (index: number) => {
