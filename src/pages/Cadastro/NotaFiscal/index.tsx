@@ -35,6 +35,7 @@ import { INFDuplicata } from '../../../services/api/notafiscal/NFDuplicata';
 import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
 import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
 import { NFRefService } from '../../../services/api/notafiscal/NFReferenciada';
+import formatMoney from '../../../utils/formatarValor';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
@@ -325,7 +326,7 @@ export function NotaFiscal() {
                     {data.status}
                   </Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
-                    {'R$ ' + (data.total_nota).toString().replace('.', ',')}
+                    {'R$ ' + formatMoney(data.total_nota)}
                   </Td>
                   <Td style={{ textAlign: 'center' }}>
                     <Button

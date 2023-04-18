@@ -16,6 +16,7 @@ import { getDecrypted } from '../../../utils/crypto';
 import { userInfos } from '../../../utils/header';
 import { FormModal } from './components/Form/ModalProduct';
 import { SearchBox } from './components/SearchBox';
+import formatMoney from '../../../utils/formatarValor';
 
 const headers: { key: string, label: string }[] = [
   { key: 'id', label: 'Código' },
@@ -169,7 +170,7 @@ export function Produto() {
               <Tr key={data.id}>
                 <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.nprod).slice(-4)}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + (data.preco).toString().replace('.', ',') : ''}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.preco)}</Td>
                 <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.referencia}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.marca}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.grupo}</Td>

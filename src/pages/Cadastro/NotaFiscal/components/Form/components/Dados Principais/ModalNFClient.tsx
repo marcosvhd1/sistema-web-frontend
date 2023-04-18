@@ -58,6 +58,18 @@ export function ModalNFClient() {
     handleChangeTotalPage();
   }, [totalClients, limitRegistros]);
 
+  useEffect(() => {
+    function handleKeyPress(event: KeyboardEvent) {
+      if (isOpen === true && event.key === 'Enter') handleGetClientsByFilter();
+    }
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isOpen]);
+
   const getClientsByFilter = (description: string) => {
     ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
       .then((result: any) => {

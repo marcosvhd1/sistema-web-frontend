@@ -60,6 +60,19 @@ export function ModalNFTransporte() {
     handleChangeTotalPage();
   }, [totalTransp, limitRegistros]);
 
+  useEffect(() => {
+    function handleKeyPress(event: KeyboardEvent) {
+      if (isOpen === true && event.key === 'Enter') handleGetTranspByFilter();
+    }
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isOpen]);
+
+
   const getTranspByFilter = (description: string) => {
     TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
       .then((result: any) => {

@@ -17,13 +17,13 @@ interface SearchBoxProps {
 }
 
 export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setIsEditing }: SearchBoxProps) {
-  const { register, getValues } = useForm();
+  const { register, handleSubmit } = useForm();
   const methods = useFormContext<INotaFiscal>();
   const { colorMode } = useColorMode();
   const { onOpen } = useModalNotaFiscal();
 
-  const handleGetNotasFiscaisByFilter = async () => {
-    const description = getValues('description');
+  const handleGetNotasFiscaisByFilter = async (data: FieldValues) => {
+    const { description } = data;
     getNotasFiscaisByFilter(description);
   };
 
@@ -35,21 +35,23 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
 
 
   return (
-    <Flex w="100%" justify="center" align="center" mt={{ base: '2', md: '2', lg: '10' }} direction="column" >
-      <Text fontFamily="Poppins" fontSize="xl">Lista de Notas Fiscais</Text>
-      <Flex w="90%" m="4" align="center" justify="space-between">
-        <Flex w="60%" justify="center" align="center">
-          <Text w="8rem">Buscar por </Text>
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="50%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
-            <option value='cod'>N° da Nota</option>
-            <option value='nome_destinatario'>Destinatario</option>
-          </Select>
-          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
-          <Button onClick={handleGetNotasFiscaisByFilter}><Icon as={FiSearch} /></Button>
+    <form onSubmit={handleSubmit((data) => handleGetNotasFiscaisByFilter(data))}>
+      <Flex w="100%" justify="center" align="center" mt={{ base: '2', md: '2', lg: '10' }} direction="column" >
+        <Text fontFamily="Poppins" fontSize="xl">Lista de Notas Fiscais</Text>
+        <Flex w="90%" m="4" align="center" justify="space-between">
+          <Flex w="60%" justify="center" align="center">
+            <Text w="8rem">Buscar por </Text>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="50%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
+              <option value='cod'>N° da Nota</option>
+              <option value='nome_destinatario'>Destinatario</option>
+            </Select>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
+            <Button type="submit"><Icon as={FiSearch} /></Button>
+          </Flex>
+          <Button variant="solid" colorScheme="green" onClick={handleOpenModal}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
         </Flex>
-        <Button variant="solid" colorScheme="green" onClick={handleOpenModal}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
+        {children}
       </Flex>
-      {children}
-    </Flex>
+    </form>
   );
 }

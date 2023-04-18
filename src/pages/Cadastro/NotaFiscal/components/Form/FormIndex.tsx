@@ -145,8 +145,6 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     } else {
       if (isEditing) handleUpdateNF(data);
       else handleCreateNF(data);
-
-      clearData();
     }
   };
 
@@ -179,6 +177,8 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
         }
       }
     }
+
+    clearData();
   };
 
   const handleUpdateNF = async (data: INotaFiscal) => {
@@ -208,6 +208,8 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
         await NFRefService.createNFRef(chave, HEADERS);
       }
     }
+
+    clearData();
   };
 
   const handleTabChange = (tab: number) => {

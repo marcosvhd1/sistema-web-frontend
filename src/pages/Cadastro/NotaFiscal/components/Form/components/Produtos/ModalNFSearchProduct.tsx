@@ -67,6 +67,19 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
     handleChangeTotalPage();
   }, [totalProducts, limitRegistros]);
 
+  useEffect(() => {
+    function handleKeyPress(event: KeyboardEvent) {
+      if (isOpen === true && event.key === 'Enter') handleGetProductsByFilter();
+    }
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isOpen]);
+
+
   const getProductsByFilter = (description: string) => {
     ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, 'Ativo', HEADERS)
       .then((result: any) => {

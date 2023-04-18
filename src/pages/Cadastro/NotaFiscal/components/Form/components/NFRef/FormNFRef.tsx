@@ -84,7 +84,7 @@ export function FormNFRef({ chaves, addChave }: FormNFRefProps) {
   return (
     <FormProvider {...methods}>
       <Flex w="100%" align="flex-start" justify="center" direction="column">
-        <Flex w="100%" justify="flex-end" align="center" width="70%">
+        <Flex w="100%" justify="flex-end" align="center" width="70%" h="6vh">
           <Input maxLength={44} {...methods.register('descricao')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} mr={3} placeholder='Chave de acesso'/>
           <Button fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue" onClick={submitData} w="20%">
             <Icon mr={2} as={MdAdd} />

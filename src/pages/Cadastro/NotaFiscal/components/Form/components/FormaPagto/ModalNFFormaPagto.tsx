@@ -26,6 +26,19 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
     methods.setValue('observacao', '');
   }, [isOpen === true]);
 
+  useEffect(() => {
+    function handleKeyPress(event: KeyboardEvent) {
+      if (isOpen === true && event.key === 'Enter') onSubmit();
+    }
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isOpen]);
+
+
   const onSubmit = () => {
     const data: INFFormaPagto = {
       'id_nfe': 0,
