@@ -26,7 +26,6 @@ const headers: { key: string, label: string }[] = [
   { key: 'marca', label: 'Marca' },
   { key: 'grupo', label: 'Grupo' },
   { key: 'un', label: 'UN' },
-  { key: 'ncm', label: 'NCM' },
   { key: 'status', label: 'Status' }
 ];
 
@@ -175,7 +174,6 @@ export function Produto() {
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.marca}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.grupo}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.un}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.ncm}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
                   <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
                     {data.status}

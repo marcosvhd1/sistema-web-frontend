@@ -31,7 +31,7 @@ import { ClientService } from '../../../services/api/clientes/ClientService';
 import { TransportadoraService } from '../../../services/api/transportadora/TransportadoraService';
 import { NFPagtoService } from '../../../services/api/notafiscal/NFFormaPagto';
 import { IProduct, ProductService } from '../../../services/api/produtos/ProductService';
-import { INFDuplicata } from '../../../services/api/notafiscal/NFDuplicata';
+import { INFDuplicata, NFDupliService } from '../../../services/api/notafiscal/NFDuplicata';
 import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
 import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
 import { NFRefService } from '../../../services/api/notafiscal/NFReferenciada';
@@ -153,6 +153,7 @@ export function NotaFiscal() {
                 prod.un = element.un;
                 prod.cest = element.cest;
                 
+                prod.base_icms = element.base_icms;
                 prod.aliquota_cofins = element.aliquota_cofins;
                 prod.aliquota_icms = element.aliquota_icms;
                 prod.aliquota_ipi = element.aliquota_ipi;
@@ -234,6 +235,16 @@ export function NotaFiscal() {
             console.log(result.message);
           } else {
             methods.setValue('forma_pagto', result.data);
+          }
+        });
+
+      // Carrega as formas de pagto da nota
+      await NFDupliService.getNFDupliByNF(idNf, HEADERS)
+        .then((result: any) => {
+          if (result instanceof ApiException) {
+            console.log(result.message);
+          } else {
+            methods.setValue('duplicata', result.data);
           }
         });
 

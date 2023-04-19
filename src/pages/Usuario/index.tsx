@@ -1,173 +1,116 @@
-import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Td, Table, TableContainer, Tbody, Th, Thead, Tr, useDisclosure, useToast, Tag } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { Button, Icon, Tag, Td, Tr, useToast } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+import MainContent from '../../components/MainContent';
 import { DataTable } from '../../components/Table/DataTable';
-import { DeleteAlertDialog } from '../../components/Utils/DeleteAlertDialog';
-import { useEmissorContext } from '../../Contexts/EmissorProvider';
-import { useModalUser } from '../../Contexts/Modal/UserContext';
-import { ApiException } from '../../services/api/ApiException';
+import { Pagination } from '../../components/Table/Pagination';
 import { IUsuario, UsuarioService } from '../../services/api/usuarios/UsuarioService';
-import { getDecrypted } from '../../utils/crypto';
-import { FormUser } from './FormUser';
-import { useForm, FormProvider } from 'react-hook-form';
-import { EmissorService, IEmissor } from '../../services/api/emissor/EmissorService';
 import { userInfos } from '../../utils/header';
+import { SearchBox } from './components/SearchBox';
+import { ApiException } from '../../services/api/ApiException';
+import { ModalUsuario } from './components/Modal/ModalUsuario';
 
-export function ModalUser() {
-  const { onClose, isOpen } = useModalUser();
-  const { isOpen: isExcluirOpen, onOpen, onClose: onExcluirClose } = useDisclosure();
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const toast = useToast();
-  const [id, setId] = useState<number>(0);
+const headers: { key: string, label: string }[] = [
+  { key: 'emissor', label: 'Email' },
+  { key: 'admin', label: 'Tipo' },
+  { key: 'status', label: 'Status' },
+];
+
+export function Usuarios() {
+  const methods = useForm<IUsuario>();
   const [data, setData] = useState<IUsuario[]>([]);
-  const [dataToUpdate, setDataToUpdate] = useState<IUsuario>();
-  const [isEditing, setIsEditing] = useState(false);
-  const [isPrincipal, setIsPrincipal] = useState(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  /// pagination and search by filter
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [filter, setFilter] = useState<string>('email');
+  const [totalUsers, setTotalUsers] = useState<number>(0);
+  const [limitRegistros, setLimitRegistros] = useState<number>(5);
+  const [pages, setPages] = useState<number[]>([]);
+  ///////////////////////////////////
   const [active, setActive] = useState<boolean>(true);
-  const { setIdEmissor, setIdUsuarioSelecionado, getIdEmissoresByUser} = useEmissorContext();
-  const methods = useForm();
-
-  const headers: { key: string, label: string }[] = [
-    { key: 'login', label: 'Login' },
-    { key: 'status', label: 'Status' },
-  ];
-
+  const [id, setId] = useState<number>(0);
   const userInfo = userInfos();
-  const idUser = userInfo.infos?.idUser;
-  const permissao = userInfo.infos?.permissao;
-  const cnpjcpf = userInfo.infos?.empresa;
+  const navigate = useNavigate();
+  const toast = useToast();
+
   const HEADERS = userInfo.header;
+  const empresa = userInfo.infos?.empresa;
 
+  useEffect(() => {
+    navigate(`?page=${currentPage}&limit=${limitRegistros}`);
+  }, [currentPage, limitRegistros, totalUsers]);
 
-  const handleRegisterNewUser = () => {
-    setIsDisabled(false);
-    setIsEditing(false);
-    setIdEmissor([]);
+  useEffect(() => {
+    getUsuarios('');
+  }, [currentPage]);
+
+  useEffect(() => {
+    getUsuarios('');
+  }, [limitRegistros]);
+
+  useEffect(() => {
+    handleChangeTotalPage();
+  }, [totalUsers, limitRegistros]);
+
+  const handleChangeTotalPage = () => {
+    const totalPages = Math.ceil(totalUsers / limitRegistros);
+    const arrayPages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      arrayPages.push(i);
+    }
+    setPages(arrayPages);
   };
 
-  const closeModal = () => {
-    onClose();
-    setIsDisabled(true);
-    setDataToUpdate({
-      email: '',
-      password: '',
-    });
-  };
-
-  const getUsers = async () => {
-    const resultData = await UsuarioService.getAllUsers(cnpjcpf, HEADERS);
-    setData(resultData);
-  };
-
-  const handleDeleteClient = async (userId: number) => {
-    UsuarioService.deleteById(userId, HEADERS)
-      .then((result) => {
+  const getUsuarios = async (description: string) => {
+    UsuarioService.getAllUsers(empresa, filter, description, HEADERS)
+      .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
         } else {
-          toast({
-            position: 'top',
-            title: 'Operação concluída.',
-            description: 'Usuário excluido com sucesso.',
-            status: 'success',
-            duration: 2000,
-            isClosable: true,
-          });
-          getUsers();
+          setData(result.data);
+          setTotalUsers(parseInt(result.headers['qtd']));
         }
       });
-    onExcluirClose();
   };
-
-  const handleOpenDialog = (id: number) => {
-    onOpen();
-    setId(id);
-  };
-
-  const handleEditClient = (id: number) => {
-    const userToUpdate = data.find((user) => user.id === id);
-    if (userToUpdate) {
-      setId(id);
-      setDataToUpdate(userToUpdate);
-      setIsEditing(true);
-      setIsDisabled(false);
-      setIsPrincipal(userToUpdate.usuario_principal == 'Sim' ? true : false);
-      setActive(userToUpdate.status === 'Ativo');
-      setIdUsuarioSelecionado(id);
-      getIdEmissoresByUser();
-    }
-  };
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
 
   return (
-    <Modal
-      isCentered
-      onClose={closeModal}
-      isOpen={isOpen}
-      closeOnOverlayClick={false}
-      scrollBehavior={'inside'}
-      motionPreset='slideInBottom'
-      size='2xl'
-    >
-      <ModalOverlay />
-      <FormProvider {...methods}>
-        <ModalContent>
-          <ModalHeader>Usuários</ModalHeader>
-          <ModalCloseButton onClick={closeModal}/>
-          <ModalBody>
-            <Flex w='100%' h='22rem' p='.5rem' justify='space-between' borderBottom='.1rem solid #e1e1e3'>
-              <Flex w='55%' borderRight='.1rem solid #e1e1e3'>
-                <TableContainer  w="90%" borderRadius={8} overflowY='auto' >
-                  <Table size="sm" variant='simple' >
-                    <Thead bg="whiteAlpha.100">
-                      <Tr style={{'height': '2rem'}}>
-                        {headers.map((row) => {
-                          return (<Th fontSize="0.7rem"  key={row.key}>{row.label}</Th>);
-                        })}
-                        <Th style={{'textAlign': 'center', 'width': '1rem' }} fontSize="0.7rem">Ações</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {data != undefined ? data.map((data) => (
-                        <Tr key={data.id}>
-                          <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.email}</Td>
-                          <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} >
-                            <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
-                              {data.status}
-                            </Tag>
-                          </Td>
-                          <Td style={{ 'textAlign': 'center' }}>
-                            <Button variant="ghost" colorScheme="orange" isDisabled={permissao === 0 && data.id !== idUser} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditClient(data.id!)}>
-                              <Icon color="orange.300" as={FiEdit} />
-                            </Button>
-                            <Button variant="ghost" colorScheme="red" isDisabled={data.usuario_principal === 'Sim' || permissao === 0 && data.id !== idUser} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id!)}>
-                              <Icon as={FiTrash2} color="red.400" />
-                            </Button>
-                          </Td>
-                        </Tr>
-                      )) : ''}
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-              </Flex>
-              <Flex w='50%' justify='center'>
-                <FormUser setActive={setActive} active={active} setIsEditing={setIsEditing} id={id} setIdEmissor={setIdEmissor} isEditing={isEditing} dataToUpdate={dataToUpdate!} getUsers={getUsers} isDisabled={isDisabled} isPrincipal={isPrincipal}/>
-              </Flex>
-            </Flex>
-          </ModalBody>
-          <ModalFooter>
-            <Flex justify='space-between' w='100%'>
-              <Button variant='outline' colorScheme="green" onClick={handleRegisterNewUser}>Cadastrar</Button>
-              <Button variant='outline' colorScheme="red" onClick={closeModal}>Cancelar</Button>
-            </Flex>
-          </ModalFooter>
-          <DeleteAlertDialog id={id} label='Usuário' isOpen={isExcluirOpen} onClose={onExcluirClose} deleteFunction={handleDeleteClient}/>
-        </ModalContent>
-      </FormProvider>
-    </Modal>
+    <FormProvider {...methods}>
+      <MainContent>
+        <SearchBox changeEdit={setIsEditing} setFilter={setFilter} getUsuarios={getUsuarios}>
+          <DataTable headers={headers}>
+            {data != undefined ? data.map((data) => (
+              <Tr key={data.id}>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.email}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                  <Tag variant='outline' colorScheme={data.tipo_admin === 1 ? 'blue' : 'red'}>
+                    {data.tipo_admin === 1 ? 'Admin' : 'Comum'}
+                  </Tag>
+                </Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                  <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
+                    {data.status}
+                  </Tag>
+                </Td>
+                <Td style={{ 'textAlign': 'center' }}>
+                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => null}>
+                    <Icon color="orange.300" as={FiEdit} />
+                  </Button>
+                  <Button variant="ghost" isDisabled={data.usuario_principal === 'Sim'} colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => null}>
+                    <Icon as={FiTrash2} color="red.400" />
+                  </Button>
+                </Td>
+              </Tr>
+            )) : ''}
+          </DataTable>
+          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalUsers} changeLimitRegister={setLimitRegistros}>
+            <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
+            <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalUsers} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
+          </Pagination>
+        </SearchBox>
+      </MainContent>
+      <ModalUsuario isEditing={isEditing} />
+    </FormProvider>
   );
 }

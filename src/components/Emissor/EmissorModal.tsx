@@ -60,7 +60,6 @@ export function EmissorModal() {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Selecionar Emissor</ModalHeader>
-        <ModalCloseButton />
         <ModalBody>
           <TableContainer>
             <Table variant='simple'>
@@ -98,9 +97,8 @@ export function EmissorModal() {
           </TableContainer>
         </ModalBody>
         <ModalFooter>
-          <Flex w="100%" justify="space-between" >
-            <Button variant='solid' colorScheme="green" onClick={handleSaveEmissor}><Icon as={FiCheck} mr={1} />Salvar</Button>
-            <Button colorScheme='red' variant="outline" mr={3} onClick={closeModal}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+          <Flex w="100%" justify="flex-start" >
+            <Button variant='solid' colorScheme="green" onClick={handleSaveEmissor}><Icon as={FiCheck} mr={1} />Selecionar</Button>
           </Flex>
         </ModalFooter>
       </ModalContent>

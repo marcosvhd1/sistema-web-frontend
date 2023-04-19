@@ -30,9 +30,8 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   const openModalForma = () => {
     onOpen();
   };
-  const openModalDuplicata = () => {
-    methods.reset({});
 
+  const openModalDuplicata = () => {
     openDuplicata();
   };
 
@@ -40,9 +39,18 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
     formaPagtos.push(data);
   };
 
+  const handleAddDupli = (data: INFDuplicata) => {
+    duplicatas.push(data);
+  };
+
   const handleDeleteForma = (data: INFFormaPagto) => {
     const newArray = formaPagtos.filter(forma => forma !== data);
     addForma(newArray);
+  };
+
+  const handleDeleteDupli = (data: INFDuplicata) => {
+    const newArray = duplicatas.filter(dupli => dupli !== data);
+    addDuplicata(newArray);
   };
 
   const headersForma: { key: string, label: string }[] = [
@@ -81,8 +89,8 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
             <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap">
               <Divider w="10%" />
               <Text w="max" ml={3}>Forma de Pagamento</Text>
-              <Divider w="40%" mr={3} ml={3} />
-              <Button variant="solid" colorScheme="blue" fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }} onClick={openModalForma}>
+              <Divider w="25%" mr={3} ml={3} />
+              <Button fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }} variant="solid" colorScheme="blue" onClick={openModalForma} w="25%">
                 <Icon mr={2} as={MdAdd} />
                 Adicionar
               </Button>
@@ -107,9 +115,8 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
             <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap">
               <Divider w="10%" />
               <Text w="max" ml={3}>Duplicatas</Text>
-              <Divider w="50%" mr={3} ml={3} />
-              {/* <Button variant="solid" colorScheme="blue" fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }} onClick={openModalDuplicata}> */}
-              <Button variant="solid" colorScheme="blue" fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }}>
+              <Divider w="30%" mr={3} ml={3} />
+              <Button fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }} variant="solid" colorScheme="blue" onClick={openModalDuplicata} w="25%">
                 <Icon mr={2} as={MdAdd} />
                 Adicionar
               </Button>
@@ -121,7 +128,7 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.vencimento}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + data.valor}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
-                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => null}>
+                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleDeleteDupli(data)}>
                       <Icon as={FiTrash2} color="red.400" />
                     </Button>
                   </Td>
@@ -131,7 +138,7 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
           </Flex>
         </Flex>
         <ModalNFFormaPagto addFormaPagto={handleAddForma} />
-        {/* <ModalNFDuplicata addDuplicata={handleAddDuplicata} /> */}
+        <ModalNFDuplicata addDuplicata={handleAddDupli} />
       </Flex>
     </FormProvider>
   );

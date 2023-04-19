@@ -57,17 +57,17 @@ export function SearchBox({ children, setFilter, getProduct, getProductByGroup, 
       <Flex w="100%" justify="center" align="center" mt="10" direction="column" >
         <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
         <Flex w="90%" m="4" align="center" justify="space-between">
-          <Flex w="95%" justify="center" align="center">
-            <Text fontSize={{base: 'sm', lg: 'lg'}} w='11%'>Buscar por </Text>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="20%" mr="3" onChange={(e) => setFilter(e.target.value)}>
+          <Flex w="80%" justify="center" align="center">
+            <Text fontSize={{base: 'sm', lg: 'lg'}} whiteSpace="nowrap" mr={3}>Buscar por </Text>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="25%" mr="3" onChange={(e) => setFilter(e.target.value)}>
               <option value='descricao'>Descrição</option>
               <option value='nprod'>Código</option>
               <option value='referencia'>Referência</option>
               <option value='marca'>Marca</option>
               <option value='ncm'>NCM</option>
             </Select>
-            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Selecione o Grupo" w="40%" mr="3" {...register('group')}>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Grupo" w="25%" mr="3" {...register('group')}>
               {
                 data != undefined ? data.map((data) => (
                   data.tipo.toUpperCase() === 'GRUPO'

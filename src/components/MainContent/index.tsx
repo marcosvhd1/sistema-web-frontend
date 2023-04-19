@@ -1,14 +1,13 @@
-import { ReactNode, useContext } from 'react';
 import { Grid, GridItem } from '@chakra-ui/react';
+import { ReactNode, useContext } from 'react';
 
 import { SidebarContext } from '../../Contexts/SidebarContext';
 import { SizeContext } from '../../Contexts/SizeContext';
 
+import { ChangePasswordModal } from '../ChangePassword';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { Sidebar } from '../Sidebar';
-import { ModalUser } from '../../pages/Usuario';
-import { ChangePasswordModal } from '../ChangePassword';
 
 interface MainContentProps {
   children: ReactNode
@@ -42,7 +41,6 @@ export default function MainContent({ children }: MainContentProps) {
       <GridItem area={'footer'}>
         <Footer />
       </GridItem>
-      <ModalUser />
       <ChangePasswordModal />
     </Grid>
   );

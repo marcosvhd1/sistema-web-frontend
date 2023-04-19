@@ -12,7 +12,6 @@ interface LoggedInUserProps {
 export function LoggedInUser({ showProfileData = true }: LoggedInUserProps) {
   const data = getDecrypted(localStorage.getItem('user'));
   const navigate = useNavigate();
-  const { onOpen } = useModalUser();
   const { onOpen: OpenChangePassword } = useModalChangePassword();
   const userInfo = userInfos();
 
@@ -25,7 +24,7 @@ export function LoggedInUser({ showProfileData = true }: LoggedInUserProps) {
 
   const managerUsers = () => {
     if (permissao === 1) {
-      onOpen();
+      navigate('/app/usuarios');
     } else {
       navigate('/app/unauthorized');
     }

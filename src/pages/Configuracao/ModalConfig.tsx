@@ -97,7 +97,6 @@ export function ModalConfig() {
           <ModalHeader>
             Configurações
           </ModalHeader>
-          <ModalCloseButton />
           <ModalBody>
             <Tabs variant='enclosed' colorScheme="gray" w="100%">
               <TabList>

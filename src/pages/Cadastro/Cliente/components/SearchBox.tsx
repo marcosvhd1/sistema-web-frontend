@@ -38,8 +38,8 @@ export function SearchBox({ children, changeEdit , stateFilter, getClientsByFilt
         <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes / Fornecedores</Text>
         <Flex w="90%" m="4" align="center" justify="space-between">
           <Flex w="60%" justify="center" align="center">
-            <Text w="8rem">Buscar por </Text>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="50%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
+            <Text fontSize={{base: 'sm', lg: 'lg'}} whiteSpace="nowrap" mr={3}>Buscar por </Text>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="35%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
               <option value='razao'>Nome / Razão Social</option>
               <option value='fantasia'>Nome Fantasia</option>
               <option value='cnpjcpf'>CPF / CNPJ</option>

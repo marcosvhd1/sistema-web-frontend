@@ -40,8 +40,8 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
         <Text fontFamily="Poppins" fontSize="xl">Lista de Notas Fiscais</Text>
         <Flex w="90%" m="4" align="center" justify="space-between">
           <Flex w="60%" justify="center" align="center">
-            <Text w="8rem">Buscar por </Text>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="50%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
+            <Text fontSize={{base: 'sm', lg: 'lg'}} whiteSpace="nowrap" mr={3}>Buscar por </Text>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="35%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
               <option value='cod'>N° da Nota</option>
               <option value='nome_destinatario'>Destinatario</option>
             </Select>

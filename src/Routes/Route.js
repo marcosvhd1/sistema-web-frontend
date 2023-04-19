@@ -53,6 +53,7 @@ import { PageNotFound } from '../pages/PageNotFound';
 import { UnauthorizedUser } from '../pages/Unauthorized';
 import { AlertNotaFiscalContextProvider } from '../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
 import { ModalCFOPProvider } from '../Contexts/Modal/CFOPContext';
+import { Usuarios } from '../pages/Usuario';
 
 const ROLES = {
   'normal': 0,
@@ -122,6 +123,7 @@ export default function MainRoutes() {
 
                                                                                 <Route element={<RequireAuth allowedRoles={[ROLES.admin]} />}>
                                                                                   <Route path='/app/emissor' element={<Emissor />} />
+                                                                                  <Route path='/app/usuarios' element={<Usuarios />} />
                                                                                 </Route>
 
                                                                                 <Route path="*" element={<PageNotFound />} />

@@ -104,6 +104,16 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
     methods.setValue('quantidade', 1);
     methods.setValue('valor_total', methods.getValues('valor_unitario') * methods.getValues('quantidade'));
 
+    if (data.base_icms > 0) {
+      const base = (data.preco * data.base_icms) / 100;
+      methods.setValue('produto.base_icms', base); 
+
+      if (data.aliquota_icms > 0) {
+        const valorICMS = parseFloat(((base * data.aliquota_icms) / 100).toFixed(2));
+        methods.setValue('valor_icms', valorICMS);
+      }
+    }
+
     onClose();
   };
 

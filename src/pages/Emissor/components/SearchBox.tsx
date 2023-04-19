@@ -41,13 +41,13 @@ export function SearchBox({ children, getEmissores, changeEdit, setFilter, seeAc
       <Flex w="100%" justify="center" align="center" mt={{base: '2', md: '2', lg: '10'}} direction="column" >
         <Text fontFamily="Poppins" fontSize="xl">Lista Emissores</Text>
         <Flex w="90%" m="4" align="center" justify="space-between">
-          <Flex w="95%" justify="center" align="center">
-            <Text fontSize={{base: 'sm', lg: 'lg'}} w='11%'>Buscar por </Text>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="20%" mr="3" onChange={(e) => setFilter(e.target.value)}>
+          <Flex w="70%" justify="center" align="center">
+            <Text fontSize={{base: 'sm', lg: 'lg'}} whiteSpace="nowrap" mr={3}>Buscar por </Text>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="30%" mr="3" onChange={(e) => setFilter(e.target.value)}>
               <option value='razao'>Emissor</option>
               <option value='cnpjcpf'>CPF / CNPJ</option>
             </Select>
-            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')}/>
             <Button type='submit'><Icon as={FiSearch} /></Button>
             <Checkbox size='lg' mx='2' onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
             <Text fontSize={{base: 'sm', lg: 'lg'}} w='20%' onClick={handleSeeActiveProducts}>Visualizar inativos</Text>

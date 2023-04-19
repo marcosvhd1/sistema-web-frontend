@@ -31,7 +31,7 @@ export function FormTransporte() {
             <FormContainer label='Transportadora' mr='3'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.razao')}/>
             </FormContainer>
-            <Button onClick={onOpen} w="25%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
+            <Button onClick={onOpen} w="30%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
               <Icon mr={2} as={FiSearch} />
               Buscar
             </Button>

@@ -135,9 +135,7 @@ export function Cliente() {
   const headers: { key: string, label: string }[] = [
     { key: 'cod', label: 'Código' },
     { key: 'razao', label: 'Nome / Razão Social' },
-    { key: 'fantasia', label: 'Nome Fantasia' },
     { key: 'cnpjcpf', label: 'CPF / CNPJ' },
-    { key: 'bairro', label: 'Bairro' },
     { key: 'cidade', label: 'Cidade' },
     { key: 'uf', label: 'UF' },
     { key: 'categoria', label: 'Categoria' },
@@ -150,11 +148,9 @@ export function Cliente() {
           <DataTable headers={headers} >
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
-                <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
-                <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.fantasia}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.bairro}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cidade}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.uf}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.categoria}</Td>

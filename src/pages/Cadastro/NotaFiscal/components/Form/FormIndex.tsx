@@ -43,7 +43,7 @@ import {
   INFProduct,
   NFProdutoService,
 } from '../../../../../services/api/notafiscal/NFProduct';
-import { INFDuplicata } from '../../../../../services/api/notafiscal/NFDuplicata';
+import { INFDuplicata, NFDupliService } from '../../../../../services/api/notafiscal/NFDuplicata';
 import { ConfigService } from '../../../../../services/api/config/ConfigService';
 import { ICFOP, ICFOPService } from '../../../../../services/api/cfop/CFOPService';
 import { INFReferenciada, NFRefService } from '../../../../../services/api/notafiscal/NFReferenciada';
@@ -76,6 +76,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
   useEffect(() => {
     if (isEditing) setProdutos(methods.getValues('produtos'));
     if (isEditing) setFormaPagto(methods.getValues('forma_pagto'));
+    if (isEditing) setDuplicatas(methods.getValues('duplicata'));
     if (isEditing) setChavesRef(methods.getValues('chaves_ref'));
   }, [isOpen]);
 
@@ -111,10 +112,12 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
 
   const clearData = () => {
     const auxForma: INFFormaPagto[] = [];
+    const auxDupli: INFDuplicata[] = [];
     const auxRef: INFReferenciada[] = [];
     const auxProd: INFProduct[] = [];
 
     setFormaPagto(auxForma);
+    setDuplicatas(auxDupli);
     setChavesRef(auxRef);
     setProdutos(auxProd);
     setIsEditing(false);
@@ -170,6 +173,13 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
         }
       }
 
+      if (duplicatas.length > 0) {
+        for (const element of duplicatas) {
+          element.id_nfe = retorno.id;
+          await NFDupliService.createNFDupli(element, HEADERS);
+        }
+      }
+
       if (chavesRef.length > 0) {
         for (const element of chavesRef) {
           element.id_nfe = retorno.id;
@@ -191,6 +201,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
 
       await NFProdutoService.deleteNFProdByIDNF(id, HEADERS);
       await NFPagtoService.deleteNFPagtoById(id, HEADERS);
+      await NFDupliService.deleteNFDupliById(id, HEADERS);
       await NFRefService.deleteNFRefById(id, HEADERS);
 
       for (const produto of produtos) {
@@ -201,6 +212,11 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
       for (const forma of formaPagtos) {
         forma.id_nfe = id;
         await NFPagtoService.createNFPagto(forma, HEADERS);
+      }
+
+      for (const duplicata of duplicatas) {
+        duplicata.id_nfe = id;
+        await NFDupliService.createNFDupli(duplicata, HEADERS);
       }
 
       for (const chave of chavesRef) {
@@ -371,10 +387,10 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
             </Tabs>
           </ModalBody>
           <ModalFooter>
-            <Flex w="100%" justify="space-between" align="center" h="8vh">
+            <Flex w="100%" justify="space-between" align="flex-end">
               <Button variant="solid" colorScheme="green" type="submit" disabled={formSubmitted}>
                 <Icon as={FiCheck} mr={1} />
-                  Salvar
+                {isEditing ? 'Editar' : 'Cadastrar'}
               </Button>
               <Button colorScheme="red" variant="outline" onClick={clearData}>
                 <Icon as={FiSlash} mr={1} />
