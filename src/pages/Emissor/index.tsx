@@ -101,6 +101,7 @@ export function Emissor() {
       setActive(emissorToUpdate.status === 'Ativo' ? true : false);
     }
   };
+  
   const handleDeleteEmissor = async (emissorId: number) => {
     const FK_ERROR = '23503';
     const response = await EmissorService.deleteById(emissorId, HEADERS);

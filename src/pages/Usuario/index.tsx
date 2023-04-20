@@ -1,4 +1,4 @@
-import { Button, Icon, Tag, Td, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tag, Td, Tr, useDisclosure, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -11,17 +11,26 @@ import { userInfos } from '../../utils/header';
 import { SearchBox } from './components/SearchBox';
 import { ApiException } from '../../services/api/ApiException';
 import { ModalUsuario } from './components/Modal/ModalUsuario';
+import { DeleteAlertDialog } from '../../components/Utils/DeleteAlertDialog';
+import { useModalUser } from '../../Contexts/Modal/UserContext';
+import { useEmissorContext } from '../../Contexts/EmissorProvider';
 
 const headers: { key: string, label: string }[] = [
-  { key: 'emissor', label: 'Email' },
-  { key: 'admin', label: 'Tipo' },
+  { key: 'login', label: 'Login' },
+  { key: 'tipo', label: 'Tipo' },
   { key: 'status', label: 'Status' },
 ];
 
 export function Usuarios() {
   const methods = useForm<IUsuario>();
   const [data, setData] = useState<IUsuario[]>([]);
+  const [admin, setAdmin] = useState<boolean>(false);
+  const [ativo, setAtivo] = useState<boolean>(true);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+
+  const { onOpen: openModal } = useModalUser();
+  const { isOpen: isExcluirOpen, onOpen, onClose: onExcluirClose } = useDisclosure();
+  const { setIdEmissor, setIdUsuarioSelecionado, getIdEmissoresByUser} = useEmissorContext();
   /// pagination and search by filter
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('email');
@@ -29,7 +38,6 @@ export function Usuarios() {
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
   ///////////////////////////////////
-  const [active, setActive] = useState<boolean>(true);
   const [id, setId] = useState<number>(0);
   const userInfo = userInfos();
   const navigate = useNavigate();
@@ -62,6 +70,11 @@ export function Usuarios() {
     }
     setPages(arrayPages);
   };
+  
+  const handleOpenDialog = (id: number) => {
+    onOpen();
+    setId(id);
+  };
 
   const getUsuarios = async (description: string) => {
     UsuarioService.getAllUsers(empresa, filter, description, HEADERS)
@@ -71,6 +84,40 @@ export function Usuarios() {
         } else {
           setData(result.data);
           setTotalUsers(parseInt(result.headers['qtd']));
+        }
+      });
+  };
+
+  const handleEditUser = async (id: number) => {
+    const userToUpdate = data.find((user) => user.id === id);
+    if (userToUpdate) {
+      setId(id);
+      openModal();
+      methods.reset(userToUpdate);
+      setIsEditing(true);
+      setAdmin(userToUpdate.tipo_admin === 1 ? true : false);
+      setAtivo(userToUpdate.status === 'Ativo' ? true : false);
+      setIdUsuarioSelecionado(id);
+      getIdEmissoresByUser();
+    }
+  };
+
+  const handleDeleteUser = async (userId: number) => {
+    UsuarioService.deleteById(userId, HEADERS)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          console.log(result.message);
+        } else {
+          toast({
+            position: 'top',
+            title: 'Operação concluída.',
+            description: 'Usuário excluido com sucesso.',
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+          });
+          getUsuarios('');
+          onExcluirClose();
         }
       });
   };
@@ -94,10 +141,10 @@ export function Usuarios() {
                   </Tag>
                 </Td>
                 <Td style={{ 'textAlign': 'center' }}>
-                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => null}>
+                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditUser(data.id!)}>
                     <Icon color="orange.300" as={FiEdit} />
                   </Button>
-                  <Button variant="ghost" isDisabled={data.usuario_principal === 'Sim'} colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => null}>
+                  <Button variant="ghost" isDisabled={data.usuario_principal === 'Sim'} colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id!)}>
                     <Icon as={FiTrash2} color="red.400" />
                   </Button>
                 </Td>
@@ -110,7 +157,8 @@ export function Usuarios() {
           </Pagination>
         </SearchBox>
       </MainContent>
-      <ModalUsuario isEditing={isEditing} />
+      <ModalUsuario id={id} isEditing={isEditing} setIsEditing={setIsEditing} admin={admin} setAdmin={setAdmin} ativo={ativo} setAtivo={setAtivo} getUsuarios={getUsuarios} />
+      <DeleteAlertDialog id={id} label='Usuário' isOpen={isExcluirOpen} onClose={onExcluirClose} deleteFunction={handleDeleteUser}/>
     </FormProvider>
   );
 }
