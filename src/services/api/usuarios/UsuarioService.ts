@@ -55,7 +55,6 @@ const create = async (dataToCreate: Omit<IUsuario, 'id'>, headers: any): Promise
 };
 
 const updateById = async (id: number, dataToUpdate: IUsuario, HEADERS: any): Promise<IUsuario | ApiException> => {
-  console.log(dataToUpdate);
   try {
     const { data } = await Api().patch(`/usuarios/${id}`, dataToUpdate, HEADERS);
     return data;
