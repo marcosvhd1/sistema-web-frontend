@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { FiSearch } from 'react-icons/fi';
 import { ModalNewEmissorProvider, useModalNewEmissor } from '../../../Contexts/Modal/NewEmissorContext';
+import { MdAdd } from 'react-icons/md';
 
 interface SearchBoxProps {
   children: ReactNode;
@@ -52,7 +53,7 @@ export function SearchBox({ children, getEmissores, changeEdit, setFilter, seeAc
             <Checkbox size='lg' mx='2' onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
             <Text fontSize={{base: 'sm', lg: 'lg'}} w='20%' onClick={handleSeeActiveProducts}>Visualizar inativos</Text>
           </Flex>
-          <Button variant="outline" onClick={onOpen} colorScheme="green">Cadastrar</Button>
+          <Button variant="solid" onClick={onOpen} colorScheme="green"><Icon mr={2} as={MdAdd} />Cadastrar</Button>
         </Flex>
         {children}
       </Flex>

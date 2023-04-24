@@ -29,20 +29,22 @@ export function ModalUsuario({ id, isEditing, setIsEditing, admin, setAdmin, ati
 
   const [idEmpresa, setIdEmpresa] = useState<number>();
 
-  const { emissores, idEmissor, getEmissores, setIdEmissorSelecionado, getIdEmissoresByUser, setIdEmissor } = useEmissorContext();
+  const { emissores, idEmissor, getEmissores, getIdEmissoresByUser, setIdEmissor } = useEmissorContext();
   const { onClose, isOpen } = useModalUser();
   const { colorMode } = useColorMode();
 
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
   const permissao = userInfo.infos?.permissao;
-  const principal = userInfo.infos?.principal;
   const { empresa } = userInfo.infos;
 
   useEffect(() => {
-    getIdEmpresa(empresa, HEADERS);
-    getEmissores();
-  }, []);
+    if (isOpen === true) {
+      getIdEmpresa(empresa, HEADERS);
+      getEmissores();
+      if (isEditing) getIdEmissoresByUser();
+    }
+  }, [isOpen]);
 
   const clearForm = () => {
     methods.reset({email: '', password: ''});
@@ -53,7 +55,7 @@ export function ModalUsuario({ id, isEditing, setIsEditing, admin, setAdmin, ati
   };
 
   const handleChangeAdmin = () => {
-    setAdmin(!admin);
+    if (permissao === 1 ? true : false) setAdmin(!admin);
   };
 
   const handleChangeAtivo = () => {
@@ -245,7 +247,7 @@ export function ModalUsuario({ id, isEditing, setIsEditing, admin, setAdmin, ati
               <FormContainer label='Lista de Emissores'>
                 <Flex width="100%" gap={2} mt={3} overflow='auto' maxH='10rem' direction='column'>
                   {emissores !== undefined ? emissores.map((data: any) => (
-                    <Checkbox key={data.id} isChecked={idEmissor.includes(data.id)} onChange={() => getEmissorId(data.id)} value={data.id}>{data.razao}</Checkbox>
+                    <Checkbox id={data.id} key={data.id} isChecked={idEmissor.includes(data.id)} onChange={() => getEmissorId(data.id)} value={data.id}>{data.razao}</Checkbox>
                   )): ''}
                 </Flex>
               </FormContainer>

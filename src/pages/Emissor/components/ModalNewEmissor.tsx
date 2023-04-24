@@ -131,7 +131,7 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
           </ModalBody>
           <ModalFooter>
             <Flex justify='space-between' w='100%'>
-              <Button variant='outline' colorScheme="green" type='submit' disabled={formSubmitted}><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
+              <Button variant='solid' colorScheme="green" type='submit' disabled={formSubmitted}><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
               <Button variant='outline' colorScheme="red" onClick={clearForm}><Icon as={FiSlash} mr={1} />Cancelar</Button>
             </Flex>
           </ModalFooter>

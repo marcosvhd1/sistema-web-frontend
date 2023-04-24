@@ -132,7 +132,7 @@ export function Usuarios() {
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.email}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
                   <Tag variant='outline' colorScheme={data.tipo_admin === 1 ? 'blue' : 'red'}>
-                    {data.tipo_admin === 1 ? 'Admin' : 'Comum'}
+                    {data.tipo_admin === 1 ? 'Admin' : 'Normal'}
                   </Tag>
                 </Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
