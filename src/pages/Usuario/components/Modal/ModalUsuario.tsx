@@ -40,8 +40,8 @@ export function ModalUsuario({ id, isEditing, setIsEditing, admin, setAdmin, ati
 
   useEffect(() => {
     if (isOpen === true) {
-      getIdEmpresa(empresa, HEADERS);
       getEmissores();
+      getIdEmpresa(empresa, HEADERS);
       if (isEditing) getIdEmissoresByUser();
     }
   }, [isOpen]);
@@ -126,10 +126,12 @@ export function ModalUsuario({ id, isEditing, setIsEditing, admin, setAdmin, ati
                 if (result instanceof ApiException) {
                   console.log(result.message);
                 } else {
-                  idEmissor.forEach((id: number) => {
+                  idEmissor.forEach((idEmi: number) => {
+                    console.log(result[0].id);
+                    console.log(idEmi);
                     const dataEmissorUsuario = {
                       'id_usuario': result[0].id,
-                      'id_emissor': id
+                      'id_emissor': idEmi
                     };
                     EmissorUsuarioService.create(dataEmissorUsuario, HEADERS)
                       .then((result) => {
