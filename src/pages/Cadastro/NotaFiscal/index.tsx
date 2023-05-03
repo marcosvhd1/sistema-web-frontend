@@ -2,43 +2,50 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Td, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Td, Tr, useColorMode, useToast } from '@chakra-ui/react';
 import {
   FiChevronLeft,
   FiChevronRight,
   FiEdit,
-  FiTrash2,
+  FiPrinter,
+  FiSend,
+  FiTrash2
 } from 'react-icons/fi';
 
+import { CgMenuLeft } from 'react-icons/cg';
+import { FaCopy, FaFilePdf } from 'react-icons/fa';
+import { FcDocument } from 'react-icons/fc';
+import { MdCancel, MdEmail, MdMenu, MdReportProblem } from 'react-icons/md';
+import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
+import { useEmissorContext } from '../../../Contexts/EmissorProvider';
+import { useModalNotaFiscal } from '../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
-import { useEmissorContext } from '../../../Contexts/EmissorProvider';
-import { useModalNotaFiscal } from '../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
+import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
 import { ApiException } from '../../../services/api/ApiException';
+import { ClientService } from '../../../services/api/clientes/ClientService';
+import { NFDupliService } from '../../../services/api/notafiscal/NFDuplicata';
+import { NFPagtoService } from '../../../services/api/notafiscal/NFFormaPagto';
 import {
   INFProduct,
   NFProdutoService,
 } from '../../../services/api/notafiscal/NFProduct';
+import { NFRefService } from '../../../services/api/notafiscal/NFReferenciada';
 import {
   INotaFiscal,
   NotaFiscalService,
 } from '../../../services/api/notafiscal/NotaFiscalService';
+import { IProduct, ProductService } from '../../../services/api/produtos/ProductService';
+import { TransportadoraService } from '../../../services/api/transportadora/TransportadoraService';
+import formatMoney from '../../../utils/formatarValor';
 import { userInfos } from '../../../utils/header';
 import { ModalNotaFiscal } from './components/Form/FormIndex';
 import { SearchBox } from './components/SearchBox';
-import { ClientService } from '../../../services/api/clientes/ClientService';
-import { TransportadoraService } from '../../../services/api/transportadora/TransportadoraService';
-import { NFPagtoService } from '../../../services/api/notafiscal/NFFormaPagto';
-import { IProduct, ProductService } from '../../../services/api/produtos/ProductService';
-import { INFDuplicata, NFDupliService } from '../../../services/api/notafiscal/NFDuplicata';
-import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
-import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
-import { NFRefService } from '../../../services/api/notafiscal/NFReferenciada';
-import formatMoney from '../../../utils/formatarValor';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
+  const { colorMode } = useColorMode();
 
   const [data, setData] = useState<INotaFiscal[]>([]);
   const [filter, setFilter] = useState<string>('cod');
@@ -50,6 +57,9 @@ export function NotaFiscal() {
   const [totalNotas, setTotalNotas] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState(5);
   const [pages, setPages] = useState<number[]>([]);
+
+  const [submenuOpenStatus, setSubmenuOpenStatus] = useState<boolean>(false);
+  const [submenuOpenCCe, setSubmenuOpenCCe] = useState<boolean>(false);
 
   const [prods, setProds] = useState<INFProduct[]>([]);
 
@@ -78,6 +88,26 @@ export function NotaFiscal() {
   useEffect(() => {
     handleChangeTotalPage();
   }, [totalNotas, limitRegistros]);
+
+  const closeSubmenuStatus = () => {
+    if (submenuOpenStatus) {
+      setSubmenuOpenStatus(false);
+    }
+  };
+
+  const toggleSubmenuStatus = () => {
+    setSubmenuOpenStatus(!submenuOpenStatus);
+  };
+
+  const closeSubmenuCCe = () => {
+    if (submenuOpenCCe) {
+      setSubmenuOpenCCe(false);
+    }
+  };
+
+  const toggleSubmenuCCe = () => {
+    setSubmenuOpenCCe(!submenuOpenCCe);
+  };
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalNotas / limitRegistros);
@@ -299,7 +329,6 @@ export function NotaFiscal() {
   const headers: { key: string; label: string }[] = [
     { key: 'data_emissao', label: 'Emissão' },
     { key: 'cod', label: 'Número' },
-    { key: 'serie', label: 'Série' },
     { key: 'natureza_operacao', label: 'Natureza de Operação' },
     { key: 'destinatario', label: 'Destinatário' },
     { key: 'status', label: 'Status' },
@@ -318,28 +347,33 @@ export function NotaFiscal() {
             {data !== undefined
               ? data.map((data) => (
                 <Tr key={data.id}>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                  <Td>
                     {formatDate(data.data_emissao.toString())}
                   </Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                  <Td>
                     {('0000' + data.cod).slice(-4)}
                   </Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
-                    {data.serie}
-                  </Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                  <Td>
                     {data.natureza_operacao}
                   </Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                  <Td>
                     {data.nome_destinatario}
                   </Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                  <Td>
                     {data.status}
                   </Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                  <Td>
                     {'R$ ' + formatMoney(data.total_nota)}
                   </Td>
                   <Td style={{ textAlign: 'center' }}>
+                    <Button
+                      variant="ghost"
+                      colorScheme="green"
+                      fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                      w="2rem"
+                    >
+                      <Icon color="green.300" as={FiSend} />
+                    </Button>
                     <Button
                       variant="ghost"
                       colorScheme="orange"
@@ -358,6 +392,60 @@ export function NotaFiscal() {
                     >
                       <Icon as={FiTrash2} color="red.400" />
                     </Button>
+                    <Button
+                      variant="ghost"
+                      colorScheme="blue"
+                      fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                      w="2rem"
+                    >
+                      <Icon as={FiPrinter} color="blue.400" />
+                    </Button>
+                    <Menu>
+                      <MenuButton
+                        as={Button} 
+                        variant="ghost" 
+                        colorScheme="blue" 
+                        w="2rem"
+                        padding={0}
+                      >
+                        <Icon as={MdMenu} color='blue.400' />
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaFilePdf}/>Gerar PDF</MenuItem>
+                        <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'}><Icon mr={2} as={MdCancel}/>Cancelar NFe</MenuItem>
+                        <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={MdEmail}/>Enviar via Email</MenuItem>
+                        <Menu isOpen={submenuOpenCCe} placement="left" onClose={closeSubmenuCCe}>
+                          <MenuButton 
+                            as={MenuItem}
+                            color={colorMode === 'light' ? 'blue.600' : 'blue.300'}
+                            onClick={toggleSubmenuCCe}
+                          >
+                            <Icon as={FcDocument} mr={2}/>Carta de Correção
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem color={colorMode === 'light' ? 'green.600' : 'green.300'}><Icon mr={2} as={FiSend}/>Emitir CCe</MenuItem>
+                            <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FiPrinter}/>Imprimir CCe</MenuItem>
+                          </MenuList>
+                        </Menu>
+                        <MenuItem color='orange.300'><Icon mr={2} as={MdReportProblem}/>Resolver Duplicidade</MenuItem>
+                        <Menu isOpen={submenuOpenStatus} placement="left" onClose={closeSubmenuStatus}>
+                          <MenuButton 
+                            as={MenuItem}
+                            color={colorMode === 'light' ? 'blue.600' : 'blue.300'}
+                            onClick={toggleSubmenuStatus}
+                          >
+                            <Icon as={FiEdit} mr={2}/>Alterar Status
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem>Em digitação</MenuItem>
+                            <MenuItem color={colorMode === 'light' ? 'green.600' : 'green.300'}>Enviada</MenuItem>
+                            <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'}>Cancelada</MenuItem>
+                            <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}>Inutilizada</MenuItem>
+                          </MenuList>
+                        </Menu>
+                        <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaCopy}/>Espelhar NFe</MenuItem>
+                      </MenuList>
+                    </Menu>
                   </Td>
                 </Tr>
               ))

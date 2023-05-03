@@ -137,5 +137,5 @@ export const NotaFiscalService = {
   create,
   updateById,
   deleteById,
-  getLastCod
+  getLastCod,
 };
