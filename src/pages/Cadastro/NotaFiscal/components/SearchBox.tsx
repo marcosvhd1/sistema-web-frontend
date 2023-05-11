@@ -1,5 +1,5 @@
 import { Button, Flex, Icon, Input, Menu, MenuButton, MenuItem, MenuList, Select, Text, useColorMode } from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { FieldValues, useForm, useFormContext } from 'react-hook-form';
 import { FaInfoCircle, FaThList } from 'react-icons/fa';
 import { FcDocument } from 'react-icons/fc';
@@ -7,6 +7,11 @@ import { FiChevronsDown, FiSearch } from 'react-icons/fi';
 import { MdAdd, MdCancel } from 'react-icons/md';
 import { useModalNotaFiscal } from '../../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
 import { INotaFiscal } from '../../../../services/api/notafiscal/NotaFiscalService';
+import { SefazService } from '../../../../services/api/sefaz/SefazService';
+import { userInfos } from '../../../../utils/header';
+import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
+import { useModalStatusServidor } from '../../../../Contexts/Modal/NotaFiscal/Sefaz/StatusServidorContext';
+import { ModalStatusServidor } from './ModalSefaz/ModalStatusServidor';
 
 interface SearchBoxProps {
   children: ReactNode;
@@ -16,10 +21,17 @@ interface SearchBoxProps {
 }
 
 export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setIsEditing }: SearchBoxProps) {
-  const { register, handleSubmit } = useForm();
   const methods = useFormContext<INotaFiscal>();
+  const { register, handleSubmit } = useForm();
   const { colorMode } = useColorMode();
   const { onOpen } = useModalNotaFiscal();
+  const { onOpen: openStatusServ } = useModalStatusServidor();
+  const { idEmissorSelecionado } = useEmissorContext();
+
+  const userInfo = userInfos();
+  const HEADERS = userInfo.header;
+
+  const [motivo, setMotivo] = useState<string>('');
 
   const handleGetNotasFiscaisByFilter = async (data: FieldValues) => {
     const { description } = data;
@@ -30,6 +42,15 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
     setIsEditing(false);
     methods.reset({});
     onOpen();
+  };
+
+  const handleStatusServidor = async () => {
+    const data = await SefazService.status_servidor(idEmissorSelecionado, HEADERS);
+    
+    if (data.erro != null) setMotivo(data.erro);
+    else setMotivo(data.xMotivo);
+
+    openStatusServ();
   };
 
   return (
@@ -53,7 +74,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
               Opções<Icon ml={2} as={FiChevronsDown} />
               </MenuButton>
               <MenuList>
-                <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaInfoCircle}/>Status do Servidor</MenuItem>
+                <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'} onClick={handleStatusServidor}><Icon mr={2} as={FaInfoCircle}/>Status do Servidor</MenuItem>
                 <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'}><Icon mr={2} as={MdCancel}/>Inutilizar Faixa</MenuItem>
                 <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaThList}/>Relatório Gerencial</MenuItem>
                 <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FcDocument}/>Importar XML</MenuItem>
@@ -63,6 +84,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
         </Flex>
         {children}
       </Flex>
+      <ModalStatusServidor content={motivo}/>
     </form>
   );
 }
