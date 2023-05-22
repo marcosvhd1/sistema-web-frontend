@@ -17,13 +17,12 @@ export function Footer() {
   return (
     <HStack
       h="100%"
-      px="2"
+      px={3}
       align="center"
-      gap="4"
+      justify="space-between"
     >
-      <Text fontWeight="light">Versão: 5.7.1.0</Text>
-      <Text fontWeight="light">ID: MINI-7C62-DEA6</Text>
-      <Text fontWeight="light">{`Registrado à ${razao.toUpperCase()} [${cnpjcpf}]`}</Text>
+      <Text fontWeight="light">{`Registrado à ${razao.toUpperCase()} [CNPJ: ${cnpjcpf}]`}</Text>
+      <Text fontWeight="light">Versão: 1.0.0</Text>
     </HStack>
   );
 }
