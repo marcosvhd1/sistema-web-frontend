@@ -42,6 +42,7 @@ import formatMoney from '../../../utils/formatarValor';
 import { userInfos } from '../../../utils/header';
 import { ModalNotaFiscal } from './components/Form/FormIndex';
 import { SearchBox } from './components/SearchBox';
+import { SefazService } from '../../../services/api/sefaz/SefazService';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
@@ -89,6 +90,15 @@ export function NotaFiscal() {
     handleChangeTotalPage();
   }, [totalNotas, limitRegistros]);
 
+  const headers: { key: string; label: string }[] = [
+    { key: 'data_emissao', label: 'Emissão' },
+    { key: 'cod', label: 'Número' },
+    { key: 'natureza_operacao', label: 'Natureza de Operação' },
+    { key: 'destinatario', label: 'Destinatário' },
+    { key: 'status', label: 'Status' },
+    { key: 'total_nota', label: 'Valor Total' },
+  ];
+
   const closeSubmenuStatus = () => {
     if (submenuOpenStatus) {
       setSubmenuOpenStatus(false);
@@ -116,6 +126,16 @@ export function NotaFiscal() {
       arrayPages.push(i);
     }
     setPages(arrayPages);
+  };
+
+  const handleOpenDialog = (id: number) => {
+    openAlert();
+    setId(id);
+  };
+
+  const formatDate = (date: string) => {
+    const aux = date.split('-');
+    return `${aux[2]}/${aux[1]}/${aux[0]}`;
   };
 
   const getNF = (description: string) => {
@@ -316,24 +336,9 @@ export function NotaFiscal() {
     );
   };
 
-  const handleOpenDialog = (id: number) => {
-    openAlert();
-    setId(id);
+  const emitirNF = async (idNfe: number) => {
+    await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS);
   };
-
-  const formatDate = (date: string) => {
-    const aux = date.split('-');
-    return `${aux[2]}/${aux[1]}/${aux[0]}`;
-  };
-
-  const headers: { key: string; label: string }[] = [
-    { key: 'data_emissao', label: 'Emissão' },
-    { key: 'cod', label: 'Número' },
-    { key: 'natureza_operacao', label: 'Natureza de Operação' },
-    { key: 'destinatario', label: 'Destinatário' },
-    { key: 'status', label: 'Status' },
-    { key: 'total_nota', label: 'Valor Total' },
-  ];
 
   return (
     <FormProvider {...methods}>
@@ -371,6 +376,7 @@ export function NotaFiscal() {
                       colorScheme="green"
                       fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
                       w="2rem"
+                      onClick={() => emitirNF(data.id)}
                     >
                       <Icon color="green.300" as={FiSend} />
                     </Button>
