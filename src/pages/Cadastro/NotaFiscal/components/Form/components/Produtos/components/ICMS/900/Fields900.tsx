@@ -126,7 +126,7 @@ export function Fields900() {
       </Flex>
       <Flex w="100%" align="center" justify="flex-start">
         <FormContainer label='Mod. determinação da BC ICMS' mr='3'>
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('mod_det_bc_icms_st')}>
+          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('mod_det_bc_icms')}>
             <option value='0'>Margem Valor Agreg. (%)</option>
             <option value='1'>Pauta (valor)</option>
             <option value='2'>Preço tab. ou máx. sugerido</option>
