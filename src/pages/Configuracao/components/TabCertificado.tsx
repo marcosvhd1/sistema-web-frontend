@@ -24,8 +24,8 @@ export function TabCertificado() {
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label='Ambiente de Destino' mr='3'>
           <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('ambiente')}>
-            <option value='1'>Homologação</option>
-            <option value='2'>Produção</option>
+            <option value='2'>Homologação</option>
+            <option value='1'>Produção</option>
           </Select>
         </FormContainer>
         <FormContainer label='Tipo de impressão DANFE'>
