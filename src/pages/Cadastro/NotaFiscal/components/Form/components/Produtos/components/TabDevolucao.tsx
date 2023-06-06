@@ -91,7 +91,6 @@ export function FormTabDevolucao() {
         </FormContainer>
         <FormContainer label='Alíquota ICMS interestadual'>
           <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('partilha_icms_aliquota_icms_interestadual')}>
-            <option value='0'></option>
             <option value='4'>4,00%</option>
             <option value='7'>7,00%</option>
             <option value='12'>12,00%</option>

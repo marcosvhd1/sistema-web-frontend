@@ -112,10 +112,9 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }: IFormFields)
             </FormContainer>
             <FormContainer label="Tipo de Contribuinte">
               <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="14rem" {...register('tipo_contribuinte')}>
-                <option value=''></option>
-                <option value='contribuinteICMS'>Contribuinte ICMS</option>
-                <option value='isento'>Contribuinte ISENTO</option>
-                <option value='naoContribuinte'>Não Contribuinte</option>
+                <option value='1'>Contribuinte ICMS</option>
+                <option value='2'>Contribuinte ISENTO</option>
+                <option value='9'>Não Contribuinte</option>
               </Select>
             </FormContainer>
           </Flex>
