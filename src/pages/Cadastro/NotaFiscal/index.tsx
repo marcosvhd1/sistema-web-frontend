@@ -371,15 +371,19 @@ export function NotaFiscal() {
                     {'R$ ' + formatMoney(data.total_nota)}
                   </Td>
                   <Td style={{ textAlign: 'center' }}>
-                    <Button
-                      variant="ghost"
-                      colorScheme="green"
-                      fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                      w="2rem"
-                      onClick={() => emitirNF(data.id)}
-                    >
-                      <Icon color="green.300" as={FiSend} />
-                    </Button>
+                    {
+                      data.status === 'Em digitação' ? 
+                        <Button
+                          variant="ghost"
+                          colorScheme="green"
+                          fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                          w="2rem"
+                          onClick={() => emitirNF(data.id)}
+                        >
+                          <Icon color="green.300" as={FiSend} />
+                        </Button>
+                        : null
+                    }
                     <Button
                       variant="ghost"
                       colorScheme="orange"
