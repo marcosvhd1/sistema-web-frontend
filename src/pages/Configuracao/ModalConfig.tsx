@@ -12,6 +12,7 @@ import { TabEmail } from './components/TabEmail';
 import { TabOutros } from './components/TabOutros';
 import { TabToken } from './components/TabToken';
 import { TabCFOP } from './components/CFOP/TabCFOP';
+import { TabTabelaNCM } from './components/TabTabelaNCM';
 
 export function ModalConfig() {
   const methods = useForm<IConfig>();
@@ -104,6 +105,7 @@ export function ModalConfig() {
                 <Tab>Token NFCe</Tab>
                 <Tab>Email</Tab>
                 <Tab>CFOP</Tab>
+                <Tab>Tabela NCM</Tab>
                 <Tab>Outros</Tab>
               </TabList>
               <TabPanels>
@@ -118,6 +120,9 @@ export function ModalConfig() {
                 </TabPanel>
                 <TabPanel>
                   <TabCFOP />
+                </TabPanel>
+                <TabPanel>
+                  <TabTabelaNCM />
                 </TabPanel>
                 <TabPanel>
                   <TabOutros />
