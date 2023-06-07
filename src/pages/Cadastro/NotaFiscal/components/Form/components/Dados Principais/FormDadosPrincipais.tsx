@@ -22,16 +22,8 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
   const { colorMode } = useColorMode();
   const { idEmissorSelecionado } = useEmissorContext();
 
-  const [block, setBlock] = useState<boolean>(true);
-
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
-
-  const handleBlockInputCod = () => {
-    setBlock(!block);
-
-    if (block) methods.setFocus('cod');
-  };
 
   const getCod = async () => {
     if (!isEditing) {
@@ -58,67 +50,48 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
       <Flex w="100%" justify="center" align="center" direction="column" >
         {/* DADOS PRINCIPAIS */}
         <Flex w="100%" mr="4" ml='4' align="center" justify="space-between">
-          <FormContainer width='20%' label='Nº da NF'>
-            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly={block} {...methods.register('cod')} />
+          <FormContainer width='20%' label='Nº da NF' mr='3'>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cod')} />
           </FormContainer>
-          <Button variant="ghost" colorScheme="orange" onClick={handleBlockInputCod} mt={7} ml={1} mr={3} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }}>
-            <Icon color="orange" as={FiEdit} />
-          </Button>
 
-          <FormContainer width='15%' label='Série' mr='3'>
+          <FormContainer width='10%' label='Série' mr='3'>
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('serie')} />
           </FormContainer>
 
-          <FormContainer width='65%' label='Natureza de Operação' mr='3'>
+          <FormContainer width='50%' label='Natureza de Operação' mr='3'>
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('natureza_operacao')} onChange={(data) => onChangeNatureza(data)}>
               {cfops.map((data) => (<option key={data.id} value={data.natureza}>{data.natureza}</option>))}
             </Select>
           </FormContainer>
 
-          <FormContainer width='25%' label='CFOP' mr='3'>
+          <FormContainer width='20%' label='CFOP'>
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cfop')} />
-          </FormContainer>
-          {/* <Button variant="ghost" colorScheme="green" onClick={() => null} mt={7} ml={1} mr={3} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }}>
-            <Icon color="green" as={FiCheckCircle} />
-          </Button> */}
-
-          <FormContainer width='35%' label='Status'>
-            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" defaultValue={'Em digitação'} readOnly {...methods.register('status')} />
           </FormContainer>
         </Flex>
         {/* OUTRAS INFOS */}
         <Flex w="100%" mb="4" mr="4" ml="4" align="center" justify="space-between">
 
-          <FormContainer width='35%' label='Tipo' mr='3'>
+          <FormContainer width='25%' label='Tipo' mr='3'>
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('tipo')}>
-              <option value='0'>0 - Entrada</option>
-              <option value='1'>1 - Saída</option>
+              <option value='0'>Entrada</option>
+              <option value='1'>Saída</option>
             </Select>
           </FormContainer>
-          <FormContainer width='40%' label='Forma de Emissão' mr='3'>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('forma_emissao')}>
-              <option value='normal'>Normal</option>
-              <option value='contingencia'>Contingência</option>
-              <option value='contingencia_scan'>Contingência com SCAN</option>
-              <option value='contingencia_dpec'>Contingência via DPEC</option>
-              <option value='contingencia_fsda'>Contingência FSDA</option>
-              <option value='contingencia_svc_an'>Contingência SVC-AN</option>
-              <option value='contingencia_svc_rs'>Contingência SVC-RS</option>
-              <option value='contingencia_offline'>Contingência Offline</option>
-            </Select>
-          </FormContainer>
-          <FormContainer width='40%' label='Finalidade' mr='3'>
+          <FormContainer width='30%' label='Finalidade' mr='3'>
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('finalidade')}>
-              <option value='1'>1 - NF-e normal</option>
-              <option value='2'>2 - NF-e complementar</option>
-              <option value='3'>3 - NF-e de ajuste</option>
-              <option value='4'>4 - Devolução/Retorno</option>
+              <option value='0'>NF-e normal</option>
+              <option value='1'>NF-e complementar</option>
+              <option value='2'>NF-e de ajuste</option>
+              <option value='3'>Devolução/Retorno</option>
             </Select>
           </FormContainer>
-          <FormContainer width='30%' label='Consumidor Final' >
+          <FormContainer width='25%' label='Status' mr='3'>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" defaultValue={'Em digitação'} readOnly {...methods.register('status')} />
+          </FormContainer>
+          <FormContainer width='20%' label='Consumidor Final'>
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('consumidor_final')}>
-              <option value='0'>0 - Não</option>
-              <option value='1'>1 - Sim</option>
+              <option value='0'>Não</option>
+              <option value='1'>Sim</option>
             </Select>
           </FormContainer>
         </Flex>

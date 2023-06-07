@@ -16,7 +16,7 @@ export type IProduct = {
   un_trib: string;
   status: string;
   anotacoes: string;
-  cst_icms: number;
+  cst_icms: string;
   aliquota_icms: number;
   base_icms: number;
   cst_ipi: number;

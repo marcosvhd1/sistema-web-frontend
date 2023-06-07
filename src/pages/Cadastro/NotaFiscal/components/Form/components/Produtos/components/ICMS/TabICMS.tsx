@@ -43,7 +43,7 @@ export function FormTabICMS() {
 
   useEffect(() => {
     const selectedCST = methods.getValues('produto.cst_icms');
-    setSelected(selectedCST.toString());
+    setSelected(selectedCST);
     visibleFields();
   }, [methods.getValues('produto.cst_icms')]);
 
@@ -150,7 +150,7 @@ export function FormTabICMS() {
         <Text mr={3}>
           <strong>Situação Tributária (CST/CSOSN):</strong>
         </Text>
-        <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="15%" mr={3} {...methods.register('produto.cst_icms')} onChange={(index) => handleOnChange(index)}>
+        <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="15%" mr={3} {...methods.register('produto.cst_icms')} onChange={(index) => handleOnChange(index)} value={selected}>
           {regime === '1' ? csosn.map((data) => (<option key={data} value={data}>{data}</option>)) : cst.map((data) => (<option key={data} value={data}>{data}</option>))}
         </Select>
         <Button onClick={onOpen}>

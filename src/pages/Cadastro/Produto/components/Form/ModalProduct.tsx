@@ -49,7 +49,7 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
       un_trib: '',
       status: '',
       anotacoes: '',
-      cst_icms: 0,
+      cst_icms: '',
       aliquota_icms: 0,
       base_icms: 0,
       cst_ipi: 0,

@@ -138,7 +138,6 @@ export function Cliente() {
     { key: 'cnpjcpf', label: 'CPF / CNPJ' },
     { key: 'cidade', label: 'Cidade' },
     { key: 'uf', label: 'UF' },
-    { key: 'categoria', label: 'Categoria' },
   ];
 
   return (
@@ -153,7 +152,6 @@ export function Cliente() {
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cidade}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.uf}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.categoria}</Td>
                 <Td style={{ 'textAlign': 'center' }}>
                   <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditClient(data.id)}>
                     <Icon color="orange.300" as={FiEdit} />

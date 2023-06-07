@@ -198,17 +198,18 @@ export function NotaFiscal() {
                 console.log(prod.message);
               } else {
                 prod.descricao = element.descricao;
+                prod.codbarras = element.codbarras;
                 prod.cfop = element.cfop;
+                prod.cest = element.cest;
                 prod.ncm = element.ncm;
                 prod.un = element.un;
-                prod.cest = element.cest;
                 
-                prod.base_icms = element.base_icms;
                 prod.aliquota_cofins = element.aliquota_cofins;
                 prod.aliquota_icms = element.aliquota_icms;
                 prod.aliquota_ipi = element.aliquota_ipi;
                 prod.aliquota_pis = element.aliquota_pis;
                 prod.cst_cofins = element.cst_cofins;
+                prod.base_icms = element.base_icms;
                 prod.cst_icms = element.cst_icms;
                 prod.cst_ipi = element.cst_ipi;
                 prod.cst_pis = element.cst_pis;

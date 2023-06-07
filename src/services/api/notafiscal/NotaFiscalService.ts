@@ -16,7 +16,6 @@ export interface INotaFiscal {
     serie: number;
     natureza_operacao: string;
     cfop: string;
-    forma_emissao: string;
     finalidade: string;
     status: string;
     modelo: number;
