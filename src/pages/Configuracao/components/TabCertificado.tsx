@@ -38,11 +38,11 @@ export function TabCertificado() {
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label='Forma de Emisão' mr='3'>
           <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('forma_emi')}>
-            <option value='0'>Normal</option>
-            <option value='1'>Contingência</option>
-            <option value='2'>Contingência com SCAN</option>
-            <option value='3'>Contingência via DPEC</option>
-            <option value='4'>Contingência FSDA</option>
+            <option value='1'>Normal</option>
+            <option value='2'>Contingência</option>
+            <option value='3'>Contingência com SCAN</option>
+            <option value='4'>Contingência via DPEC</option>
+            <option value='5'>Contingência FSDA</option>
           </Select>
         </FormContainer>
         <FormContainer label='Finalidade de Emissão'>

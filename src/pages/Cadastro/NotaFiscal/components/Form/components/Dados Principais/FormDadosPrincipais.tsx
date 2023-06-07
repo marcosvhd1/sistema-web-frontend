@@ -79,10 +79,10 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
           </FormContainer>
           <FormContainer width='30%' label='Finalidade' mr='3'>
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('finalidade')}>
-              <option value='0'>NF-e normal</option>
-              <option value='1'>NF-e complementar</option>
-              <option value='2'>NF-e de ajuste</option>
-              <option value='3'>Devolução/Retorno</option>
+              <option value='1'>NFe normal</option>
+              <option value='2'>NFe complementar</option>
+              <option value='3'>NFe de ajuste</option>
+              <option value='4'>Devolução/Retorno</option>
             </Select>
           </FormContainer>
           <FormContainer width='25%' label='Status' mr='3'>
