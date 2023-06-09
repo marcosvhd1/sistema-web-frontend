@@ -54,6 +54,7 @@ export function ModalConfig() {
       'tipo_imp': methods.getValues('tipo_imp'),
       'forma_emi': methods.getValues('forma_emi'),
       'finalidade': methods.getValues('finalidade'),
+      'justif': methods.getValues('justif'),
       'id_nfce': methods.getValues('id_nfce'),
       'token_nfce': methods.getValues('token_nfce'),
       'serie_padrao': methods.getValues('serie_padrao'),

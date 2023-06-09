@@ -69,7 +69,7 @@ export function TabEmail({ autenticacao, ssl, tls, setAutenticacao, setSSL, setT
           <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='email' {...methods.register('assunto')}/>
         </FormContainer>
         <FormContainer label='Mensagem Padrão'>
-          <Textarea {...methods.register('mensagem')} />
+          <Textarea borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('mensagem')} />
         </FormContainer>
       </Flex>
     </Flex>
