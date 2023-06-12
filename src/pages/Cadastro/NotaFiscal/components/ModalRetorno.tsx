@@ -4,10 +4,16 @@ import { useModalRetornoSefaz } from '../../../../Contexts/Modal/NotaFiscal/Sefa
 interface ModalRetornoProps {
   loading: boolean;
   content: any;
+  getNotas: (filtro: string) => void;
 }
 
-export function ModalRetorno({loading, content}: ModalRetornoProps) {
+export function ModalRetorno({loading, content, getNotas}: ModalRetornoProps) {
   const { isOpen, onClose } = useModalRetornoSefaz();
+
+  const handleClose = () => {
+    getNotas('');
+    onClose();
+  };
 
   return (
     <Modal
@@ -26,7 +32,7 @@ export function ModalRetorno({loading, content}: ModalRetornoProps) {
             <Text>Retorno de solicitação</Text>
           </Flex>
         </ModalHeader>
-        <ModalBody p={7}>
+        <ModalBody p={5}>
           {
             loading ? 
               <Flex w='100%' justify='center' align='center'>
@@ -41,14 +47,14 @@ export function ModalRetorno({loading, content}: ModalRetornoProps) {
               :
               <Flex w='100%' justify='flex-start' align='center'>
                 <Text whiteSpace='pre-line'>
-                  {`${content}`}
+                  {content}
                 </Text>
               </Flex>
           }
         </ModalBody>
         <ModalFooter>
           <Flex w="100%" justify='flex-end' align='center'>
-            <Button w='15%' variant='outline' colorScheme="blue" onClick={onClose}>OK</Button>
+            <Button w='15%' variant='outline' colorScheme="blue" onClick={handleClose}>OK</Button>
           </Flex>
         </ModalFooter>
       </ModalContent>

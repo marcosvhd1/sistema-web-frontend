@@ -347,8 +347,8 @@ export function NotaFiscal() {
     openRetorno();
     setLoading(true);
     await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS).then((response) => {
-      console.log(response);
-      setRetorno(response);
+      if (response.mensagem != null) setRetorno(response.mensagem);
+      else setRetorno(response);
     });
     setLoading(false);
   };
@@ -523,6 +523,7 @@ export function NotaFiscal() {
         <ModalRetorno 
           loading={loading}
           content={retorno}
+          getNotas={getNF}
         />
         <DeleteAlertDialog label="Nota Fiscal" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
