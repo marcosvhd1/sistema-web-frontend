@@ -338,7 +338,8 @@ export function NotaFiscal() {
   };
 
   const emitirNF = async (idNfe: number) => {
-    await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS);
+    const data = await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS);
+    console.log(data);
   };
 
   return (
@@ -352,12 +353,12 @@ export function NotaFiscal() {
           <DataTable headers={headers}>
             {data !== undefined
               ? data.map((data) => (
-                <Tr key={data.id}>
+                <Tr bgColor={data.status === 'Emitida' ? colorMode === 'light' ? 'green.100' : 'green.900' : ''}  key={data.id}>
                   <Td>
                     {formatDate(data.data_emissao.toString())}
                   </Td>
                   <Td>
-                    {('0000' + data.cod).slice(-4)}
+                    {data.cod}
                   </Td>
                   <Td>
                     {data.natureza_operacao}
@@ -371,7 +372,7 @@ export function NotaFiscal() {
                   <Td>
                     {'R$ ' + formatMoney(data.total_nota)}
                   </Td>
-                  <Td style={{ textAlign: 'center' }}>
+                  <Td style={{ textAlign: 'end' }}>
                     {
                       data.status === 'Em digitação' ? 
                         <Button
@@ -394,23 +395,31 @@ export function NotaFiscal() {
                     >
                       <Icon color="orange.300" as={FiEdit} />
                     </Button>
-                    <Button
-                      variant="ghost"
-                      colorScheme="red"
-                      fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                      w="2rem"
-                      onClick={() => handleOpenDialog(data.id)}
-                    >
-                      <Icon as={FiTrash2} color="red.400" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      colorScheme="blue"
-                      fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                      w="2rem"
-                    >
-                      <Icon as={FiPrinter} color="blue.400" />
-                    </Button>
+                    {
+                      data.status !== 'Emitida' ? 
+                        <Button
+                          variant="ghost"
+                          colorScheme="red"
+                          fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                          w="2rem"
+                          onClick={() => handleOpenDialog(data.id)}
+                        >
+                          <Icon as={FiTrash2} color="red.400" />
+                        </Button>
+                        : null
+                    }
+                    {
+                      data.status !== 'Em digitação' ?
+                        <Button
+                          variant="ghost"
+                          colorScheme="blue"
+                          fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                          w="2rem"
+                        >
+                          <Icon as={FiPrinter} color="blue.400" />
+                        </Button>
+                        : null
+                    }
                     <Menu>
                       <MenuButton
                         as={Button} 

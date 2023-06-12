@@ -31,7 +31,7 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
 
       const newNumber = parseInt(respose) + 1;
 
-      if (respose !== null) methods.setValue('cod', (`0000${newNumber}`).slice(-4));
+      if (respose !== null) methods.setValue('cod', (`${newNumber}`));
       else methods.setValue('cod', '0001');
     }
   };

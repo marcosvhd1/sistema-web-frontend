@@ -12,10 +12,9 @@ export interface ITabelaNCM {
   importadosfederal: string;
 }
 
-const create = async (dataToCreate: Omit<ITabelaNCM, 'id'>, HEADERS: any): Promise<ITabelaNCM | ApiException> => {
+const create = async (dataToCreate: Omit<ITabelaNCM[], 'id'>, idEmissor: number, HEADERS: any) => {
   try {
-    const { data } = await Api().post<ITabelaNCM>('/tabelancm', dataToCreate, HEADERS);
-    return data;
+    await Api().post<ITabelaNCM>(`/tabelancm?id_emissor=${idEmissor}`, dataToCreate, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao criar o registro.');
   }

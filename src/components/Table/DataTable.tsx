@@ -7,14 +7,15 @@ interface DataTableProps {
   width?: string
   mt?: string
   mr?: string
+  colorScheme?: string
   trailing?: boolean
 }
 
-export function DataTable({ children, headers, width = '90%', mt = '10', mr, trailing = true }: DataTableProps) {
+export function DataTable({ children, headers, width = '90%', mt = '10', mr, colorScheme, trailing = true }: DataTableProps) {
   return (
     <Flex w="100%" justify="center" mt={`${mt}`} mr={`${mr}`}>
       <TableContainer w={`${width}`} borderRadius={8} >
-        <Table size="sm" variant='simple' >
+        <Table size="sm" variant='simple' colorScheme={colorScheme}>
           <Thead bg="whiteAlpha.100">
             <Tr style={{'height': '2rem'}}>
               {headers.map((row) => {

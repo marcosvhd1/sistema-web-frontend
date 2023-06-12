@@ -36,20 +36,13 @@ export function TabTabelaNCM() {
     }
   };
 
-  const handleImportTable = () => {
-    if (ncmData) {
-      for (const data of ncmData) {
-        const ncm = {
-          'id_emissor': idEmissorSelecionado,
-          'codigo': data.codigo,
-          'tipo': data.tipo,
-          'municipal': data.municipal,
-          'estadual': data.estadual,
-          'nacionalfederal': data.nacionalfederal,
-          'importadosfederal': data.importadosfederal,
-        };
+  const handleImportTable = async () => {
+    const tamanhoMax = 1000;
 
-        TabelaNCMService.create(ncm, HEADERS);
+    if (ncmData) {
+      for (let i = 0; i < ncmData.length; i += tamanhoMax) {
+        const parte = ncmData.slice(i, i + tamanhoMax);
+        await TabelaNCMService.create(parte, idEmissorSelecionado, HEADERS);
       }
     }
   };
