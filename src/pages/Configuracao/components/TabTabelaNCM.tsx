@@ -65,24 +65,13 @@ export function TabTabelaNCM() {
           variant="solid"
           onChange={handleFileUpload} 
           mr={3}
+          style={{padding: '10px 5px'}}
         />
         <Button fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="green" w="20%" onClick={handleImportTable}>
           <Icon as={FiFilePlus} mr={1} />
             Importar
         </Button>
       </Flex>
-      <DataTable width='100%' headers={headers} trailing={false} mt="5">
-        {ncmData.map((data) => (
-          <Tr key={uuidv4()}>
-            <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.codigo}</Td>
-            <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.tipo}</Td>
-            <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.municipal}</Td>
-            <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.estadual}</Td>
-            <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.nacionalfederal}</Td>
-            <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.importadosfederal}</Td>
-          </Tr>
-        ))}
-      </DataTable>
     </Flex>
   );
 }
