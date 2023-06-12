@@ -21,6 +21,6 @@ const create = async (dataToCreate: Omit<ITabelaNCM, 'id'>, HEADERS: any): Promi
   }
 };
 
-export const NFProdutoService = {
+export const TabelaNCMService = {
   create,
 };

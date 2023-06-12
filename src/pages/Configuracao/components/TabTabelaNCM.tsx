@@ -1,13 +1,20 @@
-import { Button, Flex, Icon, Input, Td, Tr, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Td, Tr } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
-import { FiCheck } from 'react-icons/fi';
+import { FiFilePlus } from 'react-icons/fi';
 import { v4 as uuidv4 } from 'uuid';
 import { read, utils } from 'xlsx';
 import { DataTable } from '../../../components/Table/DataTable';
-import { ITabelaNCM } from '../../../services/api/tabelancm/TabelaNCMService';
+import { ITabelaNCM, TabelaNCMService } from '../../../services/api/tabelancm/TabelaNCMService';
+import { userInfos } from '../../../utils/header';
+import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 
 export function TabTabelaNCM() {
   const [ncmData, setNcmData] = useState<ITabelaNCM[]>([]);
+
+  const { idEmissorSelecionado } = useEmissorContext();
+
+  const userInfo = userInfos();
+  const HEADERS = userInfo.header;
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -26,6 +33,24 @@ export function TabTabelaNCM() {
       };
 
       reader.readAsArrayBuffer(file);
+    }
+  };
+
+  const handleImportTable = () => {
+    if (ncmData) {
+      for (const data of ncmData) {
+        const ncm = {
+          'id_emissor': idEmissorSelecionado,
+          'codigo': data.codigo,
+          'tipo': data.tipo,
+          'municipal': data.municipal,
+          'estadual': data.estadual,
+          'nacionalfederal': data.nacionalfederal,
+          'importadosfederal': data.importadosfederal,
+        };
+
+        TabelaNCMService.create(ncm, HEADERS);
+      }
     }
   };
 
@@ -48,9 +73,9 @@ export function TabTabelaNCM() {
           onChange={handleFileUpload} 
           mr={3}
         />
-        <Button fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue" w="20%">
-          <Icon as={FiCheck} mr={1} />
-            Confirmar
+        <Button fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="green" w="20%" onClick={handleImportTable}>
+          <Icon as={FiFilePlus} mr={1} />
+            Importar
         </Button>
       </Flex>
       <DataTable width='100%' headers={headers} trailing={false} mt="5">
