@@ -12,7 +12,6 @@ import {
   FiTrash2
 } from 'react-icons/fi';
 
-import { CgMenuLeft } from 'react-icons/cg';
 import { FaCopy, FaFilePdf } from 'react-icons/fa';
 import { FcDocument } from 'react-icons/fc';
 import { MdCancel, MdEmail, MdMenu, MdReportProblem } from 'react-icons/md';
@@ -37,35 +36,42 @@ import {
   NotaFiscalService,
 } from '../../../services/api/notafiscal/NotaFiscalService';
 import { IProduct, ProductService } from '../../../services/api/produtos/ProductService';
+import { SefazService } from '../../../services/api/sefaz/SefazService';
 import { TransportadoraService } from '../../../services/api/transportadora/TransportadoraService';
 import formatMoney from '../../../utils/formatarValor';
 import { userInfos } from '../../../utils/header';
 import { ModalNotaFiscal } from './components/Form/FormIndex';
 import { SearchBox } from './components/SearchBox';
-import { SefazService } from '../../../services/api/sefaz/SefazService';
+import { useModalRetornoSefaz } from '../../../Contexts/Modal/NotaFiscal/Sefaz/RetornoSefazContext';
+import { ModalRetorno } from './components/ModalRetorno';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
   const { colorMode } = useColorMode();
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [data, setData] = useState<INotaFiscal[]>([]);
   const [filter, setFilter] = useState<string>('cod');
-
+  
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [id, setId] = useState<number>(0);
-
+  
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalNotas, setTotalNotas] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState(5);
   const [pages, setPages] = useState<number[]>([]);
-
+  
   const [submenuOpenStatus, setSubmenuOpenStatus] = useState<boolean>(false);
   const [submenuOpenCCe, setSubmenuOpenCCe] = useState<boolean>(false);
-
+  
   const [prods, setProds] = useState<INFProduct[]>([]);
+
+  const [retorno, setRetorno] = useState<any>();
 
   const { idEmissorSelecionado } = useEmissorContext();
   const { onOpen: openAlert, onClose, isOpen } = useAlertNotaFiscalContext();
+  const { onOpen: openRetorno } = useModalRetornoSefaz();
   const { onOpen } = useModalNotaFiscal();
 
   const navigate = useNavigate();
@@ -337,9 +343,14 @@ export function NotaFiscal() {
     );
   };
 
-  const emitirNF = async (idNfe: number) => {
-    const data = await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS);
-    console.log(data);
+  const handelEmitirNF = async (idNfe: number) => {
+    openRetorno();
+    setLoading(true);
+    await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS).then((response) => {
+      console.log(response);
+      setRetorno(response);
+    });
+    setLoading(false);
   };
 
   return (
@@ -380,7 +391,7 @@ export function NotaFiscal() {
                           colorScheme="green"
                           fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
                           w="2rem"
-                          onClick={() => emitirNF(data.id)}
+                          onClick={() => handelEmitirNF(data.id)}
                         >
                           <Icon color="green.300" as={FiSend} />
                         </Button>
@@ -508,6 +519,10 @@ export function NotaFiscal() {
           setIsEditing={setIsEditing}
           id={id}
           getNF={getNF}
+        />
+        <ModalRetorno 
+          loading={loading}
+          content={retorno}
         />
         <DeleteAlertDialog label="Nota Fiscal" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
