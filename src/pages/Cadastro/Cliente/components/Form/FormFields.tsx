@@ -100,10 +100,10 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }: IFormFields)
           </Flex>
           <Flex>
             <FormContainer label="Inscrição Estadual (IE)">
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="text" w="14rem" {...register('ie')} mr="3" />
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="number" w="14rem" {...register('ie')} mr="3" />
             </FormContainer>
             <FormContainer label="Inscrição Municipal">
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="im" type="text" w="14rem" {...register('im')} />
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="im" type="number" w="14rem" {...register('im')} />
             </FormContainer>
           </Flex>
           <Flex>

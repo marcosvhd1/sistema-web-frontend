@@ -73,8 +73,8 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
 
           <FormContainer width='25%' label='Tipo' mr='3'>
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('tipo')}>
-              <option value='0'>Entrada</option>
               <option value='1'>Saída</option>
+              <option value='0'>Entrada</option>
             </Select>
           </FormContainer>
           <FormContainer width='30%' label='Finalidade' mr='3'>
