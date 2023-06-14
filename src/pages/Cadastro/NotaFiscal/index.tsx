@@ -12,12 +12,13 @@ import {
   FiTrash2
 } from 'react-icons/fi';
 
-import { FaCopy, FaFilePdf } from 'react-icons/fa';
+import { FaCopy } from 'react-icons/fa';
 import { FcDocument } from 'react-icons/fc';
 import { MdCancel, MdEmail, MdMenu, MdReportProblem } from 'react-icons/md';
 import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalNotaFiscal } from '../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
+import { useModalRetornoSefaz } from '../../../Contexts/Modal/NotaFiscal/Sefaz/RetornoSefazContext';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
@@ -41,9 +42,8 @@ import { TransportadoraService } from '../../../services/api/transportadora/Tran
 import formatMoney from '../../../utils/formatarValor';
 import { userInfos } from '../../../utils/header';
 import { ModalNotaFiscal } from './components/Form/FormIndex';
-import { SearchBox } from './components/SearchBox';
-import { useModalRetornoSefaz } from '../../../Contexts/Modal/NotaFiscal/Sefaz/RetornoSefazContext';
 import { ModalRetorno } from './components/ModalRetorno';
+import { SearchBox } from './components/SearchBox';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
@@ -343,7 +343,7 @@ export function NotaFiscal() {
     );
   };
 
-  const handelEmitirNF = async (idNfe: number) => {
+  const handleEmitirNF = async (idNfe: number) => {
     setLoading(true);
     await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS).then((response) => {
       if (response.mensagem == null) {
@@ -352,6 +352,12 @@ export function NotaFiscal() {
       } else getNF('');
     });
     setLoading(false);
+  };
+
+  const handleCancelarNF = async (idNfe: number) => {
+    await SefazService.cancelar(idNfe, idEmissorSelecionado, 'Nota emitida para teste', HEADERS).then((response) => {
+      console.log(response);
+    });
   };
 
   return (
@@ -392,7 +398,7 @@ export function NotaFiscal() {
                           colorScheme="green"
                           fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
                           w="2rem"
-                          onClick={() => handelEmitirNF(data.id)}
+                          onClick={() => handleEmitirNF(data.id)}
                         >
                           <Icon color="green.300" as={FiSend} />
                         </Button>
@@ -443,8 +449,7 @@ export function NotaFiscal() {
                         <Icon as={MdMenu} color='blue.400' />
                       </MenuButton>
                       <MenuList>
-                        <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaFilePdf}/>Gerar PDF</MenuItem>
-                        <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'}><Icon mr={2} as={MdCancel}/>Cancelar NFe</MenuItem>
+                        <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={() => handleCancelarNF(data.id)}><Icon mr={2} as={MdCancel}/>Cancelar NFe</MenuItem>
                         <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={MdEmail}/>Enviar via Email</MenuItem>
                         <Menu isOpen={submenuOpenCCe} placement="left" onClose={closeSubmenuCCe}>
                           <MenuButton 
