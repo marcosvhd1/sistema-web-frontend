@@ -344,11 +344,12 @@ export function NotaFiscal() {
   };
 
   const handelEmitirNF = async (idNfe: number) => {
-    openRetorno();
     setLoading(true);
     await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS).then((response) => {
-      if (response.mensagem != null) setRetorno(response.mensagem);
-      else setRetorno(response);
+      if (response.mensagem == null) {
+        openRetorno();
+        setRetorno(response);
+      } else getNF('');
     });
     setLoading(false);
   };
