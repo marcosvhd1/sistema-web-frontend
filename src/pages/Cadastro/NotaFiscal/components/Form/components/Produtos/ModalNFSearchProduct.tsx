@@ -1,13 +1,12 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Tag, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Select, Tag, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
-import { FiCheck, FiChevronLeft, FiChevronRight, FiSearch, FiSlash } from 'react-icons/fi';
-import { MdAdd } from 'react-icons/md';
+import { UseFormReturn, useForm } from 'react-hook-form';
+import { FiChevronLeft, FiChevronRight, FiSearch } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import { DataTable } from '../../../../../../../components/Table/DataTable';
-import { Pagination } from '../../../../../../../components/Table/Pagination';
 import { useEmissorContext } from '../../../../../../../Contexts/EmissorProvider';
 import { useModalNFSearchProduct } from '../../../../../../../Contexts/Modal/NotaFiscal/NFProductSearchContext';
+import { DataTable } from '../../../../../../../components/Table/DataTable';
+import { Pagination } from '../../../../../../../components/Table/Pagination';
 import { ApiException } from '../../../../../../../services/api/ApiException';
 import { INFProduct } from '../../../../../../../services/api/notafiscal/NFProduct';
 import { IProduct, ProductService } from '../../../../../../../services/api/produtos/ProductService';

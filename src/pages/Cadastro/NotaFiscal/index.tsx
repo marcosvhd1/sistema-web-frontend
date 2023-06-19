@@ -44,6 +44,8 @@ import { userInfos } from '../../../utils/header';
 import { ModalNotaFiscal } from './components/Form/FormIndex';
 import { ModalRetorno } from './components/ModalRetorno';
 import { SearchBox } from './components/SearchBox';
+import { useModalNFCancelar } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCancelarContext';
+import { ModalCancelar } from './components/ModalCancelar';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
@@ -52,6 +54,7 @@ export function NotaFiscal() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [data, setData] = useState<INotaFiscal[]>([]);
+  const [dataToCancel, setDataToCancel] = useState<INotaFiscal>();
   const [filter, setFilter] = useState<string>('cod');
   
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -72,6 +75,7 @@ export function NotaFiscal() {
   const { idEmissorSelecionado } = useEmissorContext();
   const { onOpen: openAlert, onClose, isOpen } = useAlertNotaFiscalContext();
   const { onOpen: openRetorno } = useModalRetornoSefaz();
+  const { onOpen: openCancelar } = useModalNFCancelar();
   const { onOpen } = useModalNotaFiscal();
 
   const navigate = useNavigate();
@@ -137,6 +141,11 @@ export function NotaFiscal() {
   const handleOpenDialog = (id: number) => {
     openAlert();
     setId(id);
+  };
+
+  const handleOpenModalCancelar = (nota: INotaFiscal) => {
+    openCancelar();
+    setDataToCancel(nota);
   };
 
   const formatDate = (date: string) => {
@@ -288,31 +297,22 @@ export function NotaFiscal() {
       // Carrega as formas de pagto da nota
       await NFPagtoService.getNFPagtoByNF(idNf, HEADERS)
         .then((result: any) => {
-          if (result instanceof ApiException) {
-            console.log(result.message);
-          } else {
-            methods.setValue('forma_pagto', result.data);
-          }
+          if (result instanceof ApiException) console.log(result.message);
+          else methods.setValue('forma_pagto', result.data);
         });
 
-      // Carrega as formas de pagto da nota
+      // Carrega as duplicatas da nota
       await NFDupliService.getNFDupliByNF(idNf, HEADERS)
         .then((result: any) => {
-          if (result instanceof ApiException) {
-            console.log(result.message);
-          } else {
-            methods.setValue('duplicata', result.data);
-          }
+          if (result instanceof ApiException) console.log(result.message);
+          else methods.setValue('duplicata', result.data);
         });
 
       // Carrega as chaves de acesso da nota
       await NFRefService.getNFRefByNF(idNf, HEADERS)
         .then((result: any) => {
-          if (result instanceof ApiException) {
-            console.log(result.message);
-          } else {
-            methods.setValue('chaves_ref', result.data);
-          }
+          if (result instanceof ApiException) console.log(result.message);
+          else methods.setValue('chaves_ref', result.data);
         });
 
       onOpen();
@@ -354,10 +354,12 @@ export function NotaFiscal() {
     setLoading(false);
   };
 
-  const handleCancelarNF = async (idNfe: number) => {
-    await SefazService.cancelar(idNfe, idEmissorSelecionado, 'Nota emitida para teste', HEADERS).then((response) => {
-      console.log(response);
-    });
+  const rowColor = (status: string) => {
+    switch (status) {
+    case 'Emitida': return colorMode === 'light' ? 'green.100' : 'green.900';
+    case 'Cancelada': return colorMode === 'light' ? 'red.100' : 'red.900';
+    default: return '';
+    }
   };
 
   return (
@@ -371,7 +373,7 @@ export function NotaFiscal() {
           <DataTable headers={headers}>
             {data !== undefined
               ? data.map((data) => (
-                <Tr bgColor={data.status === 'Emitida' ? colorMode === 'light' ? 'green.100' : 'green.900' : ''}  key={data.id}>
+                <Tr bgColor={rowColor(data.status)}  key={data.id}>
                   <Td>
                     {formatDate(data.data_emissao.toString())}
                   </Td>
@@ -449,7 +451,7 @@ export function NotaFiscal() {
                         <Icon as={MdMenu} color='blue.400' />
                       </MenuButton>
                       <MenuList>
-                        <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={() => handleCancelarNF(data.id)}><Icon mr={2} as={MdCancel}/>Cancelar NFe</MenuItem>
+                        <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={() => handleOpenModalCancelar(data)}><Icon mr={2} as={MdCancel}/>Cancelar NFe</MenuItem>
                         <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={MdEmail}/>Enviar via Email</MenuItem>
                         <Menu isOpen={submenuOpenCCe} placement="left" onClose={closeSubmenuCCe}>
                           <MenuButton 
@@ -529,6 +531,10 @@ export function NotaFiscal() {
         <ModalRetorno 
           loading={loading}
           content={retorno}
+          getNotas={getNF}
+        />
+        <ModalCancelar 
+          data={dataToCancel!}
           getNotas={getNF}
         />
         <DeleteAlertDialog label="Nota Fiscal" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />
