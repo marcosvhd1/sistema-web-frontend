@@ -58,6 +58,7 @@ import { ModalStatusServidorProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/
 import { ModalRetornoSefazProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/RetornoSefazContext';
 import { ModalNFCancelarProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/NFCancelarContext';
 import { ModalNFInutilizarProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/NFInutilizarContext';
+import { ModalNFCCeProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/NFCCeContext';
 
 const ROLES = {
   'normal': 0,
@@ -101,54 +102,56 @@ export default function MainRoutes() {
                                                             <ModalRetornoSefazProvider>
                                                               <ModalNFCancelarProvider>
                                                                 <ModalNFInutilizarProvider>
+                                                                  <ModalNFCCeProvider>
 
-                                                                  <AlertClientContextProvider>
-                                                                    <AlertServiceContextProvider>
-                                                                      <AlertTransportadoraContextProvider>
-                                                                        <AlertProductContextProvider>
-                                                                          <AlertEmissorContextProvider>
-                                                                            <AlertProductGroupContextProvider>
-                                                                              <AlertNotaFiscalContextProvider>
-                                                                                <AlertNFProductContextProvider>
-                                                                                  <AlertNFServiceContextProvider>                                                     
+                                                                    <AlertClientContextProvider>
+                                                                      <AlertServiceContextProvider>
+                                                                        <AlertTransportadoraContextProvider>
+                                                                          <AlertProductContextProvider>
+                                                                            <AlertEmissorContextProvider>
+                                                                              <AlertProductGroupContextProvider>
+                                                                                <AlertNotaFiscalContextProvider>
+                                                                                  <AlertNFProductContextProvider>
+                                                                                    <AlertNFServiceContextProvider>                                                     
 
-                                                                                    <ProductGroupProvider>
+                                                                                      <ProductGroupProvider>
 
-                                                                                      <Routes>
-                                                                                        <Route index element={<Login />} />
+                                                                                        <Routes>
+                                                                                          <Route index element={<Login />} />
 
-                                                                                        <Route element={<RequireAuth allowedRoles={[ROLES.admin, ROLES.normal]} />}>
-                                                                                          <Route path="/app" element={<Home />} />
-                                                                                          <Route path="/app/unauthorized" element={<UnauthorizedUser />} />
-                                                                                          <Route element={<RequireEmissor />}>
-                                                                                            <Route path="/app/cadastro/clientes" element={<Cliente />} />
-                                                                                            <Route path="/app/cadastro/produtos" element={<Produto />} />
-                                                                                            <Route path="/app/cadastro/servicos" element={<Servico />} />
-                                                                                            <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
-                                                                                            <Route path="/app/fiscal/nfe" element={<NotaFiscal />} />
+                                                                                          <Route element={<RequireAuth allowedRoles={[ROLES.admin, ROLES.normal]} />}>
+                                                                                            <Route path="/app" element={<Home />} />
+                                                                                            <Route path="/app/unauthorized" element={<UnauthorizedUser />} />
+                                                                                            <Route element={<RequireEmissor />}>
+                                                                                              <Route path="/app/cadastro/clientes" element={<Cliente />} />
+                                                                                              <Route path="/app/cadastro/produtos" element={<Produto />} />
+                                                                                              <Route path="/app/cadastro/servicos" element={<Servico />} />
+                                                                                              <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
+                                                                                              <Route path="/app/fiscal/nfe" element={<NotaFiscal />} />
+                                                                                            </Route>
                                                                                           </Route>
-                                                                                        </Route>
 
-                                                                                        <Route element={<RequireAuth allowedRoles={[ROLES.admin]} />}>
-                                                                                          <Route path='/app/emissor' element={<Emissor />} />
-                                                                                          <Route path='/app/usuarios' element={<Usuarios />} />
-                                                                                        </Route>
+                                                                                          <Route element={<RequireAuth allowedRoles={[ROLES.admin]} />}>
+                                                                                            <Route path='/app/emissor' element={<Emissor />} />
+                                                                                            <Route path='/app/usuarios' element={<Usuarios />} />
+                                                                                          </Route>
 
-                                                                                        <Route path="*" element={<PageNotFound />} />
-                                                                                      </Routes>
+                                                                                          <Route path="*" element={<PageNotFound />} />
+                                                                                        </Routes>
 
-                                                                                    </ProductGroupProvider>
+                                                                                      </ProductGroupProvider>
 
-                                                                                  </AlertNFServiceContextProvider>
-                                                                                </AlertNFProductContextProvider>
-                                                                              </AlertNotaFiscalContextProvider>
-                                                                            </AlertProductGroupContextProvider>
-                                                                          </AlertEmissorContextProvider>
-                                                                        </AlertProductContextProvider>
-                                                                      </AlertTransportadoraContextProvider>
-                                                                    </AlertServiceContextProvider>
-                                                                  </AlertClientContextProvider>
-                                                                  
+                                                                                    </AlertNFServiceContextProvider>
+                                                                                  </AlertNFProductContextProvider>
+                                                                                </AlertNotaFiscalContextProvider>
+                                                                              </AlertProductGroupContextProvider>
+                                                                            </AlertEmissorContextProvider>
+                                                                          </AlertProductContextProvider>
+                                                                        </AlertTransportadoraContextProvider>
+                                                                      </AlertServiceContextProvider>
+                                                                    </AlertClientContextProvider>
+                                                                    
+                                                                  </ModalNFCCeProvider>
                                                                 </ModalNFInutilizarProvider>
                                                               </ModalNFCancelarProvider>
                                                             </ModalRetornoSefazProvider>

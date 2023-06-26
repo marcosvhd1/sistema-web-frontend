@@ -46,6 +46,8 @@ import { ModalNotaFiscal } from './components/Form/FormIndex';
 import { ModalCancelar } from './components/ModalCancelar';
 import { ModalRetorno } from './components/ModalRetorno';
 import { SearchBox } from './components/SearchBox';
+import { ModalCCe } from './components/ModalCCe';
+import { useModalNFCCe } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCCeContext';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
@@ -54,7 +56,7 @@ export function NotaFiscal() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [data, setData] = useState<INotaFiscal[]>([]);
-  const [dataToCancel, setDataToCancel] = useState<INotaFiscal>();
+  const [dataToModal, setDataToModal] = useState<INotaFiscal>();
   const [filter, setFilter] = useState<string>('cod');
   
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -76,6 +78,7 @@ export function NotaFiscal() {
   const { onOpen: openAlert, onClose, isOpen } = useAlertNotaFiscalContext();
   const { onOpen: openRetorno } = useModalRetornoSefaz();
   const { onOpen: openCancelar } = useModalNFCancelar();
+  const { onOpen: openCCe } = useModalNFCCe();
   const { onOpen } = useModalNotaFiscal();
 
   const navigate = useNavigate();
@@ -145,7 +148,12 @@ export function NotaFiscal() {
 
   const handleOpenModalCancelar = (nota: INotaFiscal) => {
     openCancelar();
-    setDataToCancel(nota);
+    setDataToModal(nota);
+  };
+
+  const handleOpenModalCCe = (nota: INotaFiscal) => {
+    openCCe();
+    setDataToModal(nota);
   };
 
   const formatDate = (date: string) => {
@@ -462,7 +470,7 @@ export function NotaFiscal() {
                             <Icon as={FcDocument} mr={2}/>Carta de Correção
                           </MenuButton>
                           <MenuList>
-                            <MenuItem color={colorMode === 'light' ? 'green.600' : 'green.300'}><Icon mr={2} as={FiSend}/>Emitir CCe</MenuItem>
+                            <MenuItem color={colorMode === 'light' ? 'green.600' : 'green.300'} onClick={() => handleOpenModalCCe(data)}><Icon mr={2} as={FiSend}/>Emitir CCe</MenuItem>
                             <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FiPrinter}/>Imprimir CCe</MenuItem>
                           </MenuList>
                         </Menu>
@@ -534,8 +542,11 @@ export function NotaFiscal() {
           getNotas={getNF}
         />
         <ModalCancelar 
-          data={dataToCancel!}
+          data={dataToModal!}
           getNotas={getNF}
+        />
+        <ModalCCe 
+          data={dataToModal!}
         />
         <DeleteAlertDialog label="Nota Fiscal" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
