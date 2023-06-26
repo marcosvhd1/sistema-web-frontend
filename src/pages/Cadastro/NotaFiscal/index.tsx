@@ -18,6 +18,7 @@ import { MdCancel, MdEmail, MdMenu, MdReportProblem } from 'react-icons/md';
 import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalNotaFiscal } from '../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
+import { useModalNFCancelar } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCancelarContext';
 import { useModalRetornoSefaz } from '../../../Contexts/Modal/NotaFiscal/Sefaz/RetornoSefazContext';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
@@ -42,10 +43,9 @@ import { TransportadoraService } from '../../../services/api/transportadora/Tran
 import formatMoney from '../../../utils/formatarValor';
 import { userInfos } from '../../../utils/header';
 import { ModalNotaFiscal } from './components/Form/FormIndex';
+import { ModalCancelar } from './components/ModalCancelar';
 import { ModalRetorno } from './components/ModalRetorno';
 import { SearchBox } from './components/SearchBox';
-import { useModalNFCancelar } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCancelarContext';
-import { ModalCancelar } from './components/ModalCancelar';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();

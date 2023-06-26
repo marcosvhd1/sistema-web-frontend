@@ -12,6 +12,8 @@ import { userInfos } from '../../../../utils/header';
 import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
 import { useModalStatusServidor } from '../../../../Contexts/Modal/NotaFiscal/Sefaz/StatusServidorContext';
 import { ModalStatusServidor } from './ModalSefaz/ModalStatusServidor';
+import { useModalNFInutilizar } from '../../../../Contexts/Modal/NotaFiscal/Sefaz/NFInutilizarContext';
+import { ModalInutilizar } from './ModalInutilizar';
 
 interface SearchBoxProps {
   children: ReactNode;
@@ -26,6 +28,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
   const { colorMode } = useColorMode();
   const { onOpen } = useModalNotaFiscal();
   const { onOpen: openStatusServ } = useModalStatusServidor();
+  const { onOpen: openInutilizar } = useModalNFInutilizar();
   const { idEmissorSelecionado } = useEmissorContext();
 
   const userInfo = userInfos();
@@ -75,7 +78,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
               </MenuButton>
               <MenuList>
                 <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'} onClick={handleStatusServidor}><Icon mr={2} as={FaInfoCircle}/>Status do Servidor</MenuItem>
-                <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'}><Icon mr={2} as={MdCancel}/>Inutilizar Faixa</MenuItem>
+                <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={openInutilizar}><Icon mr={2} as={MdCancel}/>Inutilizar Faixa</MenuItem>
                 <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaThList}/>Relatório Gerencial</MenuItem>
                 <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FcDocument}/>Importar XML</MenuItem>
               </MenuList>
@@ -85,6 +88,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
         {children}
       </Flex>
       <ModalStatusServidor content={motivo}/>
+      <ModalInutilizar />
     </form>
   );
 }

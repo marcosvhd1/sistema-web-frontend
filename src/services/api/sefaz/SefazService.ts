@@ -19,6 +19,15 @@ const cancelar = async (idNfe: number, idEmissor: number, justificativa: string,
   }
 };
 
+const inutilizar = async (numeroIni: number, numeroFin: number, justificativa: string, idEmissor: number, HEADERS: any): Promise<any | ApiException> => {
+  try {
+    const { data } =  await Api().get(`/sefaz/inutilizar?numero_inicial=${numeroIni}&numero_final=${numeroFin}&justificativa=${justificativa}&id_emissor=${idEmissor}`, HEADERS);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
+  }
+};
+
 const status_servidor = async (idEmissor: number, HEADERS: any): Promise<any | ApiException> => {
   try {
     const { data } =  await Api().get(`/sefaz/status_servidor?id_emissor=${idEmissor}`, HEADERS);
@@ -31,5 +40,6 @@ const status_servidor = async (idEmissor: number, HEADERS: any): Promise<any | A
 export const SefazService = {
   emitir,
   cancelar,
+  inutilizar,
   status_servidor,
 };
