@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useColorMode, useToast } from '@chakra-ui/react';
 import { useFormContext, FormProvider } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
@@ -17,10 +17,11 @@ export function ModalNFDuplicata({ addDuplicata }: ModalNFDuplicataProps) {
   const { isOpen, onClose } = useModalNFDuplicata();
   const { colorMode } = useColorMode();
 
+  const toast = useToast();
+
   useEffect(() => {
     methods.setValue('valor', '0');
     methods.setValue('numero', '');
-    methods.setValue('vencimento', '');
   }, [isOpen === true]);
 
   useEffect(() => {
@@ -36,16 +37,30 @@ export function ModalNFDuplicata({ addDuplicata }: ModalNFDuplicataProps) {
   }, [isOpen]);
 
   const onSubmit = () => {
-    const data: INFDuplicata = {
-      'id_nfe': 0,
-      'numero': methods.getValues('numero'),
-      'valor': methods.getValues('valor'),
-      'vencimento': methods.getValues('vencimento'),
-    };
+    const numero = methods.getValues('numero');
+    const valor = methods.getValues('valor');
 
-    addDuplicata(data);  
-    
-    onClose();
+    if (numero != '' && valor != '0') {
+      const data: INFDuplicata = {
+        'id_nfe': 0,
+        'numero': numero,
+        'valor': valor,
+        'vencimento': methods.getValues('vencimento'),
+      };
+  
+      addDuplicata(data);  
+      
+      onClose();
+    } else {
+      toast({
+        position: 'top',
+        title: 'Erro',
+        description: 'Os campos Número e Valor são obrigatórios',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+    }
   };
   
   return (
@@ -63,7 +78,7 @@ export function ModalNFDuplicata({ addDuplicata }: ModalNFDuplicataProps) {
         <ModalContent>
           <ModalHeader>
             <Flex w='100%' justify='center' align='center'>
-              <Text>Forma de Pagamento</Text>
+              <Text>Duplicata</Text>
             </Flex>
           </ModalHeader>
           <ModalCloseButton />
@@ -78,7 +93,7 @@ export function ModalNFDuplicata({ addDuplicata }: ModalNFDuplicataProps) {
                 </MoneyAddon>
               </FormContainer>
               <FormContainer label='Vencimento'>
-                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('vencimento')} />
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('vencimento')} defaultValue={new Date().toISOString().split('T')[0]}/>
               </FormContainer>    
             </Flex>
           </ModalBody>

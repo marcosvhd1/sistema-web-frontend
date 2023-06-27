@@ -1,8 +1,8 @@
 import { Button, Flex, Icon, Input, Select, useColorMode } from '@chakra-ui/react';
 import { FormProvider, useFormContext } from 'react-hook-form';
-import { FiSearch } from 'react-icons/fi';
+import { FiSearch, FiSlash } from 'react-icons/fi';
+import { useModalNFTransporte } from '../../../../../../../Contexts/Modal/NotaFiscal/NFTransporteContext';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
-import { ModalNFTransporteProvider, useModalNFTransporte } from '../../../../../../../Contexts/Modal/NotaFiscal/NFTransporteContext';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ModalNFTransporte } from './ModalNFTransporte';
 
@@ -11,6 +11,33 @@ export function FormTransporte() {
   
   const { onOpen } = useModalNFTransporte();
   const { colorMode } = useColorMode();
+
+  const handleRemoveTransp = () => {
+    methods.setValue('transportadora', {
+      anotacoes: '',
+      antt: '',
+      bairro: '',
+      cep: '',
+      cidade: '',
+      cnpjcpf: '',
+      cod: 0,
+      complemento: '',
+      id: 0,
+      id_emissor: 0,
+      ie: '',
+      logradouro: '',
+      numero: '',
+      placa: '',
+      razao: '',
+      rntrc: '',
+      telefone1: '',
+      telefone2: '',
+      tipo_telefone1: '',
+      tipo_telefone2: '',
+      uf: '',
+      uf_placa: '',
+    });
+  };
 
   return (
     <FormProvider {...methods}>
@@ -28,13 +55,9 @@ export function FormTransporte() {
             </Select>
           </FormContainer>
           <Flex w="100%" justify="center" align="center">
-            <FormContainer label='Transportadora' mr='3'>
+            <FormContainer label='Transportadora'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.razao')}/>
             </FormContainer>
-            <Button onClick={onOpen} w="30%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
-              <Icon mr={2} as={FiSearch} />
-              Buscar
-            </Button>
           </Flex>
           <Flex w="100%" justify="center" align="center">
             <FormContainer label='CNPJ' mr='3'>
@@ -56,17 +79,27 @@ export function FormTransporte() {
             </FormContainer>
           </Flex>
           <Flex w="100%" justify="center" align="center">
-            <FormContainer width='30%' label='Placa do Veículo' mr='3'>
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('transportadora.placa')}/>
-            </FormContainer>
-            <FormContainer width='20%' label='UF' mr='3'>
+            <FormContainer width='30%' label='UF' mr='3'>
               <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('transportadora.uf_placa')}>
                 <option value='0'></option>
               </Select>
             </FormContainer>
-            <FormContainer width='50%' label='Código ANTT'>
+            <FormContainer width='70%' label='Código ANTT'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.antt')}/>
             </FormContainer>
+          </Flex>
+          <Flex w="100%" justify="center" align="center">
+            <FormContainer width='40%' label='Placa do Veículo' mr='3'>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('transportadora.placa')}/>
+            </FormContainer>
+            <Button onClick={onOpen} w="30%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue" mr='3'>
+              <Icon mr={2} as={FiSearch} />
+              Buscar
+            </Button>
+            <Button onClick={handleRemoveTransp} w="30%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="outline" colorScheme="red">
+              <Icon mr={2} as={FiSlash} />
+              Remover
+            </Button>
           </Flex>
         </Flex>
 

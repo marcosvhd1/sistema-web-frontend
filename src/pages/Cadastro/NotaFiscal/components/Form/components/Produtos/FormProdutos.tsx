@@ -1,17 +1,17 @@
 import { Button, Flex, Icon, Td, Tr } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { FormProvider, useForm, useFormContext, UseFormReturn } from 'react-hook-form';
+import { useState } from 'react';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
-import { DataTable } from '../../../../../../../components/Table/DataTable';
-import { DeleteAlertDialog } from '../../../../../../../components/Utils/DeleteAlertDialog';
 import { useAlertNFProductContext } from '../../../../../../../Contexts/AlertDialog/NotaFiscal/AlertNFProductContext';
 import { useModalNFProduct } from '../../../../../../../Contexts/Modal/NotaFiscal/NFProductContext';
+import { DataTable } from '../../../../../../../components/Table/DataTable';
+import { DeleteAlertDialog } from '../../../../../../../components/Utils/DeleteAlertDialog';
 import { INFProduct } from '../../../../../../../services/api/notafiscal/NFProduct';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
-import { ModalNFProduct } from './ModalNFProduct';
 import formatMoney from '../../../../../../../utils/formatarValor';
+import { ModalNFProduct } from './ModalNFProduct';
 
 interface FormProdutosProps {
   produtos: INFProduct[],
@@ -60,9 +60,12 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
 
   const handleDeleteProd = () => {
     const newArray = produtos.filter(prod => prod !== prodToDelete);
+    produtos = [];
+    produtos = newArray;
     addProduto(newArray);
-    saveChanges();
     onClose();
+    saveChanges();
+    calcTotalNota();
   };
 
   const saveChanges = () => {

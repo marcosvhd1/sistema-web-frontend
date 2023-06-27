@@ -19,7 +19,6 @@ import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFis
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalNotaFiscal } from '../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
 import { useModalNFCancelar } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCancelarContext';
-import { useModalRetornoSefaz } from '../../../Contexts/Modal/NotaFiscal/Sefaz/RetornoSefazContext';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
@@ -44,7 +43,6 @@ import formatMoney from '../../../utils/formatarValor';
 import { userInfos } from '../../../utils/header';
 import { ModalNotaFiscal } from './components/Form/FormIndex';
 import { ModalCancelar } from './components/ModalCancelar';
-import { ModalRetorno } from './components/ModalRetorno';
 import { SearchBox } from './components/SearchBox';
 import { ModalCCe } from './components/ModalCCe';
 import { useModalNFCCe } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCCeContext';
@@ -52,8 +50,6 @@ import { useModalNFCCe } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCCeCon
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
   const { colorMode } = useColorMode();
-
-  const [loading, setLoading] = useState<boolean>(false);
 
   const [data, setData] = useState<INotaFiscal[]>([]);
   const [dataToModal, setDataToModal] = useState<INotaFiscal>();
@@ -72,11 +68,8 @@ export function NotaFiscal() {
   
   const [prods, setProds] = useState<INFProduct[]>([]);
 
-  const [retorno, setRetorno] = useState<any>();
-
   const { idEmissorSelecionado } = useEmissorContext();
   const { onOpen: openAlert, onClose, isOpen } = useAlertNotaFiscalContext();
-  const { onOpen: openRetorno } = useModalRetornoSefaz();
   const { onOpen: openCancelar } = useModalNFCancelar();
   const { onOpen: openCCe } = useModalNFCCe();
   const { onOpen } = useModalNotaFiscal();
@@ -352,14 +345,28 @@ export function NotaFiscal() {
   };
 
   const handleEmitirNF = async (idNfe: number) => {
-    setLoading(true);
-    await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS).then((response) => {
-      if (response.mensagem == null) {
-        openRetorno();
-        setRetorno(response);
-      } else getNF('');
+    await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS).then((resp) => {
+      if (resp.type == 'error') {
+        toast({
+          position: 'top',
+          title: 'Erro',
+          description: resp.message,
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        }); 
+      } else {
+        getNF('');
+        toast({
+          position: 'top',
+          title: 'Sucesso',
+          description: resp.message,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        }); 
+      }
     });
-    setLoading(false);
   };
 
   const rowColor = (status: string) => {
@@ -381,7 +388,7 @@ export function NotaFiscal() {
           <DataTable headers={headers}>
             {data !== undefined
               ? data.map((data) => (
-                <Tr bgColor={rowColor(data.status)}  key={data.id}>
+                <Tr onDoubleClick={() => handleEditNF(data.id)} bgColor={rowColor(data.status)}  key={data.id}>
                   <Td>
                     {formatDate(data.data_emissao.toString())}
                   </Td>
@@ -424,7 +431,7 @@ export function NotaFiscal() {
                       <Icon color="orange.300" as={FiEdit} />
                     </Button>
                     {
-                      data.status !== 'Emitida' ? 
+                      data.status !== 'Emitida' && data.status !== 'Cancelada' ? 
                         <Button
                           variant="ghost"
                           colorScheme="red"
@@ -436,18 +443,14 @@ export function NotaFiscal() {
                         </Button>
                         : null
                     }
-                    {
-                      data.status !== 'Em digitação' ?
-                        <Button
-                          variant="ghost"
-                          colorScheme="blue"
-                          fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                          w="2rem"
-                        >
-                          <Icon as={FiPrinter} color="blue.400" />
-                        </Button>
-                        : null
-                    }
+                    <Button
+                      variant="ghost"
+                      colorScheme="blue"
+                      fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                      w="2rem"
+                    >
+                      <Icon as={FiPrinter} color="blue.400" />
+                    </Button>
                     <Menu>
                       <MenuButton
                         as={Button} 
@@ -459,23 +462,31 @@ export function NotaFiscal() {
                         <Icon as={MdMenu} color='blue.400' />
                       </MenuButton>
                       <MenuList>
-                        <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={() => handleOpenModalCancelar(data)}><Icon mr={2} as={MdCancel}/>Cancelar NFe</MenuItem>
+                        {
+                          data.status === 'Emitida' ? 
+                            <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={() => handleOpenModalCancelar(data)}><Icon mr={2} as={MdCancel}/>Cancelar NFe</MenuItem>
+                            : null
+                        }
                         <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={MdEmail}/>Enviar via Email</MenuItem>
-                        <Menu isOpen={submenuOpenCCe} placement="left" onClose={closeSubmenuCCe}>
-                          <MenuButton 
-                            as={MenuItem}
-                            color={colorMode === 'light' ? 'blue.600' : 'blue.300'}
-                            onClick={toggleSubmenuCCe}
-                          >
-                            <Icon as={FcDocument} mr={2}/>Carta de Correção
-                          </MenuButton>
-                          <MenuList>
-                            <MenuItem color={colorMode === 'light' ? 'green.600' : 'green.300'} onClick={() => handleOpenModalCCe(data)}><Icon mr={2} as={FiSend}/>Emitir CCe</MenuItem>
-                            <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FiPrinter}/>Imprimir CCe</MenuItem>
-                          </MenuList>
-                        </Menu>
+                        {
+                          data.status === 'Emitida' ? 
+                            <Menu isOpen={submenuOpenCCe} placement="left" onClose={closeSubmenuCCe}>
+                              <MenuButton 
+                                as={MenuItem}
+                                color={colorMode === 'light' ? 'blue.600' : 'blue.300'}
+                                onClick={toggleSubmenuCCe}
+                              >
+                                <Icon as={FcDocument} mr={2}/>Carta de Correção
+                              </MenuButton>
+                              <MenuList>
+                                <MenuItem color={colorMode === 'light' ? 'green.600' : 'green.300'} onClick={() => handleOpenModalCCe(data)}><Icon mr={2} as={FiSend}/>Emitir CCe</MenuItem>
+                                <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FiPrinter}/>Imprimir CCe</MenuItem>
+                              </MenuList>
+                            </Menu>
+                            : null
+                        }
                         <MenuItem color='orange.300'><Icon mr={2} as={MdReportProblem}/>Resolver Duplicidade</MenuItem>
-                        <Menu isOpen={submenuOpenStatus} placement="left" onClose={closeSubmenuStatus}>
+                        {/* <Menu isOpen={submenuOpenStatus} placement="left" onClose={closeSubmenuStatus}>
                           <MenuButton 
                             as={MenuItem}
                             color={colorMode === 'light' ? 'blue.600' : 'blue.300'}
@@ -489,7 +500,7 @@ export function NotaFiscal() {
                             <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'}>Cancelada</MenuItem>
                             <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}>Inutilizada</MenuItem>
                           </MenuList>
-                        </Menu>
+                        </Menu> */}
                         <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaCopy}/>Espelhar NFe</MenuItem>
                       </MenuList>
                     </Menu>
@@ -535,11 +546,6 @@ export function NotaFiscal() {
           setIsEditing={setIsEditing}
           id={id}
           getNF={getNF}
-        />
-        <ModalRetorno 
-          loading={loading}
-          content={retorno}
-          getNotas={getNF}
         />
         <ModalCancelar 
           data={dataToModal!}

@@ -1,7 +1,7 @@
 import { Button, Divider, Flex, Icon, Input, Select, Text, useColorMode } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
-import { FiCheckCircle, FiEdit, FiSearch } from 'react-icons/fi';
+import { FiCheckCircle, FiEdit, FiEdit2, FiPenTool, FiSearch } from 'react-icons/fi';
 import { useModalNFClient } from '../../../../../../../Contexts/Modal/NotaFiscal/NFClientContext';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 import { INotaFiscal, NotaFiscalService } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
@@ -17,6 +17,8 @@ interface FormDadosPrincipaisProps {
 
 export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisProps) {
   const methods = useFormContext<INotaFiscal>();
+
+  const [codBlock, setCodBlock] = useState<boolean>(true);
 
   const { onOpen } = useModalNFClient();
   const { colorMode } = useColorMode();
@@ -40,6 +42,10 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
     getCod();
   }, [isEditing]);
 
+  const handleBlockCod = () => {
+    setCodBlock(!codBlock);
+  };
+
   const onChangeNatureza = (data: any) => {
     const cfop = cfops.find((cfop) => cfop.natureza === data.target.value);
     if (cfop !== undefined) methods.setValue('cfop', cfop.cfop_dentro ?? '');
@@ -50,9 +56,13 @@ export function FormDadosPrincipais({ isEditing, cfops }: FormDadosPrincipaisPro
       <Flex w="100%" justify="center" align="center" direction="column" >
         {/* DADOS PRINCIPAIS */}
         <Flex w="100%" mr="4" ml='4' align="center" justify="space-between">
-          <FormContainer width='20%' label='Nº da NF' mr='3'>
-            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cod')} />
+          <FormContainer width='20%' label='Nº da NF'>
+            <Input disabled={codBlock} maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cod')} />
           </FormContainer>
+
+          <Button onClick={handleBlockCod} variant="ghost" colorScheme="orange" mt={7} ml={2} mr={3}>
+            <Icon as={FiEdit2} />
+          </Button>
 
           <FormContainer width='10%' label='Série' mr='3'>
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('serie')} />

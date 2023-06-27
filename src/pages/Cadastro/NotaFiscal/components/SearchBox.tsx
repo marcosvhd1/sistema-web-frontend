@@ -88,7 +88,9 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
         {children}
       </Flex>
       <ModalStatusServidor content={motivo}/>
-      <ModalInutilizar />
+      <ModalInutilizar 
+        getNotas={getNotasFiscaisByFilter}
+      />
     </form>
   );
 }

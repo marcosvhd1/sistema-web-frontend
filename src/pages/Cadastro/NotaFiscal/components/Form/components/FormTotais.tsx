@@ -6,13 +6,18 @@ import { FormContainer } from '../../../../../../components/Form/FormContainer';
 import { MoneyAddon } from '../../../../../../components/Form/MoneyAddon';
 import { INotaFiscal } from '../../../../../../services/api/notafiscal/NotaFiscalService';
 
-export function FormTotais() {
+interface FormTotaisProps {
+  calcTotal: () => void;
+}
+
+export function FormTotais({ calcTotal }: FormTotaisProps) {
   const { register } = useFormContext<INotaFiscal>();
   const [details, setDetails] = useState<boolean>(true);
   const { colorMode } = useColorMode();
 
   const handleChangeDetails = () => {
     setDetails(!details);
+    calcTotal();
   };
 
   return (

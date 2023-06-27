@@ -146,7 +146,7 @@ export function Cliente() {
         <SearchBox getCod={getLastCod} getClientsByFilter={getClientsByFilter} changeEdit={setIsEditing} stateFilter={setFilter}>
           <DataTable headers={headers} >
             {data !== undefined ? data.map((data) => (
-              <Tr key={data.id}>
+              <Tr key={data.id} onDoubleClick={() => handleEditClient(data.id)}>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>

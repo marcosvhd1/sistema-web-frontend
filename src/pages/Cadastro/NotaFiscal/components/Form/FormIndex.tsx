@@ -228,10 +228,8 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     clearData();
   };
 
-  const handleTabChange = (tab: number) => {
-    if (tab === 2) {
-      calcTotalNota();
-    }
+  const handleTabChange = () => {
+    calcTotalNota();
   };
 
   const verify = (value: any) => {
@@ -358,7 +356,9 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
                   />
                 </TabPanel>
                 <TabPanel>
-                  <FormTotais />
+                  <FormTotais 
+                    calcTotal={calcTotalNota}
+                  />
                 </TabPanel>
                 <TabPanel>
                   <FormFormaPagto

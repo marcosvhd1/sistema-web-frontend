@@ -11,6 +11,7 @@ import { ApiException } from '../../../../../../../services/api/ApiException';
 import { INFProduct } from '../../../../../../../services/api/notafiscal/NFProduct';
 import { IProduct, ProductService } from '../../../../../../../services/api/produtos/ProductService';
 import { userInfos } from '../../../../../../../utils/header';
+import formatMoney from '../../../../../../../utils/formatarValor';
 
 interface ModalNFSearchProductProps {
   methods: UseFormReturn<INFProduct, any>
@@ -161,7 +162,7 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
               <Tr key={data.id} onClick={() => handleSetProduct(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
                 <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.nprod).slice(-4)}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + (data.preco).toString().replace('.', ',') : ''}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + formatMoney(data.preco) : ''}</Td>
                 <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.referencia}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.marca}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.grupo}</Td>

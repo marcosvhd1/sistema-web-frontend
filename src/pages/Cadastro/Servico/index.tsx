@@ -18,6 +18,7 @@ import { FormModal } from './components/Form/FormModal';
 import { SearchBox } from './components/SearchBox';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { getDecrypted } from '../../../utils/crypto';
+import formatMoney from '../../../utils/formatarValor';
 
 const headers: { key: string, label: string }[] = [
   { key: 'cod', label: 'Código' },
@@ -156,7 +157,7 @@ export function Servico() {
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.nserv).slice(-4)}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.un}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + (data.preco).toString().replace('.', ',') : ''}</Td>
+                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + formatMoney(data.preco) : ''}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.ncm}</Td>
                 <Td style={{ 'textAlign': 'center' }}>
                   <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditService(data.id)}>

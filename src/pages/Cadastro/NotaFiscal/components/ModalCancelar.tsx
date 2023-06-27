@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorMode, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
@@ -21,8 +21,6 @@ interface getJustify {
 export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
   const { register, getValues, reset } = useForm<getJustify>();
 
-  const [response, setResponse ] = useState<string>('');
-
   const { colorMode } = useColorMode();
   const { isOpen, onClose } = useModalNFCancelar();
   const { idEmissorSelecionado } = useEmissorContext();
@@ -30,17 +28,38 @@ export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
 
+  const toast = useToast();
+  
   const submitData = async () => {
     const justify = getValues('description');
 
     await SefazService.cancelar(data.id, idEmissorSelecionado, justify, HEADERS).then((resp) => {
-      setResponse(resp);
+      if (resp.type == 'error') {
+        toast({
+          position: 'top',
+          title: 'Erro',
+          description: resp.message,
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        }); 
+      } else {
+        handleClose();
+        getNotas('');
+        toast({
+          position: 'top',
+          title: 'Sucesso',
+          description: resp.message,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        }); 
+      }
     });
   };
 
   const handleClose = () => {
     reset({description: ''});
-    setResponse('');
     onClose();
     getNotas('');
   };
@@ -79,9 +98,6 @@ export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
             </Flex>
             <FormContainer label='Justificativa'>
               <Textarea {...register('description')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}/>
-            </FormContainer>
-            <FormContainer label='Retorno'>
-              <Textarea readOnly value={response} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}/>
             </FormContainer>
           </Flex> 
         </ModalBody>

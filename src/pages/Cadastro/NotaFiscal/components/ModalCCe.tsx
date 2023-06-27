@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorMode, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
@@ -21,14 +21,14 @@ interface getCorrecao {
 export function ModalCCe({ data }: ModalCCeProps) {
   const { register, setValue, getValues, setFocus, reset } = useForm<getCorrecao>();
 
-  const [response, setResponse ] = useState<string>('');
-
   const { colorMode } = useColorMode();
   const { isOpen, onClose } = useModalNFCCe();
   const { idEmissorSelecionado } = useEmissorContext();
 
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
+
+  const toast = useToast();
 
   useEffect(() => {
     if (isOpen === true) {
@@ -44,13 +44,31 @@ export function ModalCCe({ data }: ModalCCeProps) {
     const correcao = getValues('correcao');
 
     await SefazService.cce(seqEvento, data.id, correcao, idEmissorSelecionado, HEADERS).then((resp) => {
-      setResponse(resp);
+      if (resp.type == 'error') {
+        toast({
+          position: 'top',
+          title: 'Erro',
+          description: resp.message,
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        }); 
+      } else {
+        handleClose();
+        toast({
+          position: 'top',
+          title: 'Sucesso',
+          description: resp.message,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        }); 
+      }
     });
   };
 
   const handleClose = () => {
     reset({correcao: '', seqEvento: 1});
-    setResponse('');
     onClose();
   };
 
@@ -91,9 +109,6 @@ export function ModalCCe({ data }: ModalCCeProps) {
             </FormContainer>
             <FormContainer label='Correção'>
               <Textarea {...register('correcao')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}/>
-            </FormContainer>
-            <FormContainer label='Retorno'>
-              <Textarea readOnly value={response} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}/>
             </FormContainer>
           </Flex> 
         </ModalBody>

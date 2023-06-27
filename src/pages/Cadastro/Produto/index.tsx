@@ -166,7 +166,7 @@ export function Produto() {
         <SearchBox seeActive={seeActive} setSeeActive={setSeeActive} getProductByGroup={getProductByGroup} getCod={getLastCod} getProduct={getProduct} changeEdit={setIsEditing} setFilter={setFilter}>
           <DataTable headers={headers}>
             {data != undefined ? data.map((data) => (
-              <Tr key={data.id}>
+              <Tr onDoubleClick={() => handleEditProduct(data.id)} key={data.id}>
                 <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.nprod).slice(-4)}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.preco)}</Td>

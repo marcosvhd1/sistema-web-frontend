@@ -11,6 +11,7 @@ import { useModalNFService } from '../../../../../../../Contexts/Modal/NotaFisca
 import { INFService } from '../../../../../../../services/api/notafiscal/NFService';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ModalNFService } from './ModalNFService';
+import formatMoney from '../../../../../../../utils/formatarValor';
 
 export function FormServicos() {
   const methods = useForm<INFService>();
@@ -108,8 +109,8 @@ export function FormServicos() {
               <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cfop}</Td>
               <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.servico.un}</Td>
               <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.quantidade}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.valor_unitario ? 'R$ ' + (data.valor_unitario).toString().replace('.', ',') : ''}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.valor_total ? 'R$ ' + (data.valor_total).toString().replace('.', ',') : ''}</Td>
+              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.valor_unitario ? 'R$ ' + formatMoney(data.valor_unitario) : ''}</Td>
+              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.valor_total ? 'R$ ' + formatMoney(data.valor_total) : ''}</Td>
               <Td style={{ 'textAlign': 'center' }}>
                 <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => openModalEdit(index)}>
                   <Icon color="orange.300" as={FiEdit} />

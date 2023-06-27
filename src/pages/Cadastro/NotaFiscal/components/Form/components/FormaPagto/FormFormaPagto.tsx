@@ -12,6 +12,7 @@ import { INFFormaPagto } from '../../../../../../../services/api/notafiscal/NFFo
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ModalNFDuplicata } from './ModalNFDuplicataPagto';
 import { ModalNFFormaPagto } from './ModalNFFormaPagto';
+import formatMoney from '../../../../../../../utils/formatarValor';
 
 interface FormFormaPagtoProps {
   formaPagtos: INFFormaPagto[],
@@ -26,6 +27,11 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   const { onOpen } = useModalNFFormaPagto();
   const { onOpen: openDuplicata } = useModalNFDuplicata();
   const { colorMode } = useColorMode();
+
+  const formatDate = (date: string) => {
+    const aux = date.split('-');
+    return `${aux[2]}/${aux[1]}/${aux[0]}`;
+  };
 
   const openModalForma = () => {
     onOpen();
@@ -99,7 +105,7 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
               {formaPagtos !== undefined ? formaPagtos.map((data) => (
                 <Tr key={uuidv4()}>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.forma}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + data.valor}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor)}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.bandeira}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.observacao}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
@@ -125,8 +131,8 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
               {duplicatas !== undefined ? duplicatas.map((data) => (
                 <Tr key={uuidv4()}>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.numero}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.vencimento}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + data.valor}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{formatDate(data.vencimento)}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor)}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
                     <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleDeleteDupli(data)}>
                       <Icon as={FiTrash2} color="red.400" />

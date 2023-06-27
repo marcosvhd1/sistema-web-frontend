@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorMode, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
@@ -8,16 +8,18 @@ import { FormContainer } from '../../../../components/Form/FormContainer';
 import { SefazService } from '../../../../services/api/sefaz/SefazService';
 import { userInfos } from '../../../../utils/header';
 
+interface ModalInutilizarProps {
+  getNotas: (description: string) => void;
+}
+
 interface getDados {
-  numeroIni: number;
-  numeroFin: number;
+  numeroIni: string;
+  numeroFin: string;
   description: string;
 }
 
-export function ModalInutilizar() {
+export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
   const { register, getValues, reset } = useForm<getDados>();
-
-  const [response, setResponse ] = useState<string>('');
 
   const { colorMode } = useColorMode();
   const { isOpen, onClose } = useModalNFInutilizar();
@@ -26,19 +28,44 @@ export function ModalInutilizar() {
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
 
+  const toast = useToast();
+
   const submitData = async () => {
     const numeroIni = getValues('numeroIni');
     const numeroFin = getValues('numeroFin');
     const description = getValues('description');
 
     await SefazService.inutilizar(numeroIni, numeroFin, description, idEmissorSelecionado, HEADERS).then((resp) => {
-      setResponse(resp);
+      if (resp.type == 'error') {
+        toast({
+          position: 'top',
+          title: 'Erro',
+          description: resp.message,
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        }); 
+      } else {
+        handleClose();
+        getNotas('');
+        toast({
+          position: 'top',
+          title: 'Sucesso',
+          description: resp.message,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        }); 
+      }
     });
   };
 
   const handleClose = () => {
-    reset({});
-    setResponse('');
+    reset({
+      description: '',
+      numeroFin: '',
+      numeroIni: '',
+    });
     onClose();
   };
 
@@ -71,9 +98,6 @@ export function ModalInutilizar() {
             </Flex>
             <FormContainer label='Justificativa'>
               <Textarea {...register('description')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}/>
-            </FormContainer>
-            <FormContainer label='Retorno'>
-              <Textarea readOnly value={response} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}/>
             </FormContainer>
           </Flex> 
         </ModalBody>

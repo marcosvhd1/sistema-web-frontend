@@ -12,6 +12,7 @@ import { ApiException } from '../../../../../../../services/api/ApiException';
 import { INFService } from '../../../../../../../services/api/notafiscal/NFService';
 import { IServico, ServicoService } from '../../../../../../../services/api/servicos/ServicoService';
 import { userInfos } from '../../../../../../../utils/header';
+import formatMoney from '../../../../../../../utils/formatarValor';
 
 interface ModalNFSearchServiceProps {
   methods: UseFormReturn<INFService, any>
@@ -140,7 +141,7 @@ export function ModalNFSearchService({ methods }: ModalNFSearchServiceProps) {
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.nserv).slice(-4)}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.un}</Td>
-                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + (data.preco).toString().replace('.', ',') : ''}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.preco ? 'R$ ' + formatMoney(data.preco) : ''}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.ncm}</Td>
                 </Tr>
               )) : ''}

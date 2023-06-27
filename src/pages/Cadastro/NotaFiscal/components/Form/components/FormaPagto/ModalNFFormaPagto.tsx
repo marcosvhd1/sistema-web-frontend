@@ -1,14 +1,11 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useColorMode } from '@chakra-ui/react';
-import { useForm, useFormContext } from 'react-hook-form';
-import { FormProvider } from 'react-hook-form';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useColorMode, useToast } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { FormProvider, useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
+import { useModalNFFormaPagto } from '../../../../../../../Contexts/Modal/NotaFiscal/NFFormaPagtoContext';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 import { MoneyAddon } from '../../../../../../../components/Form/MoneyAddon';
-import { useModalNFClient } from '../../../../../../../Contexts/Modal/NotaFiscal/NFClientContext';
-import { useModalNFFormaPagto } from '../../../../../../../Contexts/Modal/NotaFiscal/NFFormaPagtoContext';
 import { INFFormaPagto } from '../../../../../../../services/api/notafiscal/NFFormaPagto';
-import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
-import { useEffect } from 'react';
 
 interface ModalNFFormaPagtoProps {
   addFormaPagto: (data: INFFormaPagto) => void
@@ -19,6 +16,8 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
 
   const { isOpen, onClose } = useModalNFFormaPagto();
   const { colorMode } = useColorMode();
+
+  const toast = useToast();
 
   useEffect(() => {
     methods.setValue('valor', '0');
@@ -40,17 +39,47 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
 
 
   const onSubmit = () => {
-    const data: INFFormaPagto = {
-      'id_nfe': 0,
-      'forma': methods.getValues('forma'),
-      'valor': methods.getValues('valor'),
-      'bandeira': methods.getValues('bandeira'),
-      'observacao': methods.getValues('observacao'),
-    };
+    let isCartao = false;
+    let isOutros = false;
 
-    addFormaPagto(data);  
-    
-    onClose();
+    const forma =  methods.getValues('forma');
+    const valor =  methods.getValues('valor');
+    const bandeira =  methods.getValues('bandeira');
+    const observacao =  methods.getValues('observacao');
+
+    if (forma == 'Cartão de Crédito' || forma == 'Cartão de Débito') isCartao = true;
+    if (forma == 'Outros') isOutros = true;
+
+    if (isCartao && bandeira === '') {
+      toast({
+        position: 'top',
+        title: 'Erro',
+        description: `Selecione uma bandeira para ${forma}`,
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+    } else if (isOutros && observacao === '') {
+      toast({
+        position: 'top',
+        title: 'Erro',
+        description: 'A forma de pagamento Outros precisa de uma observação',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+    } else {
+      const data: INFFormaPagto = {
+        'id_nfe': 0,
+        'forma': methods.getValues('forma'),
+        'valor': valor,
+        'bandeira': methods.getValues('bandeira'),
+        'observacao': methods.getValues('observacao'),
+      };
+
+      addFormaPagto(data);  
+      onClose();
+    }
   };
   
   return (
