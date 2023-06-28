@@ -13,11 +13,9 @@ interface MainContentProps {
   children: ReactNode
 }
 
-
 export default function MainContent({ children }: MainContentProps) {
   const { navSize } = useContext(SidebarContext);
   const { smSize } = useContext(SizeContext);
-
 
   return (
     <Grid

@@ -68,7 +68,7 @@ export function SearchBox({ children, setFilter, getProduct, getProductByGroup, 
                 <option value='ncm'>NCM</option>
               </Select>
             </FormContainer>
-            <FormContainer label='Descrição' width="40%" mr='3'>
+            <FormContainer label='' width="40%" mr='3' mt='7'>
               <Input type="text" placeholder="Localizar..." maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('description')} />
             </FormContainer>
             <FormContainer label='Grupo' width="20%" mr='3'>

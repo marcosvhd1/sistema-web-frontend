@@ -11,6 +11,7 @@ import { SizeContext } from '../../Contexts/SizeContext';
 
 import { LoggedInUser } from './LoggedInUser';
 import { Api } from '../../services/api/ApiConfig';
+import { BellWithBadge } from './BellWithBadge';
 
 export function Header() {
   const { changeNavSize } = useContext(SidebarContext);
@@ -45,16 +46,19 @@ export function Header() {
           size={'lg'}
           bg="none"
           onClick={toggleColorMode}
+          mr={5}
         />
-        {/* <IconButton
-          aria-label="Notificações"
+        <IconButton
+          variant="unstyled"
+          aria-label="Lembrete para notas em digitação"
           _hover={{ background: 'none' }}
-          icon={<FiBell />}
+          icon={<BellWithBadge />}
           size={'lg'}
           bg="none"
-        /> */}
+        />
         <LoggedInUser />
         <IconButton
+          ml={2}
           as="a"
           href="/"
           aria-label="Botão de sair"

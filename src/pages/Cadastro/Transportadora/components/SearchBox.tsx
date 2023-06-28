@@ -48,7 +48,7 @@ export function SearchBox({ children, changeEdit, stateFilter, getTransportadora
                 <option value='cnpjcpf'>CNPJ</option>
               </Select>
             </FormContainer>
-            <FormContainer label='Descrição' width="70%" mr='3'>
+            <FormContainer label='' width="70%" mr='3' mt='7'>
               <Input type="text" placeholder="Localizar..." maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('description')} />
             </FormContainer>
             <Button type="submit" mt={7}><Icon as={FiSearch} /></Button>

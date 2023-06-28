@@ -1,22 +1,21 @@
-import { Badge, Button, Icon, Tag, Td, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tag, Td, Tr, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { useAlertProductContext } from '../../../Contexts/AlertDialog/AlertProductContext';
+import { useEmissorContext } from '../../../Contexts/EmissorProvider';
+import { useModalProduct } from '../../../Contexts/Modal/ProductContext';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
 import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
-import { useAlertProductContext } from '../../../Contexts/AlertDialog/AlertProductContext';
-import { useEmissorContext } from '../../../Contexts/EmissorProvider';
-import { useModalProduct } from '../../../Contexts/Modal/ProductContext';
 import { ApiException } from '../../../services/api/ApiException';
 import { IProduct, ProductService } from '../../../services/api/produtos/ProductService';
-import { getDecrypted } from '../../../utils/crypto';
+import formatMoney from '../../../utils/formatarValor';
 import { userInfos } from '../../../utils/header';
 import { FormModal } from './components/Form/ModalProduct';
 import { SearchBox } from './components/SearchBox';
-import formatMoney from '../../../utils/formatarValor';
 
 const headers: { key: string, label: string }[] = [
   { key: 'id', label: 'Código' },

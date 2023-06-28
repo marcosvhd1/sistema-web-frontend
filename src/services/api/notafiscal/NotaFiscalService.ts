@@ -26,7 +26,7 @@ export interface INotaFiscal {
     data_emissao: Date;
     data_saida: Date;
     hora: Date;
-    produtos: INFProduct[]; //colocar no back em NFProduto
+    produtos: INFProduct[];
     competencia: Date;
     servicos: INFService[];
     base_calc_icms: number;
@@ -99,6 +99,15 @@ const getNFByFilter = async (currentPage: number, limitRegistros: number, filter
   }
 };
 
+const getNFDigitacao = async (idEmissorSelecionado: number, HEADERS: any): Promise<any | ApiException> => {
+  try {
+    const { data } = await Api().get(`/notas/count?id_emissor=${idEmissorSelecionado}`, HEADERS);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
+  }
+};
+
 const create = async (dataToCreate: Omit<INotaFiscal, 'id' | 'cod'>, HEADERS: any): Promise<INotaFiscal | ApiException> => {
   try {
     const { data } = await Api().post<INotaFiscal>('/notas', dataToCreate, HEADERS);
@@ -133,6 +142,7 @@ const getLastCod = async (idEmissorSelecionado: number, HEADERS: any) => {
 
 export const NotaFiscalService = {
   getNFByFilter,
+  getNFDigitacao,
   create,
   updateById,
   deleteById,

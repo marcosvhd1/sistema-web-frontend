@@ -5,12 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import { useEmissorContext } from '../../Contexts/EmissorProvider';
 import { useModalEmissor } from '../../Contexts/Modal/EmissorContext';
 import { userInfos } from '../../utils/header';
+import { useContadorContext } from '../../Contexts/ContadorContext';
 
 export function EmissorModal() {
   const { onClose, isOpen } = useModalEmissor();
   const toast = useToast();
   const { setIdEmissorSelecionado, userEmissores, idEmissorSelecionado, handleGetUserInfo, updateUltimoEmissorSelecionado, getCredenciais, getEmissoresByUser } = useEmissorContext();
   const navigate = useNavigate();
+
+  const { getNFDigitacao } = useContadorContext();
 
   const userInfo = userInfos();
 
@@ -31,7 +34,7 @@ export function EmissorModal() {
       updateUltimoEmissorSelecionado();
       navigate('/app');
       onClose();
-
+      getNFDigitacao();
     }
   };
 

@@ -74,7 +74,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
                 <option value='nome_destinatario'>Destinatário</option>
               </Select>
             </FormContainer>
-            <FormContainer label='Descrição' width="20%" mr='3'>
+            <FormContainer label='' width="20%" mr='3' mt='7'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." type="text" {...register('description')} />
             </FormContainer>
             <FormContainer label='Status' width="15%" mr="3">

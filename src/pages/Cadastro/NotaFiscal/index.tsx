@@ -14,10 +14,11 @@ import {
 
 import { FaCopy } from 'react-icons/fa';
 import { FcDocument } from 'react-icons/fc';
-import { MdCancel, MdEmail, MdMenu, MdReportProblem } from 'react-icons/md';
+import { MdCancel, MdEmail, MdMenu } from 'react-icons/md';
 import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalNotaFiscal } from '../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
+import { useModalNFCCe } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCCeContext';
 import { useModalNFCancelar } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCancelarContext';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
@@ -42,10 +43,10 @@ import { TransportadoraService } from '../../../services/api/transportadora/Tran
 import formatMoney from '../../../utils/formatarValor';
 import { userInfos } from '../../../utils/header';
 import { ModalNotaFiscal } from './components/Form/FormIndex';
+import { ModalCCe } from './components/ModalCCe';
 import { ModalCancelar } from './components/ModalCancelar';
 import { SearchBox } from './components/SearchBox';
-import { ModalCCe } from './components/ModalCCe';
-import { useModalNFCCe } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCCeContext';
+import { useContadorContext } from '../../../Contexts/ContadorContext';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
@@ -53,7 +54,7 @@ export function NotaFiscal() {
 
   const [data, setData] = useState<INotaFiscal[]>([]);
   const [dataToModal, setDataToModal] = useState<INotaFiscal>();
-
+  
   const [filter, setFilter] = useState<string>('cod');
   const [filterByStatus, setFilterByStatus] = useState<string>('');
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
@@ -72,6 +73,7 @@ export function NotaFiscal() {
   
   const [prods, setProds] = useState<INFProduct[]>([]);
 
+  const { getNFDigitacao } = useContadorContext();
   const { idEmissorSelecionado } = useEmissorContext();
   const { onOpen: openAlert, onClose, isOpen } = useAlertNotaFiscalContext();
   const { onOpen: openCancelar } = useModalNFCancelar();
@@ -175,6 +177,7 @@ export function NotaFiscal() {
       } else {
         setData(result.data);
         setTotalNotas(parseInt(result.headers['qtd']));
+        getNFDigitacao();
       }
     });
   };

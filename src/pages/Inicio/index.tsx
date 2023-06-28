@@ -1,5 +1,4 @@
 import MainContent from '../../components/MainContent';
-import { getDecrypted } from '../../utils/crypto';
 
 export function Home() {
 
