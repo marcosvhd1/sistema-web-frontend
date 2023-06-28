@@ -66,11 +66,11 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
     <form onSubmit={handleSubmit((data) => handleGetNotasFiscaisByFilter(data))}>
       <Flex w="100%" justify="center" align="center" mt={{ base: '2', md: '2', lg: '10' }} direction="column" >
         <Text fontFamily="Poppins" fontSize="xl">Lista de Notas Fiscais</Text>
-        <Flex w="90%" m="4" align="center" justify="space-between">
+        <Flex w="95%" m="4" align="center" justify="space-between">
           <Flex w="100%" justify="center" align="center">
             <FormContainer label='Buscar por' width="15%" mr='3'>
               <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => stateFilter(e.target.value)}>
-                <option value='cod'>Código</option>
+                <option value='cod'>Número</option>
                 <option value='nome_destinatario'>Destinatário</option>
               </Select>
             </FormContainer>
@@ -92,7 +92,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
             <FormContainer label='Data Final' width="15%" mr='3'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
             </FormContainer>
-            <Button type="submit" mt={7}><Icon as={FiSearch}/></Button>
+            <Button type="submit" mt={7} mr={5}><Icon as={FiSearch}/></Button>
             <Flex w="20%" align="center" justify="flex-end">
               <Button mt={7} variant="solid" colorScheme="green" onClick={handleOpenModal} mr={3}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
               <Menu>

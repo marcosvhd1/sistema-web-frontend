@@ -125,13 +125,12 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
       motionPreset='slideInBottom'
       isCentered
       scrollBehavior="inside"
-      size={{md: '4xl', lg: '5xl'}}
+      size="5xl"
     >
       <ModalOverlay />
       <form onSubmit={methods.handleSubmit(submitData)}>
         <ModalContent>
           <ModalHeader>Cadastro de Produtos</ModalHeader>
-          <ModalCloseButton onClick={clearForm} />
           <ModalBody>
             <Tabs variant='enclosed' colorScheme="gray" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
               <TabList>

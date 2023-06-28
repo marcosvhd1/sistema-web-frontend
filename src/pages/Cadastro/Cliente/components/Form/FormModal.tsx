@@ -145,7 +145,6 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, ge
       <form onSubmit={methods.handleSubmit(submitData)}>
         <ModalContent>
           <ModalHeader>Cadastro Clientes / Fornecedores</ModalHeader>
-          <ModalCloseButton onClick={() => clearForm()} />
           <ModalBody>
             <Tabs variant='enclosed' colorScheme="gray">
               <TabList>

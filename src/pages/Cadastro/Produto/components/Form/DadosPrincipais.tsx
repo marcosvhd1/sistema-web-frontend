@@ -76,7 +76,7 @@ export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod,
 
 
   return (
-    <Flex w={{md: '51rem', lg: '58rem'}} h='20rem'  gap="2" direction="column">
+    <Flex w={{md: '51rem', lg: '58rem'}} h='20rem' gap="2" direction="column">
       <Flex w="100%" >
         {/* lado a */}
         <Flex direction="column" w="50%" mr={6}>

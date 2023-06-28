@@ -11,7 +11,7 @@ interface DataTableProps {
   trailing?: boolean
 }
 
-export function DataTable({ children, headers, width = '90%', mt = '10', mr, colorScheme, trailing = true }: DataTableProps) {
+export function DataTable({ children, headers, width = '95%', mt = '5', mr, colorScheme, trailing = true }: DataTableProps) {
   return (
     <Flex w="100%" justify="center" mt={`${mt}`} mr={`${mr}`}>
       <TableContainer w={`${width}`} borderRadius={8} >

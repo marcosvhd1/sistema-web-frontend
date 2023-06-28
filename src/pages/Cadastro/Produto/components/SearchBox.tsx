@@ -8,6 +8,7 @@ import { FiSearch } from 'react-icons/fi';
 import { useModalProduct } from '../../../../Contexts/Modal/ProductContext';
 import { useGroupContext } from '../../../../Contexts/ProductGroupContext';
 import { MdAdd } from 'react-icons/md';
+import { FormContainer } from '../../../../components/Form/FormContainer';
 
 interface SearchBoxProps {
   children: ReactNode;
@@ -54,37 +55,42 @@ export function SearchBox({ children, setFilter, getProduct, getProductByGroup, 
 
   return (
     <form onSubmit={handleSubmit(HandleGetProductByFilter)}>
-      <Flex w="100%" justify="center" align="center" mt="10" direction="column" >
+      <Flex w="100%" justify="center" align="center" mt={{base: '2', md: '2', lg: '10'}} direction="column" >
         <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
-        <Flex w="90%" m="4" align="center" justify="space-between">
+        <Flex w="95%" m="4" align="center" justify="space-between">
           <Flex w="80%" justify="center" align="center">
-            <Text fontSize={{base: 'sm', lg: 'lg'}} whiteSpace="nowrap" mr={3}>Buscar por </Text>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="25%" mr="3" onChange={(e) => setFilter(e.target.value)}>
-              <option value='descricao'>Descrição</option>
-              <option value='nprod'>Código</option>
-              <option value='referencia'>Referência</option>
-              <option value='marca'>Marca</option>
-              <option value='ncm'>NCM</option>
-            </Select>
-            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Grupo" w="25%" mr="3" {...register('group')}>
-              {
-                data != undefined ? data.map((data) => (
-                  data.tipo.toUpperCase() === 'GRUPO'
-                    ?
-                    <option key={data.id} id={data.descricao} value={data.descricao}>{data.descricao}</option>
+            <FormContainer label='Buscar por' width="20%" mr='3'>
+              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => setFilter(e.target.value)}>
+                <option value='descricao'>Descrição</option>
+                <option value='nprod'>Código</option>
+                <option value='referencia'>Referência</option>
+                <option value='marca'>Marca</option>
+                <option value='ncm'>NCM</option>
+              </Select>
+            </FormContainer>
+            <FormContainer label='Descrição' width="40%" mr='3'>
+              <Input type="text" placeholder="Localizar..." maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('description')} />
+            </FormContainer>
+            <FormContainer label='Grupo' width="20%" mr='3'>
+              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('group')}>
+                {
+                  data != undefined ? data.map((data) => (
+                    data.tipo.toUpperCase() === 'GRUPO'
+                      ?
+                      <option key={data.id} id={data.descricao} value={data.descricao}>{data.descricao}</option>
+                      :
+                      ''
+                  ))
                     :
                     ''
-                ))
-                  :
-                  ''
-              }
-            </Select>
-            <Button type="submit"><Icon as={FiSearch} onClick={getDados} /></Button>
-            <Checkbox size='lg' mx='2' onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
-            <Text fontSize={{base: 'sm', lg: 'lg'}} w='20%' onClick={handleSeeActiveProducts}>Visualizar inativos</Text>
+                }
+              </Select>
+            </FormContainer>
+            <Button type="submit" mt={7} mr={3}><Icon as={FiSearch} onClick={getDados} /></Button>
+            <Checkbox size='lg' mx='2' mt={7} onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
+            <Text w='20%' mt={7} mr={5} onClick={handleSeeActiveProducts}>Visualizar inativos</Text>
           </Flex>
-          <Button ml='4' variant="solid" onClick={openModal} colorScheme="green"><Icon mr={2} as={MdAdd} />Cadastrar</Button>
+          <Button mt={7} variant="solid" onClick={openModal} colorScheme="green"><Icon mr={2} as={MdAdd} />Cadastrar</Button>
         </Flex>
         {children}
       </Flex>

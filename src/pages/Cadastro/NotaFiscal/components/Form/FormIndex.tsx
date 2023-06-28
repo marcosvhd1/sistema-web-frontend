@@ -399,17 +399,12 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
       motionPreset="slideInBottom"
       isCentered
       scrollBehavior="inside"
-      size={{ md: '6xl', lg: '6xl' }}
+      size="6xl"
     >
       <ModalOverlay />
       <form onSubmit={methods.handleSubmit(submitData)}>
         <ModalContent>
-          <ModalHeader>
-            <Flex w="100%" justify="center" align="center">
-              <Text>Nota Fiscal</Text>
-            </Flex>
-          </ModalHeader>
-          <ModalCloseButton onClick={clearData} />
+          <ModalHeader>Cadastro Nota Fiscal</ModalHeader>
           <ModalBody>
             <Tabs
               index={currentTab}

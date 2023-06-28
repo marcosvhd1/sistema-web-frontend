@@ -18,13 +18,10 @@ import { SearchBox } from './components/SearchBox';
 
 const headers: { key: string, label: string }[] = [
   { key: 'cod', label: 'Código' },
-  { key: 'razao', label: 'Nome / Razão Social' },
-  { key: 'cnpjcpf', label: 'CPF / CNPJ' },
-  { key: 'bairro', label: 'Bairro' },
+  { key: 'razao', label: 'Razão Social' },
+  { key: 'cnpjcpf', label: 'CNPJ' },
   { key: 'cidade', label: 'Cidade' },
   { key: 'uf', label: 'UF' },
-  { key: 'telefone1', label: 'Telefone 01' },
-  { key: 'telefone2', label: 'Telefone 02' },
 ];
 
 export function Transportadora() {
@@ -38,7 +35,6 @@ export function Transportadora() {
   /// pagination and search by filter
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('razao');
-  const [description, setDescription] = useState<string>('');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
@@ -159,11 +155,8 @@ export function Transportadora() {
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.bairro}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cidade}</Td>
                 <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.uf}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.telefone1}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.telefone2}</Td>
                 <Td style={{ 'textAlign': 'center' }}>
                   <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditTransportadora(data.id)}>
                     <Icon color="orange.300" as={FiEdit} />

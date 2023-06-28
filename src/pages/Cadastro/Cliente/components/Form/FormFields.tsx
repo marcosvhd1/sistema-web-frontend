@@ -56,7 +56,7 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }: IFormFields)
   };
 
   return (
-    <Flex w="58rem" h="40rem" direction="column" justify="space-between">
+    <Flex h="40rem" direction="column" justify="space-between">
       <Flex w="100%" >
         {/*lado A */}
         <Flex direction="column" w="50%">

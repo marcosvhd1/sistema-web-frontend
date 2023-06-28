@@ -65,7 +65,7 @@ export function EmissorModal() {
             <Table variant='simple'>
               <Thead>
                 <Tr>
-                  <Th style={{ 'width': '1rem' }}><Checkbox isReadOnly></Checkbox></Th>
+                  <Th></Th>
                   <Th>razão social</Th>
                   <Th>cnpj / cpf</Th>
                   <Th>status</Th>

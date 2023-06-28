@@ -114,13 +114,12 @@ export function FormModal({ isEditing, id, refreshPage, editCod, cod, getCod, he
       motionPreset='slideInBottom'
       isCentered
       scrollBehavior="inside"
-      size="xl"
+      size="5xl"
     >
       <ModalOverlay />
       <form onSubmit={methods.handleSubmit(submitData)}>
         <ModalContent>
           <ModalHeader>Cadastro de Transportadora</ModalHeader>
-          <ModalCloseButton onClick={clearForm}/>
           <ModalBody>
             <FormFields getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} id={id}/>
           </ModalBody>

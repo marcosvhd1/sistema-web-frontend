@@ -46,13 +46,13 @@ export function Header() {
           bg="none"
           onClick={toggleColorMode}
         />
-        <IconButton
+        {/* <IconButton
           aria-label="Notificações"
           _hover={{ background: 'none' }}
           icon={<FiBell />}
           size={'lg'}
           bg="none"
-        />
+        /> */}
         <LoggedInUser />
         <IconButton
           as="a"
