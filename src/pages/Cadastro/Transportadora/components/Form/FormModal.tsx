@@ -21,7 +21,6 @@ import { FormFields } from './FormFields';
 import { useState } from 'react';
 
 interface ModalProps {
-  // changeEdit: (value: React.SetStateAction<any>) => void;
   refreshPage: (description: string) => void
   getCod: () => void
   isEditing: boolean

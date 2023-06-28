@@ -23,13 +23,13 @@ export function TabCertificado() {
       </Flex>
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label='Ambiente de Destino' mr='3'>
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('ambiente')}>
+          <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('ambiente')}>
             <option value='2'>Homologação</option>
             <option value='1'>Produção</option>
           </Select>
         </FormContainer>
         <FormContainer label='Tipo de impressão DANFE'>
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('tipo_imp')}>
+          <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('tipo_imp')}>
             <option value='1'>Retrato</option>
             <option value='2'>Paisagem</option>
           </Select>
@@ -37,7 +37,7 @@ export function TabCertificado() {
       </Flex>
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label='Forma de Emisão' mr='3'>
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('forma_emi')}>
+          <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('forma_emi')}>
             <option value='1'>Normal</option>
             <option value='2'>Contingência</option>
             <option value='3'>Contingência com SCAN</option>
@@ -46,7 +46,7 @@ export function TabCertificado() {
           </Select>
         </FormContainer>
         <FormContainer label='Finalidade de Emissão'>
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('finalidade')}>
+          <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('finalidade')}>
             <option value='1'>NFe normal</option>
             <option value='2'>NFe complementar</option>
             <option value='3'>NFe de ajuste</option>

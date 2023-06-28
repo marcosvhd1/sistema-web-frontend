@@ -98,12 +98,12 @@ export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod,
           </Flex>
           <Flex gap="2">
             <FormContainer label="Preço">
-              <Input maxLength={255} id="preco" placeholder="R$0,00"type="number" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} step={0.01} {...register('preco', {
+              <Input isRequired maxLength={255} id="preco" placeholder="R$0,00"type="number" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} step={0.01} {...register('preco', {
                 setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
             <FormContainer label="UN">
-              <Input maxLength={255} id="un" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('un')} />
+              <Input isRequired maxLength={255} id="un" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('un')} />
             </FormContainer>
           </Flex>
         </Flex>

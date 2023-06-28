@@ -57,12 +57,12 @@ export function ModalCCe({ data }: ModalCCeProps) {
         handleClose();
         toast({
           position: 'top',
-          title: 'Sucesso',
+          title: 'Operação concluída.',
           description: resp.message,
           status: 'success',
-          duration: 3000,
+          duration: 2000,
           isClosable: true,
-        }); 
+        });
       }
     });
   };

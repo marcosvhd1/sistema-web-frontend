@@ -1,5 +1,4 @@
 import {
-  Button,
   Divider,
   Flex,
   Input,
@@ -7,7 +6,7 @@ import {
   Stack,
   Text
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -18,8 +17,8 @@ import { Contact } from './Contact';
 import { useColorMode } from '@chakra-ui/react';
 import moment from 'moment';
 import { IClient } from '../../../../../services/api/clientes/ClientService';
-import { validaCpfCnpj } from '../../../../../utils/validaCnpjCpf';
 import { formatCnpjCpf } from '../../../../../utils/formatarCnpjCpf';
+import { validaCpfCnpj } from '../../../../../utils/validaCnpjCpf';
 
 interface IFormFields {
   id: number
@@ -32,6 +31,8 @@ interface IFormFields {
 export function FormFields({ id, editCod, isEditing, cod, getCod }: IFormFields) {
   const { register, formState: { errors }, setFocus, getValues, setValue } = useFormContext<IClient>();
   const { colorMode } = useColorMode();
+
+  const [IErequired, setIErequired] = useState<boolean>(false);
 
   useEffect(() => {
     getCod();
@@ -49,6 +50,10 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }: IFormFields)
     }
   };
 
+  const IEisRequired = (value: any) => {
+    if (value == '9') setIErequired(false);
+    else setIErequired(true);
+  };
 
   return (
     <Flex w="58rem" h="40rem" direction="column" justify="space-between">
@@ -90,7 +95,7 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }: IFormFields)
         <Flex direction="column" w="50%" ml="6">
           <Flex>
             <FormContainer label="CPF / CNPJ">
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" w="14rem" {...register('cnpjcpf', {
+              <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" w="14rem" {...register('cnpjcpf', {
                 onBlur: (event) => validarCampo()
               })} mr="3" />
             </FormContainer>
@@ -100,7 +105,7 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }: IFormFields)
           </Flex>
           <Flex>
             <FormContainer label="Inscrição Estadual (IE)">
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="number" w="14rem" {...register('ie')} mr="3" />
+              <Input isRequired={IErequired} maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="number" w="14rem" {...register('ie')} mr="3" />
             </FormContainer>
             <FormContainer label="Inscrição Municipal">
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="im" type="number" w="14rem" {...register('im')} />
@@ -111,7 +116,7 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }: IFormFields)
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="suframa" type="text" w="14rem" {...register('suframa')} mr="3" />
             </FormContainer>
             <FormContainer label="Tipo de Contribuinte">
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="14rem" {...register('tipo_contribuinte')}>
+              <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="14rem" {...register('tipo_contribuinte')} onChange={(event) => IEisRequired(event.target.value)}>
                 <option value='1'>Contribuinte ICMS</option>
                 <option value='2'>Contribuinte ISENTO</option>
                 <option value='9'>Não Contribuinte</option>

@@ -127,7 +127,41 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     onClose();
   };
 
+  const hasErrors = () => {
+    const camposObrigatorios: any[] = ['cod', 'serie', 'natureza_operacao', 'cfop'];
+
+    for (const campo of camposObrigatorios) {
+      if (methods.getValues(campo) === '') {
+        let msg = '';
+
+        switch (campo) {
+        case 'cod': msg = 'A NFe precisa de um Código.';
+          break;
+        case 'serie': msg = 'A NFe precisa de uma Série.';
+          break;
+        case 'natureza_operacao': msg = 'A NFe precisa de uma Natureza de Operação.';
+          break;
+        case 'cfop': msg = 'A NFe precisa de um CFOP.';
+          break;
+        }
+
+        toast({
+          position: 'top',
+          description: msg,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   const submitData = (data: INotaFiscal) => {
+    if (hasErrors()) return;
+
     data.nome_destinatario = data.destinatario.razao;
     data.id_destinatario = `${data.destinatario.id}`;
     data.modelo = 55;

@@ -79,7 +79,7 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
       <Flex w="100%" justify="center" align="center" direction="column" >
         <Flex w="100%" justify="flex-start" align="center" mb={2}>
           <FormContainer width='45%' label='Presença do comprador no momento da operação'>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('presenca_comprador')}>
+            <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('presenca_comprador')}>
               <option value='0'>0 - Não se aplica (Para NF complementar ou de ajuste)</option>
               <option value='1'>1 - Operação presencial</option>
               <option value='2'>2 - Operação não presencial, pela Internet</option>

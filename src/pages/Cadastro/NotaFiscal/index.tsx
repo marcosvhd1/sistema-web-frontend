@@ -373,6 +373,7 @@ export function NotaFiscal() {
     switch (status) {
     case 'Emitida': return colorMode === 'light' ? 'green.100' : 'green.900';
     case 'Cancelada': return colorMode === 'light' ? 'red.100' : 'red.900';
+    case 'Inutilizada': return colorMode === 'light' ? 'gray.100' : 'gray.600';
     default: return '';
     }
   };
@@ -421,15 +422,19 @@ export function NotaFiscal() {
                         </Button>
                         : null
                     }
-                    <Button
-                      variant="ghost"
-                      colorScheme="orange"
-                      fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                      w="2rem"
-                      onClick={() => handleEditNF(data.id)}
-                    >
-                      <Icon color="orange.300" as={FiEdit} />
-                    </Button>
+                    {
+                      data.status !== 'Inutilizada' ? 
+                        <Button
+                          variant="ghost"
+                          colorScheme="orange"
+                          fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                          w="2rem"
+                          onClick={() => handleEditNF(data.id)}
+                        >
+                          <Icon color="orange.300" as={FiEdit} />
+                        </Button>
+                        : null
+                    }
                     {
                       data.status !== 'Emitida' && data.status !== 'Cancelada' ? 
                         <Button
@@ -443,50 +448,56 @@ export function NotaFiscal() {
                         </Button>
                         : null
                     }
-                    <Button
-                      variant="ghost"
-                      colorScheme="blue"
-                      fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                      w="2rem"
-                    >
-                      <Icon as={FiPrinter} color="blue.400" />
-                    </Button>
-                    <Menu>
-                      <MenuButton
-                        as={Button} 
-                        variant="ghost" 
-                        colorScheme="blue" 
-                        w="2rem"
-                        padding={0}
-                      >
-                        <Icon as={MdMenu} color='blue.400' />
-                      </MenuButton>
-                      <MenuList>
-                        {
-                          data.status === 'Emitida' ? 
-                            <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={() => handleOpenModalCancelar(data)}><Icon mr={2} as={MdCancel}/>Cancelar NFe</MenuItem>
-                            : null
-                        }
-                        <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={MdEmail}/>Enviar via Email</MenuItem>
-                        {
-                          data.status === 'Emitida' ? 
-                            <Menu isOpen={submenuOpenCCe} placement="left" onClose={closeSubmenuCCe}>
-                              <MenuButton 
-                                as={MenuItem}
-                                color={colorMode === 'light' ? 'blue.600' : 'blue.300'}
-                                onClick={toggleSubmenuCCe}
-                              >
-                                <Icon as={FcDocument} mr={2}/>Carta de Correção
-                              </MenuButton>
-                              <MenuList>
-                                <MenuItem color={colorMode === 'light' ? 'green.600' : 'green.300'} onClick={() => handleOpenModalCCe(data)}><Icon mr={2} as={FiSend}/>Emitir CCe</MenuItem>
-                                <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FiPrinter}/>Imprimir CCe</MenuItem>
-                              </MenuList>
-                            </Menu>
-                            : null
-                        }
-                        <MenuItem color='orange.300'><Icon mr={2} as={MdReportProblem}/>Resolver Duplicidade</MenuItem>
-                        {/* <Menu isOpen={submenuOpenStatus} placement="left" onClose={closeSubmenuStatus}>
+                    {
+                      data.status !== 'Inutilizada' ? 
+                        <Button
+                          variant="ghost"
+                          colorScheme="blue"
+                          fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                          w="2rem"
+                        >
+                          <Icon as={FiPrinter} color="blue.400" />
+                        </Button> 
+                        : null
+                    }
+                    {
+                      data.status !== 'Inutilizada' ? 
+                        <Menu>
+                          <MenuButton
+                            as={Button} 
+                            variant="ghost" 
+                            colorScheme="blue" 
+                            w="2rem"
+                            padding={0}
+                          >
+                            <Icon as={MdMenu} color='blue.400' />
+                          </MenuButton>
+                          <MenuList>
+                            {
+                              data.status === 'Emitida' ? 
+                                <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={() => handleOpenModalCancelar(data)}><Icon mr={2} as={MdCancel}/>Cancelar NFe</MenuItem>
+                                : null
+                            }
+                            <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={MdEmail}/>Enviar via Email</MenuItem>
+                            {
+                              data.status === 'Emitida' ? 
+                                <Menu isOpen={submenuOpenCCe} placement="left" onClose={closeSubmenuCCe}>
+                                  <MenuButton 
+                                    as={MenuItem}
+                                    color={colorMode === 'light' ? 'blue.600' : 'blue.300'}
+                                    onClick={toggleSubmenuCCe}
+                                  >
+                                    <Icon as={FcDocument} mr={2}/>Carta de Correção
+                                  </MenuButton>
+                                  <MenuList>
+                                    <MenuItem color={colorMode === 'light' ? 'green.600' : 'green.300'} onClick={() => handleOpenModalCCe(data)}><Icon mr={2} as={FiSend}/>Emitir CCe</MenuItem>
+                                    <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FiPrinter}/>Imprimir CCe</MenuItem>
+                                  </MenuList>
+                                </Menu>
+                                : null
+                            }
+                            {/* <MenuItem color='orange.300'><Icon mr={2} as={MdReportProblem}/>Resolver Duplicidade</MenuItem> */}
+                            {/* <Menu isOpen={submenuOpenStatus} placement="left" onClose={closeSubmenuStatus}>
                           <MenuButton 
                             as={MenuItem}
                             color={colorMode === 'light' ? 'blue.600' : 'blue.300'}
@@ -501,9 +512,11 @@ export function NotaFiscal() {
                             <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}>Inutilizada</MenuItem>
                           </MenuList>
                         </Menu> */}
-                        <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaCopy}/>Espelhar NFe</MenuItem>
-                      </MenuList>
-                    </Menu>
+                            <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaCopy}/>Espelhar NFe</MenuItem>
+                          </MenuList>
+                        </Menu>
+                        : null
+                    }
                   </Td>
                 </Tr>
               ))

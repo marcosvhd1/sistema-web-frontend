@@ -73,10 +73,10 @@ export function ModalCFOP({ addCFOP, editCFOP, isEditing }: ModalCFOPProps) {
               <Flex w='100%' justify='center' align='center'>
                 <Flex w='100%' justify='flex-start' align='center'>
                   <FormContainer label='CFOP Dentro do estado' width='40%' mr='3'>
-                    <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('cfop_dentro')} />
+                    <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('cfop_dentro')} />
                   </FormContainer>
                   <FormContainer label='CFOP Fora do estado' width='40%'>
-                    <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('cfop_fora')} />
+                    <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('cfop_fora')} />
                   </FormContainer>
                 </Flex>
                 <Flex w='100%' justify='center' align='center' mt={7}>
@@ -87,7 +87,7 @@ export function ModalCFOP({ addCFOP, editCFOP, isEditing }: ModalCFOPProps) {
                 </Flex>
               </Flex>
               <FormContainer label='Natureza de Operação' mr='3'>
-                <Input maxLength={300} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('natureza')} />
+                <Input isRequired maxLength={300} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('natureza')} />
               </FormContainer>
               <FormContainer label='Informações Complementares' mr='3'>
                 <Textarea maxLength={5000} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('info')} />

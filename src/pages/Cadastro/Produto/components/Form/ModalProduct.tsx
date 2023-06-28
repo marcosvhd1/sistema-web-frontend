@@ -140,7 +140,17 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <DadosPrincipais active={active} setActive={setActive} marca={marca} grupo={grupo} header={header} getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} />
+                  <DadosPrincipais 
+                    active={active} 
+                    setActive={setActive} 
+                    marca={marca} 
+                    grupo={grupo} 
+                    header={header} 
+                    getCod={getCod} 
+                    cod={cod} 
+                    editCod={editCod} 
+                    isEditing={isEditing} 
+                  />
                 </TabPanel>
                 <TabPanel>
                   <DadosFiscais />

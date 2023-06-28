@@ -85,15 +85,15 @@ export function ModalNFDuplicata({ addDuplicata }: ModalNFDuplicataProps) {
           <ModalBody>
             <Flex w='100%' justify='center' align='center'  direction='column'>
               <FormContainer label='Número'>
-                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('numero')} />
+                <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('numero')} />
               </FormContainer>    
               <FormContainer label='Valor'>
                 <MoneyAddon>
-                  <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor')} />
+                  <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor')} />
                 </MoneyAddon>
               </FormContainer>
               <FormContainer label='Vencimento'>
-                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('vencimento')} defaultValue={new Date().toISOString().split('T')[0]}/>
+                <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('vencimento')} defaultValue={new Date().toISOString().split('T')[0]}/>
               </FormContainer>    
             </Flex>
           </ModalBody>

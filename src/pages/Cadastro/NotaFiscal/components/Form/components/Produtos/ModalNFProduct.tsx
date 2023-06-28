@@ -1,5 +1,5 @@
-import { Button, Flex, FormControl, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorMode } from '@chakra-ui/react';
-import React from 'react';
+import { Button, Flex, FormControl, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorMode, useToast } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { FiCheck, FiSearch, FiSlash } from 'react-icons/fi';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
@@ -24,14 +24,48 @@ interface ModalNFProductProps {
 }
 
 export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditing, index }: ModalNFProductProps) {
+  const methods = useFormContext<INFProduct>();
   const { isOpen, onClose } = useModalNFProduct();
   const { onOpen } = useModalNFSearchProduct();
-  const methods = useFormContext<INFProduct>();
   const { colorMode } = useColorMode();
 
-  const verify = (value: any) => {
-    if (value !== null && value !== undefined) {
-      if (value.toString().length > 0) {
+  const toast = useToast();
+
+  const camposObrigatorios: any[] = ['quantidade', 'valor_unitario', 'valor_total', 'produto.nprod', 'produto.descricao', 'produto.un', 'produto.cst_icms', 'produto.ncm', 'produto.cfop'];
+
+  const hasErrors = () => {
+    for (const campo of camposObrigatorios) {
+      if (methods.getValues(campo) === '') {
+        let msg = '';
+
+        switch (campo) {
+        case 'quantidade': msg = 'A Quantidade do Produto é obrigatória.';
+          break;
+        case 'valor_unitario': msg = 'O Valor Unitário do Produto é obrigatório.';
+          break;
+        case 'valor_total': msg = 'O Valor Total do Produto é obrigatório.';
+          break;
+        case 'produto.nprod': msg = 'O Produto precisa de um código.';
+          break;
+        case 'produto.descricao': msg = 'O Produto precisa de uma descrição.';
+          break;
+        case 'produto.un': msg = 'O Produto precisa de uma UN.';
+          break;
+        case 'produto.cst_icms': msg = 'O Produto precisa do CST/CSOSN.';
+          break;
+        case 'produto.ncm': msg = 'O Produto precisa de um NCM.';
+          break;
+        case 'produto.cfop': msg = 'O Produto precisa de um CFOP.';
+          break;
+        }
+
+        toast({
+          position: 'top',
+          description: msg,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
         return true;
       }
     }
@@ -39,7 +73,18 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
     return false;
   };
 
+  const verify = (value: any) => {
+    if (value !== null && value !== undefined) {
+      if (value.toString().length > 0) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const onSubmit = () => {
+    if (hasErrors()) return;
+    
     let qtd = 0;
     let valorUnit = 0;
     let valorTot = 0;

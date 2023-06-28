@@ -104,7 +104,7 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
           <ModalBody>
             <Flex w='100%' justify='center' align='center'  direction='column'>
               <FormContainer label='Forma de Pagamento'>
-                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('forma')}>
+                <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('forma')}>
                   <option value="Dinheiro">Dinheiro</option>
                   <option value="Cheque">Cheque</option>
                   <option value="Cartão de Crédito">Cartão de Crédito</option>
@@ -121,7 +121,7 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
               </FormContainer>    
               <FormContainer label='Valor'>
                 <MoneyAddon>
-                  <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor')} />
+                  <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('valor')} />
                 </MoneyAddon>
               </FormContainer>    
               <FormContainer label='Bandeira'>
