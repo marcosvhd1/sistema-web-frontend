@@ -1,28 +1,34 @@
 import { Button, Flex, Icon, Input, Menu, MenuButton, MenuItem, MenuList, Select, Text, useColorMode } from '@chakra-ui/react';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { FieldValues, useForm, useFormContext } from 'react-hook-form';
 import { FaInfoCircle, FaThList } from 'react-icons/fa';
 import { FcDocument } from 'react-icons/fc';
-import { FiChevronsDown, FiSearch } from 'react-icons/fi';
-import { MdAdd, MdCancel } from 'react-icons/md';
+import { FiSearch } from 'react-icons/fi';
+import { MdAdd, MdCancel, MdMenu } from 'react-icons/md';
+import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
 import { useModalNotaFiscal } from '../../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
+import { useModalNFInutilizar } from '../../../../Contexts/Modal/NotaFiscal/Sefaz/NFInutilizarContext';
+import { useModalStatusServidor } from '../../../../Contexts/Modal/NotaFiscal/Sefaz/StatusServidorContext';
 import { INotaFiscal } from '../../../../services/api/notafiscal/NotaFiscalService';
 import { SefazService } from '../../../../services/api/sefaz/SefazService';
 import { userInfos } from '../../../../utils/header';
-import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
-import { useModalStatusServidor } from '../../../../Contexts/Modal/NotaFiscal/Sefaz/StatusServidorContext';
-import { ModalStatusServidor } from './ModalSefaz/ModalStatusServidor';
-import { useModalNFInutilizar } from '../../../../Contexts/Modal/NotaFiscal/Sefaz/NFInutilizarContext';
 import { ModalInutilizar } from './ModalInutilizar';
+import { ModalStatusServidor } from './ModalSefaz/ModalStatusServidor';
+import { FormContainer } from '../../../../components/Form/FormContainer';
 
 interface SearchBoxProps {
   children: ReactNode;
   getNotasFiscaisByFilter: (description: string) => void;
   setIsEditing: (value: boolean) => void;
   stateFilter: (value: React.SetStateAction<any>) => void;
+  stateFilterByStatus: (value: React.SetStateAction<any>) => void;
+  startDate: any;
+  setStartDate: (value: React.SetStateAction<any>) => void;
+  endDate: any;
+  setEndDate: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setIsEditing }: SearchBoxProps) {
+export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setIsEditing, stateFilterByStatus, startDate, setStartDate, endDate, setEndDate }: SearchBoxProps) {
   const methods = useFormContext<INotaFiscal>();
   const { register, handleSubmit } = useForm();
   const { colorMode } = useColorMode();
@@ -61,28 +67,46 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
       <Flex w="100%" justify="center" align="center" mt={{ base: '2', md: '2', lg: '10' }} direction="column" >
         <Text fontFamily="Poppins" fontSize="xl">Lista de Notas Fiscais</Text>
         <Flex w="90%" m="4" align="center" justify="space-between">
-          <Flex w="60%" justify="center" align="center">
-            <Text fontSize={{base: 'sm', lg: 'lg'}} whiteSpace="nowrap" mr={3}>Buscar por </Text>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="35%" mr="3" onChange={(e) => stateFilter(e.target.value)}>
-              <option value='cod'>N° da Nota</option>
-              <option value='nome_destinatario'>Destinatario</option>
-            </Select>
-            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="60%" type="text" mr="3" {...register('description')} />
-            <Button type="submit"><Icon as={FiSearch}/></Button>
-          </Flex>
-          <Flex w="40%" justify="flex-end" align="space-between">
-            <Button variant="solid" colorScheme="green" onClick={handleOpenModal} mr={3}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
-            <Menu>
-              <MenuButton as={Button} variant="solid" colorScheme="blue">
-              Opções<Icon ml={2} as={FiChevronsDown} />
-              </MenuButton>
-              <MenuList>
-                <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'} onClick={handleStatusServidor}><Icon mr={2} as={FaInfoCircle}/>Status do Servidor</MenuItem>
-                <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={openInutilizar}><Icon mr={2} as={MdCancel}/>Inutilizar Faixa</MenuItem>
-                <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaThList}/>Relatório Gerencial</MenuItem>
-                <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FcDocument}/>Importar XML</MenuItem>
-              </MenuList>
-            </Menu>
+          <Flex w="100%" justify="center" align="center">
+            <FormContainer label='Buscar por' width="15%" mr='3'>
+              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => stateFilter(e.target.value)}>
+                <option value='cod'>Código</option>
+                <option value='nome_destinatario'>Destinatário</option>
+              </Select>
+            </FormContainer>
+            <FormContainer label='Descrição' width="20%" mr='3'>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." type="text" {...register('description')} />
+            </FormContainer>
+            <FormContainer label='Status' width="15%" mr="3">
+              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => stateFilterByStatus(e.target.value)}>
+                <option value=''>Todos</option>
+                <option value='Em digitação'>Em digitação</option>
+                <option value='Emitida'>Emitida</option>
+                <option value='Cancelada'>Cancelada</option>
+                <option value='Inutilizada'>Inutilizada</option>
+              </Select>
+            </FormContainer>
+            <FormContainer label='Data Início' width="15%" mr='3'>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}/>
+            </FormContainer>
+            <FormContainer label='Data Final' width="15%" mr='3'>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
+            </FormContainer>
+            <Button type="submit" mt={7}><Icon as={FiSearch}/></Button>
+            <Flex w="20%" align="center" justify="flex-end">
+              <Button mt={7} variant="solid" colorScheme="green" onClick={handleOpenModal} mr={3}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
+              <Menu>
+                <MenuButton as={Button} variant="solid" colorScheme="blue" mt={7}>
+                  <Icon as={MdMenu}/>
+                </MenuButton>
+                <MenuList>
+                  <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'} onClick={handleStatusServidor}><Icon mr={2} as={FaInfoCircle}/>Status do Servidor</MenuItem>
+                  <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={openInutilizar}><Icon mr={2} as={MdCancel}/>Inutilizar Faixa</MenuItem>
+                  <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaThList}/>Relatório Gerencial</MenuItem>
+                  <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FcDocument}/>Importar XML</MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
           </Flex>
         </Flex>
         {children}

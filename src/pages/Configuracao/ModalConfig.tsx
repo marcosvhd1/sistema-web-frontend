@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useToast } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
@@ -20,6 +20,7 @@ export function ModalConfig() {
   const { isOpen, onClose } = useModalConfig();
   const { idEmissorSelecionado } = useEmissorContext();
 
+  const [currentTab, setCurrentTab] = useState(0);
   const [autenticacao, setAutenticacao] = useState<boolean>(false);
   const [ssl, setSSL] = useState<boolean>(false);
   const [tls, setTLS] = useState<boolean>(false);
@@ -27,9 +28,15 @@ export function ModalConfig() {
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
 
+  const toast = useToast();
+
   useEffect(() => {
     loadData();
   }, [isOpen]);
+
+  const handleTabChange = (index: number) => {
+    setCurrentTab(index);
+  };
 
   const loadData = async () => {
     const response = await ConfigService.getByEmissor(idEmissorSelecionado, HEADERS);
@@ -45,7 +52,41 @@ export function ModalConfig() {
     }
   };
 
+  const hasErrors = () => {
+    const camposObrigatorios: any[] = ['serie_padrao'];
+
+    for (const campo of camposObrigatorios) {
+      if (methods.getValues(campo) === '') {
+        let msg = '';
+
+        switch (campo) {
+        case 'serie_padrao':
+          setCurrentTab(5);
+          msg = 'Está faltando preencher a SÉRIE PADRÃO.';
+          setTimeout(() => {
+            methods.setFocus('serie_padrao');
+          }, 100);
+          break;
+        }
+
+        toast({
+          position: 'top',
+          description: msg,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+
   const handleSaveChanges = () => {
+    if (hasErrors()) return; 
+
     const data = {
       'id_emissor': idEmissorSelecionado,
       'n_serie': methods.getValues('n_serie'),
@@ -100,7 +141,13 @@ export function ModalConfig() {
             Configurações
           </ModalHeader>
           <ModalBody>
-            <Tabs variant='enclosed' colorScheme="gray" w="100%">
+            <Tabs 
+              variant='enclosed' 
+              colorScheme="gray" 
+              w="100%"
+              index={currentTab}
+              onChange={handleTabChange}
+            >
               <TabList>
                 <Tab>Certificado</Tab>
                 <Tab>Token NFCe</Tab>

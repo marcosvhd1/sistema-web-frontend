@@ -134,7 +134,9 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
 
     if (cliente.razao.length == 0) {
       setCurrentTab(0);
-      methods.setFocus('destinatario.razao');
+      setTimeout(() => {
+        methods.setFocus('destinatario.razao');
+      }, 100);
       toast({
         position: 'top',
         description: 'Está faltando adicionar o DESTINATÁRIO.',
@@ -175,20 +177,32 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
 
         switch (campo) {
         case 'cod': 
+          setCurrentTab(0);
           msg = 'Está faltando preencher o CÓDIGO da NFe.';
-          methods.setFocus('cod');
+          setTimeout(() => {
+            methods.setFocus('cod');
+          }, 100);
           break;
         case 'serie': 
+          setCurrentTab(0);
           msg = 'Está faltando preencher a SÉRIE da NFe.';
-          methods.setFocus('serie');
+          setTimeout(() => {
+            methods.setFocus('serie');
+          }, 100);
           break;
         case 'natureza_operacao': 
+          setCurrentTab(0);
           msg = 'Está faltando selecionar a NATUREZA DE OPERAÇÃO da NFe.';
-          methods.setFocus('natureza_operacao');
+          setTimeout(() => {
+            methods.setFocus('natureza_operacao');
+          }, 100);
           break;
         case 'cfop': 
+          setCurrentTab(0);
           msg = 'Está faltando preencher o CFOP da NFe.';
-          methods.setFocus('cfop');
+          setTimeout(() => {
+            methods.setFocus('cfop');
+          }, 100);
           break;
         }
 

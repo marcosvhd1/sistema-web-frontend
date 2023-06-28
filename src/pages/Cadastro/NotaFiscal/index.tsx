@@ -53,7 +53,11 @@ export function NotaFiscal() {
 
   const [data, setData] = useState<INotaFiscal[]>([]);
   const [dataToModal, setDataToModal] = useState<INotaFiscal>();
+
   const [filter, setFilter] = useState<string>('cod');
+  const [filterByStatus, setFilterByStatus] = useState<string>('');
+  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
+  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
   
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [id, setId] = useState<number>(0);
@@ -159,7 +163,10 @@ export function NotaFiscal() {
       currentPage,
       limitRegistros,
       filter,
+      filterByStatus,
       description,
+      startDate,
+      endDate,
       idEmissorSelecionado,
       HEADERS
     ).then((result: any) => {
@@ -384,7 +391,12 @@ export function NotaFiscal() {
         <SearchBox
           getNotasFiscaisByFilter={getNF}
           stateFilter={setFilter}
+          stateFilterByStatus={setFilterByStatus}
           setIsEditing={setIsEditing}
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
         >
           <DataTable headers={headers}>
             {data !== undefined
