@@ -129,19 +129,53 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
 
   const hasErrors = () => {
     const camposObrigatorios: any[] = ['cod', 'serie', 'natureza_operacao', 'cfop'];
+    const cliente = methods.getValues('destinatario');
+
+    if (cliente.razao.length == 0) {
+      toast({
+        position: 'top',
+        description: 'Está faltando adicionar o CLIENTE.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return true;
+    }
+
+    if (produtos.length == 0) {
+      toast({
+        position: 'top',
+        description: 'Está faltando adicionar os PRODUTOS.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return true;
+    }
+
+    if (formaPagtos.length == 0) {
+      toast({
+        position: 'top',
+        description: 'Está faltando adicionar a FORMA DE PAGAMENTO.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return true;
+    }
 
     for (const campo of camposObrigatorios) {
       if (methods.getValues(campo) === '') {
         let msg = '';
 
         switch (campo) {
-        case 'cod': msg = 'A NFe precisa de um Código.';
+        case 'cod': msg = 'Está faltando preencher o CÓDIGO da NFe.';
           break;
-        case 'serie': msg = 'A NFe precisa de uma Série.';
+        case 'serie': msg = 'Está faltando preencher a SÉRIE da NFe.';
           break;
-        case 'natureza_operacao': msg = 'A NFe precisa de uma Natureza de Operação.';
+        case 'natureza_operacao': msg = 'Está faltando preencher a NATUREZA DE OPERAÇÃO da NFe.';
           break;
-        case 'cfop': msg = 'A NFe precisa de um CFOP.';
+        case 'cfop': msg = 'Está faltando preencher o CFOP da NFe.';
           break;
         }
 
@@ -162,27 +196,14 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
   const submitData = (data: INotaFiscal) => {
     if (hasErrors()) return;
 
+    setFormSubmitted(true);
+
     data.nome_destinatario = data.destinatario.razao;
     data.id_destinatario = `${data.destinatario.id}`;
     data.modelo = 55;
-    
-    setFormSubmitted(true);
 
-    if (data.nome_destinatario === '') {
-      toast({
-        position: 'top',
-        title: 'Erro ao cadastrar.',
-        description: 'A nota precisa de um destinatário',
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-      });
-
-      setFormSubmitted(false);
-    } else {
-      if (isEditing) handleUpdateNF(data);
-      else handleCreateNF(data);
-    }
+    if (isEditing) handleUpdateNF(data);
+    else handleCreateNF(data);
   };
 
   const handleCreateNF = async (data: INotaFiscal) => {

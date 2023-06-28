@@ -39,23 +39,23 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
         let msg = '';
 
         switch (campo) {
-        case 'quantidade': msg = 'A Quantidade do Produto é obrigatória.';
+        case 'quantidade': msg = 'Está faltando preencher a QUANTIDADE.';
           break;
-        case 'valor_unitario': msg = 'O Valor Unitário do Produto é obrigatório.';
+        case 'valor_unitario': msg = 'Está faltando preencher o VALOR UNITÁRIO.';
           break;
-        case 'valor_total': msg = 'O Valor Total do Produto é obrigatório.';
+        case 'valor_total': msg = 'Está faltando preencher o VALOR TOTAL.';
           break;
-        case 'produto.nprod': msg = 'O Produto precisa de um código.';
+        case 'produto.nprod': msg = 'Está faltando preencher o CÓDIGO.';
           break;
-        case 'produto.descricao': msg = 'O Produto precisa de uma descrição.';
+        case 'produto.descricao': msg = 'Está faltando preencher a DESCRIÇÃO.';
           break;
-        case 'produto.un': msg = 'O Produto precisa de uma UN.';
+        case 'produto.un': msg = 'Está faltando preencher a UN.';
           break;
-        case 'produto.cst_icms': msg = 'O Produto precisa do CST/CSOSN.';
+        case 'produto.cst_icms': msg = 'Está faltando preencher o CST/CSOSN.';
           break;
-        case 'produto.ncm': msg = 'O Produto precisa de um NCM.';
+        case 'produto.ncm': msg = 'Está faltando preencher o NCM.';
           break;
-        case 'produto.cfop': msg = 'O Produto precisa de um CFOP.';
+        case 'produto.cfop': msg = 'Está faltando preencher o CFOP.';
           break;
         }
 
