@@ -4,7 +4,6 @@ import {
   Icon,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -14,27 +13,17 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
-  useToast,
+  useToast
 } from '@chakra-ui/react';
-import { FormProvider, useFormContext } from 'react-hook-form';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 import { useModalNotaFiscal } from '../../../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
 import { ApiException } from '../../../../../services/api/ApiException';
-import {
-  INotaFiscal,
-  NotaFiscalService,
-} from '../../../../../services/api/notafiscal/NotaFiscalService';
-import { userInfos } from '../../../../../utils/header';
-import { FormDadosPrincipais } from './components/Dados Principais/FormDadosPrincipais';
-import { FormFormaPagto } from './components/FormaPagto/FormFormaPagto';
-import { FormInfoAdicional } from './components/FormInfoAdicional';
-import { FormOutros } from './components/FormOutros';
-import { FormTotais } from './components/FormTotais';
-import { FormProdutos } from './components/Produtos/FormProdutos';
-import { FormTransporte } from './components/Transporte/FormTransporte';
+import { ICFOP, ICFOPService } from '../../../../../services/api/cfop/CFOPService';
+import { ConfigService } from '../../../../../services/api/config/ConfigService';
+import { INFDuplicata, NFDupliService } from '../../../../../services/api/notafiscal/NFDuplicata';
 import {
   INFFormaPagto,
   NFPagtoService,
@@ -43,11 +32,20 @@ import {
   INFProduct,
   NFProdutoService,
 } from '../../../../../services/api/notafiscal/NFProduct';
-import { INFDuplicata, NFDupliService } from '../../../../../services/api/notafiscal/NFDuplicata';
-import { ConfigService } from '../../../../../services/api/config/ConfigService';
-import { ICFOP, ICFOPService } from '../../../../../services/api/cfop/CFOPService';
 import { INFReferenciada, NFRefService } from '../../../../../services/api/notafiscal/NFReferenciada';
+import {
+  INotaFiscal,
+  NotaFiscalService,
+} from '../../../../../services/api/notafiscal/NotaFiscalService';
+import { userInfos } from '../../../../../utils/header';
+import { FormDadosPrincipais } from './components/Dados Principais/FormDadosPrincipais';
+import { FormInfoAdicional } from './components/FormInfoAdicional';
+import { FormOutros } from './components/FormOutros';
+import { FormTotais } from './components/FormTotais';
+import { FormFormaPagto } from './components/FormaPagto/FormFormaPagto';
 import { FormNFRef } from './components/NFRef/FormNFRef';
+import { FormProdutos } from './components/Produtos/FormProdutos';
+import { FormTransporte } from './components/Transporte/FormTransporte';
 
 interface ModalNotaFiscalProps {
   id: number;
@@ -90,6 +88,10 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
         }
       });
     }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen === true) setCurrentTab(0);
   }, [isOpen]);
 
   useEffect(() => {
@@ -325,6 +327,32 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     return false;
   };
 
+  const shareCFOP = async () => {
+    const cfop = methods.getValues('cfop');
+
+    if (produtos.length > 0) {
+      for (const element of produtos) {
+        element.produto.cfop = cfop;
+      }
+  
+      toast({
+        position: 'top',
+        description: `O CFOP ${cfop} foi aplicado em todos os produtos.`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      }); 
+    } else {
+      toast({
+        position: 'top',
+        description: 'A NFe não possui produtos.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      }); 
+    }
+  };
+
   const calcTotalNota = async () => {
     let totalProdutos = 0;
     let totalICMSST = 0;
@@ -425,7 +453,11 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <FormDadosPrincipais isEditing={isEditing} cfops={cfops} />
+                  <FormDadosPrincipais 
+                    isEditing={isEditing} 
+                    cfops={cfops}
+                    shareCFOP={shareCFOP}
+                  />
                 </TabPanel>
                 <TabPanel>
                   <FormProdutos
