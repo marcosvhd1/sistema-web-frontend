@@ -39,23 +39,41 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
         let msg = '';
 
         switch (campo) {
-        case 'quantidade': msg = 'Está faltando preencher a QUANTIDADE.';
+        case 'quantidade': 
+          msg = 'Está faltando preencher a QUANTIDADE.';
+          methods.setFocus('quantidade');
           break;
-        case 'valor_unitario': msg = 'Está faltando preencher o VALOR UNITÁRIO.';
+        case 'valor_unitario': 
+          msg = 'Está faltando preencher o VALOR UNITÁRIO.';
+          methods.setFocus('valor_unitario');
           break;
-        case 'valor_total': msg = 'Está faltando preencher o VALOR TOTAL.';
+        case 'valor_total': 
+          msg = 'Está faltando preencher o VALOR TOTAL.';
+          methods.setFocus('valor_total');
           break;
-        case 'produto.nprod': msg = 'Está faltando preencher o CÓDIGO.';
+        case 'produto.nprod': 
+          msg = 'Está faltando preencher o CÓDIGO.';
+          methods.setFocus('produto.nprod');
           break;
-        case 'produto.descricao': msg = 'Está faltando preencher a DESCRIÇÃO.';
+        case 'produto.descricao': 
+          msg = 'Está faltando preencher a DESCRIÇÃO.';
+          methods.setFocus('produto.descricao');
           break;
-        case 'produto.un': msg = 'Está faltando preencher a UN.';
+        case 'produto.un': 
+          msg = 'Está faltando preencher a UN.';
+          methods.setFocus('produto.un');
           break;
-        case 'produto.cst_icms': msg = 'Está faltando preencher o CST/CSOSN.';
+        case 'produto.cst_icms': 
+          msg = 'Está faltando preencher o CST/CSOSN.';
+          methods.setFocus('produto.cst_icms');
           break;
-        case 'produto.ncm': msg = 'Está faltando preencher o NCM.';
+        case 'produto.ncm': 
+          msg = 'Está faltando preencher o NCM.';
+          methods.setFocus('produto.ncm');
           break;
-        case 'produto.cfop': msg = 'Está faltando preencher o CFOP.';
+        case 'produto.cfop': 
+          msg = 'Está faltando preencher o CFOP.';
+          methods.setFocus('produto.cfop');
           break;
         }
 

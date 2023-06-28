@@ -63,6 +63,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
   const { isOpen, onClose } = useModalNotaFiscal();
   const { idEmissorSelecionado } = useEmissorContext();
 
+  const [currentTab, setCurrentTab] = useState(0);
   const [cfops, setCfops] = useState<ICFOP[]>([]);
   const [produtos, setProdutos] = useState<INFProduct[]>([]);
   const [formaPagtos, setFormaPagto] = useState<INFFormaPagto[]>([]);
@@ -132,17 +133,20 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     const cliente = methods.getValues('destinatario');
 
     if (cliente.razao.length == 0) {
+      setCurrentTab(0);
+      methods.setFocus('destinatario.razao');
       toast({
         position: 'top',
-        description: 'Está faltando adicionar o CLIENTE.',
+        description: 'Está faltando adicionar o DESTINATÁRIO.',
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
       return true;
     }
-
+    
     if (produtos.length == 0) {
+      setCurrentTab(1);
       toast({
         position: 'top',
         description: 'Está faltando adicionar os PRODUTOS.',
@@ -154,6 +158,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     }
 
     if (formaPagtos.length == 0) {
+      setCurrentTab(3);
       toast({
         position: 'top',
         description: 'Está faltando adicionar a FORMA DE PAGAMENTO.',
@@ -169,13 +174,21 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
         let msg = '';
 
         switch (campo) {
-        case 'cod': msg = 'Está faltando preencher o CÓDIGO da NFe.';
+        case 'cod': 
+          msg = 'Está faltando preencher o CÓDIGO da NFe.';
+          methods.setFocus('cod');
           break;
-        case 'serie': msg = 'Está faltando preencher a SÉRIE da NFe.';
+        case 'serie': 
+          msg = 'Está faltando preencher a SÉRIE da NFe.';
+          methods.setFocus('serie');
           break;
-        case 'natureza_operacao': msg = 'Está faltando preencher a NATUREZA DE OPERAÇÃO da NFe.';
+        case 'natureza_operacao': 
+          msg = 'Está faltando selecionar a NATUREZA DE OPERAÇÃO da NFe.';
+          methods.setFocus('natureza_operacao');
           break;
-        case 'cfop': msg = 'Está faltando preencher o CFOP da NFe.';
+        case 'cfop': 
+          msg = 'Está faltando preencher o CFOP da NFe.';
+          methods.setFocus('cfop');
           break;
         }
 
@@ -283,8 +296,9 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     clearData();
   };
 
-  const handleTabChange = () => {
-    calcTotalNota();
+  const handleTabChange = (index: number) => {
+    setCurrentTab(index);
+    if (index == 2) calcTotalNota();
   };
 
   const verify = (value: any) => {
@@ -384,6 +398,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
           <ModalCloseButton onClick={clearData} />
           <ModalBody>
             <Tabs
+              index={currentTab}
               variant="enclosed"
               colorScheme="gray"
               w="100%"
