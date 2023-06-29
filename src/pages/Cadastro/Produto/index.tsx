@@ -1,4 +1,4 @@
-import { Button, Icon, Tag, Tooltip, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tag, Tr, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAlertProductContext } from '../../../Contexts/AlertDialog/AlertProductContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalProduct } from '../../../Contexts/Modal/ProductContext';
+import { ActionButton } from '../../../components/Form/ActionButton';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
@@ -176,16 +177,18 @@ export function Produto() {
                   </Tag>
                 </TdCustom>
                 <TdCustom style={{ 'textAlign': 'center' }}>
-                  <Tooltip label='Editar' placement='auto-start' hasArrow bg="orange.300">
-                    <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditProduct(data.id)}>
-                      <Icon color="orange.300" as={FiEdit} />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip label='Excluir' placement='auto-start' hasArrow bg="red.400">
-                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
-                      <Icon as={FiTrash2} color="red.400" />
-                    </Button>
-                  </Tooltip>
+                  <ActionButton 
+                    label='Editar'
+                    colorScheme='orange'
+                    action={() => handleEditProduct(data.id)}
+                    icon={FiEdit}
+                  />
+                  <ActionButton 
+                    label='Excluir'
+                    colorScheme='red'
+                    action={() => handleOpenDialog(data.id)}
+                    icon={FiTrash2}
+                  />
                 </TdCustom>
               </Tr>
             )) : ''}
@@ -196,7 +199,7 @@ export function Produto() {
           </Pagination>
         </SearchBox>
         <FormModal seeActive={seeActive} active={active} setActive={setActive} marca={marca} grupo={grupo} getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getProduct} id={id} isEditing={isEditing} />
-        <DeleteAlertDialog label="Produto" deleteFunction={handleDeleteProduct} onClose={onClose} isOpen={isOpen} id={id} />
+        <DeleteAlertDialog label="produto" deleteFunction={handleDeleteProduct} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>
   );

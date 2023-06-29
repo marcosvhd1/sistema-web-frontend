@@ -1,6 +1,7 @@
-import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast } from '@chakra-ui/react';
+import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useModalChangePassword } from '../../Contexts/Modal/ChangePasswordContext';
 import { UsuarioService } from '../../services/api/usuarios/UsuarioService';
 import { userInfos } from '../../utils/header';
@@ -79,8 +80,8 @@ export function ChangePasswordModal() {
             </ModalBody>
             <ModalFooter>
               <Flex justify='space-between' w='100%'>
-                <Button variant='outline' colorScheme="green" type='submit'>Salvar</Button>
-                <Button variant='outline' colorScheme="red" onClick={closeModal} >Cancelar</Button>
+                <Button variant='solid' colorScheme='green' type='submit'><Icon as={FiCheck} mr={1} />Editar</Button>
+                <Button variant='outline' colorScheme='red' onClick={closeModal}><Icon as={FiSlash} mr={1} />Cancelar</Button>
               </Flex>
             </ModalFooter>
           </ModalContent>

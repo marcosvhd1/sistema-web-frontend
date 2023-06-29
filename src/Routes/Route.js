@@ -35,12 +35,20 @@ import { ModalServiceProvider } from '../Contexts/Modal/ServiceContext';
 import { ModalTransportadoraProvider } from '../Contexts/Modal/TransportadoraContext';
 import { ModalUserProvider } from '../Contexts/Modal/UserContext';
 
+import { AlertEmitirNFContextProvider } from '../Contexts/AlertDialog/NotaFiscal/AlertEmitirNFContext';
+import { AlertNotaFiscalContextProvider } from '../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
+import { ContadorProvider } from '../Contexts/ContadorContext';
+import { ModalCFOPProvider } from '../Contexts/Modal/CFOPContext';
 import { ModalConfigProvider } from '../Contexts/Modal/ConfigContext';
-import { ModalNFApoioProvider } from '../Contexts/Modal/NotaFiscal/NFApoioContext';
 import { ModalNFApoioCSTProvider } from '../Contexts/Modal/NotaFiscal/NFApoioCSTContext';
+import { ModalNFApoioProvider } from '../Contexts/Modal/NotaFiscal/NFApoioContext';
 import { ModalNFDuplicataProvider } from '../Contexts/Modal/NotaFiscal/NFDuplicataContext';
 import { ModalNFFormaPagtoProvider } from '../Contexts/Modal/NotaFiscal/NFFormaPagtoContext';
 import { ModalNotaFiscalProvider } from '../Contexts/Modal/NotaFiscal/NotaFiscalContext';
+import { ModalNFCCeProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/NFCCeContext';
+import { ModalNFCancelarProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/NFCancelarContext';
+import { ModalNFInutilizarProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/NFInutilizarContext';
+import { ModalStatusServidorProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/StatusServidorContext';
 import { Cliente } from '../pages/Cadastro/Cliente';
 import { NotaFiscal } from '../pages/Cadastro/NotaFiscal';
 import { Produto } from '../pages/Cadastro/Produto';
@@ -51,14 +59,7 @@ import { Home } from '../pages/Inicio';
 import { Login } from '../pages/Login';
 import { PageNotFound } from '../pages/PageNotFound';
 import { UnauthorizedUser } from '../pages/Unauthorized';
-import { AlertNotaFiscalContextProvider } from '../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
-import { ModalCFOPProvider } from '../Contexts/Modal/CFOPContext';
 import { Usuarios } from '../pages/Usuario';
-import { ModalStatusServidorProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/StatusServidorContext';
-import { ModalNFCancelarProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/NFCancelarContext';
-import { ModalNFInutilizarProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/NFInutilizarContext';
-import { ModalNFCCeProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/NFCCeContext';
-import { ContadorProvider } from '../Contexts/ContadorContext';
 
 const ROLES = {
   'normal': 0,
@@ -114,35 +115,37 @@ export default function MainRoutes() {
                                                                               <AlertProductGroupContextProvider>
                                                                                 <AlertNotaFiscalContextProvider>
                                                                                   <AlertNFProductContextProvider>
-                                                                                    <AlertNFServiceContextProvider>                                                     
+                                                                                    <AlertNFServiceContextProvider>                                                
+                                                                                      <AlertEmitirNFContextProvider>
 
-                                                                                      <ProductGroupProvider>
+                                                                                        <ProductGroupProvider>
 
-                                                                                        <Routes>
-                                                                                          <Route index element={<Login />} />
+                                                                                          <Routes>
+                                                                                            <Route index element={<Login />} />
 
-                                                                                          <Route element={<RequireAuth allowedRoles={[ROLES.admin, ROLES.normal]} />}>
-                                                                                            <Route path="/app" element={<Home />} />
-                                                                                            <Route path="/app/unauthorized" element={<UnauthorizedUser />} />
-                                                                                            <Route element={<RequireEmissor />}>
-                                                                                              <Route path="/app/cadastro/clientes" element={<Cliente />} />
-                                                                                              <Route path="/app/cadastro/produtos" element={<Produto />} />
-                                                                                              <Route path="/app/cadastro/servicos" element={<Servico />} />
-                                                                                              <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
-                                                                                              <Route path="/app/fiscal/nfe" element={<NotaFiscal />} />
+                                                                                            <Route element={<RequireAuth allowedRoles={[ROLES.admin, ROLES.normal]} />}>
+                                                                                              <Route path="/app" element={<Home />} />
+                                                                                              <Route path="/app/unauthorized" element={<UnauthorizedUser />} />
+                                                                                              <Route element={<RequireEmissor />}>
+                                                                                                <Route path="/app/cadastro/clientes" element={<Cliente />} />
+                                                                                                <Route path="/app/cadastro/produtos" element={<Produto />} />
+                                                                                                <Route path="/app/cadastro/servicos" element={<Servico />} />
+                                                                                                <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
+                                                                                                <Route path="/app/fiscal/nfe" element={<NotaFiscal />} />
+                                                                                              </Route>
                                                                                             </Route>
-                                                                                          </Route>
 
-                                                                                          <Route element={<RequireAuth allowedRoles={[ROLES.admin]} />}>
-                                                                                            <Route path='/app/emissor' element={<Emissor />} />
-                                                                                            <Route path='/app/usuarios' element={<Usuarios />} />
-                                                                                          </Route>
+                                                                                            <Route element={<RequireAuth allowedRoles={[ROLES.admin]} />}>
+                                                                                              <Route path='/app/emissor' element={<Emissor />} />
+                                                                                              <Route path='/app/usuarios' element={<Usuarios />} />
+                                                                                            </Route>
 
-                                                                                          <Route path="*" element={<PageNotFound />} />
-                                                                                        </Routes>
+                                                                                            <Route path="*" element={<PageNotFound />} />
+                                                                                          </Routes>
 
-                                                                                      </ProductGroupProvider>
+                                                                                        </ProductGroupProvider>
 
+                                                                                      </AlertEmitirNFContextProvider>                                                
                                                                                     </AlertNFServiceContextProvider>
                                                                                   </AlertNFProductContextProvider>
                                                                                 </AlertNotaFiscalContextProvider>

@@ -1,13 +1,13 @@
-import { Button, Divider, Flex, Icon, Select, Text, Tr, useColorMode } from '@chakra-ui/react';
+import { Button, Divider, Flex, Icon, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { FiTrash2 } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
 import { useModalNFDuplicata } from '../../../../../../../Contexts/Modal/NotaFiscal/NFDuplicataContext';
 import { useModalNFFormaPagto } from '../../../../../../../Contexts/Modal/NotaFiscal/NFFormaPagtoContext';
+import { ActionButton } from '../../../../../../../components/Form/ActionButton';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 import { DataTable } from '../../../../../../../components/Table/DataTable';
-import { TdCustom } from '../../../../../../../components/Table/TdCustom';
 import { INFDuplicata } from '../../../../../../../services/api/notafiscal/NFDuplicata';
 import { INFFormaPagto } from '../../../../../../../services/api/notafiscal/NFFormaPagto';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
@@ -29,7 +29,7 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   const { onOpen: openDuplicata } = useModalNFDuplicata();
   const { colorMode } = useColorMode();
 
-  const formaTdCustomate = (date: string) => {
+  const formatDate = (date: string) => {
     const aux = date.split('-');
     return `${aux[2]}/${aux[1]}/${aux[0]}`;
   };
@@ -105,15 +105,18 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
             <DataTable width='100%' headers={headersForma} trailing={false} mt='3'>
               {formaPagtos !== undefined ? formaPagtos.map((data) => (
                 <Tr key={uuidv4()}>
-                  <TdCustom>{data.forma}</TdCustom>
-                  <TdCustom>{'R$ ' + formatMoney(data.valor)}</TdCustom>
-                  <TdCustom>{data.bandeira}</TdCustom>
-                  <TdCustom>{data.observacao}</TdCustom>
-                  <TdCustom>
-                    <Button variant="ghost" colorScheme="red" onClick={() => handleDeleteForma(data)}>
-                      <Icon as={FiTrash2} color="red.400" />
-                    </Button>
-                  </TdCustom>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.forma}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor)}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.bandeira}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.observacao}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                    <ActionButton 
+                      label='Excluir'
+                      colorScheme='red'
+                      action={() => handleDeleteForma(data)}
+                      icon={FiTrash2}
+                    />
+                  </Td>
                 </Tr>
               )) : ''}
             </DataTable>
@@ -131,14 +134,17 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
             <DataTable width='100%' headers={headersDuplicata} trailing={false} mt='3'>
               {duplicatas !== undefined ? duplicatas.map((data) => (
                 <Tr key={uuidv4()}>
-                  <TdCustom>{data.numero}</TdCustom>
-                  <TdCustom>{formaTdCustomate(data.vencimento)}</TdCustom>
-                  <TdCustom>{'R$ ' + formatMoney(data.valor)}</TdCustom>
-                  <TdCustom>
-                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleDeleteDupli(data)}>
-                      <Icon as={FiTrash2} color="red.400" />
-                    </Button>
-                  </TdCustom>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.numero}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{formatDate(data.vencimento)}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor)}</Td>
+                  <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                    <ActionButton 
+                      label='Excluir'
+                      colorScheme='red'
+                      action={() => handleDeleteDupli(data)}
+                      icon={FiTrash2}
+                    />
+                  </Td>
                 </Tr>
               )) : ''}
             </DataTable>

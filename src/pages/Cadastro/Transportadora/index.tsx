@@ -1,4 +1,4 @@
-import { Button, Icon, Tooltip, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tr, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAlertTransportadoraContext } from '../../../Contexts/AlertDialog/AlertTransportadoraContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalTransportadora } from '../../../Contexts/Modal/TransportadoraContext';
+import { ActionButton } from '../../../components/Form/ActionButton';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
@@ -159,16 +160,18 @@ export function Transportadora() {
                 <TdCustom>{data.cidade}</TdCustom>
                 <TdCustom>{data.uf}</TdCustom>
                 <TdCustom style={{ 'textAlign': 'center' }}>
-                  <Tooltip label='Editar' placement='auto-start' hasArrow bg="orange.300">
-                    <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditTransportadora(data.id)}>
-                      <Icon color="orange.300" as={FiEdit} />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip label='Excluir' placement='auto-start' hasArrow bg="red.400">
-                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
-                      <Icon as={FiTrash2} color="red.400" />
-                    </Button>
-                  </Tooltip>
+                  <ActionButton 
+                    label='Editar'
+                    colorScheme='orange'
+                    action={() => handleEditTransportadora(data.id)}
+                    icon={FiEdit}
+                  />
+                  <ActionButton 
+                    label='Excluir'
+                    colorScheme='red'
+                    action={() => handleOpenDialog(data.id)}
+                    icon={FiTrash2}
+                  />
                 </TdCustom>
               </Tr>
             )) : ''}
@@ -179,7 +182,7 @@ export function Transportadora() {
           </Pagination>
         </SearchBox>
         <FormModal getCod={getLastCod} header={HEADERS} cod={cod} editCod={editCod} refreshPage={getTransportadora} id={id} isEditing={isEditing} />
-        <DeleteAlertDialog label="Transportadora" deleteFunction={handleDeleteTransp} onClose={onClose} isOpen={isOpen} id={id} />
+        <DeleteAlertDialog label="transportadora" deleteFunction={handleDeleteTransp} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>
   );

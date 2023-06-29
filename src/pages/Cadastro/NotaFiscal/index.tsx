@@ -2,24 +2,26 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Tooltip, Tr, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tr, useColorMode, useToast } from '@chakra-ui/react';
 import {
   FiChevronLeft,
   FiChevronRight,
   FiEdit,
+  FiFile,
   FiPrinter,
   FiSend,
   FiSlash,
   FiTrash2
 } from 'react-icons/fi';
 
-import { FcDocument } from 'react-icons/fc';
+import { useAlertEmitirNFContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertEmitirNFContext';
 import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
 import { useContadorContext } from '../../../Contexts/ContadorContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalNotaFiscal } from '../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
 import { useModalNFCCe } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCCeContext';
 import { useModalNFCancelar } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCancelarContext';
+import { ActionButton } from '../../../components/Form/ActionButton';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
@@ -73,6 +75,7 @@ export function NotaFiscal() {
 
   const { getNFDigitacao } = useContadorContext();
   const { idEmissorSelecionado } = useEmissorContext();
+  const { onOpen: openAlertEmitir, onClose: onCloseEmitir, isOpen: isOpenEmitir } = useAlertEmitirNFContext();
   const { onOpen: openAlert, onClose, isOpen } = useAlertNotaFiscalContext();
   const { onOpen: openCancelar } = useModalNFCancelar();
   const { onOpen: openCCe } = useModalNFCCe();
@@ -116,6 +119,11 @@ export function NotaFiscal() {
       arrayPages.push(i);
     }
     setPages(arrayPages);
+  };
+
+  const handleOpenDialogEmitir = (id: number) => {
+    openAlertEmitir();
+    setId(id);
   };
 
   const handleOpenDialog = (id: number) => {
@@ -405,92 +413,63 @@ export function NotaFiscal() {
                   </TdCustom>
                   <TdCustom style={{ width: '20%', textAlign: 'end' }}>
                     {
-                      data.status === 'Em digitação' ? 
-                        <Tooltip label='Emitir' placement='auto-start' hasArrow bg="green.300">
-                          <Button
-                            variant="ghost"
-                            colorScheme="green"
-                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                            w=".5rem"
-                            onClick={() => handleEmitirNF(data.id)}
-                          >
-                            <Icon color="green.300" as={FiSend} />
-                          </Button>
-                        </Tooltip>
+                      data.status === 'Em digitação' ?
+                        <ActionButton 
+                          label='Emitir'
+                          colorScheme='green'
+                          action={() => handleOpenDialogEmitir(data.id)}
+                          icon={FiSend}
+                        />
                         : null
                     }
                     {
                       data.status === 'Emitida' ?
-                        <Tooltip label='Cancelar' placement='auto-start' hasArrow bg="red.400">
-                          <Button
-                            variant="ghost"
-                            colorScheme="red"
-                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                            w=".5rem"
-                            onClick={() => handleOpenModalCancelar(data)}
-                          >
-                            <Icon color="red.400" as={FiSlash} />
-                          </Button>
-                        </Tooltip>
+                        <ActionButton 
+                          label='Cancelar'
+                          colorScheme='red'
+                          action={() => handleOpenModalCancelar(data)}
+                          icon={FiSlash}
+                        />
                         : null
                     }
                     {
                       data.status !== 'Inutilizada' ?
-                        <Tooltip label='Editar' placement='auto-start' hasArrow bg="orange.300">
-                          <Button
-                            variant="ghost"
-                            colorScheme="orange"
-                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                            w=".5rem"
-                            onClick={() => handleEditNF(data.id)}
-                          >
-                            <Icon color="orange.300" as={FiEdit} />
-                          </Button>
-                        </Tooltip>
+                        <ActionButton 
+                          label='Editar'
+                          colorScheme='orange'
+                          action={() => handleEditNF(data.id)}
+                          icon={FiEdit}
+                        />
                         : null
                     }
                     {
                       data.status === 'Emitida' ?
-                        <Tooltip label='Carta de Correção' placement='auto-start' hasArrow bg="blue.300">
-                          <Button 
-                            variant="ghost"
-                            colorScheme="blue"
-                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                            w=".5rem"
-                            onClick={() => handleOpenModalCCe(data)}
-                          >
-                            <Icon color="blue.400" as={FcDocument}/>
-                          </Button> 
-                        </Tooltip>
+                        <ActionButton 
+                          label='Carta de Correção'
+                          colorScheme='blue'
+                          action={() => handleOpenModalCCe(data)}
+                          icon={FiFile}
+                        />
                         : null
                     }
                     {
-                      data.status !== 'Emitida' && data.status !== 'Cancelada' ? 
-                        <Tooltip label='Excluir' placement='auto-start' hasArrow bg="red.400">
-                          <Button
-                            variant="ghost"
-                            colorScheme="red"
-                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                            w=".5rem"
-                            onClick={() => handleOpenDialog(data.id)}
-                          >
-                            <Icon color="red.400" as={FiTrash2} />
-                          </Button>
-                        </Tooltip>
+                      data.status !== 'Emitida' && data.status !== 'Cancelada' ?
+                        <ActionButton 
+                          label='Excluir'
+                          colorScheme='red'
+                          action={() => handleOpenDialog(data.id)}
+                          icon={FiTrash2}
+                        />
                         : null
                     }
                     {
                       data.status !== 'Inutilizada' ?
-                        <Tooltip label='Imprimir' placement='auto-start' hasArrow bg="blue.400">
-                          <Button
-                            variant="ghost"
-                            colorScheme="blue"
-                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                            w=".5rem"
-                          >
-                            <Icon color="blue.400" as={FiPrinter} />
-                          </Button> 
-                        </Tooltip>
+                        <ActionButton 
+                          label='Imprimir'
+                          colorScheme='blue'
+                          action={() => null}
+                          icon={FiPrinter}
+                        />
                         : null
                     }
                   </TdCustom>
@@ -543,7 +522,8 @@ export function NotaFiscal() {
         <ModalCCe 
           data={dataToModal!}
         />
-        <DeleteAlertDialog label="Nota Fiscal" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />
+        <DeleteAlertDialog label="NFe" deleteFunction={handleEmitirNF} onClose={onCloseEmitir} isOpen={isOpenEmitir} id={id} colorScheme='green'/>
+        <DeleteAlertDialog label="NFe" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>
   );
