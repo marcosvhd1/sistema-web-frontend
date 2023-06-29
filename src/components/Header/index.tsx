@@ -33,10 +33,10 @@ export function Header() {
       navigate('/app/fiscal/nfe');
       toast({
         position: 'top',
-        description: `Existem ${quantidadeRegistros} nota(s) em digitação`,
+        description: `Existem ${quantidadeRegistros} nota(s) em digitação!`,
         status: 'info',
         duration: 2000,
-        isClosable: true,
+        isClosable: false,
       });
     } else {
       toast({

@@ -1,21 +1,21 @@
-import { Button, Icon, Td, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tooltip, Tr, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import MainContent from '../../../components/MainContent';
-import { DataTable } from '../../../components/Table/DataTable';
-import { Pagination } from '../../../components/Table/Pagination';
-import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
 import { useAlertTransportadoraContext } from '../../../Contexts/AlertDialog/AlertTransportadoraContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalTransportadora } from '../../../Contexts/Modal/TransportadoraContext';
+import MainContent from '../../../components/MainContent';
+import { DataTable } from '../../../components/Table/DataTable';
+import { Pagination } from '../../../components/Table/Pagination';
+import { TdCustom } from '../../../components/Table/TdCustom';
+import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
 import { ApiException } from '../../../services/api/ApiException';
 import { ITransportadora, TransportadoraService } from '../../../services/api/transportadora/TransportadoraService';
 import { getDecrypted } from '../../../utils/crypto';
 import { FormModal } from './components/Form/FormModal';
 import { SearchBox } from './components/SearchBox';
-import { TdCustom } from '../../../components/Table/TdCustom';
 
 const headers: { key: string, label: string }[] = [
   { key: 'cod', label: 'Código' },
@@ -159,12 +159,16 @@ export function Transportadora() {
                 <TdCustom>{data.cidade}</TdCustom>
                 <TdCustom>{data.uf}</TdCustom>
                 <TdCustom style={{ 'textAlign': 'center' }}>
-                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditTransportadora(data.id)}>
-                    <Icon color="orange.300" as={FiEdit} />
-                  </Button>
-                  <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
-                    <Icon as={FiTrash2} color="red.400" />
-                  </Button>
+                  <Tooltip label='Editar' placement='auto-start' hasArrow bg="orange.300">
+                    <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditTransportadora(data.id)}>
+                      <Icon color="orange.300" as={FiEdit} />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip label='Excluir' placement='auto-start' hasArrow bg="red.400">
+                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
+                      <Icon as={FiTrash2} color="red.400" />
+                    </Button>
+                  </Tooltip>
                 </TdCustom>
               </Tr>
             )) : ''}

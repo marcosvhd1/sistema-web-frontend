@@ -57,7 +57,7 @@ export function FormDadosPrincipais({ isEditing, cfops, shareCFOP }: FormDadosPr
       <Flex w="100%" justify="center" align="center" direction="column" >
         {/* DADOS PRINCIPAIS */}
         <Flex w="100%" mr="4" ml='4' align="center" justify="space-between">
-          <FormContainer width='15%' label='Nº da NF'>
+          <FormContainer width='15%' label='Código'>
             <Input disabled={codBlock} maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cod')} />
           </FormContainer>
 

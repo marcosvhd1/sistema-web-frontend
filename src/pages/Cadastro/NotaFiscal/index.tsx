@@ -2,19 +2,18 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Tr, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tooltip, Tr, useColorMode, useToast } from '@chakra-ui/react';
 import {
   FiChevronLeft,
   FiChevronRight,
   FiEdit,
   FiPrinter,
   FiSend,
+  FiSlash,
   FiTrash2
 } from 'react-icons/fi';
 
-import { FaCopy } from 'react-icons/fa';
 import { FcDocument } from 'react-icons/fc';
-import { MdCancel, MdEmail, MdMenu } from 'react-icons/md';
 import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
 import { useContadorContext } from '../../../Contexts/ContadorContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
@@ -70,9 +69,6 @@ export function NotaFiscal() {
   const [limitRegistros, setLimitRegistros] = useState(5);
   const [pages, setPages] = useState<number[]>([]);
   
-  const [submenuOpenStatus, setSubmenuOpenStatus] = useState<boolean>(false);
-  const [submenuOpenCCe, setSubmenuOpenCCe] = useState<boolean>(false);
-  
   const [prods, setProds] = useState<INFProduct[]>([]);
 
   const { getNFDigitacao } = useContadorContext();
@@ -105,33 +101,13 @@ export function NotaFiscal() {
   }, [totalNotas, limitRegistros]);
 
   const headers: { key: string; label: string }[] = [
-    { key: 'cod', label: 'Número' },
+    { key: 'cod', label: 'Código' },
     { key: 'data_emissao', label: 'Emissão' },
     { key: 'natureza_operacao', label: 'Natureza de Operação' },
     { key: 'destinatario', label: 'Destinatário' },
     { key: 'status', label: 'Status' },
     { key: 'total_nota', label: 'Valor Total' },
   ];
-
-  const closeSubmenuStatus = () => {
-    if (submenuOpenStatus) {
-      setSubmenuOpenStatus(false);
-    }
-  };
-
-  const toggleSubmenuStatus = () => {
-    setSubmenuOpenStatus(!submenuOpenStatus);
-  };
-
-  const closeSubmenuCCe = () => {
-    if (submenuOpenCCe) {
-      setSubmenuOpenCCe(false);
-    }
-  };
-
-  const toggleSubmenuCCe = () => {
-    setSubmenuOpenCCe(!submenuOpenCCe);
-  };
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalNotas / limitRegistros);
@@ -430,110 +406,91 @@ export function NotaFiscal() {
                   <TdCustom style={{ width: '20%', textAlign: 'end' }}>
                     {
                       data.status === 'Em digitação' ? 
-                        <Button
-                          variant="ghost"
-                          colorScheme="green"
-                          fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                          w="2rem"
-                          onClick={() => handleEmitirNF(data.id)}
-                        >
-                          <Icon color="green.300" as={FiSend} />
-                        </Button>
+                        <Tooltip label='Emitir' placement='auto-start' hasArrow bg="green.300">
+                          <Button
+                            variant="ghost"
+                            colorScheme="green"
+                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                            w=".5rem"
+                            onClick={() => handleEmitirNF(data.id)}
+                          >
+                            <Icon color="green.300" as={FiSend} />
+                          </Button>
+                        </Tooltip>
                         : null
                     }
                     {
-                      data.status !== 'Inutilizada' ? 
-                        <Button
-                          variant="ghost"
-                          colorScheme="orange"
-                          fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                          w="2rem"
-                          onClick={() => handleEditNF(data.id)}
-                        >
-                          <Icon color="orange.300" as={FiEdit} />
-                        </Button>
+                      data.status === 'Emitida' ?
+                        <Tooltip label='Cancelar' placement='auto-start' hasArrow bg="red.400">
+                          <Button
+                            variant="ghost"
+                            colorScheme="red"
+                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                            w=".5rem"
+                            onClick={() => handleOpenModalCancelar(data)}
+                          >
+                            <Icon color="red.400" as={FiSlash} />
+                          </Button>
+                        </Tooltip>
+                        : null
+                    }
+                    {
+                      data.status !== 'Inutilizada' ?
+                        <Tooltip label='Editar' placement='auto-start' hasArrow bg="orange.300">
+                          <Button
+                            variant="ghost"
+                            colorScheme="orange"
+                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                            w=".5rem"
+                            onClick={() => handleEditNF(data.id)}
+                          >
+                            <Icon color="orange.300" as={FiEdit} />
+                          </Button>
+                        </Tooltip>
+                        : null
+                    }
+                    {
+                      data.status === 'Emitida' ?
+                        <Tooltip label='Carta de Correção' placement='auto-start' hasArrow bg="blue.300">
+                          <Button 
+                            variant="ghost"
+                            colorScheme="blue"
+                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                            w=".5rem"
+                            onClick={() => handleOpenModalCCe(data)}
+                          >
+                            <Icon color="blue.400" as={FcDocument}/>
+                          </Button> 
+                        </Tooltip>
                         : null
                     }
                     {
                       data.status !== 'Emitida' && data.status !== 'Cancelada' ? 
-                        <Button
-                          variant="ghost"
-                          colorScheme="red"
-                          fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                          w="2rem"
-                          onClick={() => handleOpenDialog(data.id)}
-                        >
-                          <Icon as={FiTrash2} color="red.400" />
-                        </Button>
+                        <Tooltip label='Excluir' placement='auto-start' hasArrow bg="red.400">
+                          <Button
+                            variant="ghost"
+                            colorScheme="red"
+                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                            w=".5rem"
+                            onClick={() => handleOpenDialog(data.id)}
+                          >
+                            <Icon color="red.400" as={FiTrash2} />
+                          </Button>
+                        </Tooltip>
                         : null
                     }
                     {
-                      data.status !== 'Inutilizada' ? 
-                        <Button
-                          variant="ghost"
-                          colorScheme="blue"
-                          fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                          w="2rem"
-                        >
-                          <Icon as={FiPrinter} color="blue.400" />
-                        </Button> 
-                        : null
-                    }
-                    {
-                      data.status !== 'Inutilizada' && data.status !== 'Em digitação' ? 
-                        <Menu>
-                          <MenuButton
-                            as={Button} 
-                            variant="ghost" 
-                            colorScheme="blue" 
-                            w="2rem"
-                            padding={0}
+                      data.status !== 'Inutilizada' ?
+                        <Tooltip label='Imprimir' placement='auto-start' hasArrow bg="blue.400">
+                          <Button
+                            variant="ghost"
+                            colorScheme="blue"
+                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                            w=".5rem"
                           >
-                            <Icon as={MdMenu} color='blue.400' />
-                          </MenuButton>
-                          <MenuList maxW="1rem">
-                            {
-                              data.status === 'Emitida' ? 
-                                <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={() => handleOpenModalCancelar(data)}><Icon mr={2} as={MdCancel}/>Cancelar NFe</MenuItem>
-                                : null
-                            }
-                            <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={MdEmail}/>Enviar via Email</MenuItem>
-                            {
-                              data.status === 'Emitida' ? 
-                                <Menu isOpen={submenuOpenCCe} placement="left" onClose={closeSubmenuCCe}>
-                                  <MenuButton 
-                                    as={MenuItem}
-                                    color={colorMode === 'light' ? 'blue.600' : 'blue.300'}
-                                    onClick={toggleSubmenuCCe}
-                                  >
-                                    <Icon as={FcDocument} mr={2}/>Carta de Correção
-                                  </MenuButton>
-                                  <MenuList>
-                                    <MenuItem color={colorMode === 'light' ? 'green.600' : 'green.300'} onClick={() => handleOpenModalCCe(data)}><Icon mr={2} as={FiSend}/>Emitir CCe</MenuItem>
-                                    <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FiPrinter}/>Imprimir CCe</MenuItem>
-                                  </MenuList>
-                                </Menu>
-                                : null
-                            }
-                            {/* <MenuItem color='orange.300'><Icon mr={2} as={MdReportProblem}/>Resolver Duplicidade</MenuItem> */}
-                            {/* <Menu isOpen={submenuOpenStatus} placement="left" onClose={closeSubmenuStatus}>
-                          <MenuButton 
-                            as={MenuItem}
-                            color={colorMode === 'light' ? 'blue.600' : 'blue.300'}
-                            onClick={toggleSubmenuStatus}
-                          >
-                            <Icon as={FiEdit} mr={2}/>Alterar Status
-                          </MenuButton>
-                          <MenuList>
-                            <MenuItem>Em digitação</MenuItem>
-                            <MenuItem color={colorMode === 'light' ? 'green.600' : 'green.300'}>Enviada</MenuItem>
-                            <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'}>Cancelada</MenuItem>
-                            <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}>Inutilizada</MenuItem>
-                          </MenuList>
-                        </Menu> */}
-                            <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaCopy}/>Espelhar NFe</MenuItem>
-                          </MenuList>
-                        </Menu>
+                            <Icon color="blue.400" as={FiPrinter} />
+                          </Button> 
+                        </Tooltip>
                         : null
                     }
                   </TdCustom>

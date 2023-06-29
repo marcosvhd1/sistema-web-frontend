@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Td, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tooltip, Tr, useToast } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
 
 import MainContent from '../../../components/MainContent';
@@ -18,8 +18,8 @@ import { ClientService, IClient } from '../../../services/api/clientes/ClientSer
 import { useAlertClientContext } from '../../../Contexts/AlertDialog/AlertClientContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalClient } from '../../../Contexts/Modal/ClientContext';
-import { userInfos } from '../../../utils/header';
 import { TdCustom } from '../../../components/Table/TdCustom';
+import { userInfos } from '../../../utils/header';
 
 
 export function Cliente() {
@@ -153,12 +153,16 @@ export function Cliente() {
                 <TdCustom>{data.cidade}</TdCustom>
                 <TdCustom>{data.uf}</TdCustom>
                 <TdCustom style={{ 'textAlign': 'center', 'maxWidth': '5rem' }}>
-                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditClient(data.id)}>
-                    <Icon color="orange.300" as={FiEdit} />
-                  </Button>
-                  <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
-                    <Icon as={FiTrash2} color="red.400" />
-                  </Button>
+                  <Tooltip label='Editar' placement='auto-start' hasArrow bg="orange.300">
+                    <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditClient(data.id)}>
+                      <Icon color="orange.300" as={FiEdit} />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip label='Excluir' placement='auto-start' hasArrow bg="red.400">
+                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
+                      <Icon as={FiTrash2} color="red.400" />
+                    </Button>
+                  </Tooltip>
                 </TdCustom>
               </Tr>
             )) : ''}

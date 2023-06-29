@@ -499,7 +499,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between" align="flex-end">
-              <Button variant="solid" colorScheme="green" type="submit" disabled={methods.getValues('status') == 'Emitida' || formSubmitted}>
+              <Button variant="solid" colorScheme="green" type="submit" disabled={methods.getValues('status') != 'Em digitação' || formSubmitted}>
                 <Icon as={FiCheck} mr={1} />
                 {isEditing ? 'Editar' : 'Cadastrar'}
               </Button>

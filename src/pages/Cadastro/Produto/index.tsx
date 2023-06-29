@@ -1,4 +1,4 @@
-import { Button, Icon, Tag, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tag, Tooltip, Tr, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -176,12 +176,16 @@ export function Produto() {
                   </Tag>
                 </TdCustom>
                 <TdCustom style={{ 'textAlign': 'center' }}>
-                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditProduct(data.id)}>
-                    <Icon color="orange.300" as={FiEdit} />
-                  </Button>
-                  <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
-                    <Icon as={FiTrash2} color="red.400" />
-                  </Button>
+                  <Tooltip label='Editar' placement='auto-start' hasArrow bg="orange.300">
+                    <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditProduct(data.id)}>
+                      <Icon color="orange.300" as={FiEdit} />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip label='Excluir' placement='auto-start' hasArrow bg="red.400">
+                    <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
+                      <Icon as={FiTrash2} color="red.400" />
+                    </Button>
+                  </Tooltip>
                 </TdCustom>
               </Tr>
             )) : ''}
