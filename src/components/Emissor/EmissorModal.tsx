@@ -16,7 +16,6 @@ export function EmissorModal() {
   const { getNFDigitacao } = useContadorContext();
 
   const userInfo = userInfos();
-
   const idUser = userInfo.infos?.idUser;
 
   const handleSaveEmissor = () => {
@@ -100,8 +99,9 @@ export function EmissorModal() {
           </TableContainer>
         </ModalBody>
         <ModalFooter>
-          <Flex w="100%" justify="flex-start" >
+          <Flex w="100%" justify="space-between">
             <Button variant='solid' colorScheme="green" onClick={handleSaveEmissor}><Icon as={FiCheck} mr={1} />Selecionar</Button>
+            <Button variant='outline' colorScheme="red" disabled={idEmissorSelecionado === undefined} onClick={closeModal}><Icon as={FiSlash} mr={1} />Cancelar</Button>
           </Flex>
         </ModalFooter>
       </ModalContent>

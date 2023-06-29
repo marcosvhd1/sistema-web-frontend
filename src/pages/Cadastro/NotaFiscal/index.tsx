@@ -55,8 +55,9 @@ export function NotaFiscal() {
   const [data, setData] = useState<INotaFiscal[]>([]);
   const [dataToModal, setDataToModal] = useState<INotaFiscal>();
   
-  const [filter, setFilter] = useState<string>('cod');
+  const [filter, setFilter] = useState<string>('');
   const [filterByStatus, setFilterByStatus] = useState<string>('');
+  const [filterByDate, setFilterByDate] = useState<string>('');
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
   
@@ -166,6 +167,7 @@ export function NotaFiscal() {
       limitRegistros,
       filter,
       filterByStatus,
+      filterByDate,
       description,
       startDate,
       endDate,
@@ -395,6 +397,7 @@ export function NotaFiscal() {
           getNotasFiscaisByFilter={getNF}
           stateFilter={setFilter}
           stateFilterByStatus={setFilterByStatus}
+          stateFilterByDate={setFilterByDate}
           setIsEditing={setIsEditing}
           startDate={startDate}
           endDate={endDate}
