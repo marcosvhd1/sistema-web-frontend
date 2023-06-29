@@ -24,6 +24,10 @@ export function ContadorProvider({ children }: ContadorContextProps) {
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
 
+  useEffect(() => {
+    getNFDigitacao();
+  }, [idEmissorSelecionado]);
+
   const getNFDigitacao = () => {
     NotaFiscalService.getNFDigitacao(idEmissorSelecionado, HEADERS).then((result) => {
       if (result instanceof ApiException)  console.log(result.message);
