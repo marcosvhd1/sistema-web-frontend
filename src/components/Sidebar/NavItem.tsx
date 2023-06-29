@@ -15,7 +15,7 @@ interface NavItemProps {
 export function NavItem({ title, icon, rota, click }: NavItemProps) {
   const { mdSize, smSize } = useContext(SizeContext);
   const { navSize } = useContext(SidebarContext);
-  const SwitchColor = useColorModeValue('#FFEBCD', 'gray.600');
+  const SwitchColor = useColorModeValue('gray.300', 'gray.600');
 
   return (
     <Flex
@@ -41,7 +41,7 @@ export function NavItem({ title, icon, rota, click }: NavItemProps) {
             >
               <Flex align="center">
                 <Icon as={icon} color="#DAA520" fontSize={navSize == 'small' ? '2xl' : 'xl'} />
-                <Text ml={5} fontFamily="Roboto" fontSize={mdSize[0] ? 'small' : 'xl'} display={!smSize[0] ? 'flex-start' : navSize == 'small' ? 'none' : 'flex'}>{title}</Text>
+                <Text ml={5} fontFamily="Roboto" fontSize={mdSize[0] ? 'small' : 'md'} display={!smSize[0] ? 'flex-start' : navSize == 'small' ? 'none' : 'flex'}>{title}</Text>
               </Flex>
             </MenuButton>
           </Link>

@@ -1,10 +1,11 @@
 import { Badge, Box, Flex } from '@chakra-ui/react';
 import { FiBell } from 'react-icons/fi';
-import { useContadorContext } from '../../Contexts/ContadorContext';
 
-export function BellWithBadge() {
-  const { quantidadeRegistros } = useContadorContext();
+interface BellWithBadgeProps {
+  qtd: number;
+}
 
+export function BellWithBadge({ qtd }: BellWithBadgeProps) {
   return (
     <Flex alignItems="center">
       <Box position="relative">
@@ -16,7 +17,7 @@ export function BellWithBadge() {
           right="-8px"
           borderRadius="full"
         >
-          {quantidadeRegistros > 0 ? quantidadeRegistros : null}
+          {qtd > 0 ? qtd : null}
         </Badge>
       </Box>
     </Flex>
