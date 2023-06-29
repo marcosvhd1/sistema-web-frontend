@@ -133,7 +133,7 @@ export function ModalConfig() {
         motionPreset='slideInBottom'
         isCentered
         scrollBehavior='inside'
-        size={{md: '3xl', lg: '4xl'}}
+        size="5xl"
       >
         <ModalOverlay />
         <ModalContent>

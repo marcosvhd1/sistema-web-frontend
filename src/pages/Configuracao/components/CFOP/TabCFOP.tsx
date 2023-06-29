@@ -11,6 +11,7 @@ import { useModalCFOP } from '../../../../Contexts/Modal/CFOPContext';
 import { userInfos } from '../../../../utils/header';
 import { ApiException } from '../../../../services/api/ApiException';
 import { useForm, FormProvider } from 'react-hook-form';
+import { TdCustom } from '../../../../components/Table/TdCustom';
 
 export function TabCFOP() {
   const methods = useForm<ICFOP>();
@@ -109,17 +110,17 @@ export function TabCFOP() {
         <DataTable width='100%' headers={headers} mt="5">
           {cfops !== undefined ? cfops.map((data) => (
             <Tr key={uuidv4()}>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.natureza}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cfop_dentro}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cfop_fora}</Td>
-              <Td style={{ 'textAlign': 'center' }}>
+              <TdCustom>{data.natureza}</TdCustom>
+              <TdCustom>{data.cfop_dentro}</TdCustom>
+              <TdCustom>{data.cfop_fora}</TdCustom>
+              <TdCustom style={{ 'textAlign': 'center' }}>
                 <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => openModalEdit(data.id)}>
                   <Icon color="orange.300" as={FiEdit} />
                 </Button>
                 <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleDeleteCFOP(data.id)}>
                   <Icon as={FiTrash2} color="red.400" />
                 </Button>
-              </Td>
+              </TdCustom>
             </Tr>
           )) : ''}
         </DataTable>

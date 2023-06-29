@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Td, Tr, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Tr, useColorMode, useToast } from '@chakra-ui/react';
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -16,6 +16,7 @@ import { FaCopy } from 'react-icons/fa';
 import { FcDocument } from 'react-icons/fc';
 import { MdCancel, MdEmail, MdMenu } from 'react-icons/md';
 import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
+import { useContadorContext } from '../../../Contexts/ContadorContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
 import { useModalNotaFiscal } from '../../../Contexts/Modal/NotaFiscal/NotaFiscalContext';
 import { useModalNFCCe } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFCCeContext';
@@ -23,6 +24,7 @@ import { useModalNFCancelar } from '../../../Contexts/Modal/NotaFiscal/Sefaz/NFC
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
+import { TdCustom } from '../../../components/Table/TdCustom';
 import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
 import { ApiException } from '../../../services/api/ApiException';
 import { ClientService } from '../../../services/api/clientes/ClientService';
@@ -46,7 +48,6 @@ import { ModalNotaFiscal } from './components/Form/FormIndex';
 import { ModalCCe } from './components/ModalCCe';
 import { ModalCancelar } from './components/ModalCancelar';
 import { SearchBox } from './components/SearchBox';
-import { useContadorContext } from '../../../Contexts/ContadorContext';
 
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
@@ -104,8 +105,8 @@ export function NotaFiscal() {
   }, [totalNotas, limitRegistros]);
 
   const headers: { key: string; label: string }[] = [
-    { key: 'data_emissao', label: 'Emissão' },
     { key: 'cod', label: 'Número' },
+    { key: 'data_emissao', label: 'Emissão' },
     { key: 'natureza_operacao', label: 'Natureza de Operação' },
     { key: 'destinatario', label: 'Destinatário' },
     { key: 'status', label: 'Status' },
@@ -408,25 +409,25 @@ export function NotaFiscal() {
             {data !== undefined
               ? data.map((data) => (
                 <Tr onDoubleClick={() => handleEditNF(data.id)} bgColor={rowColor(data.status)}  key={data.id}>
-                  <Td>
-                    {formatDate(data.data_emissao.toString())}
-                  </Td>
-                  <Td>
+                  <TdCustom style={{ width: '5%' }}>
                     {data.cod}
-                  </Td>
-                  <Td>
+                  </TdCustom>
+                  <TdCustom style={{ width: '10%' }}>
+                    {formatDate(data.data_emissao.toString())}
+                  </TdCustom>
+                  <TdCustom style={{ width: '20%' }}>
                     {data.natureza_operacao}
-                  </Td>
-                  <Td>
+                  </TdCustom>
+                  <TdCustom style={{ width: '20%' }}>
                     {data.nome_destinatario}
-                  </Td>
-                  <Td>
+                  </TdCustom>
+                  <TdCustom style={{ width: '10%' }}>
                     {data.status}
-                  </Td>
-                  <Td>
+                  </TdCustom>
+                  <TdCustom style={{ width: '10%' }}>
                     {'R$ ' + formatMoney(data.total_nota)}
-                  </Td>
-                  <Td style={{ textAlign: 'end' }}>
+                  </TdCustom>
+                  <TdCustom style={{ width: '20%', textAlign: 'end' }}>
                     {
                       data.status === 'Em digitação' ? 
                         <Button
@@ -479,7 +480,7 @@ export function NotaFiscal() {
                         : null
                     }
                     {
-                      data.status !== 'Inutilizada' ? 
+                      data.status !== 'Inutilizada' && data.status !== 'Em digitação' ? 
                         <Menu>
                           <MenuButton
                             as={Button} 
@@ -490,7 +491,7 @@ export function NotaFiscal() {
                           >
                             <Icon as={MdMenu} color='blue.400' />
                           </MenuButton>
-                          <MenuList>
+                          <MenuList maxW="1rem">
                             {
                               data.status === 'Emitida' ? 
                                 <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={() => handleOpenModalCancelar(data)}><Icon mr={2} as={MdCancel}/>Cancelar NFe</MenuItem>
@@ -535,7 +536,7 @@ export function NotaFiscal() {
                         </Menu>
                         : null
                     }
-                  </Td>
+                  </TdCustom>
                 </Tr>
               ))
               : ''}

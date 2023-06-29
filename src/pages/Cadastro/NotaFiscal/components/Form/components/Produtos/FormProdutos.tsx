@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Td, Tr } from '@chakra-ui/react';
+import { Button, Flex, Icon, Tr } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAlertNFProductContext } from '../../../../../../../Contexts/AlertDialog/NotaFiscal/AlertNFProductContext';
 import { useModalNFProduct } from '../../../../../../../Contexts/Modal/NotaFiscal/NFProductContext';
 import { DataTable } from '../../../../../../../components/Table/DataTable';
+import { TdCustom } from '../../../../../../../components/Table/TdCustom';
 import { DeleteAlertDialog } from '../../../../../../../components/Utils/DeleteAlertDialog';
 import { INFProduct } from '../../../../../../../services/api/notafiscal/NFProduct';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
@@ -247,23 +248,23 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
         <DataTable width='100%' headers={headers} mt="5">
           {produtos !== undefined ? produtos.map((data, index) => (
             <Tr key={uuidv4()}>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.produto.nprod).slice(-4)}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.produto.descricao}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.produto.ncm}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.produto.cfop}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.produto.cst_icms}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.produto.un}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.quantidade}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor_unitario)}</Td>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor_total)}</Td>
-              <Td style={{ 'textAlign': 'center' }}>
+              <TdCustom>{data.produto.nprod}</TdCustom>
+              <TdCustom>{data.produto.descricao}</TdCustom>
+              <TdCustom>{data.produto.ncm}</TdCustom>
+              <TdCustom>{data.produto.cfop}</TdCustom>
+              <TdCustom>{data.produto.cst_icms}</TdCustom>
+              <TdCustom>{data.produto.un}</TdCustom>
+              <TdCustom>{data.quantidade}</TdCustom>
+              <TdCustom>{'R$ ' + formatMoney(data.valor_unitario)}</TdCustom>
+              <TdCustom>{'R$ ' + formatMoney(data.valor_total)}</TdCustom>
+              <TdCustom style={{ 'textAlign': 'center' }}>
                 <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => openModalEdit(index)}>
                   <Icon color="orange.300" as={FiEdit} />
                 </Button>
                 <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => openAlertDeleteProd(data)}>
                   <Icon as={FiTrash2} color="red.400" />
                 </Button>
-              </Td>
+              </TdCustom>
             </Tr>
           )) : ''}
         </DataTable>

@@ -55,46 +55,57 @@ export function SearchBox({ children, setFilter, getProduct, getProductByGroup, 
 
   return (
     <form onSubmit={handleSubmit(HandleGetProductByFilter)}>
-      <Flex w="100%" justify="center" align="center" mt={{base: '2', md: '2', lg: '10'}} direction="column" >
-        <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
+      <Flex w="100%" justify="center" align="center" mt={{ base: '2', md: '2', lg: '10' }} direction="column">
+        <Flex w="95%" justify="space-between" align="center">
+          <Flex w="20%" justify="center" align="center">
+          </Flex>
+          <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
+          <Flex w="20%" justify="flex-end" align="center">
+            <Button variant="solid" colorScheme="green" onClick={openModal} mr={3}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
+          </Flex>
+        </Flex>
         <Flex w="95%" m="4" align="center" justify="space-between">
-          <Flex w="80%" justify="center" align="center">
-            <FormContainer label='Buscar por' width="20%" mr='3'>
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => setFilter(e.target.value)}>
-                <option value='descricao'>Descrição</option>
-                <option value='nprod'>Código</option>
-                <option value='referencia'>Referência</option>
-                <option value='marca'>Marca</option>
-                <option value='ncm'>NCM</option>
-              </Select>
-            </FormContainer>
-            <FormContainer label='' width="40%" mr='3' mt='7'>
-              <Input type="text" placeholder="Localizar..." maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('description')} />
-            </FormContainer>
-            <FormContainer label='Grupo' width="20%" mr='3'>
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('group')}>
-                {
-                  data != undefined ? data.map((data) => (
-                    data.tipo.toUpperCase() === 'GRUPO'
-                      ?
-                      <option key={data.id} id={data.descricao} value={data.descricao}>{data.descricao}</option>
+          <Flex w="50%" justify="center" align="center" mr='3'>
+            <Flex w="100%" justify="flex-start" align="center">
+              <FormContainer label='Buscar por' width="25%" mr='3'>
+                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => setFilter(e.target.value)}>
+                  <option value='nprod'>Código</option>
+                  <option value='descricao'>Descrição</option>
+                  <option value='referencia'>Referência</option>
+                  <option value='marca'>Marca</option>
+                  <option value='ncm'>NCM</option>
+                </Select>
+              </FormContainer>
+              <FormContainer label='' width="50%" mr='3' mt='7'>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." type="text" {...register('description')} />
+              </FormContainer>
+              <FormContainer label='Grupo' width="25%">
+                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('group')}>
+                  {
+                    data != undefined ? data.map((data) => (
+                      data.tipo.toUpperCase() === 'GRUPO'
+                        ?
+                        <option key={data.id} id={data.descricao} value={data.descricao}>{data.descricao}</option>
+                        :
+                        ''
+                    ))
                       :
                       ''
-                  ))
-                    :
-                    ''
-                }
-              </Select>
-            </FormContainer>
-            <Button type="submit" mt={7} mr={3}><Icon as={FiSearch} onClick={getDados} /></Button>
-            <Checkbox size='lg' mx='2' mt={7} onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
-            <Text w='20%' mt={7} mr={5} onClick={handleSeeActiveProducts}>Visualizar inativos</Text>
+                  }
+                </Select>
+              </FormContainer>
+            </Flex>
           </Flex>
-          <Button mt={7} variant="solid" onClick={openModal} colorScheme="green"><Icon mr={2} as={MdAdd} />Cadastrar</Button>
+          <Flex w="50%" justify="flex-start" align="center">
+            <Button type="submit" w="10%" mt={7} variant="solid" colorScheme="blue" onClick={getDados} mr={3}>
+              <Icon as={FiSearch} />
+            </Button>
+            <Checkbox size='lg' mt={7} mr={2} onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
+            <Text w='20%' mt={7} onClick={handleSeeActiveProducts}>Visualizar inativos</Text>
+          </Flex>
         </Flex>
         {children}
       </Flex>
     </form >
-
   );
 }

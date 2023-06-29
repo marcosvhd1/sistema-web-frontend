@@ -1,4 +1,4 @@
-import { Button, Icon, Tag, Td, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tag, Tr, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -9,6 +9,7 @@ import { useModalProduct } from '../../../Contexts/Modal/ProductContext';
 import MainContent from '../../../components/MainContent';
 import { DataTable } from '../../../components/Table/DataTable';
 import { Pagination } from '../../../components/Table/Pagination';
+import { TdCustom } from '../../../components/Table/TdCustom';
 import { DeleteAlertDialog } from '../../../components/Utils/DeleteAlertDialog';
 import { ApiException } from '../../../services/api/ApiException';
 import { IProduct, ProductService } from '../../../services/api/produtos/ProductService';
@@ -21,10 +22,8 @@ const headers: { key: string, label: string }[] = [
   { key: 'id', label: 'Código' },
   { key: 'descricao', label: 'Descrição' },
   { key: 'preco', label: 'Preço' },
-  { key: 'referencia', label: 'Referência' },
   { key: 'marca', label: 'Marca' },
   { key: 'grupo', label: 'Grupo' },
-  { key: 'un', label: 'UN' },
   { key: 'status', label: 'Status' }
 ];
 
@@ -38,7 +37,7 @@ export function Produto() {
   const { onOpen: openEditModal } = useModalProduct();
   /// pagination and search by filter
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [filter, setFilter] = useState<string>('descricao');
+  const [filter, setFilter] = useState<string>('nprod');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
@@ -166,26 +165,24 @@ export function Produto() {
           <DataTable headers={headers}>
             {data != undefined ? data.map((data) => (
               <Tr onDoubleClick={() => handleEditProduct(data.id)} key={data.id}>
-                <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.nprod).slice(-4)}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.preco)}</Td>
-                <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.referencia}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.marca}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.grupo}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.un}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                <TdCustom style={{ width: '5%' }}>{data.nprod}</TdCustom>
+                <TdCustom>{data.descricao}</TdCustom>
+                <TdCustom>{'R$ ' + formatMoney(data.preco)}</TdCustom>
+                <TdCustom style={{ width: '10%' }}>{data.marca}</TdCustom>
+                <TdCustom style={{ width: '10%' }}>{data.grupo}</TdCustom>
+                <TdCustom>
                   <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
                     {data.status}
                   </Tag>
-                </Td>
-                <Td style={{ 'textAlign': 'center' }}>
+                </TdCustom>
+                <TdCustom style={{ 'textAlign': 'center' }}>
                   <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditProduct(data.id)}>
                     <Icon color="orange.300" as={FiEdit} />
                   </Button>
                   <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
                     <Icon as={FiTrash2} color="red.400" />
                   </Button>
-                </Td>
+                </TdCustom>
               </Tr>
             )) : ''}
           </DataTable>

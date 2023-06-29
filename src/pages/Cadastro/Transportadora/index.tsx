@@ -15,6 +15,7 @@ import { ITransportadora, TransportadoraService } from '../../../services/api/tr
 import { getDecrypted } from '../../../utils/crypto';
 import { FormModal } from './components/Form/FormModal';
 import { SearchBox } from './components/SearchBox';
+import { TdCustom } from '../../../components/Table/TdCustom';
 
 const headers: { key: string, label: string }[] = [
   { key: 'cod', label: 'Código' },
@@ -34,7 +35,7 @@ export function Transportadora() {
   const { onOpen: openEditModal } = useModalTransportadora();
   /// pagination and search by filter
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [filter, setFilter] = useState<string>('razao');
+  const [filter, setFilter] = useState<string>('cod');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
@@ -152,19 +153,19 @@ export function Transportadora() {
           <DataTable headers={headers}>
             {data !== undefined ? data.map((data) => (
               <Tr onDoubleClick={() => handleEditTransportadora(data.id)} key={data.id}>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cidade}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.uf}</Td>
-                <Td style={{ 'textAlign': 'center' }}>
+                <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
+                <TdCustom>{data.razao}</TdCustom>
+                <TdCustom>{data.cnpjcpf}</TdCustom>
+                <TdCustom>{data.cidade}</TdCustom>
+                <TdCustom>{data.uf}</TdCustom>
+                <TdCustom style={{ 'textAlign': 'center' }}>
                   <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditTransportadora(data.id)}>
                     <Icon color="orange.300" as={FiEdit} />
                   </Button>
                   <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
                     <Icon as={FiTrash2} color="red.400" />
                   </Button>
-                </Td>
+                </TdCustom>
               </Tr>
             )) : ''}
           </DataTable>

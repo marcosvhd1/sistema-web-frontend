@@ -82,7 +82,7 @@ export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod,
         <Flex direction="column" w="50%" mr={6}>
           <Flex gap="2">
             <FormContainer label="Código" width="5rem">
-              <Input maxLength={255} id="nprod" type="text" w="5rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('nprod')} />
+              <Input maxLength={255} id="nprod" type="text" w="5rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isReadOnly value={isEditing ? editCod : cod} {...register('nprod')} />
             </FormContainer>
             <FormContainer label="Descrição">
               <Input maxLength={500} id="descricao" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('descricao')} isRequired />

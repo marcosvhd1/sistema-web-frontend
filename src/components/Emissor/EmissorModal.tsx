@@ -1,11 +1,12 @@
-import { Button, Checkbox, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableContainer, Tag, Tbody, Td, Th, Thead, Tr, useToast } from '@chakra-ui/react';
+import { Button, Checkbox, Flex, Icon, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableContainer, Tag, Tbody, Th, Thead, Tr, useToast } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { useContadorContext } from '../../Contexts/ContadorContext';
 import { useEmissorContext } from '../../Contexts/EmissorProvider';
 import { useModalEmissor } from '../../Contexts/Modal/EmissorContext';
 import { userInfos } from '../../utils/header';
-import { useContadorContext } from '../../Contexts/ContadorContext';
+import { TdCustom } from '../Table/TdCustom';
 
 export function EmissorModal() {
   const { onClose, isOpen } = useModalEmissor();
@@ -76,7 +77,7 @@ export function EmissorModal() {
               <Tbody>
                 { userEmissores.map((data: any) => (
                   <Tr key={data.id}>
-                    <Td style={{ 'width': '.1rem' }} >
+                    <TdCustom style={{ 'width': '.1rem' }} >
                       <Checkbox
                         isChecked={data.id === idEmissorSelecionado}
                         isDisabled={data.status === 'Inativo'}
@@ -84,14 +85,14 @@ export function EmissorModal() {
                         id={data.id}
                       >
                       </Checkbox>
-                    </Td>
-                    <Td>{data.razao}</Td>
-                    <Td>{data.cnpjcpf}</Td>
-                    <Td style={{ 'textAlign': 'center' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                    </TdCustom>
+                    <TdCustom>{data.razao}</TdCustom>
+                    <TdCustom>{data.cnpjcpf}</TdCustom>
+                    <TdCustom style={{ 'textAlign': 'center' }}>
                       <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
                         {data.status}
                       </Tag>
-                    </Td>
+                    </TdCustom>
                   </Tr>
                 ))}
               </Tbody>

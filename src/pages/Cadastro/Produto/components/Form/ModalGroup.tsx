@@ -10,6 +10,7 @@ import { useModalGroup } from '../../../../../Contexts/Modal/GroupConxtext';
 import { useGroupContext } from '../../../../../Contexts/ProductGroupContext';
 import { ApiException } from '../../../../../services/api/ApiException';
 import { GroupService, IGroup } from '../../../../../services/api/produtos/GroupService';
+import { TdCustom } from '../../../../../components/Table/TdCustom';
 
 interface IGroupModal {
   isMarca: boolean
@@ -176,15 +177,15 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
                         data.tipo.toUpperCase() === 'MARCA'
                           ?
                           <>
-                            <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao!}</Td>
-                            <Td style={{ 'textAlign': 'center', 'width': '1rem' }}>
+                            <TdCustom>{data.descricao!}</TdCustom>
+                            <TdCustom style={{ 'textAlign': 'center', 'width': '1rem' }}>
                               <Button onClick={() => handleEditProductGroup(data.id)} variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
                                 <Icon color="orange.300" as={FiEdit} />
                               </Button>
                               <Button onClick={() => handleOpenDialog(data.id)} variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
                                 <Icon as={FiTrash2} color="red.400" />
                               </Button>
-                            </Td>
+                            </TdCustom>
                           </>
                           :
                           <></>
@@ -199,15 +200,15 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
                         data.tipo.toUpperCase() === 'GRUPO'
                           ?
                           <>
-                            <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.descricao}</Td>
-                            <Td style={{ 'textAlign': 'center' }}>
+                            <TdCustom style={{ 'width': '1rem' }}>{data.descricao}</TdCustom>
+                            <TdCustom style={{ 'textAlign': 'center' }}>
                               <Button onClick={() => handleEditProductGroup(data.id)} variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
                                 <Icon color="orange.300" as={FiEdit} />
                               </Button>
                               <Button onClick={() => handleOpenDialog(data.id)} variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
                                 <Icon as={FiTrash2} color="red.400" />
                               </Button>
-                            </Td>
+                            </TdCustom>
                           </>
                           :
                           <></>

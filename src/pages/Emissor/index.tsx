@@ -16,6 +16,7 @@ import { Pagination } from '../../components/Table/Pagination';
 import { useModalEmissor } from '../../Contexts/Modal/EmissorContext';
 import { useAlertEmissorContext } from '../../Contexts/AlertDialog/AlertEmissorContext';
 import { DeleteAlertDialog } from '../../components/Utils/DeleteAlertDialog';
+import { TdCustom } from '../../components/Table/TdCustom';
 
 const headers: { key: string, label: string }[] = [
   { key: 'emissor', label: 'Emissor' },
@@ -142,21 +143,21 @@ export function Emissor() {
           <DataTable headers={headers} >
             {data != undefined ? data.map((data) => (
               <Tr key={data.id}>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                <TdCustom>{data.razao}</TdCustom>
+                <TdCustom>{data.cnpjcpf}</TdCustom>
+                <TdCustom>
                   <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
                     {data.status}
                   </Tag>
-                </Td>
-                <Td style={{ 'textAlign': 'center' }}>
+                </TdCustom>
+                <TdCustom style={{ 'textAlign': 'center' }}>
                   <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditEmissor(data.id)}>
                     <Icon color="orange.300" as={FiEdit} />
                   </Button>
                   <Button variant="ghost" isDisabled={totalClients <= 1} colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
                     <Icon as={FiTrash2} color="red.400" />
                   </Button>
-                </Td>
+                </TdCustom>
               </Tr>
             )) : ''}
           </DataTable>

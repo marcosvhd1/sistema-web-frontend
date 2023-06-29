@@ -32,26 +32,38 @@ export function SearchBox({ children, changeEdit , stateFilter, getClientsByFilt
     getClientsByFilter(description);
   };
 
-
   return (
     <form onSubmit={handleSubmit((data) => handleGetClientsByFilter(data))}>
-      <Flex w="100%" justify="center" align="center" mt={{base: '2', md: '2', lg: '10'}} direction="column" >
-        <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes / Fornecedores</Text>
-        <Flex w="95%" m="4" align="center" justify="space-between">
-          <Flex w="70%" justify="center" align="center">
-            <FormContainer label='Buscar por' width="30%" mr='3'>
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => stateFilter(e.target.value)}>
-                <option value='razao'>Razão Social</option>
-                <option value='fantasia'>Nome Fantasia</option>
-                <option value='cnpjcpf'>CPF/CNPJ</option>
-              </Select>
-            </FormContainer>
-            <FormContainer label='' width="70%" mr='3' mt='7'>
-              <Input type="text" placeholder="Localizar..." maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('description')} />
-            </FormContainer>
-            <Button type="submit" mt={7}><Icon as={FiSearch} /></Button>
+      <Flex w="100%" justify="center" align="center" mt={{ base: '2', md: '2', lg: '10' }} direction="column">
+        <Flex w="95%" justify="space-between" align="center">
+          <Flex w="20%" justify="center" align="center">
           </Flex>
-          <Button variant="solid" onClick={openModal} colorScheme="green" mt={7}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
+          <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes</Text>
+          <Flex w="20%" justify="flex-end" align="center">
+            <Button variant="solid" colorScheme="green" onClick={openModal} mr={3}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
+          </Flex>
+        </Flex>
+        <Flex w="95%" m="4" align="center" justify="space-between">
+          <Flex w="50%" justify="center" align="center" mr='3'>
+            <Flex w="100%" justify="flex-start" align="center">
+              <FormContainer label='Buscar por' width="25%" mr='3'>
+                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => stateFilter(e.target.value)}>
+                  <option value='cod'>Código</option>
+                  <option value='razao'>Razão Social</option>
+                  <option value='fantasia'>Nome Fantasia</option>
+                  <option value='cnpjcpf'>CPF/CNPJ</option>
+                </Select>
+              </FormContainer>
+              <FormContainer label='' width="75%" mt='7'>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." type="text" {...register('description')} />
+              </FormContainer>
+            </Flex>
+          </Flex>
+          <Flex w="50%" justify="flex-start" align="center">
+            <Button type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
+              <Icon as={FiSearch} />
+            </Button>
+          </Flex>
         </Flex>
         {children}
       </Flex>

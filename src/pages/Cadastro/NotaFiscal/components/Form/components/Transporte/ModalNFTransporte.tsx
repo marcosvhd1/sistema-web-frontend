@@ -1,17 +1,14 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { FieldValues, useForm, useFormContext } from 'react-hook-form';
-import { FaCheck } from 'react-icons/fa';
-import { FiCheck, FiChevronLeft, FiChevronRight, FiSearch, FiSlash, FiTruck, FiUserCheck } from 'react-icons/fi';
-import { MdAdd } from 'react-icons/md';
+import { useForm, useFormContext } from 'react-hook-form';
+import { FiCheck, FiChevronLeft, FiChevronRight, FiSearch, FiSlash } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { useEmissorContext } from '../../../../../../../Contexts/EmissorProvider';
+import { useModalNFTransporte } from '../../../../../../../Contexts/Modal/NotaFiscal/NFTransporteContext';
 import { DataTable } from '../../../../../../../components/Table/DataTable';
 import { Pagination } from '../../../../../../../components/Table/Pagination';
-import { useEmissorContext } from '../../../../../../../Contexts/EmissorProvider';
-import { useModalNFClient } from '../../../../../../../Contexts/Modal/NotaFiscal/NFClientContext';
-import { useModalNFTransporte } from '../../../../../../../Contexts/Modal/NotaFiscal/NFTransporteContext';
+import { TdCustom } from '../../../../../../../components/Table/TdCustom';
 import { ApiException } from '../../../../../../../services/api/ApiException';
-import { ClientService, IClient } from '../../../../../../../services/api/clientes/ClientService';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ITransportadora, TransportadoraService } from '../../../../../../../services/api/transportadora/TransportadoraService';
 import { userInfos } from '../../../../../../../utils/header';
@@ -136,12 +133,12 @@ export function ModalNFTransporte() {
           <DataTable headers={headers} mt="0" width='100%' trailing={false}>
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id} onClick={() => handleSetTransp(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
-                <Td style={{ 'width': '1rem' }} fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.bairro}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cidade}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.uf}</Td>
+                <TdCustom>{data.cod}</TdCustom>
+                <TdCustom style={{ 'width': '1rem' }}>{data.razao}</TdCustom>
+                <TdCustom>{data.cnpjcpf}</TdCustom>
+                <TdCustom>{data.bairro}</TdCustom>
+                <TdCustom>{data.cidade}</TdCustom>
+                <TdCustom>{data.uf}</TdCustom>
               </Tr>
             )) : ''}
           </DataTable>

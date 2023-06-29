@@ -1,11 +1,12 @@
-import { Button, Flex, Icon, Input, Td, Tr, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Tr, useColorMode, useToast } from '@chakra-ui/react';
+import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
 import { DataTable } from '../../../../../../../components/Table/DataTable';
+import { TdCustom } from '../../../../../../../components/Table/TdCustom';
 import { INFReferenciada } from '../../../../../../../services/api/notafiscal/NFReferenciada';
-import { useState } from 'react';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
 
 interface FormNFRefProps {
   chaves: INFReferenciada[],
@@ -94,15 +95,15 @@ export function FormNFRef({ chaves, addChave }: FormNFRefProps) {
         <DataTable width='100%' headers={headers} trailing={false} mt='3'>
           {chaves !== undefined ? chaves.map((chave, index) => (
             <Tr key={uuidv4()}>
-              <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="80%">{chave.descricao}</Td>
-              <Td style={{alignSelf: 'flex-end'}} fontSize={{ base: '.5rem', md: '.5rem', lg: '8rem' }} w="20%">
+              <TdCustom>{chave.descricao}</TdCustom>
+              <TdCustom style={{alignSelf: 'flex-end'}}>
                 <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => loadChaveToEdit(index)}>
                   <Icon color="orange.300" as={FiEdit} />
                 </Button>
                 <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} onClick={() => handleDeleteChave(chave)}>
                   <Icon as={FiTrash2} color="red.400" />
                 </Button>
-              </Td>
+              </TdCustom>
             </Tr>
           )) : ''}
         </DataTable>

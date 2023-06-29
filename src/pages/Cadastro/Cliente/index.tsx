@@ -16,10 +16,10 @@ import { ApiException } from '../../../services/api/ApiException';
 import { ClientService, IClient } from '../../../services/api/clientes/ClientService';
 
 import { useAlertClientContext } from '../../../Contexts/AlertDialog/AlertClientContext';
-import { useModalClient } from '../../../Contexts/Modal/ClientContext';
 import { useEmissorContext } from '../../../Contexts/EmissorProvider';
-import { getDecrypted } from '../../../utils/crypto';
+import { useModalClient } from '../../../Contexts/Modal/ClientContext';
 import { userInfos } from '../../../utils/header';
+import { TdCustom } from '../../../components/Table/TdCustom';
 
 
 export function Cliente() {
@@ -31,7 +31,7 @@ export function Cliente() {
   const { onOpen, onClose, isOpen } = useAlertClientContext();
   const { onOpen: open } = useModalClient();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [filter, setFilter] = useState<string>('razao');
+  const [filter, setFilter] = useState<string>('cod');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState(5);
   const [pages, setPages] = useState<number[]>([]);
@@ -147,19 +147,19 @@ export function Cliente() {
           <DataTable headers={headers} >
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id} onDoubleClick={() => handleEditClient(data.id)}>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{('0000' + data.cod).slice(-4)}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.razao}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cnpjcpf}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.cidade}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.uf}</Td>
-                <Td style={{ 'textAlign': 'center' }}>
+                <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
+                <TdCustom>{data.razao}</TdCustom>
+                <TdCustom>{data.cnpjcpf}</TdCustom>
+                <TdCustom>{data.cidade}</TdCustom>
+                <TdCustom>{data.uf}</TdCustom>
+                <TdCustom style={{ 'textAlign': 'center', 'maxWidth': '5rem' }}>
                   <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditClient(data.id)}>
                     <Icon color="orange.300" as={FiEdit} />
                   </Button>
                   <Button variant="ghost" colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
                     <Icon as={FiTrash2} color="red.400" />
                   </Button>
-                </Td>
+                </TdCustom>
               </Tr>
             )) : ''}
           </DataTable>

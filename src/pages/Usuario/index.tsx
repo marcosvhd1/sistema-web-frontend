@@ -14,6 +14,7 @@ import { ModalUsuario } from './components/Modal/ModalUsuario';
 import { DeleteAlertDialog } from '../../components/Utils/DeleteAlertDialog';
 import { useModalUser } from '../../Contexts/Modal/UserContext';
 import { useEmissorContext } from '../../Contexts/EmissorProvider';
+import { TdCustom } from '../../components/Table/TdCustom';
 
 const headers: { key: string, label: string }[] = [
   { key: 'login', label: 'Login' },
@@ -129,25 +130,25 @@ export function Usuarios() {
           <DataTable headers={headers}>
             {data != undefined ? data.map((data) => (
               <Tr key={data.id}>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.email}</Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                <TdCustom>{data.email}</TdCustom>
+                <TdCustom>
                   <Tag variant='outline' colorScheme={data.tipo_admin === 1 ? 'blue' : 'red'}>
                     {data.tipo_admin === 1 ? 'Admin' : 'Normal'}
                   </Tag>
-                </Td>
-                <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                </TdCustom>
+                <TdCustom>
                   <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
                     {data.status}
                   </Tag>
-                </Td>
-                <Td style={{ 'textAlign': 'center' }}>
+                </TdCustom>
+                <TdCustom style={{ 'textAlign': 'center' }}>
                   <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditUser(data.id!)}>
                     <Icon color="orange.300" as={FiEdit} />
                   </Button>
                   <Button variant="ghost" isDisabled={data.usuario_principal === 'Sim'} colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id!)}>
                     <Icon as={FiTrash2} color="red.400" />
                   </Button>
-                </Td>
+                </TdCustom>
               </Tr>
             )) : ''}
           </DataTable>
