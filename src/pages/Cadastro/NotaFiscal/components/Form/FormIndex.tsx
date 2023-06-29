@@ -340,7 +340,6 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
         description: `O CFOP ${cfop} foi aplicado em todos os produtos.`,
         status: 'success',
         duration: 3000,
-        isClosable: true,
       }); 
     } else {
       toast({

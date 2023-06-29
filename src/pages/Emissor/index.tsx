@@ -123,7 +123,6 @@ export function Emissor() {
         description: 'Emissor excluído com sucesso.',
         status: 'success',
         duration: 2000,
-        isClosable: true,
       });
       getEmissores('', seeActive);
       setTotalClients(totalClients - 1);

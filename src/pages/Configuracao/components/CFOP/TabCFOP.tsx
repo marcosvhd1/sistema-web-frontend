@@ -90,7 +90,6 @@ export function TabCFOP() {
           description: 'CFOP excluído com sucesso.',
           status: 'success',
           duration: 2000,
-          isClosable: true,
         });
         loadData();
       }

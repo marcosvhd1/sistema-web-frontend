@@ -331,7 +331,6 @@ export function NotaFiscal() {
             description: 'Nota excluída com sucesso.',
             status: 'success',
             duration: 2000,
-            isClosable: true,
           });
           getNF('');
           setTotalNotas(totalNotas - 1);
@@ -360,7 +359,6 @@ export function NotaFiscal() {
           description: resp.message,
           status: 'success',
           duration: 3000,
-          isClosable: true,
         }); 
       }
     });

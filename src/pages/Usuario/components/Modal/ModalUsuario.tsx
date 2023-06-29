@@ -145,7 +145,6 @@ export function ModalUsuario({ id, isEditing, setIsEditing, admin, setAdmin, ati
                       description: 'Cadastro realizado com sucesso.',
                       status: 'success',
                       duration: 2500,
-                      isClosable: true,
                     });
                     clearForm();
                     getUsuarios('');
@@ -184,7 +183,6 @@ export function ModalUsuario({ id, isEditing, setIsEditing, admin, setAdmin, ati
                   description: 'Usuário atualizado com sucesso.',
                   status: 'success',
                   duration: 2500,
-                  isClosable: true,
                 });
                 clearForm();
                 getUsuarios('');

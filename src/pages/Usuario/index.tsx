@@ -115,7 +115,6 @@ export function Usuarios() {
             description: 'Usuário excluido com sucesso.',
             status: 'success',
             duration: 2000,
-            isClosable: true,
           });
           getUsuarios('');
           onExcluirClose();

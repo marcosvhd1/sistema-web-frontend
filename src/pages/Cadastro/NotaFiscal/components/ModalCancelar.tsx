@@ -52,7 +52,6 @@ export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
           description: resp.message,
           status: 'success',
           duration: 2000,
-          isClosable: true,
         });
       }
     });

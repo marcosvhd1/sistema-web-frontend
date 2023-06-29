@@ -48,7 +48,6 @@ export function ChangePasswordModal() {
           description: 'Senha alterada com sucesso.',
           status: 'success',
           duration: 2000,
-          isClosable: true,
         });
         closeModal();
       } catch (error) {

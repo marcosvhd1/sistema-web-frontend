@@ -122,7 +122,6 @@ export function Servico() {
             description: 'Serviço excluído com sucesso.',
             status: 'success',
             duration: 2000,
-            isClosable: true,
           });
           getService('');
         }

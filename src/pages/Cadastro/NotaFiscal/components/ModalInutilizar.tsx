@@ -54,7 +54,6 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
           description: resp.message,
           status: 'success',
           duration: 2000,
-          isClosable: true,
         });
       }
     });

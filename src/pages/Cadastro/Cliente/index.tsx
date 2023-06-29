@@ -108,7 +108,6 @@ export function Cliente() {
             description: 'Cliente excluido com sucesso.',
             status: 'success',
             duration: 2000,
-            isClosable: true,
           });
           getClientsByFilter('');
         }

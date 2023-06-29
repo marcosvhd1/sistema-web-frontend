@@ -91,7 +91,6 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
             description: `${isMarca ? 'Marca' : 'Grupo'} excluído com sucesso.`,
             status: 'success',
             duration: 2000,
-            isClosable: true,
           });
           getDados();
         }

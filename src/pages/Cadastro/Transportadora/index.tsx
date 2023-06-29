@@ -122,7 +122,6 @@ export function Transportadora() {
             description: 'Transportadora excluída com sucesso.',
             status: 'success',
             duration: 2000,
-            isClosable: true,
           });
           getTransportadora('');
         }
