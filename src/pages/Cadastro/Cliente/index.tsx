@@ -74,7 +74,6 @@ export function Cliente() {
       });
   };
 
-
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalClients / limitRegistros);
     const arrayPages = [];

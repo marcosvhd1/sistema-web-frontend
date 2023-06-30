@@ -12,6 +12,7 @@ import { ApiException } from '../../../../../../../services/api/ApiException';
 import { ClientService, IClient } from '../../../../../../../services/api/clientes/ClientService';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { userInfos } from '../../../../../../../utils/header';
+import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 
 export function ModalNFClient() {
   const methods = useFormContext<INotaFiscal>();
@@ -111,31 +112,46 @@ export function ModalNFClient() {
       motionPreset='slideInBottom'
       isCentered
       scrollBehavior="inside"
-      size={{md: '4xl', lg: '5xl'}}
+      size='5xl'
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
-          <Flex w="100%" justify="center" align="center" direction="column">
-            <Text>Lista de Clientes / Fornecedores</Text>
-            <Flex w="100%" align="center" justify="flex-start"  mt={5}>
-              <Text fontSize={16} mr={3}>Buscar por </Text>
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="25%" mr="3" onChange={(e) => setFilter(e.target.value)}>
-                <option value='razao'>Nome / Razão Social</option>
-                <option value='fantasia'>Nome Fantasia</option>
-                <option value='cnpjcpf'>CPF / CNPJ</option>
-              </Select>
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
-              <Button onClick={handleGetClientsByFilter}><Icon as={FiSearch} /></Button>
+        <Flex w="100%" justify="center" align="center" mt={{ base: '2', md: '2', lg: '10' }} direction="column">
+          <Flex w="95%" justify="center" align="center">
+            <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes</Text>
+          </Flex>
+          <Flex w="95%" m="4" align="center" justify="space-between">
+            <Flex w="70%" justify="center" align="center" mr='3'>
+              <Flex w="100%" justify="flex-start" align="center">
+                <FormContainer label='Buscar por' width="35%" mr='3'>
+                  <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => setFilter(e.target.value)}>
+                    <option value='cod'>Código</option>
+                    <option value='razao'>Nome/Razão Social</option>
+                    <option value='fantasia'>Nome Fantasia</option>
+                    <option value='cnpjcpf'>CPF/CNPJ</option>
+                    <option value='cidade'>Cidade</option>
+                    <option value='uf'>UF</option>
+                    <option value='cep'>CEP</option>
+                  </Select>
+                </FormContainer>
+                <FormContainer label='' width="65%" mt='7'>
+                  <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." type="text" {...register('description')} />
+                </FormContainer>
+              </Flex>
+            </Flex>
+            <Flex w="30%" justify="flex-start" align="center">
+              <Button type="submit" w="25%" mt={7} variant="solid" colorScheme="blue">
+                <Icon as={FiSearch} />
+              </Button>
             </Flex>
           </Flex>
-        </ModalHeader>
+        </Flex>
         <ModalCloseButton onClick={onClose} />
         <ModalBody>
           <DataTable headers={headers} mt="0" width='100%' trailing={false}>
             {data !== undefined ? data.map((data) => (
               <Tr key={data.id} onClick={() => handleSetClient(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
-                <TdCustom>{('0000' + data.cod).slice(-4)}</TdCustom>
+                <TdCustom>{data.cod}</TdCustom>
                 <TdCustom style={{ 'width': '1rem' }}>{data.razao}</TdCustom>
                 <TdCustom>{data.fantasia}</TdCustom>
                 <TdCustom>{data.cnpjcpf}</TdCustom>

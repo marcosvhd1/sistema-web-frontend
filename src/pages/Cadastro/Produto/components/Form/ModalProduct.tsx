@@ -17,15 +17,13 @@ interface ModalProps {
   id: number
   editCod: number
   header: any
-  marca: string
-  grupo: string
   active: boolean
   setActive: (value: boolean) => void
   seeActive: string
 }
 
 
-export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, cod, header, getCod, setActive, active, seeActive }: ModalProps) {
+export function FormModal({isEditing, id, refreshPage, editCod, cod, header, getCod, setActive, active, seeActive }: ModalProps) {
   const methods = useFormContext<IProduct>();
   const toast = useToast();
 
@@ -111,6 +109,8 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
   const submitData = (data: IProduct) => {
     data.status = active ? 'Ativo' : 'Inativo';
 
+    console.log(data);
+
     setFormSubmitted(true);
 
     if (isEditing) handleUpdateProduct(data);
@@ -140,10 +140,9 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
               <TabPanels>
                 <TabPanel>
                   <DadosPrincipais 
+                    id={id}
                     active={active} 
-                    setActive={setActive} 
-                    marca={marca} 
-                    grupo={grupo} 
+                    setActive={setActive}  
                     header={header} 
                     getCod={getCod} 
                     cod={cod} 

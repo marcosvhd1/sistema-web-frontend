@@ -39,6 +39,8 @@ export function Produto() {
   /// pagination and search by filter
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('nprod');
+  const [filterGrupo, setFilterGrupo] = useState<string>('');
+  const [filterMarca, setFilterMarca] = useState<string>('');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
@@ -47,8 +49,6 @@ export function Produto() {
   const toast = useToast();
   const { idEmissorSelecionado } = useEmissorContext();
   const [cod, setCod] = useState<number>(1);
-  const [marca, setMarca] = useState<string>('');
-  const [grupo, setGrupo] = useState<string>('');
   const [active, setActive] = useState<boolean>(true);
   const [seeActive, setSeeActive] = useState<string>('Ativo');
 
@@ -97,18 +97,7 @@ export function Produto() {
   };
 
   const getProduct = (description: string, status: string) => {
-    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, status, HEADERS)
-      .then((result: any) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          setData(result.data);
-          setTotalClients(parseInt(result.headers['qtd']));
-        }
-      });
-  };
-  const getProductByGroup = (description: string, group: string, status: string) => {
-    ProductService.getProductByGroup(currentPage, limitRegistros, filter, description, group, idEmissorSelecionado, status, HEADERS)
+    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, filterGrupo, filterMarca, idEmissorSelecionado, status, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -123,7 +112,12 @@ export function Produto() {
     ProductService.deleteById(clientId, idEmissorSelecionado, HEADERS)
       .then((result) => {
         if (result instanceof ApiException) {
-          console.log(result.message);
+          toast({
+            position: 'top',
+            description: 'Erro ao excluir produto.',
+            status: 'error',
+            duration: 2000,
+          });
         } else {
           toast({
             position: 'top',
@@ -150,8 +144,6 @@ export function Produto() {
       setId(id);
       openEditModal();
       setEditCod(productToUpdate.nprod);
-      setMarca(productToUpdate.marca);
-      setGrupo(productToUpdate.grupo);
       methods.reset(productToUpdate);
       setIsEditing(true);
       setActive(productToUpdate.status === 'Ativo' ? true : false);
@@ -161,7 +153,16 @@ export function Produto() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox seeActive={seeActive} setSeeActive={setSeeActive} getProductByGroup={getProductByGroup} getCod={getLastCod} getProduct={getProduct} changeEdit={setIsEditing} setFilter={setFilter}>
+        <SearchBox 
+          seeActive={seeActive} 
+          setSeeActive={setSeeActive} 
+          getCod={getLastCod} 
+          getProduct={getProduct} 
+          changeEdit={setIsEditing} 
+          setFilter={setFilter}
+          setFilterGrupo={setFilterGrupo}
+          setFilterMarca={setFilterMarca}
+        >
           <DataTable headers={headers}>
             {data != undefined ? data.map((data) => (
               <Tr onDoubleClick={() => handleEditProduct(data.id)} key={data.id}>
@@ -197,7 +198,7 @@ export function Produto() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal seeActive={seeActive} active={active} setActive={setActive} marca={marca} grupo={grupo} getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getProduct} id={id} isEditing={isEditing} />
+        <FormModal seeActive={seeActive} active={active} setActive={setActive} getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getProduct} id={id} isEditing={isEditing} />
         <DeleteAlertDialog label="produto" deleteFunction={handleDeleteProduct} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

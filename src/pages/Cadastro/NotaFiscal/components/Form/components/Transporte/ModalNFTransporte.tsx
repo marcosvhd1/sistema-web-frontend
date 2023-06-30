@@ -12,6 +12,7 @@ import { ApiException } from '../../../../../../../services/api/ApiException';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ITransportadora, TransportadoraService } from '../../../../../../../services/api/transportadora/TransportadoraService';
 import { userInfos } from '../../../../../../../utils/header';
+import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 
 export function ModalNFTransporte() {
   const methods = useFormContext<INotaFiscal>();
@@ -110,25 +111,36 @@ export function ModalNFTransporte() {
       motionPreset='slideInBottom'
       isCentered
       scrollBehavior="inside"
-      size={{md: '4xl', lg: '5xl'}}
+      size='5xl'
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
-          <Flex w="100%" justify="center" align="center" direction="column">
-            <Text>Listagem de Transportadoras</Text>
-            <Flex w="100%" align="center" justify="flex-start"  mt={5}>
-              <Text fontSize={16} mr={3}>Buscar por </Text>
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="25%" mr="3" onChange={(e) => setFilter(e.target.value)}>
-                <option value='razao'>Razão Social</option>
-                <option value='cnpjcpf'>CPF / CNPJ</option>
-              </Select>
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')}/>
-              <Button onClick={handleGetTranspByFilter}><Icon as={FiSearch} /></Button>
+        <Flex w="100%" justify="center" align="center" mt={{ base: '2', md: '2', lg: '10' }} direction="column">
+          <Flex w="95%" justify="center" align="center">
+            <Text fontFamily="Poppins" fontSize="xl">Lista de Transportadoras</Text>
+          </Flex>
+          <Flex w="95%" m="4" align="center" justify="space-between">
+            <Flex w="70%" justify="center" align="center" mr='3'>
+              <Flex w="100%" justify="flex-start" align="center">
+                <FormContainer label='Buscar por' width="35%" mr='3'>
+                  <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => setFilter(e.target.value)}>
+                    <option value='razao'>Razão Social</option>
+                    <option value='cnpjcpf'>CNPJ</option>
+                  </Select>
+                </FormContainer>
+                <FormContainer label='' width="65%" mt='7'>
+                  <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." type="text" {...register('description')} />
+                </FormContainer>
+              </Flex>
+            </Flex>
+            <Flex w="30%" justify="flex-start" align="center">
+              <Button onClick={handleGetTranspByFilter} w="25%" mt={7} variant="solid" colorScheme="blue">
+                <Icon as={FiSearch} />
+              </Button>
             </Flex>
           </Flex>
-        </ModalHeader>
-        <ModalCloseButton />
+        </Flex>
+        <ModalCloseButton onClick={onClose}/>
         <ModalBody>
           <DataTable headers={headers} mt="0" width='100%' trailing={false}>
             {data !== undefined ? data.map((data) => (
@@ -147,12 +159,6 @@ export function ModalNFTransporte() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalTransp} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </ModalBody>
-        <ModalFooter>
-          <Flex w="100%" justify="space-between" >
-            <Button variant='solid' colorScheme="green" type="submit"><Icon as={FiCheck} mr={1} />{'Salvar'}</Button>
-            <Button colorScheme='red' variant="outline" mr={3} onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
-          </Flex>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );

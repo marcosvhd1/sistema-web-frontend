@@ -1,39 +1,44 @@
-import { Button, Checkbox, Flex, Icon, IconButton, Input, Select, Textarea, useColorMode } from '@chakra-ui/react';
+import { Checkbox, Flex, IconButton, Input, Select, Textarea, useColorMode } from '@chakra-ui/react';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FcPlus } from 'react-icons/fc';
-import { FormContainer } from '../../../../../components/Form/FormContainer';
-import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 import { useModalGroup } from '../../../../../Contexts/Modal/GroupConxtext';
+import { FormContainer } from '../../../../../components/Form/FormContainer';
+import { useGrupos } from '../../../../../hooks/useGrupos';
+import { IProduct, ProductService } from '../../../../../services/api/produtos/ProductService';
 import { ApiException } from '../../../../../services/api/ApiException';
-import { GroupService, IGroup } from '../../../../../services/api/produtos/GroupService';
-import { IProduct } from '../../../../../services/api/produtos/ProductService';
+import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
+import { userInfos } from '../../../../../utils/header';
 import { GroupModal } from './ModalGroup';
 
 interface IFormFields {
+  id: number
   editCod: number
   getCod: () => void
   cod: number
   isEditing: boolean
   header: any
-  marca: string
-  grupo: string
   active: boolean
   setActive: (value: boolean) => void
 }
 
-export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod, header, setActive, active}: IFormFields) {
+export function DadosPrincipais({ id, editCod, isEditing, getCod, cod, setActive, active}: IFormFields) {
   const { register, setFocus, setValue } = useFormContext<IProduct>();
-  const { colorMode } = useColorMode();
-  const {onOpen} = useModalGroup();
+
   const [isMarca, setIsMarca] = useState<boolean>(false);
+
+  const { grupos, getGrupos } = useGrupos();
+  const { onOpen } = useModalGroup();
+  const { colorMode } = useColorMode();
+
   const { idEmissorSelecionado } = useEmissorContext();
-  const [data, setData] = useState<IGroup[]>([]);
+
+  const userInfo = userInfos();
+  const HEADERS = userInfo.header;
 
   useEffect(() => {
     getCod();
-    getDados();
     setFocus('nprod');
     setTimeout(() => {
       setFocus('descricao');
@@ -41,19 +46,19 @@ export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod,
   }, []);
 
   useEffect(() => {
-    if (isEditing) {
-      setTimeout(() => {
-        setValue('marca', marca);
-        setValue('grupo', grupo);
-      }, 100);
-    } else {
-      setTimeout(() => {
-        setValue('marca', '');
-        setValue('grupo', '');
-
-      }, 100);
-    }
-  },[]);
+    setTimeout(() => {
+      ProductService.getProductByFilter(1, 1, 'id', `${id}`, '', '', idEmissorSelecionado, 'Ativo', HEADERS)
+        .then((result: any) => {
+          if (result instanceof ApiException) console.log(result.message);
+          else {
+            if (result.data[0] !== undefined) {
+              setValue('grupo', result.data[0].grupo);
+              setValue('marca', result.data[0].marca);
+            }
+          }
+        });
+    }, 100);
+  }, [id]);
 
   const openMarca = () => {
     setIsMarca(true);
@@ -63,17 +68,6 @@ export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod,
     setIsMarca(false);
     onOpen();
   };
-
-  const getDados = async () => {
-    GroupService.getAll(idEmissorSelecionado, header)
-      .then((result: any) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
-          setData(result.data);
-        }});
-  };
-
 
   return (
     <Flex w={{md: '51rem', lg: '58rem'}} h='20rem' gap="2" direction="column">
@@ -111,18 +105,10 @@ export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod,
         <Flex direction="column" w="50%">
           <Flex gap="2">
             <Flex w='100%' align='center' gap='2'>
-              <FormContainer label="Marca" >
-                <Select id="marca" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('marca')} >
+              <FormContainer label="Marca">
+                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('marca')} >
                   <option value=''></option>
-                  {data != undefined ? data.map((data) => (
-                    data.tipo.toUpperCase() === 'MARCA'
-                      ?
-                      <option key={data.id} value={data.descricao}>{data.descricao}</option>
-                      :
-                      ''
-                  ))
-                    :
-                    ''}
+                  {grupos.map((data) => (data.tipo.toUpperCase() === 'MARCA' ? <option key={data.id} value={data.descricao}>{data.descricao}</option> : null))}
                 </Select>
               </FormContainer>
               <FormContainer label='' width="2rem">
@@ -134,15 +120,7 @@ export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod,
             <FormContainer label="Grupo">
               <Select id="grupo" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('grupo')} >
                 <option value=''></option>
-                {data != undefined ? data.map((data) => (
-                  data.tipo.toUpperCase() === 'GRUPO'
-                    ?
-                    <option key={data.id} id={data.descricao} value={data.descricao}>{data.descricao}</option>
-                    :
-                    ''
-                ))
-                  :
-                  ''}
+                {grupos.map((data) => (data.tipo.toUpperCase() === 'GRUPO' ? <option key={data.id} value={data.descricao}>{data.descricao}</option> : null))}
               </Select>
             </FormContainer>
             <FormContainer label='' width="2rem">
@@ -167,7 +145,7 @@ export function DadosPrincipais({ marca, grupo, editCod, isEditing, getCod, cod,
       <FormContainer label="Anotações">
         <Textarea maxLength={5000} id="anotacoes" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('anotacoes')}/>
       </FormContainer>
-      <GroupModal refreshData={getDados} header={header} isMarca={isMarca}/>
+      <GroupModal header={HEADERS} isMarca={isMarca} refreshData={getGrupos} />
     </Flex>
   );
 }

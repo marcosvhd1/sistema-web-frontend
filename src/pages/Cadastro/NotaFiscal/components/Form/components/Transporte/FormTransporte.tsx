@@ -96,10 +96,7 @@ export function FormTransporte() {
               <Icon mr={2} as={FiSearch} />
               Buscar
             </Button>
-            <Button onClick={handleRemoveTransp} w="30%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="outline" colorScheme="red">
-              <Icon mr={2} as={FiSlash} />
-              Remover
-            </Button>
+            <Button onClick={handleRemoveTransp} w="30%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }}><Icon as={FiSlash} mr={2}/>Limpar</Button>
           </Flex>
         </Flex>
 

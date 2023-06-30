@@ -76,7 +76,7 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
       motionPreset='slideInBottom'
       isCentered
       scrollBehavior='inside'
-      size={{md: '4xl', lg: '5xl'}}
+      size='5xl'
     >
       <ModalOverlay />
       <ModalContent>

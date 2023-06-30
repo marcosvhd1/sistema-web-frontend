@@ -487,16 +487,13 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
         motionPreset='slideInBottom'
         isCentered
         scrollBehavior="inside"
-        size={{md: '4xl', lg: '5xl'}}
+        size='6xl'
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            <Flex w="100%" justify="center" align="center">
-              <Text>Informações do Produto</Text>
-            </Flex>
-          </ModalHeader>
-          <ModalCloseButton onClick={onClose}/>
+          <Flex w="95%" justify="center" align="center" mt={{ base: '2', md: '2', lg: '10' }}>
+            <Text fontFamily="Poppins" fontSize="xl">Informações do Produto</Text>
+          </Flex>
           <ModalBody>
             <FormControl>
               <Flex w="100%" justify="center" align="center" direction="column">
@@ -584,9 +581,12 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Flex w="100%" justify="space-between" >
-              <Button variant='solid' colorScheme="green" onClick={onSubmit}><Icon as={FiCheck} mr={1} />Salvar</Button>
-              <Button colorScheme='red' variant="outline" mr={3} onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+            <Flex w="100%" justify="space-between">
+              <Button onClick={onSubmit} variant='solid' colorScheme="green">
+                <Icon as={FiCheck} mr={2} />
+                Salvar
+              </Button>
+              <Button onClick={onClose}><Icon as={FiSlash} mr={2}/>Fechar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>

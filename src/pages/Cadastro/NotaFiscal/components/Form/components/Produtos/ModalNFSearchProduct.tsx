@@ -13,6 +13,7 @@ import { INFProduct } from '../../../../../../../services/api/notafiscal/NFProdu
 import { IProduct, ProductService } from '../../../../../../../services/api/produtos/ProductService';
 import formatMoney from '../../../../../../../utils/formatarValor';
 import { userInfos } from '../../../../../../../utils/header';
+import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 
 interface ModalNFSearchProductProps {
   methods: UseFormReturn<INFProduct, any>
@@ -26,11 +27,11 @@ interface getProductProps {
 export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
   const { idEmissorSelecionado } = useEmissorContext();
   const { isOpen, onClose } = useModalNFSearchProduct();
-  const { register, handleSubmit, getValues } = useForm<getProductProps>();
+  const { register, getValues } = useForm<getProductProps>();
   const { colorMode } = useColorMode();
 
   const [data, setData] = useState<IProduct[]>([]);
-  const [filter, setFilter] = useState<string>('descricao');
+  const [filter, setFilter] = useState<string>('nprod');
   const [pages, setPages] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalProducts, setTotalProducts] = useState<number>(0);
@@ -44,9 +45,7 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
     { key: 'id', label: 'Código' },
     { key: 'descricao', label: 'Descrição' },
     { key: 'preco', label: 'Preço' },
-    { key: 'referencia', label: 'Referência' },
     { key: 'marca', label: 'Marca' },
-    { key: 'grupo', label: 'Grupo' },
     { key: 'un', label: 'UN' },
     { key: 'ncm', label: 'NCM' },
     { key: 'status', label: 'Status' }
@@ -82,7 +81,7 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
 
 
   const getProductsByFilter = (description: string) => {
-    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, 'Ativo', HEADERS)
+    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, '', '',idEmissorSelecionado, 'Ativo', HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -135,27 +134,38 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
       motionPreset='slideInBottom'
       isCentered
       scrollBehavior="inside"
-      size={{ md: '4xl', lg: '5xl' }}
+      size='5xl'
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
-          <Flex w="100%" justify="center" align="center" direction="column">
-            <Text>Listagem de Produtos</Text>
-            <Flex w="100%" align="center" justify="flex-start" mt={5}>
-              <Text fontSize={16} mr={3}>Buscar por </Text>
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="20%" mr="3" onChange={(e) => setFilter(e.target.value)}>
-                <option value='descricao'>Descrição</option>
-                <option value='nprod'>Código</option>
-                <option value='referencia'>Referência</option>
-                <option value='marca'>Marca</option>
-                <option value='ncm'>NCM</option>
-              </Select>
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." w="40%" type="text" mr="3" {...register('description')} />
-              <Button onClick={handleGetProductsByFilter}><Icon as={FiSearch} /></Button>
+        <Flex w="100%" justify="center" align="center" mt={{ base: '2', md: '2', lg: '10' }} direction="column">
+          <Flex w="95%" justify="center" align="center">
+            <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
+          </Flex>
+          <Flex w="95%" m="4" align="center" justify="space-between">
+            <Flex w="70%" justify="center" align="center" mr='3'>
+              <Flex w="100%" justify="flex-start" align="center">
+                <FormContainer label='Buscar por' width="35%" mr='3'>
+                  <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => setFilter(e.target.value)}>
+                    <option value='nprod'>Código</option>
+                    <option value='descricao'>Descrição</option>
+                    <option value='referencia'>Referência</option>
+                    <option value='marca'>Marca</option>
+                    <option value='ncm'>NCM</option>
+                  </Select>
+                </FormContainer>
+                <FormContainer label='' width="65%" mt='7'>
+                  <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." type="text" {...register('description')} />
+                </FormContainer>
+              </Flex>
+            </Flex>
+            <Flex w="30%" justify="flex-start" align="center">
+              <Button onClick={handleGetProductsByFilter} w="25%" mt={7} variant="solid" colorScheme="blue">
+                <Icon as={FiSearch} />
+              </Button>
             </Flex>
           </Flex>
-        </ModalHeader>
+        </Flex>
         <ModalCloseButton onClick={onClose} />
         <ModalBody>
           <DataTable headers={headers} mt="0" width='100%' trailing={false}>
@@ -164,9 +174,7 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
                 <TdCustom style={{ 'width': '1rem' }}>{data.nprod}</TdCustom>
                 <TdCustom>{data.descricao}</TdCustom>
                 <TdCustom>{data.preco ? 'R$ ' + formatMoney(data.preco) : ''}</TdCustom>
-                <TdCustom style={{ 'width': '1rem' }}>{data.referencia}</TdCustom>
                 <TdCustom>{data.marca}</TdCustom>
-                <TdCustom>{data.grupo}</TdCustom>
                 <TdCustom>{data.un}</TdCustom>
                 <TdCustom>{data.ncm}</TdCustom>
                 <TdCustom>

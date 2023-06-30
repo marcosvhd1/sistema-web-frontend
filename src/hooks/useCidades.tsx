@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { CidadeService, ICidade } from '../services/api/cidades/CidadeService';
 import { userInfos } from '../utils/header';

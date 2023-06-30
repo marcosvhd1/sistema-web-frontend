@@ -7,10 +7,10 @@ import { DeleteAlertDialog } from '../../../../../components/Utils/DeleteAlertDi
 import { useAlertProductGroupContext } from '../../../../../Contexts/AlertDialog/AlertProductGroupContext';
 import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 import { useModalGroup } from '../../../../../Contexts/Modal/GroupConxtext';
-import { useGroupContext } from '../../../../../Contexts/ProductGroupContext';
 import { ApiException } from '../../../../../services/api/ApiException';
 import { GroupService, IGroup } from '../../../../../services/api/produtos/GroupService';
 import { TdCustom } from '../../../../../components/Table/TdCustom';
+import { useGrupos } from '../../../../../hooks/useGrupos';
 
 interface IGroupModal {
   isMarca: boolean
@@ -25,7 +25,7 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [id, setId] = useState<number>(0);
   const { colorMode } = useColorMode();
-  const { data, getDados } = useGroupContext();
+  const { grupos, getGrupos } = useGrupos();
   const methods = useForm<IGroup>();
   const toast = useToast();
 
@@ -39,7 +39,7 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
   };
 
   useEffect(() => {
-    getDados();
+    getGrupos();
     setTimeout(() => {
       methods.setFocus('descricao');
     }, 100);
@@ -63,17 +63,17 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
       });
     } else if (isEditing) {
       handleUpdateProduct(dataToCreate);
-      getDados();
+      getGrupos();
       setIsEditing(false);
     } else {
       await GroupService.create(dataToCreate, header);
-      getDados();
+      getGrupos();
     }
   };
 
   const addGrupo = () => {
     submitData();
-    getDados();
+    getGrupos();
     methods.reset({
       descricao: ''
     });
@@ -92,7 +92,7 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
             status: 'success',
             duration: 2000,
           });
-          getDados();
+          getGrupos();
         }
       });
     aoFechar();
@@ -109,7 +109,7 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
   };
 
   const handleEditProductGroup = async (id: number) => {
-    const groupToUpdate = data.find((group) => group.id === id);
+    const groupToUpdate = grupos.find((group) => group.id === id);
     if (groupToUpdate) {
       setId(id);
       methods.reset({
@@ -154,7 +154,7 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
                   <IconButton onClick={addGrupo} variant='outline' fontSize="2xl" aria-label='Botao de adicionar grupo' icon={<FcPlus />} _hover={{ 'filter': 'brightness(0.8)' }} transition='0.3s' />
               }
             </Flex>
-            <Table colorScheme='blackAlpha' size="sm" variant='simple' >
+            <Table colorScheme='blackAlpha' size="sm" variant='simple'>
               <Thead bg="whiteAlpha.100">
                 <Tr style={{ 'height': '2rem' }}>
                   {
@@ -170,14 +170,14 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
               <Tbody>
                 {isMarca
                   ?
-                  data != undefined ? data.map((data) => (
+                  grupos != undefined ? grupos.map((data) => (
                     <Tr key={data.id}>
                       {
                         data.tipo.toUpperCase() === 'MARCA'
                           ?
                           <>
                             <TdCustom>{data.descricao!}</TdCustom>
-                            <TdCustom style={{ 'textAlign': 'center', 'width': '1rem' }}>
+                            <TdCustom style={{ 'textAlign': 'center' }}>
                               <Button onClick={() => handleEditProductGroup(data.id)} variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
                                 <Icon color="orange.300" as={FiEdit} />
                               </Button>
@@ -193,13 +193,13 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
                     </Tr>
                   )) : <></>
                   :
-                  data != undefined ? data.map((data) => (
+                  grupos != undefined ? grupos.map((data) => (
                     <Tr key={data.id}>
                       {
                         data.tipo.toUpperCase() === 'GRUPO'
                           ?
                           <>
-                            <TdCustom style={{ 'width': '1rem' }}>{data.descricao}</TdCustom>
+                            <TdCustom >{data.descricao}</TdCustom>
                             <TdCustom style={{ 'textAlign': 'center' }}>
                               <Button onClick={() => handleEditProductGroup(data.id)} variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem">
                                 <Icon color="orange.300" as={FiEdit} />

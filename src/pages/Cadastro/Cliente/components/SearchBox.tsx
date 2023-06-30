@@ -52,9 +52,12 @@ export function SearchBox({ children, changeEdit , stateFilter, getClientsByFilt
               <FormContainer label='Buscar por' width="25%" mr='3'>
                 <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => stateFilter(e.target.value)}>
                   <option value='cod'>Código</option>
-                  <option value='razao'>Razão Social</option>
+                  <option value='razao'>Nome/Razão Social</option>
                   <option value='fantasia'>Nome Fantasia</option>
                   <option value='cnpjcpf'>CPF/CNPJ</option>
+                  <option value='cidade'>Cidade</option>
+                  <option value='uf'>UF</option>
+                  <option value='cep'>CEP</option>
                 </Select>
               </FormContainer>
               <FormContainer label='' width="75%" mt='7'>

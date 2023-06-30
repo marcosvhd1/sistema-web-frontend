@@ -91,16 +91,13 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
         motionPreset='slideInBottom'
         isCentered
         scrollBehavior='inside'
-        size={{md: '4xl', lg: '5xl'}}
+        size='5xl'
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            <Flex w='100%' justify='center' align='center'>
-              <Text>Forma de Pagamento</Text>
-            </Flex>
-          </ModalHeader>
-          <ModalCloseButton />
+          <Flex w="95%" justify="center" align="center" mt={{ base: '2', md: '2', lg: '10' }}>
+            <Text fontFamily="Poppins" fontSize="xl">Forma de Pagamento</Text>
+          </Flex>
           <ModalBody>
             <Flex w='100%' justify='center' align='center'  direction='column'>
               <FormContainer label='Forma de Pagamento'>
@@ -144,9 +141,12 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
             </Flex>
           </ModalBody>
           <ModalFooter>
-            <Flex w='100%' justify='space-between' >
-              <Button variant='solid' colorScheme='green' onClick={onSubmit}><Icon as={FiCheck} mr={1} />Salvar</Button>
-              <Button colorScheme='red' variant='outline' mr={3} onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+            <Flex w='100%' justify='space-between'>
+              <Button onClick={onSubmit} variant='solid' colorScheme="green">
+                <Icon as={FiCheck} mr={2} />
+                Salvar
+              </Button>
+              <Button onClick={onClose}><Icon as={FiSlash} mr={2}/>Fechar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>
