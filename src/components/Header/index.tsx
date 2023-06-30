@@ -30,10 +30,10 @@ export function Header() {
 
   const handleOnBellClick = () => {
     if (isEmissorSelected) {
-      navigate('/app/fiscal/nfe');
+      if (quantidadeRegistros > 0) navigate('/app/fiscal/nfe');
       toast({
         position: 'top',
-        description: `Existem ${quantidadeRegistros} nota(s) em digitação!`,
+        description: quantidadeRegistros > 0 ? `Existem ${quantidadeRegistros} nota(s) em digitação!` : 'Não há notas em digitação.',
         status: 'info',
         duration: 2000,
         isClosable: false,

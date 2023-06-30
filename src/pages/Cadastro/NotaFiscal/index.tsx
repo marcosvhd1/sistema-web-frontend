@@ -3,16 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Icon, Tr, useColorMode, useToast } from '@chakra-ui/react';
-import {
-  FiChevronLeft,
-  FiChevronRight,
-  FiEdit,
-  FiFile,
-  FiPrinter,
-  FiSend,
-  FiSlash,
-  FiTrash2
-} from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiEdit, FiFile, FiPrinter, FiSend, FiSlash, FiTrash2 } from 'react-icons/fi';
 
 import { useAlertEmitirNFContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertEmitirNFContext';
 import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
@@ -31,15 +22,9 @@ import { ApiException } from '../../../services/api/ApiException';
 import { ClientService } from '../../../services/api/clientes/ClientService';
 import { NFDupliService } from '../../../services/api/notafiscal/NFDuplicata';
 import { NFPagtoService } from '../../../services/api/notafiscal/NFFormaPagto';
-import {
-  INFProduct,
-  NFProdutoService,
-} from '../../../services/api/notafiscal/NFProduct';
+import { INFProduct, NFProdutoService } from '../../../services/api/notafiscal/NFProduct';
 import { NFRefService } from '../../../services/api/notafiscal/NFReferenciada';
-import {
-  INotaFiscal,
-  NotaFiscalService,
-} from '../../../services/api/notafiscal/NotaFiscalService';
+import { INotaFiscal, NotaFiscalService } from '../../../services/api/notafiscal/NotaFiscalService';
 import { IProduct, ProductService } from '../../../services/api/produtos/ProductService';
 import { SefazService } from '../../../services/api/sefaz/SefazService';
 import { TransportadoraService } from '../../../services/api/transportadora/TransportadoraService';
