@@ -1,25 +1,25 @@
+import { Button, Icon, Tag, Tr, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { Button, Checkbox, Flex, Icon, Tag, Td, Text, Tr, useToast } from '@chakra-ui/react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+import { useAlertEmissorContext } from '../../Contexts/AlertDialog/AlertEmissorContext';
+import { useModalNewEmissor } from '../../Contexts/Modal/NewEmissorContext';
+import { ActionButton } from '../../components/Form/ActionButton';
 import MainContent from '../../components/MainContent';
 import { DataTable } from '../../components/Table/DataTable';
-import { ModalNewEmissorProvider, useModalNewEmissor } from '../../Contexts/Modal/NewEmissorContext';
+import { Pagination } from '../../components/Table/Pagination';
+import { TdCustom } from '../../components/Table/TdCustom';
+import { DeleteAlertDialog } from '../../components/Utils/DeleteAlertDialog';
+import { ApiException } from '../../services/api/ApiException';
+import { EmissorService, IEmissor } from '../../services/api/emissor/EmissorService';
+import { EmpresaService } from '../../services/api/empresas/EmpresaService';
+import { userInfos } from '../../utils/header';
 import { ModalNewEmissor } from './components/ModalNewEmissor';
 import { SearchBox } from './components/SearchBox';
-import { EmissorService, IEmissor } from '../../services/api/emissor/EmissorService';
-import { userInfos } from '../../utils/header';
-import { EmpresaService } from '../../services/api/empresas/EmpresaService';
-import { ApiException } from '../../services/api/ApiException';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { Pagination } from '../../components/Table/Pagination';
-import { useModalEmissor } from '../../Contexts/Modal/EmissorContext';
-import { useAlertEmissorContext } from '../../Contexts/AlertDialog/AlertEmissorContext';
-import { DeleteAlertDialog } from '../../components/Utils/DeleteAlertDialog';
-import { TdCustom } from '../../components/Table/TdCustom';
 
 const headers: { key: string, label: string }[] = [
-  { key: 'emissor', label: 'Emissor' },
+  { key: 'razao', label: 'Razão Social' },
   { key: 'cnpj', label: 'CNPJ' },
   { key: 'status', label: 'Status' },
 ];
@@ -150,12 +150,19 @@ export function Emissor() {
                   </Tag>
                 </TdCustom>
                 <TdCustom style={{ 'textAlign': 'center' }}>
-                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditEmissor(data.id)}>
-                    <Icon color="orange.300" as={FiEdit} />
-                  </Button>
-                  <Button variant="ghost" isDisabled={totalClients <= 1} colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id)}>
-                    <Icon as={FiTrash2} color="red.400" />
-                  </Button>
+                  <ActionButton 
+                    label='Editar'
+                    colorScheme='orange'
+                    action={() => handleEditEmissor(data.id)}
+                    icon={FiEdit}
+                  />
+                  <ActionButton 
+                    label='Excluir'
+                    colorScheme='red'
+                    action={() => handleOpenDialog(data.id)}
+                    icon={FiTrash2}
+                    disabled={totalClients <= 1}
+                  />
                 </TdCustom>
               </Tr>
             )) : ''}

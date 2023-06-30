@@ -152,7 +152,7 @@ export function Cliente() {
                 <TdCustom>{data.cnpjcpf}</TdCustom>
                 <TdCustom>{data.cidade}</TdCustom>
                 <TdCustom>{data.uf}</TdCustom>
-                <TdCustom style={{ 'textAlign': 'center', 'maxWidth': '5rem' }}>
+                <TdCustom style={{ 'textAlign': 'center' }}>
                   <ActionButton 
                     label='Editar'
                     colorScheme='orange'

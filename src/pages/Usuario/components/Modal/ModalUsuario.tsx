@@ -1,16 +1,15 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Checkbox, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Checkbox, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useColorMode, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
-import { IEmissor } from '../../../../services/api/emissor/EmissorService';
-import { IUsuario, UsuarioService } from '../../../../services/api/usuarios/UsuarioService';
+import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
 import { useModalUser } from '../../../../Contexts/Modal/UserContext';
 import { FormContainer } from '../../../../components/Form/FormContainer';
-import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
-import { EmpresaService } from '../../../../services/api/empresas/EmpresaService';
 import { ApiException } from '../../../../services/api/ApiException';
-import { userInfos } from '../../../../utils/header';
 import { EmissorUsuarioService } from '../../../../services/api/emissor/EmissorUsuarioService';
+import { EmpresaService } from '../../../../services/api/empresas/EmpresaService';
+import { IUsuario, UsuarioService } from '../../../../services/api/usuarios/UsuarioService';
+import { userInfos } from '../../../../utils/header';
 
 interface ModalUsuarioProps {
   id: number;
@@ -141,7 +140,7 @@ export function ModalUsuario({ id, isEditing, setIsEditing, admin, setAdmin, ati
                       });
                     toast({
                       position: 'top',
-                      title: 'Sucesso',
+                      title: 'Operação concluída.',
                       description: 'Cadastro realizado com sucesso.',
                       status: 'success',
                       duration: 2500,
@@ -179,7 +178,7 @@ export function ModalUsuario({ id, isEditing, setIsEditing, admin, setAdmin, ati
                 });
                 toast({
                   position: 'top',
-                  title: 'Sucesso',
+                  title: 'Operação concluída.',
                   description: 'Usuário atualizado com sucesso.',
                   status: 'success',
                   duration: 2500,
@@ -255,8 +254,11 @@ export function ModalUsuario({ id, isEditing, setIsEditing, admin, setAdmin, ati
           </ModalBody>
           <ModalFooter>
             <Flex justify='space-between' w='100%'>
-              <Button variant='solid' colorScheme="green" type='submit'><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
-              <Button variant='outline' colorScheme="red" onClick={clearForm}><Icon as={FiSlash} mr={1} />Cancelar</Button>
+              <Button type="submit" variant='solid' colorScheme="green">
+                <Icon as={FiCheck} mr={2} />
+                Salvar
+              </Button>
+              <Button onClick={clearForm}><Icon as={FiSlash} mr={2}/>Fechar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>

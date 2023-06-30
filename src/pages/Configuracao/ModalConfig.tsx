@@ -179,9 +179,12 @@ export function ModalConfig() {
             </Tabs>
           </ModalBody>
           <ModalFooter>
-            <Flex w='100%' justify='space-between' >
-              <Button variant='solid' colorScheme='green' onClick={handleSaveChanges}><Icon as={FiCheck} mr={1} />Salvar</Button>
-              <Button variant='outline' colorScheme='red' onClick={onClose} ><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+            <Flex w='100%' justify='space-between'>
+              <Button onClick={handleSaveChanges} variant='solid' colorScheme="green">
+                <Icon as={FiCheck} mr={2} />
+                Salvar
+              </Button>
+              <Button onClick={onClose}><Icon as={FiSlash} mr={2}/>Fechar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>

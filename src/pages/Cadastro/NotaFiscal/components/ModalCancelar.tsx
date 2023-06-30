@@ -1,5 +1,4 @@
 import { Button, Flex, Icon, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorMode, useToast } from '@chakra-ui/react';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
@@ -82,7 +81,7 @@ export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
       <ModalContent>
         <ModalHeader>
           <Flex w='100%' justify='flex-start' align='center'>
-            <Text>Cancelar Nota Fiscal</Text>
+            <Text>Cancelamento</Text>
           </Flex>
         </ModalHeader>
         <ModalBody>
@@ -102,8 +101,8 @@ export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
         </ModalBody>
         <ModalFooter>
           <Flex w='100%' justify='space-between' align='center'>
-            <Button w='15%' variant='solid' colorScheme='blue' onClick={submitData}><Icon as={FiCheck} mr={1} />Enviar</Button>
-            <Button w='15%' variant='outline' colorScheme='red' onClick={handleClose}><Icon as={FiSlash} mr={1} />Cancelar</Button>
+            <Button w='15%' variant='solid' colorScheme='red' onClick={submitData}><Icon as={FiCheck} mr={2} />Cancelar</Button>
+            <Button w='15%' onClick={handleClose}><Icon as={FiSlash} mr={2} />Fechar</Button>
           </Flex>
         </ModalFooter>
       </ModalContent>

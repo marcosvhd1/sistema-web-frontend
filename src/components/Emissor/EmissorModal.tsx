@@ -101,8 +101,11 @@ export function EmissorModal() {
         </ModalBody>
         <ModalFooter>
           <Flex w="100%" justify="space-between">
-            <Button variant='solid' colorScheme="green" onClick={handleSaveEmissor}><Icon as={FiCheck} mr={1} />Selecionar</Button>
-            <Button variant='outline' colorScheme="red" disabled={idEmissorSelecionado === undefined} onClick={closeModal}><Icon as={FiSlash} mr={1} />Cancelar</Button>
+            <Button onClick={handleSaveEmissor} variant='solid' colorScheme="green">
+              <Icon as={FiCheck} mr={2} />
+                Salvar
+            </Button>
+            <Button onClick={closeModal} disabled={idEmissorSelecionado === undefined}><Icon as={FiSlash} mr={2}/>Fechar</Button>
           </Flex>
         </ModalFooter>
       </ModalContent>

@@ -44,7 +44,7 @@ export function ChangePasswordModal() {
         UsuarioService.updateById(userId, dataToUpdate, HEADERS);
         toast({
           position: 'top',
-          title: 'Sucesso',
+          title: 'Operação concluída.',
           description: 'Senha alterada com sucesso.',
           status: 'success',
           duration: 2000,
@@ -79,8 +79,11 @@ export function ChangePasswordModal() {
             </ModalBody>
             <ModalFooter>
               <Flex justify='space-between' w='100%'>
-                <Button variant='solid' colorScheme='green' type='submit'><Icon as={FiCheck} mr={1} />Editar</Button>
-                <Button variant='outline' colorScheme='red' onClick={closeModal}><Icon as={FiSlash} mr={1} />Cancelar</Button>
+                <Button type="submit" variant='solid' colorScheme="green">
+                  <Icon as={FiCheck} mr={2} />
+                  Salvar
+                </Button>
+                <Button onClick={closeModal}><Icon as={FiSlash} mr={2}/>Fechar</Button>
               </Flex>
             </ModalFooter>
           </ModalContent>

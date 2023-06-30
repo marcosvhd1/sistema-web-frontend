@@ -40,7 +40,10 @@ export function SearchBox({ children, changeEdit , stateFilter, getClientsByFilt
           </Flex>
           <Text fontFamily="Poppins" fontSize="xl">Lista de Clientes</Text>
           <Flex w="20%" justify="flex-end" align="center">
-            <Button variant="solid" colorScheme="green" onClick={openModal} mr={3}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
+            <Button variant="solid" colorScheme="green" onClick={openModal}>
+              <Icon mr={2} as={MdAdd}/>
+              Cadastrar
+            </Button>
           </Flex>
         </Flex>
         <Flex w="95%" m="4" align="center" justify="space-between">

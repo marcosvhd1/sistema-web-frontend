@@ -98,12 +98,12 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
             <FormContainer label='Justificativa'>
               <Textarea {...register('description')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}/>
             </FormContainer>
-          </Flex> 
+          </Flex>
         </ModalBody>
         <ModalFooter>
           <Flex w='100%' justify='space-between' align='center'>
-            <Button w='15%' variant='solid' colorScheme='blue' onClick={submitData}><Icon as={FiCheck} mr={1} />Enviar</Button>
-            <Button w='15%' variant='outline' colorScheme='red' onClick={handleClose}><Icon as={FiSlash} mr={1} />Cancelar</Button>
+            <Button w='15%' variant='solid' colorScheme='blue' onClick={submitData}><Icon as={FiCheck} mr={2} />Enviar</Button>
+            <Button w='15%' onClick={handleClose}><Icon as={FiSlash} mr={2} />Fechar</Button>
           </Flex>
         </ModalFooter>
       </ModalContent>

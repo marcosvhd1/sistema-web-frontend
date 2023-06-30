@@ -1,6 +1,6 @@
 import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Flex, Icon } from '@chakra-ui/react';
 import { useRef } from 'react';
-import { FiCheck, FiSlash } from 'react-icons/fi';
+import { FiSend, FiSlash, FiTrash2 } from 'react-icons/fi';
 
 interface AlertDialogProps {
   id: number;
@@ -25,20 +25,16 @@ export function DeleteAlertDialog({ id, deleteFunction, label, isOpen, onClose, 
       <AlertDialogOverlay />
       <AlertDialogContent>
         <AlertDialogHeader>Deseja {colorScheme == 'green' ? 'emitir' : 'excluir'} {label.toUpperCase() === 'MARCA' ||  label.toUpperCase() === 'NFE' ? 'a' : 'o'} {label}?</AlertDialogHeader>
-        <AlertDialogCloseButton />
         <AlertDialogBody>
           Essa ação não poderá ser desfeita.
         </AlertDialogBody>
         <AlertDialogFooter>
           <Flex justify="space-between" w="100%">
             <Button onClick={() => deleteFunction(id)} colorScheme={`${colorScheme}`}>
-              <Icon as={FiCheck} mr={1} />
-              Confirmar
+              <Icon as={colorScheme == 'green' ? FiSend : FiTrash2} mr={2} />
+              {colorScheme == 'green' ? 'Emitir' : 'Excluir'}
             </Button>
-            <Button ref={cancelRef} onClick={onClose} ml={3}>
-              <Icon as={FiSlash} mr={1} />
-              Cancelar
-            </Button>
+            <Button onClick={onClose} ref={cancelRef}><Icon as={FiSlash} mr={2}/>Fechar</Button>
           </Flex>
         </AlertDialogFooter>
       </AlertDialogContent>

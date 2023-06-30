@@ -158,9 +158,12 @@ export function FormModal({marca, grupo, isEditing, id, refreshPage, editCod, co
             </Tabs>
           </ModalBody>
           <ModalFooter>
-            <Flex w="100%" justify="space-between" >
-              <Button variant='solid' colorScheme="green" type="submit" disabled={formSubmitted}><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
-              <Button colorScheme='red' variant="outline" mr={3} onClick={clearForm}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+            <Flex w="100%" justify="space-between">
+              <Button type="submit" variant='solid' colorScheme="green" disabled={formSubmitted}>
+                <Icon as={FiCheck} mr={2} />
+                Salvar
+              </Button>
+              <Button onClick={clearForm}><Icon as={FiSlash} mr={2}/>Fechar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>

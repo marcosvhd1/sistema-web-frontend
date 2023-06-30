@@ -498,14 +498,11 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between" align="flex-end">
-              <Button variant="solid" colorScheme="green" type="submit" disabled={methods.getValues('status') != 'Em digitação' || formSubmitted}>
-                <Icon as={FiCheck} mr={1} />
-                {isEditing ? 'Editar' : 'Cadastrar'}
+              <Button type="submit" variant='solid' colorScheme="green" disabled={methods.getValues('status') != 'Em digitação' || formSubmitted}>
+                <Icon as={FiCheck} mr={2} />
+                Salvar
               </Button>
-              <Button colorScheme="red" variant="outline" onClick={clearData}>
-                <Icon as={FiSlash} mr={1} />
-                  Cancelar
-              </Button>
+              <Button onClick={clearData}><Icon as={FiSlash} mr={2}/>Fechar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>

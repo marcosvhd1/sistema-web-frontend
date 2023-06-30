@@ -1,20 +1,21 @@
-import { Button, Icon, Tag, Td, Tr, useDisclosure, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tag, Tr, useDisclosure, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { useEmissorContext } from '../../Contexts/EmissorProvider';
+import { useModalUser } from '../../Contexts/Modal/UserContext';
+import { ActionButton } from '../../components/Form/ActionButton';
 import MainContent from '../../components/MainContent';
 import { DataTable } from '../../components/Table/DataTable';
 import { Pagination } from '../../components/Table/Pagination';
+import { TdCustom } from '../../components/Table/TdCustom';
+import { DeleteAlertDialog } from '../../components/Utils/DeleteAlertDialog';
+import { ApiException } from '../../services/api/ApiException';
 import { IUsuario, UsuarioService } from '../../services/api/usuarios/UsuarioService';
 import { userInfos } from '../../utils/header';
-import { SearchBox } from './components/SearchBox';
-import { ApiException } from '../../services/api/ApiException';
 import { ModalUsuario } from './components/Modal/ModalUsuario';
-import { DeleteAlertDialog } from '../../components/Utils/DeleteAlertDialog';
-import { useModalUser } from '../../Contexts/Modal/UserContext';
-import { useEmissorContext } from '../../Contexts/EmissorProvider';
-import { TdCustom } from '../../components/Table/TdCustom';
+import { SearchBox } from './components/SearchBox';
 
 const headers: { key: string, label: string }[] = [
   { key: 'login', label: 'Login' },
@@ -141,12 +142,19 @@ export function Usuarios() {
                   </Tag>
                 </TdCustom>
                 <TdCustom style={{ 'textAlign': 'center' }}>
-                  <Button variant="ghost" colorScheme="orange" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleEditUser(data.id!)}>
-                    <Icon color="orange.300" as={FiEdit} />
-                  </Button>
-                  <Button variant="ghost" isDisabled={data.usuario_principal === 'Sim'} colorScheme="red" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }} w="2rem" onClick={() => handleOpenDialog(data.id!)}>
-                    <Icon as={FiTrash2} color="red.400" />
-                  </Button>
+                  <ActionButton 
+                    label='Editar'
+                    colorScheme='orange'
+                    action={() => handleEditUser(data.id!)}
+                    icon={FiEdit}
+                  />
+                  <ActionButton 
+                    label='Excluir'
+                    colorScheme='red'
+                    action={() => handleOpenDialog(data.id!)}
+                    disabled={data.usuario_principal === 'Sim'}
+                    icon={FiTrash2}
+                  />
                 </TdCustom>
               </Tr>
             )) : ''}

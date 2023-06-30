@@ -1,13 +1,13 @@
 import { Checkbox, Flex, Input, Select, useColorMode } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
-import { FormContainer } from '../../../components/Form/FormContainer';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { EmissorService, IEmissor } from '../../../services/api/emissor/EmissorService';
-import { useEstados } from '../../../hooks/useEstados';
+import { FormContainer } from '../../../components/Form/FormContainer';
 import { useCidades } from '../../../hooks/useCidades';
-import { userInfos } from '../../../utils/header';
-import { EmpresaService } from '../../../services/api/empresas/EmpresaService';
+import { useEstados } from '../../../hooks/useEstados';
 import { ApiException } from '../../../services/api/ApiException';
+import { EmissorService, IEmissor } from '../../../services/api/emissor/EmissorService';
+import { EmpresaService } from '../../../services/api/empresas/EmpresaService';
+import { userInfos } from '../../../utils/header';
 
 interface IFormFields {
   isEditing: boolean
@@ -53,7 +53,7 @@ export function FormEmissor({ isEditing, setActive, active, id }: IFormFields) {
   return (
     <Flex w='100%' justify='center' align='flex-start' direction='column'>
       <Flex w='100%' justify='center' align='flex-start'>
-        <FormContainer label='Razão' mr='3' width='70%'>
+        <FormContainer label='Razão Social' mr='3' width='70%'>
           <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('razao')}/>
         </FormContainer>
         <FormContainer label='CPF / CNPJ'  width='30%'>

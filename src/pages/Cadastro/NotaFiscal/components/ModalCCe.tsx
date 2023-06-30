@@ -90,7 +90,7 @@ export function ModalCCe({ data }: ModalCCeProps) {
       <ModalContent>
         <ModalHeader>
           <Flex w='100%' justify='flex-start' align='center'>
-            <Text>Carta de correção</Text>
+            <Text>Carta de Correção</Text>
           </Flex>
         </ModalHeader>
         <ModalBody>
@@ -113,8 +113,8 @@ export function ModalCCe({ data }: ModalCCeProps) {
         </ModalBody>
         <ModalFooter>
           <Flex w='100%' justify='space-between' align='center'>
-            <Button w='15%' variant='solid' colorScheme='blue' onClick={submitData}><Icon as={FiCheck} mr={1} />Enviar</Button>
-            <Button w='15%' variant='outline' colorScheme='red' onClick={handleClose}><Icon as={FiSlash} mr={1} />Cancelar</Button>
+            <Button w='15%' variant='solid' colorScheme='blue' onClick={submitData}><Icon as={FiCheck} mr={2} />Corrigir</Button>
+            <Button w='15%' onClick={handleClose}><Icon as={FiSlash} mr={2} />Fechar</Button>
           </Flex>
         </ModalFooter>
       </ModalContent>

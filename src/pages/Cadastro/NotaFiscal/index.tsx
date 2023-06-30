@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Tr, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Tooltip, Tr, useColorMode, useToast } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiFile, FiPrinter, FiSend, FiSlash, FiTrash2 } from 'react-icons/fi';
 
 import { useAlertEmitirNFContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertEmitirNFContext';
@@ -340,7 +340,7 @@ export function NotaFiscal() {
         getNF('');
         toast({
           position: 'top',
-          title: 'Sucesso',
+          title: 'Operação concluída.',
           description: resp.message,
           status: 'success',
           duration: 3000,
@@ -427,12 +427,25 @@ export function NotaFiscal() {
                     }
                     {
                       data.status === 'Emitida' ?
-                        <ActionButton 
-                          label='Carta de Correção'
-                          colorScheme='blue'
-                          action={() => handleOpenModalCCe(data)}
-                          icon={FiFile}
-                        />
+                        <Menu>
+                          <MenuButton
+                            as={Button}
+                            pt={1}
+                            pb={0}
+                            pr={0}
+                            pl={0}
+                            w="2rem"
+                            variant="ghost"
+                            colorScheme="blue" 
+                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                          >
+                            <Icon as={FiFile} color={colorMode === 'light' ? 'blue.400' : 'blue.300'} />
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem onClick={() => handleOpenModalCCe(data)} color={colorMode === 'light' ? 'green.400' : 'green.300'}><Icon as={FiSend} mr={2} color={colorMode === 'light' ? 'green.400' : 'green.300'}/>Emitir</MenuItem>
+                            <MenuItem color={colorMode === 'light' ? 'blue.400' : 'blue.300'}><Icon as={FiPrinter} mr={2} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}/>Imprimir</MenuItem>
+                          </MenuList>
+                        </Menu>
                         : null
                     }
                     {

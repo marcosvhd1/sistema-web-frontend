@@ -1,13 +1,12 @@
 import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast } from '@chakra-ui/react';
-import { FormProvider, useFormContext } from 'react-hook-form';
+import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useModalNewEmissor } from '../../../Contexts/Modal/NewEmissorContext';
 import { ApiException } from '../../../services/api/ApiException';
 import { EmissorService, IEmissor, INewEmissor } from '../../../services/api/emissor/EmissorService';
-import { getDecrypted } from '../../../utils/crypto';
 import { userInfos } from '../../../utils/header';
 import { FormEmissor } from './FormEmissor';
-import { useState } from 'react';
 
 interface ModalProps {
   refreshPage: (description: string, status: string) => void
@@ -131,8 +130,11 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
           </ModalBody>
           <ModalFooter>
             <Flex justify='space-between' w='100%'>
-              <Button variant='solid' colorScheme="green" type='submit' disabled={formSubmitted}><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
-              <Button variant='outline' colorScheme="red" onClick={clearForm}><Icon as={FiSlash} mr={1} />Cancelar</Button>
+              <Button type="submit" variant='solid' colorScheme="green" disabled={formSubmitted}>
+                <Icon as={FiCheck} mr={2} />
+                Salvar
+              </Button>
+              <Button onClick={clearForm}><Icon as={FiSlash} mr={2}/>Fechar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>

@@ -31,6 +31,7 @@ import { ClientService } from '../../../../../services/api/clientes/ClientServic
 import { IClient } from '../../../../../services/api/clientes/ClientService';
 import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
 import { useState } from 'react';
+import { FormButton } from '../../../../../components/Form/FormButton';
 
 interface ModalProps {
   // changeEdit: (value: React.SetStateAction<any>) => void
@@ -163,8 +164,11 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, ge
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">
-              <Button variant='solid' colorScheme="green" type="submit" disabled={formSubmitted}><Icon as={FiCheck} mr={1} />{isEditing ? 'Editar' : 'Cadastrar'}</Button>
-              <Button colorScheme='red' variant="outline" mr={3} onClick={() => clearForm()}><Icon as={FiSlash} mr={1} /> Cancelar</Button>
+              <Button type="submit" variant='solid' colorScheme="green" disabled={formSubmitted}>
+                <Icon as={FiCheck} mr={2} />
+                Salvar
+              </Button>
+              <Button onClick={clearForm}><Icon as={FiSlash} mr={2}/>Fechar</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>
