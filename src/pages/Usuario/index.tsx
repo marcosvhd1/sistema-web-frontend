@@ -54,15 +54,8 @@ export function Usuarios() {
 
   useEffect(() => {
     getUsuarios('');
-  }, [currentPage]);
-
-  useEffect(() => {
-    getUsuarios('');
-  }, [limitRegistros]);
-
-  useEffect(() => {
     handleChangeTotalPage();
-  }, [totalUsers, limitRegistros]);
+  }, [currentPage, limitRegistros]);
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalUsers / limitRegistros);

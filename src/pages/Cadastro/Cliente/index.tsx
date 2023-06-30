@@ -49,15 +49,8 @@ export function Cliente() {
 
   useEffect(() => {
     getClientsByFilter('');
-  }, [currentPage]);
-
-  useEffect(() => {
-    getClientsByFilter('');
-  }, [limitRegistros]);
-
-  useEffect(() => {
     handleChangeTotalPage();
-  }, [totalClients, limitRegistros]);
+  }, [currentPage, limitRegistros]);
 
   const getLastCod = () => {
     ClientService.getLastCod(idEmissorSelecionado, HEADERS)

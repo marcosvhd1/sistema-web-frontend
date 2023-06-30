@@ -62,15 +62,8 @@ export function Transportadora() {
 
   useEffect(() => {
     getTransportadora('');
-  }, [currentPage]);
-
-  useEffect(() => {
-    getTransportadora('');
-  }, [limitRegistros]);
-
-  useEffect(() => {
     handleChangeTotalPage();
-  }, [totalClients, limitRegistros]);
+  }, [currentPage, limitRegistros]);
 
   const getLastCod = () => {
     TransportadoraService.getLastCod(idEmissorSelecionado, HEADERS)

@@ -62,15 +62,8 @@ export function Produto() {
 
   useEffect(() => {
     getProduct('', seeActive);
-  }, [currentPage]);
-
-  useEffect(() => {
-    getProduct('', seeActive);
-  }, [limitRegistros]);
-
-  useEffect(() => {
     handleChangeTotalPage();
-  }, [totalClients, limitRegistros]);
+  }, [currentPage, limitRegistros]);
 
   const getLastCod = () => {
     ProductService.getLastCod(idEmissorSelecionado, HEADERS)

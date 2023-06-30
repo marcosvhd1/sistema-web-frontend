@@ -78,15 +78,8 @@ export function NotaFiscal() {
 
   useEffect(() => {
     getNF('');
-  }, [currentPage]);
-
-  useEffect(() => {
-    getNF('');
-  }, [limitRegistros]);
-
-  useEffect(() => {
     handleChangeTotalPage();
-  }, [totalNotas, limitRegistros]);
+  }, [currentPage, limitRegistros]);
 
   const headers: { key: string; label: string }[] = [
     { key: 'cod', label: 'Código' },

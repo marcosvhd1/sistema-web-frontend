@@ -53,15 +53,8 @@ export function Emissor() {
 
   useEffect(() => {
     getEmissores('', seeActive);
-  }, [currentPage]);
-
-  useEffect(() => {
-    getEmissores('', seeActive);
-  }, [limitRegistros]);
-
-  useEffect(() => {
     handleChangeTotalPage();
-  }, [totalClients, limitRegistros]);
+  }, [currentPage, limitRegistros]);
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalClients / limitRegistros);
