@@ -36,16 +36,7 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
     const description = getValues('description');
 
     await SefazService.inutilizar(numeroIni, numeroFin, description, idEmissorSelecionado, HEADERS).then((resp) => {
-      if (resp.type == 'error') {
-        toast({
-          position: 'top',
-          title: 'Erro',
-          description: resp.message,
-          status: 'error',
-          duration: 10000,
-          isClosable: true,
-        }); 
-      } else {
+      if (resp.type == 'success') {
         handleClose();
         getNotas('');
         toast({
@@ -55,6 +46,15 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
           status: 'success',
           duration: 2000,
         });
+      } else {
+        toast({
+          position: 'top',
+          title: 'Erro',
+          description: resp.message ?? 'Não foi possível comunicar com o servidor.',
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        }); 
       }
     });
   };

@@ -44,16 +44,7 @@ export function ModalCCe({ data }: ModalCCeProps) {
     const correcao = getValues('correcao');
 
     await SefazService.cce(seqEvento, data.id, correcao, idEmissorSelecionado, HEADERS).then((resp) => {
-      if (resp.type == 'error') {
-        toast({
-          position: 'top',
-          title: 'Erro',
-          description: resp.message,
-          status: 'error',
-          duration: 10000,
-          isClosable: true,
-        }); 
-      } else {
+      if (resp.type == 'success') {
         handleClose();
         toast({
           position: 'top',
@@ -62,6 +53,15 @@ export function ModalCCe({ data }: ModalCCeProps) {
           status: 'success',
           duration: 2000,
         });
+      } else {
+        toast({
+          position: 'top',
+          title: 'Erro',
+          description: resp.message ?? 'Não foi possível comunicar com o servidor.',
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        }); 
       }
     });
   };

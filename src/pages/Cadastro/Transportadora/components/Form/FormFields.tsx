@@ -59,29 +59,29 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
             <FormContainer label="Código">
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('cod')} />
             </FormContainer>
-            <FormContainer isRequired label="UF Placa">
+            <FormContainer label="UF Placa">
               <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf_placa')}>
                 {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
               </Select>
             </FormContainer>
-            <FormContainer isRequired label="Placa">
+            <FormContainer label="Placa">
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="text" {...register('placa')} />
             </FormContainer>
           </Flex>
           <Flex direction="column">
-            <FormContainer label="Razão Social"  isRequired>
+            <FormContainer label="Razão Social" >
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="nome" type="text" {...register('razao')} />
             </FormContainer>
           </Flex>
         </Flex>
         {/*lado B */}
         <Flex direction="column" w="35%" ml="6">
-          <FormContainer label="CPF / CNPJ">
-            <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" {...register('cnpjcpf')} />
+          <FormContainer label="CNPJ">
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" {...register('cnpjcpf')} />
           </FormContainer>
           <Flex>
             <FormContainer label="Inscrição Estadual (IE)" mr='3' width='60%'>
-              <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="number" {...register('ie')} />
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="number" {...register('ie')} />
             </FormContainer>
             <FormContainer label="RNTRC" width='40%'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('rntrc')} />
@@ -126,30 +126,30 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
           <Flex w="50%" direction="column">
             <Flex justify="space-between">
               <FormContainer label="Rua" width='70%' mr='3'>
-                <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="rua" type="text" {...register('logradouro')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="rua" type="text" {...register('logradouro')}/>
               </FormContainer>
               <FormContainer label="N°" width='30%'>
-                <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="numero" type="text" {...register('numero')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="numero" type="text" {...register('numero')}/>
               </FormContainer>
             </Flex>
             <Flex justify="space-between">
               <FormContainer label="Bairro" mr='3'>
-                <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="bairro" type="text" {...register('bairro')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="bairro" type="text" {...register('bairro')}/>
               </FormContainer>
               <FormContainer label="CEP">
-                <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cep" type="number" {...register('cep')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cep" type="number" {...register('cep')}/>
               </FormContainer>
             </Flex>
           </Flex>
           <Flex direction="column" w="50%"  ml="6">
             <Flex justify="space-between">
               <FormContainer label="UF" width='30%' mr='3'>
-                <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf')} onChange={(event) => setSelectedEstado(event.target.value)}>
+                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf')} onChange={(event) => setSelectedEstado(event.target.value)}>
                   {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
                 </Select>
               </FormContainer>
               <FormContainer label="Cidade" width='70%'>
-                <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cidade')}>
+                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cidade')}>
                   {cidades.map((cidade, index) => <option key={index} value={cidade.nome}>{cidade.nome}</option>)}
                 </Select>
               </FormContainer>

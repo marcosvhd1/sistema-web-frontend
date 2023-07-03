@@ -54,21 +54,21 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
   const handleStatusServidor = async () => {
     const data = await SefazService.status_servidor(idEmissorSelecionado, HEADERS);
     
-    if (data.erro != null) {
-      toast({
-        position: 'top',
-        title: 'Erro',
-        description: data.erro,
-        status: 'error',
-        duration: 10000,
-        isClosable: true,
-      }); 
-    } else {
+    if (data.xMotivo != null) {
       toast({
         position: 'top',
         description: data.xMotivo,
         status: 'info',
         duration: 2000,
+      }); 
+    } else {
+      toast({
+        position: 'top',
+        title: 'Erro',
+        description: data.erro ?? 'Não foi possível comunicar com o servidor.',
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
       }); 
     }
   };

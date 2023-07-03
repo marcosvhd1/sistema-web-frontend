@@ -43,30 +43,30 @@ export function Adress({ id }: AdressProps) {
       <Flex w="50%" direction="column">
         <Flex justify="space-between">
           <FormContainer label="Rua" width="21.5rem">
-            <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="rua" type="text" {...methods.register('logradouro')} width="21.5rem"/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="rua" type="text" {...methods.register('logradouro')} width="21.5rem"/>
           </FormContainer>
           <FormContainer label="N°" width="6rem">
-            <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="numero" type="text" {...methods.register('numero')} width="6rem"/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="numero" type="text" {...methods.register('numero')} width="6rem"/>
           </FormContainer>
         </Flex>
         <Flex justify="space-between">
           <FormContainer label="Bairro" width="17.5rem">
-            <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="bairro" type="text" {...methods.register('bairro')} width="17.5rem"/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="bairro" type="text" {...methods.register('bairro')} width="17.5rem"/>
           </FormContainer>
           <FormContainer label="CEP" width="10rem">
-            <Input isRequired maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cep" type="number" w="10rem" {...methods.register('cep')}/>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cep" type="number" w="10rem" {...methods.register('cep')}/>
           </FormContainer>
         </Flex>
       </Flex>
       <Flex direction="column" w="50%"  ml="6">
         <Flex justify="space-between">
           <FormContainer label="UF">
-            <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('uf')} w="5rem" onChange={(event) => setSelectedEstado(event.target.value)}>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('uf')} w="5rem" onChange={(event) => setSelectedEstado(event.target.value)}>
               {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
             </Select>
           </FormContainer>
           <FormContainer label="Cidade">
-            <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cidade')} w="22.5rem">
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cidade')} w="22.5rem">
               {cidades.map((cidade, index) => <option key={index} value={cidade.nome}>{cidade.nome}</option>)}
             </Select>
           </FormContainer>

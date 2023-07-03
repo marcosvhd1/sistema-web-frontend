@@ -13,7 +13,7 @@ export function DadosFiscais() {
         <Flex direction="column" w="50%" mr={6}>
           <Flex gap="2">
             <FormContainer width="10rem" label="CST / CSOSN ICMS" >
-              <Input isRequired maxLength={255} id="cst_icms" type="number" w="10rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cst_icms', {
+              <Input maxLength={255} id="cst_icms" type="number" w="10rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cst_icms', {
                 setValueAs: (value) => value === '' ? 0 : parseFloat(value),
               })} />
             </FormContainer>
@@ -68,7 +68,7 @@ export function DadosFiscais() {
         <Flex direction="column" w="50%">
           <Flex gap="2">
             <FormContainer label="CFOP de Venda" width="8rem">
-              <Input isRequired maxLength={255} id="cfop" width="8rem" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cfop')} />
+              <Input maxLength={255} id="cfop" width="8rem" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cfop')} />
             </FormContainer>
             <FormContainer label="Produção Própria" width="8rem">
               <Select defaultValue="nao" id="producao_propria" width="8rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('producao_propria')}>
@@ -82,7 +82,7 @@ export function DadosFiscais() {
           </Flex>
           <Flex gap="2">
             <FormContainer label="Classificação Fiscal (NCM)">
-              <Input isRequired maxLength={255} id="ncm" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('ncm')} />
+              <Input maxLength={255} id="ncm" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('ncm')} />
             </FormContainer>
             <FormContainer label="CEST">
               <Input maxLength={255} id="cest" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cest')} />
@@ -109,7 +109,7 @@ export function DadosFiscais() {
             </FormContainer>
           </Flex>
           <FormContainer label="Origem Mercadoria">
-            <Select isRequired id="origem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('origem')}>
+            <Select id="origem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('origem')}>
               <option value="0">0 - Nacional, exceto as indicadas nos códigos 3 a 5</option>
               <option value="1">1 - Estrangeira - Importação direta, exceto a indicada no código 6</option>
               <option value="2">2 - Estrangeira - Adquirida no mercado interno, exceto a indicada no código 7</option>

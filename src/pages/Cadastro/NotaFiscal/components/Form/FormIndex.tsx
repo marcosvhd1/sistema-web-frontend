@@ -178,32 +178,32 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
         let msg = '';
 
         switch (campo) {
-        case 'cod': 
+        case camposObrigatorios[0]: 
           setCurrentTab(0);
           msg = 'Está faltando preencher o CÓDIGO da NFe.';
           setTimeout(() => {
-            methods.setFocus('cod');
+            methods.setFocus(camposObrigatorios[0]);
           }, 100);
           break;
-        case 'serie': 
+        case camposObrigatorios[1]: 
           setCurrentTab(0);
           msg = 'Está faltando preencher a SÉRIE da NFe.';
           setTimeout(() => {
-            methods.setFocus('serie');
+            methods.setFocus(camposObrigatorios[1]);
           }, 100);
           break;
-        case 'natureza_operacao': 
+        case camposObrigatorios[2]: 
           setCurrentTab(0);
           msg = 'Está faltando selecionar a NATUREZA DE OPERAÇÃO da NFe.';
           setTimeout(() => {
-            methods.setFocus('natureza_operacao');
+            methods.setFocus(camposObrigatorios[2]);
           }, 100);
           break;
-        case 'cfop': 
+        case camposObrigatorios[3]: 
           setCurrentTab(0);
           msg = 'Está faltando preencher o CFOP da NFe.';
           setTimeout(() => {
-            methods.setFocus('cfop');
+            methods.setFocus(camposObrigatorios[3]);
           }, 100);
           break;
         }
@@ -212,8 +212,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
           position: 'top',
           description: msg,
           status: 'error',
-          duration: 5000,
-          isClosable: true,
+          duration: 4000,
         });
         return true;
       }

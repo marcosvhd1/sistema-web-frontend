@@ -31,6 +31,7 @@ export function FormModal({isEditing, id, refreshPage, editCod, cod, header, get
   const { colorMode } = useColorMode();
   const { idEmissorSelecionado } = useEmissorContext();
 
+  const [currentTab, setCurrentTab] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const clearForm = () => {
@@ -70,6 +71,68 @@ export function FormModal({isEditing, id, refreshPage, editCod, cod, header, get
     setFormSubmitted(false);
   };
 
+  const hasErrors = () => {
+    const camposObrigatorios: any[] = ['nprod', 'descricao', 'preco', 'un', 'cst_icms', 'ncm', 'cfop', 'origem'];
+    
+    for (const campo of camposObrigatorios) {
+      if (methods.getValues(campo) === '') {
+        let msg = '';
+        switch (campo) {
+        case camposObrigatorios[0]: 
+          msg = 'Está faltando preencher o CÓDIGO.';
+          setCurrentTab(0);
+          setTimeout(() => methods.setFocus(camposObrigatorios[0]), 100);
+          break;
+        case camposObrigatorios[1]: 
+          msg = 'Está faltando preencher a DESCRIÇÃO.';
+          setCurrentTab(0);
+          setTimeout(() => methods.setFocus(camposObrigatorios[1]), 100);
+          break;
+        case camposObrigatorios[2]: 
+          msg = 'Está faltando preencher o PREÇO.';
+          setCurrentTab(0);
+          setTimeout(() => methods.setFocus(camposObrigatorios[2]), 100);
+          break;
+        case camposObrigatorios[3]: 
+          msg = 'Está faltando preencher a UN.';
+          setCurrentTab(0);
+          setTimeout(() => methods.setFocus(camposObrigatorios[3]), 100);
+          break;
+        case camposObrigatorios[4]: 
+          msg = 'Está faltando preencher o CST/CSOSN.';
+          setCurrentTab(1);
+          setTimeout(() => methods.setFocus(camposObrigatorios[4]), 100);
+          break;
+        case camposObrigatorios[5]: 
+          msg = 'Está faltando preencher o NCM.';
+          setCurrentTab(1);
+          setTimeout(() => methods.setFocus(camposObrigatorios[5]), 100);
+          break;
+        case camposObrigatorios[6]: 
+          msg = 'Está faltando preencher o CFOP.';
+          setCurrentTab(1);
+          setTimeout(() => methods.setFocus(camposObrigatorios[6]), 100);
+          break;
+        case camposObrigatorios[7]: 
+          msg = 'Está faltando selecionar a ORIGEM.';
+          setCurrentTab(1);
+          setTimeout(() => methods.setFocus(camposObrigatorios[7]), 100);
+          break;
+        }
+
+        toast({
+          position: 'top',
+          description: msg,
+          status: 'error',
+          duration: 4000,
+        });
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   const handleCreateNewProduct = (data: IProduct) => {
     data.id_emissor = idEmissorSelecionado;
     if (data.descricao.trim().length === 0) {
@@ -107,10 +170,9 @@ export function FormModal({isEditing, id, refreshPage, editCod, cod, header, get
   };
 
   const submitData = (data: IProduct) => {
+    if (hasErrors()) return;
+
     data.status = active ? 'Ativo' : 'Inativo';
-
-    console.log(data);
-
     setFormSubmitted(true);
 
     if (isEditing) handleUpdateProduct(data);
@@ -132,7 +194,12 @@ export function FormModal({isEditing, id, refreshPage, editCod, cod, header, get
         <ModalContent>
           <ModalHeader>Cadastro de Produtos</ModalHeader>
           <ModalBody>
-            <Tabs variant='enclosed' colorScheme="gray" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
+            <Tabs 
+              variant='enclosed' 
+              colorScheme="gray" 
+              index={currentTab}
+              onChange={(index) => setCurrentTab(index)}
+            >
               <TabList>
                 <Tab>1. Dados Principais</Tab>
                 <Tab>2. Outros Dados / Fiscais</Tab>
