@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Select, Tag, Text, Tr, useColorMode } from '@chakra-ui/react';
+import { Button, Checkbox, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Select, Tag, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiSearch } from 'react-icons/fi';
@@ -14,6 +14,7 @@ import { IProduct, ProductService } from '../../../../../../../services/api/prod
 import formatMoney from '../../../../../../../utils/formatarValor';
 import { userInfos } from '../../../../../../../utils/header';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
+import { useGrupos } from '../../../../../../../hooks/useGrupos';
 
 interface ModalNFSearchProductProps {
   methods: UseFormReturn<INFProduct, any>
@@ -30,8 +31,15 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
   const { register, getValues } = useForm<getProductProps>();
   const { colorMode } = useColorMode();
 
+  const { grupos } = useGrupos();
+
   const [data, setData] = useState<IProduct[]>([]);
   const [filter, setFilter] = useState<string>('nprod');
+  const [filterGrupo, setFilterGrupo] = useState<string>('');
+  const [filterMarca, setFilterMarca] = useState<string>('');
+  const [active, setActive] = useState<boolean>(true);
+  const [seeActive, setSeeActive] = useState<string>('Ativo');
+
   const [pages, setPages] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalProducts, setTotalProducts] = useState<number>(0);
@@ -45,7 +53,6 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
     { key: 'id', label: 'Código' },
     { key: 'descricao', label: 'Descrição' },
     { key: 'preco', label: 'Preço' },
-    { key: 'marca', label: 'Marca' },
     { key: 'un', label: 'UN' },
     { key: 'ncm', label: 'NCM' },
     { key: 'status', label: 'Status' }
@@ -79,9 +86,14 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
     };
   }, [isOpen]);
 
+  const handleSeeActiveProducts = () => {
+    setSeeActive(active ? 'Ativo' : 'Inativo');
+    setActive(!active);
+  };
+
 
   const getProductsByFilter = (description: string) => {
-    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, '', '',idEmissorSelecionado, 'Ativo', HEADERS)
+    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, filterGrupo, filterMarca,idEmissorSelecionado, seeActive, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -143,26 +155,39 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
             <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
           </Flex>
           <Flex w="95%" m="4" align="center" justify="space-between">
-            <Flex w="70%" justify="center" align="center" mr='3'>
+            <Flex w="60%" justify="center" align="center" mr='3'>
               <Flex w="100%" justify="flex-start" align="center">
-                <FormContainer label='Buscar por' width="35%" mr='3'>
+                <FormContainer label='Buscar por' width="25%" mr='3'>
                   <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => setFilter(e.target.value)}>
                     <option value='nprod'>Código</option>
                     <option value='descricao'>Descrição</option>
                     <option value='referencia'>Referência</option>
-                    <option value='marca'>Marca</option>
                     <option value='ncm'>NCM</option>
                   </Select>
                 </FormContainer>
-                <FormContainer label='' width="65%" mt='7'>
+                <FormContainer label='' width="50%" mr='3' mt='7'>
                   <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} placeholder="Localizar..." type="text" {...register('description')} />
+                </FormContainer>
+                <FormContainer label='Marca' width="25%">
+                  <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => setFilterMarca(e.target.value)}>
+                    <option value=''>Nenhuma</option>
+                    {grupos.map((grupo, index) => grupo.tipo !== 'Grupo' ? <option key={index} value={grupo.descricao}>{grupo.descricao}</option> : null)}
+                  </Select>
                 </FormContainer>
               </Flex>
             </Flex>
-            <Flex w="30%" justify="flex-start" align="center">
-              <Button onClick={handleGetProductsByFilter} w="25%" mt={7} variant="solid" colorScheme="blue">
+            <Flex w="40%" justify="flex-start" align="center">
+              <FormContainer label='Grupo' width="45%" mr='3'>
+                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => setFilterGrupo(e.target.value)}>
+                  <option value=''>Nenhum</option>
+                  {grupos.map((grupo, index) => grupo.tipo === 'Grupo' ? <option key={index} value={grupo.descricao}>{grupo.descricao}</option> : null)}
+                </Select>
+              </FormContainer>
+              <Button onClick={handleGetProductsByFilter} w="15%" mt={7} variant="solid" colorScheme="blue" mr={3}>
                 <Icon as={FiSearch} />
               </Button>
+              <Checkbox size='lg' mt={7} mr={2} onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
+              <Text w='40%' mt={7} onClick={handleSeeActiveProducts}>Visualizar inativos</Text>
             </Flex>
           </Flex>
         </Flex>
@@ -174,7 +199,6 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
                 <TdCustom style={{ 'width': '1rem' }}>{data.nprod}</TdCustom>
                 <TdCustom>{data.descricao}</TdCustom>
                 <TdCustom>{data.preco ? 'R$ ' + formatMoney(data.preco) : ''}</TdCustom>
-                <TdCustom>{data.marca}</TdCustom>
                 <TdCustom>{data.un}</TdCustom>
                 <TdCustom>{data.ncm}</TdCustom>
                 <TdCustom>

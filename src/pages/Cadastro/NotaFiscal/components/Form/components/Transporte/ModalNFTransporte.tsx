@@ -23,7 +23,7 @@ export function ModalNFTransporte() {
   const { colorMode } = useColorMode();
 
   const [data, setData] = useState<ITransportadora[]>([]);
-  const [filter, setFilter] = useState<string>('razao');
+  const [filter, setFilter] = useState<string>('cod');
   const [pages, setPages] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalTransp, setTotalTransp] = useState<number>(0);
@@ -124,6 +124,7 @@ export function ModalNFTransporte() {
               <Flex w="100%" justify="flex-start" align="center">
                 <FormContainer label='Buscar por' width="35%" mr='3'>
                   <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => setFilter(e.target.value)}>
+                    <option value='cod'>Código</option>
                     <option value='razao'>Razão Social</option>
                     <option value='cnpjcpf'>CNPJ</option>
                   </Select>
