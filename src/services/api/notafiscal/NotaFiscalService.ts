@@ -81,6 +81,8 @@ export interface INotaFiscal {
     ecf_referenciado: string;
     n_coo: string;
     caminho_xml: string;
+    caminho_pdf: string;
+    caminho_pdf_cce: string;
     chave_acesso: string;
     uf_embarque: string;
     local_embarque: string;

@@ -119,6 +119,27 @@ export function NotaFiscal() {
     setDataToModal(nota);
   };
 
+  const handleImprimir = (nota: INotaFiscal) => {
+    if (nota.caminho_pdf != null) {
+      window.open(nota.caminho_pdf, 'Download');
+    } else {
+      //PRÉ VISUALIZAR
+    }
+  };
+
+  const handleImprimirCCe = (nota: INotaFiscal) => {
+    if (nota.caminho_pdf_cce != null) {
+      window.open(nota.caminho_pdf_cce, 'Download');
+    } else {
+      toast({
+        position: 'top',
+        description: 'Nenhuma CCe vinculada a NFe',
+        status: 'error',
+        duration: 5000,
+      });
+    }
+  };
+
   const formatDate = (date: string) => {
     const aux = date.split('-');
     return `${aux[2]}/${aux[1]}/${aux[0]}`;
@@ -330,6 +351,7 @@ export function NotaFiscal() {
           isClosable: true,
         }); 
       } else {
+        onCloseEmitir();
         getNF('');
         toast({
           position: 'top',
@@ -421,22 +443,24 @@ export function NotaFiscal() {
                     {
                       data.status === 'Emitida' ?
                         <Menu>
-                          <MenuButton
-                            as={Button}
-                            pt={1}
-                            pb={0}
-                            pr={0}
-                            pl={0}
-                            w="2rem"
-                            variant="ghost"
-                            colorScheme="blue" 
-                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                          >
-                            <Icon as={FiFile} color={colorMode === 'light' ? 'blue.400' : 'blue.300'} />
-                          </MenuButton>
+                          <Tooltip label='Carta de Correção' placement="auto-start" hasArrow bg='blue.300'>
+                            <MenuButton
+                              as={Button}
+                              pt={1}
+                              pb={0}
+                              pr={0}
+                              pl={0}
+                              w="2rem"
+                              variant="ghost"
+                              colorScheme="blue" 
+                              fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                            >
+                              <Icon as={FiFile} color={colorMode === 'light' ? 'blue.400' : 'blue.300'} />
+                            </MenuButton>
+                          </Tooltip>
                           <MenuList>
                             <MenuItem onClick={() => handleOpenModalCCe(data)} color={colorMode === 'light' ? 'green.400' : 'green.300'}><Icon as={FiSend} mr={2} color={colorMode === 'light' ? 'green.400' : 'green.300'}/>Emitir</MenuItem>
-                            <MenuItem color={colorMode === 'light' ? 'blue.400' : 'blue.300'}><Icon as={FiPrinter} mr={2} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}/>Imprimir</MenuItem>
+                            <MenuItem onClick={() => handleImprimirCCe(data)} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}><Icon as={FiPrinter} mr={2} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}/>Imprimir</MenuItem>
                           </MenuList>
                         </Menu>
                         : null
@@ -456,7 +480,7 @@ export function NotaFiscal() {
                         <ActionButton 
                           label='Imprimir'
                           colorScheme='blue'
-                          action={() => null}
+                          action={() => handleImprimir(data)}
                           icon={FiPrinter}
                         />
                         : null
