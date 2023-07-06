@@ -26,11 +26,10 @@ interface IFormFields {
   getCod: () => void
   cod: number
   isEditing: boolean
-  IErequired: boolean
   setIErequired: (value: boolean) => void
 }
 
-export function FormFields({ id, editCod, isEditing, cod, getCod, IErequired, setIErequired }: IFormFields) {
+export function FormFields({ id, editCod, isEditing, cod, getCod, setIErequired }: IFormFields) {
   const { register, formState: { errors }, setFocus, getValues, setValue } = useFormContext<IClient>();
   const { colorMode } = useColorMode();
 
@@ -51,8 +50,8 @@ export function FormFields({ id, editCod, isEditing, cod, getCod, IErequired, se
   };
 
   const IERequired = (value: any) => {
-    if (value == '9') setIErequired(false);
-    else setIErequired(true);
+    if (value == '1') setIErequired(true);
+    else setIErequired(false);
   };
 
   return (

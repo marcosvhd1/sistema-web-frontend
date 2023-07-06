@@ -11,6 +11,7 @@ import { useModalNFCCe } from '../../../../Contexts/Modal/NotaFiscal/Sefaz/NFCCe
 
 interface ModalCCeProps {
   data: INotaFiscal;
+  getNotas: (description: string) => void;
 }
 
 interface getCorrecao {
@@ -18,7 +19,7 @@ interface getCorrecao {
   correcao: string;
 }
 
-export function ModalCCe({ data }: ModalCCeProps) {
+export function ModalCCe({ data, getNotas }: ModalCCeProps) {
   const { register, setValue, getValues, setFocus, reset } = useForm<getCorrecao>();
 
   const { colorMode } = useColorMode();
@@ -45,6 +46,7 @@ export function ModalCCe({ data }: ModalCCeProps) {
 
     await SefazService.cce(seqEvento, data.id, correcao, idEmissorSelecionado, HEADERS).then((resp) => {
       if (resp.type == 'success') {
+        getNotas('');
         handleClose();
         toast({
           position: 'top',

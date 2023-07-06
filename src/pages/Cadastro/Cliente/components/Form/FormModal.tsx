@@ -213,7 +213,6 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, ge
                     editCod={editCod} 
                     isEditing={isEditing} 
                     id={id}
-                    IErequired={IErequired}
                     setIErequired={setIErequired}
                   />
                 </TabPanel>

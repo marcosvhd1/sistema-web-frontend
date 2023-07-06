@@ -533,6 +533,7 @@ export function NotaFiscal() {
           getNotas={getNF}
         />
         <ModalCCe 
+          getNotas={getNF}
           data={dataToModal!}
         />
         <DeleteAlertDialog label="NFe" deleteFunction={handleEmitirNF} onClose={onCloseEmitir} isOpen={isOpenEmitir} id={id} colorScheme='green'/>
