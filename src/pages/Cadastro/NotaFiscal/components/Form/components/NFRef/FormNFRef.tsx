@@ -38,8 +38,7 @@ export function FormNFRef({ chaves, addChave }: FormNFRefProps) {
     } else {
       toast({
         position: 'top',
-        title: 'Erro ao cadastrar.',
-        description: 'A chave precisa ter 44 dígitos',
+        description: `A chave precisa ter 44 dígitos, tamanho atual: ${description.length}`,
         status: 'error',
         duration: 2000,
         isClosable: true,

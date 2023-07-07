@@ -1,6 +1,7 @@
 import { Button, Divider, Flex, Icon, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
+import { useState } from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
-import { FiTrash2 } from 'react-icons/fi';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
 import { useModalNFDuplicata } from '../../../../../../../Contexts/Modal/NotaFiscal/NFDuplicataContext';
@@ -25,6 +26,12 @@ interface FormFormaPagtoProps {
 export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata }: FormFormaPagtoProps) {
   const methods = useFormContext<INotaFiscal>();
 
+  const [isEditingForma, setIsEditingForma] = useState<boolean>(false);
+  const [isEditingDup, setIsEditingDup] = useState<boolean>(false);
+
+  const [currentIndexForma, setCurrentIndexForma] = useState<number>(0);
+  const [currentIndexDup, setCurrentIndexDup] = useState<number>(0);
+
   const { onOpen } = useModalNFFormaPagto();
   const { onOpen: openDuplicata } = useModalNFDuplicata();
   const { colorMode } = useColorMode();
@@ -35,10 +42,12 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   };
 
   const openModalForma = () => {
+    setIsEditingForma(false);
     onOpen();
   };
 
   const openModalDuplicata = () => {
+    setIsEditingDup(false);
     openDuplicata();
   };
 
@@ -48,6 +57,28 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
 
   const handleAddDupli = (data: INFDuplicata) => {
     duplicatas.push(data);
+  };
+
+  const loadFormaToEdit = (index: number) => {
+    methods.reset(formaPagtos[index]);
+    setCurrentIndexForma(index);
+    setIsEditingForma(true);
+    onOpen();
+  };
+
+  const loadDupToEdit = (index: number) => {
+    methods.reset(duplicatas[index]);
+    setCurrentIndexDup(index);
+    setIsEditingDup(true);
+    openDuplicata();
+  };
+
+  const handleEditForma = (data: INFFormaPagto) => {
+    formaPagtos[currentIndexForma] = data;
+  };
+
+  const handleEditDup = (data: INFDuplicata) => {
+    duplicatas[currentIndexDup] = data;
   };
 
   const handleDeleteForma = (data: INFFormaPagto) => {
@@ -65,14 +96,14 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
     { key: 'valor', label: 'Valor' },
     { key: 'bandeira', label: 'Bandeira' },
     { key: 'obs', label: 'Observação' },
-    { key: 'acoes', label: 'Excluir' },
+    { key: 'acoes', label: 'Ações' },
   ];
 
   const headersDuplicata: { key: string, label: string }[] = [
     { key: 'numero', label: 'Número' },
     { key: 'vencimento', label: 'Vencimento' },
     { key: 'valor', label: 'Valor' },
-    { key: 'acoes', label: 'Excluir' },
+    { key: 'acoes', label: 'Ações' },
   ];
 
   return (
@@ -103,13 +134,19 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
               </Button>
             </Flex>
             <DataTable width='100%' headers={headersForma} trailing={false} mt='3'>
-              {formaPagtos !== undefined ? formaPagtos.map((data) => (
+              {formaPagtos !== undefined ? formaPagtos.map((data, index) => (
                 <Tr key={uuidv4()}>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.forma}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor)}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.bandeira}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.observacao}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                    <ActionButton 
+                      label='Editar'
+                      colorScheme='orange'
+                      action={() => loadFormaToEdit(index)}
+                      icon={FiEdit}
+                    />
                     <ActionButton 
                       label='Excluir'
                       colorScheme='red'
@@ -132,12 +169,18 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
               </Button>
             </Flex>
             <DataTable width='100%' headers={headersDuplicata} trailing={false} mt='3'>
-              {duplicatas !== undefined ? duplicatas.map((data) => (
+              {duplicatas !== undefined ? duplicatas.map((data, index) => (
                 <Tr key={uuidv4()}>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.numero}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{formatDate(data.vencimento)}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor)}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>
+                    <ActionButton 
+                      label='Editar'
+                      colorScheme='orange'
+                      action={() => loadDupToEdit(index)}
+                      icon={FiEdit}
+                    />
                     <ActionButton 
                       label='Excluir'
                       colorScheme='red'
@@ -150,8 +193,16 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
             </DataTable>
           </Flex>
         </Flex>
-        <ModalNFFormaPagto addFormaPagto={handleAddForma} />
-        <ModalNFDuplicata addDuplicata={handleAddDupli} />
+        <ModalNFFormaPagto
+          isEditing={isEditingForma}
+          addFormaPagto={handleAddForma}
+          editFormaPagto={handleEditForma}
+        />
+        <ModalNFDuplicata 
+          isEditing={isEditingDup}
+          addDuplicata={handleAddDupli} 
+          editDuplicata={handleEditDup}
+        />
       </Flex>
     </FormProvider>
   );

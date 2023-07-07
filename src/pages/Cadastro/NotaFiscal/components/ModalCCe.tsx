@@ -40,7 +40,37 @@ export function ModalCCe({ data, getNotas }: ModalCCeProps) {
     }
   }, [isOpen]);
 
+  const hasErrors = () => {
+    if (getValues('seqEvento') < 1) {
+      setTimeout(() => {
+        setFocus('seqEvento');
+      }, 100);
+      toast({
+        position: 'top',
+        description: 'O sequencial do evento está inválido.',
+        status: 'error',
+        duration: 4000,
+      });
+      return true;
+    } else if (getValues('correcao').length < 15) {
+      setTimeout(() => {
+        setFocus('correcao');
+      }, 100);
+      toast({
+        position: 'top',
+        description: 'A Correção precisa de no mínimo 15 caracteres.',
+        status: 'error',
+        duration: 4000,
+      });
+      return true;
+    }
+
+    return false;
+  };
+
   const submitData = async () => {
+    if (hasErrors()) return;
+
     const seqEvento = getValues('seqEvento');
     const correcao = getValues('correcao');
 
@@ -108,7 +138,7 @@ export function ModalCCe({ data, getNotas }: ModalCCeProps) {
             <FormContainer label='Número do sequencial do evento'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="numer" {...register('seqEvento')}/>
             </FormContainer>
-            <FormContainer label='Correção'>
+            <FormContainer label='Correção (min. 15 caracteres)'>
               <Textarea {...register('correcao')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}/>
             </FormContainer>
           </Flex> 

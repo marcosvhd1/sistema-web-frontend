@@ -121,7 +121,7 @@ export function NotaFiscal() {
 
   const handleImprimir = (nota: INotaFiscal) => {
     if (nota.caminho_pdf != null) {
-      window.open(nota.caminho_pdf, 'Download');
+      window.open(nota.caminho_pdf, '_blank');
     } else {
       //PRÉ VISUALIZAR
     }
@@ -129,7 +129,7 @@ export function NotaFiscal() {
 
   const handleImprimirCCe = (nota: INotaFiscal) => {
     if (nota.caminho_pdf_cce != null) {
-      window.open(nota.caminho_pdf_cce, 'Download');
+      window.open(nota.caminho_pdf_cce, '_blank');
     } else {
       toast({
         position: 'top',

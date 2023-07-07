@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, Select, Text, useColorMode, useToast } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
@@ -8,10 +8,12 @@ import { MoneyAddon } from '../../../../../../../components/Form/MoneyAddon';
 import { INFFormaPagto } from '../../../../../../../services/api/notafiscal/NFFormaPagto';
 
 interface ModalNFFormaPagtoProps {
+  isEditing: boolean
   addFormaPagto: (data: INFFormaPagto) => void
+  editFormaPagto: (data: INFFormaPagto) => void
 }
 
-export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
+export function ModalNFFormaPagto({ isEditing, addFormaPagto, editFormaPagto }: ModalNFFormaPagtoProps) {
   const methods = useFormContext<INFFormaPagto>();
 
   const { isOpen, onClose } = useModalNFFormaPagto();
@@ -20,9 +22,11 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
   const toast = useToast();
 
   useEffect(() => {
-    methods.setValue('valor', '0');
-    methods.setValue('bandeira', '');
-    methods.setValue('observacao', '');
+    if (isEditing === false) {
+      methods.setValue('valor', '0');
+      methods.setValue('bandeira', '');
+      methods.setValue('observacao', '');
+    }
   }, [isOpen === true]);
 
   useEffect(() => {
@@ -77,7 +81,9 @@ export function ModalNFFormaPagto({ addFormaPagto }: ModalNFFormaPagtoProps) {
         'observacao': methods.getValues('observacao'),
       };
 
-      addFormaPagto(data);  
+      if (isEditing) editFormaPagto(data);
+      else addFormaPagto(data);  
+
       onClose();
     }
   };

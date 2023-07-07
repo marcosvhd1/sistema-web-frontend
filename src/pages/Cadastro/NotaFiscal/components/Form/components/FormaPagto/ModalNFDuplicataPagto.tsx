@@ -8,10 +8,12 @@ import { INFDuplicata } from '../../../../../../../services/api/notafiscal/NFDup
 import { useEffect } from 'react';
 
 interface ModalNFDuplicataProps {
+  isEditing: boolean
   addDuplicata: (data: INFDuplicata) => void
+  editDuplicata: (data: INFDuplicata) => void
 }
 
-export function ModalNFDuplicata({ addDuplicata }: ModalNFDuplicataProps) {
+export function ModalNFDuplicata({ isEditing, addDuplicata, editDuplicata }: ModalNFDuplicataProps) {
   const methods = useFormContext<INFDuplicata>();
 
   const { isOpen, onClose } = useModalNFDuplicata();
@@ -20,8 +22,11 @@ export function ModalNFDuplicata({ addDuplicata }: ModalNFDuplicataProps) {
   const toast = useToast();
 
   useEffect(() => {
-    methods.setValue('valor', '0');
-    methods.setValue('numero', '');
+    if (isEditing === false) {
+      methods.setValue('valor', '0');
+      methods.setValue('numero', '');
+      methods.setValue('vencimento', new Date().toISOString().split('T')[0]);
+    }
   }, [isOpen === true]);
 
   useEffect(() => {
@@ -47,8 +52,9 @@ export function ModalNFDuplicata({ addDuplicata }: ModalNFDuplicataProps) {
         'valor': valor,
         'vencimento': methods.getValues('vencimento'),
       };
-  
-      addDuplicata(data);  
+
+      if (isEditing) editDuplicata(data);
+      else addDuplicata(data);  
       
       onClose();
     } else {

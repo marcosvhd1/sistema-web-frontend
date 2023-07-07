@@ -18,7 +18,7 @@ interface getJustify {
 }
 
 export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
-  const { register, getValues, reset } = useForm<getJustify>();
+  const { register, getValues, reset, setFocus } = useForm<getJustify>();
 
   const { colorMode } = useColorMode();
   const { isOpen, onClose } = useModalNFCancelar();
@@ -28,8 +28,27 @@ export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
   const HEADERS = userInfo.header;
 
   const toast = useToast();
+
+  const hasErrors = () => {
+    if (getValues('description').length < 15) {
+      setTimeout(() => {
+        setFocus('description');
+      }, 100);
+      toast({
+        position: 'top',
+        description: 'A Justificativa precisa de no mínimo 15 caracteres.',
+        status: 'error',
+        duration: 4000,
+      });
+      return true;
+    }
+
+    return false;
+  };
   
   const submitData = async () => {
+    if (hasErrors()) return;
+
     const justify = getValues('description');
 
     await SefazService.cancelar(data.id, idEmissorSelecionado, justify, HEADERS).then((resp) => {
@@ -94,7 +113,7 @@ export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
                 <Text>{data != null ? formatDate(`${data.data_emissao}`) : ''}</Text>
               </FormContainer>
             </Flex>
-            <FormContainer label='Justificativa'>
+            <FormContainer label='Justificativa (min. 15 caracteres)'>
               <Textarea {...register('description')} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}/>
             </FormContainer>
           </Flex> 
