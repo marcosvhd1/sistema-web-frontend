@@ -1,4 +1,5 @@
 import { Button, Flex, Icon, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorMode, useToast } from '@chakra-ui/react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
@@ -19,6 +20,7 @@ interface getDados {
 
 export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
   const { register, getValues, reset, setFocus } = useForm<getDados>();
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const { colorMode } = useColorMode();
   const { isOpen, onClose } = useModalNFInutilizar();
@@ -78,6 +80,8 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
   const submitData = async () => {
     if (hasErrors()) return;
 
+    setFormSubmitted(true);
+
     const numeroIni = getValues('numeroIni');
     const numeroFin = getValues('numeroFin');
     const description = getValues('description');
@@ -104,6 +108,8 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
         }); 
       }
     });
+
+    setFormSubmitted(false);
   };
 
   const handleClose = () => {
@@ -149,7 +155,7 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
         </ModalBody>
         <ModalFooter>
           <Flex w='100%' justify='space-between' align='center'>
-            <Button w='15%' variant='solid' colorScheme='blue' onClick={submitData}><Icon as={FiCheck} mr={2} />Enviar</Button>
+            <Button w='15%' variant='solid' colorScheme='red' onClick={submitData} disabled={formSubmitted}><Icon as={FiCheck} mr={2} />Inutilizar</Button>
             <Button w='15%' onClick={handleClose}><Icon as={FiSlash} mr={2} />Fechar</Button>
           </Flex>
         </ModalFooter>

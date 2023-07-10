@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
+import { useModalNFCCe } from '../../../../Contexts/Modal/NotaFiscal/Sefaz/NFCCeContext';
 import { FormContainer } from '../../../../components/Form/FormContainer';
 import { INotaFiscal } from '../../../../services/api/notafiscal/NotaFiscalService';
 import { SefazService } from '../../../../services/api/sefaz/SefazService';
 import { userInfos } from '../../../../utils/header';
-import { useModalNFCCe } from '../../../../Contexts/Modal/NotaFiscal/Sefaz/NFCCeContext';
 
 interface ModalCCeProps {
   data: INotaFiscal;
@@ -21,6 +21,7 @@ interface getCorrecao {
 
 export function ModalCCe({ data, getNotas }: ModalCCeProps) {
   const { register, setValue, getValues, setFocus, reset } = useForm<getCorrecao>();
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const { colorMode } = useColorMode();
   const { isOpen, onClose } = useModalNFCCe();
@@ -71,6 +72,8 @@ export function ModalCCe({ data, getNotas }: ModalCCeProps) {
   const submitData = async () => {
     if (hasErrors()) return;
 
+    setFormSubmitted(true);
+
     const seqEvento = getValues('seqEvento');
     const correcao = getValues('correcao');
 
@@ -96,6 +99,8 @@ export function ModalCCe({ data, getNotas }: ModalCCeProps) {
         }); 
       }
     });
+
+    setFormSubmitted(false);
   };
 
   const handleClose = () => {
@@ -145,7 +150,7 @@ export function ModalCCe({ data, getNotas }: ModalCCeProps) {
         </ModalBody>
         <ModalFooter>
           <Flex w='100%' justify='space-between' align='center'>
-            <Button w='15%' variant='solid' colorScheme='blue' onClick={submitData}><Icon as={FiCheck} mr={2} />Corrigir</Button>
+            <Button w='15%' variant='solid' colorScheme='blue' onClick={submitData} disabled={formSubmitted}><Icon as={FiCheck} mr={2} />Corrigir</Button>
             <Button w='15%' onClick={handleClose}><Icon as={FiSlash} mr={2} />Fechar</Button>
           </Flex>
         </ModalFooter>

@@ -1,4 +1,5 @@
 import { Button, Flex, Icon, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorMode, useToast } from '@chakra-ui/react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
@@ -19,6 +20,7 @@ interface getJustify {
 
 export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
   const { register, getValues, reset, setFocus } = useForm<getJustify>();
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const { colorMode } = useColorMode();
   const { isOpen, onClose } = useModalNFCancelar();
@@ -49,6 +51,8 @@ export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
   const submitData = async () => {
     if (hasErrors()) return;
 
+    setFormSubmitted(true);
+
     const justify = getValues('description');
 
     await SefazService.cancelar(data.id, idEmissorSelecionado, justify, HEADERS).then((resp) => {
@@ -73,6 +77,8 @@ export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
         }); 
       }
     });
+
+    setFormSubmitted(false);
   };
 
   const handleClose = () => {
@@ -120,7 +126,7 @@ export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
         </ModalBody>
         <ModalFooter>
           <Flex w='100%' justify='space-between' align='center'>
-            <Button w='15%' variant='solid' colorScheme='red' onClick={submitData}><Icon as={FiCheck} mr={2} />Cancelar</Button>
+            <Button w='15%' variant='solid' colorScheme='red' onClick={submitData} disabled={formSubmitted}><Icon as={FiCheck} mr={2} />Cancelar</Button>
             <Button w='15%' onClick={handleClose}><Icon as={FiSlash} mr={2} />Fechar</Button>
           </Flex>
         </ModalFooter>

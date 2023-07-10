@@ -7,11 +7,12 @@ interface AlertDialogProps {
   deleteFunction: (id: number) => void
   label: string
   isOpen: boolean
+  disabled?: boolean
   onClose: () => void
   colorScheme?: string;
 }
 
-export function DeleteAlertDialog({ id, deleteFunction, label, isOpen, onClose, colorScheme = 'red'}: AlertDialogProps) {
+export function DeleteAlertDialog({ id, deleteFunction, label, isOpen, disabled = false, onClose, colorScheme = 'red'}: AlertDialogProps) {
   const cancelRef = useRef<HTMLButtonElement>(null);
 
   return (
@@ -30,7 +31,7 @@ export function DeleteAlertDialog({ id, deleteFunction, label, isOpen, onClose, 
         </AlertDialogBody>
         <AlertDialogFooter>
           <Flex justify="space-between" w="100%">
-            <Button onClick={() => deleteFunction(id)} colorScheme={`${colorScheme}`}>
+            <Button onClick={() => deleteFunction(id)} colorScheme={`${colorScheme}`} disabled={disabled}>
               <Icon as={colorScheme == 'green' ? FiSend : FiTrash2} mr={2} />
               {colorScheme == 'green' ? 'Emitir' : 'Excluir'}
             </Button>

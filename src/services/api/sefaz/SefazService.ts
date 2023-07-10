@@ -1,6 +1,15 @@
 import { Api } from '../ApiConfig';
 import { ApiException } from '../ApiException';
 
+const preview = async (idNfe: number, idEmissor: number, HEADERS: any): Promise<any | ApiException> => {
+  try {
+    const { data } =  await Api().get(`/sefaz/preview?id_nfe=${idNfe}&id_emissor=${idEmissor}`, HEADERS);
+    return data;
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
+  }
+};
+
 const emitir = async (idNfe: number, idEmissor: number, HEADERS: any): Promise<any | ApiException> => {
   try {
     const { data } =  await Api().get(`/sefaz/emitir?id_nfe=${idNfe}&id_emissor=${idEmissor}`, HEADERS);
@@ -47,6 +56,7 @@ const status_servidor = async (idEmissor: number, HEADERS: any): Promise<any | A
 };
 
 export const SefazService = {
+  preview,
   emitir,
   cancelar,
   inutilizar,

@@ -50,6 +50,7 @@ export function NotaFiscal() {
   
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [id, setId] = useState<number>(0);
+  const [formSubmitted, setFormSubmitted] = useState(false);
   
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalNotas, setTotalNotas] = useState<number>(0);
@@ -120,11 +121,12 @@ export function NotaFiscal() {
   };
 
   const handleImprimir = (nota: INotaFiscal) => {
-    if (nota.caminho_pdf != null) {
-      window.open(nota.caminho_pdf, '_blank');
-    } else {
-      //PRÉ VISUALIZAR
-    }
+    if (nota.caminho_pdf == null) {
+      SefazService.preview(nota.id, idEmissorSelecionado, HEADERS).then((response) => {
+        if (response.type == 'success') window.open(response.caminhoPDF, '_blank');
+        
+      });
+    } else window.open(nota.caminho_pdf, '_blank');
   };
 
   const handleImprimirCCe = (nota: INotaFiscal) => {
@@ -340,6 +342,8 @@ export function NotaFiscal() {
   };
 
   const handleEmitirNF = async (idNfe: number) => {
+    setFormSubmitted(true);
+
     await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS).then((resp) => {
       if (resp.type == 'error') {
         toast({
@@ -362,6 +366,8 @@ export function NotaFiscal() {
         }); 
       }
     });
+
+    setFormSubmitted(false);
   };
 
   const rowColor = (status: string) => {
@@ -478,7 +484,7 @@ export function NotaFiscal() {
                     {
                       data.status !== 'Inutilizada' ?
                         <ActionButton 
-                          label='Imprimir'
+                          label= {data.status === 'Em digitação' ? 'Pré visualizar' : 'Imprimir'}
                           colorScheme='blue'
                           action={() => handleImprimir(data)}
                           icon={FiPrinter}
@@ -536,7 +542,7 @@ export function NotaFiscal() {
           getNotas={getNF}
           data={dataToModal!}
         />
-        <DeleteAlertDialog label="NFe" deleteFunction={handleEmitirNF} onClose={onCloseEmitir} isOpen={isOpenEmitir} id={id} colorScheme='green'/>
+        <DeleteAlertDialog label="NFe" deleteFunction={handleEmitirNF} onClose={onCloseEmitir} isOpen={isOpenEmitir} id={id} colorScheme='green' disabled={formSubmitted}/>
         <DeleteAlertDialog label="NFe" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>
