@@ -3,8 +3,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Tooltip, Tr, useColorMode, useToast } from '@chakra-ui/react';
-import { FiChevronLeft, FiChevronRight, FiEdit, FiFile, FiPrinter, FiSend, FiSlash, FiTrash2 } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiEdit, FiFile, FiFilePlus, FiPrinter, FiSend, FiSlash, FiTrash2 } from 'react-icons/fi';
 
+import { MdMenu } from 'react-icons/md';
 import { useAlertEmitirNFContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertEmitirNFContext';
 import { useAlertNotaFiscalContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertNotaFiscalContext';
 import { useContadorContext } from '../../../Contexts/ContadorContext';
@@ -427,57 +428,12 @@ export function NotaFiscal() {
                         : null
                     }
                     {
-                      data.status === 'Emitida' ?
-                        <ActionButton 
-                          label='Cancelar'
-                          colorScheme='red'
-                          action={() => handleOpenModalCancelar(data)}
-                          icon={FiSlash}
-                        />
-                        : null
-                    }
-                    {
                       data.status !== 'Inutilizada' ?
                         <ActionButton 
                           label='Editar'
                           colorScheme='orange'
                           action={() => handleEditNF(data.id)}
                           icon={FiEdit}
-                        />
-                        : null
-                    }
-                    {
-                      data.status === 'Emitida' ?
-                        <Menu>
-                          <Tooltip label='Carta de Correção' placement="auto-start" hasArrow bg='blue.300'>
-                            <MenuButton
-                              as={Button}
-                              pt={1}
-                              pb={0}
-                              pr={0}
-                              pl={0}
-                              w="2rem"
-                              variant="ghost"
-                              colorScheme="blue" 
-                              fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                            >
-                              <Icon as={FiFile} color={colorMode === 'light' ? 'blue.400' : 'blue.300'} />
-                            </MenuButton>
-                          </Tooltip>
-                          <MenuList>
-                            <MenuItem onClick={() => handleOpenModalCCe(data)} color={colorMode === 'light' ? 'green.400' : 'green.300'}><Icon as={FiSend} mr={2} color={colorMode === 'light' ? 'green.400' : 'green.300'}/>Emitir</MenuItem>
-                            <MenuItem onClick={() => handleImprimirCCe(data)} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}><Icon as={FiPrinter} mr={2} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}/>Imprimir</MenuItem>
-                          </MenuList>
-                        </Menu>
-                        : null
-                    }
-                    {
-                      data.status !== 'Emitida' && data.status !== 'Cancelada' ?
-                        <ActionButton 
-                          label='Excluir'
-                          colorScheme='red'
-                          action={() => handleOpenDialog(data.id)}
-                          icon={FiTrash2}
                         />
                         : null
                     }
@@ -491,6 +447,56 @@ export function NotaFiscal() {
                         />
                         : null
                     }
+                    <Menu>
+                      <MenuButton 
+                        as={Button}
+                        w="2rem"
+                        p={0}
+                        variant='ghost'
+                        colorScheme='blue'
+                        fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                      >
+                        <Icon as={MdMenu} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}/>
+                      </MenuButton>
+                      <MenuList>
+                        {
+                          data.status === 'Emitida' ?
+                            <MenuItem onClick={() => handleOpenModalCancelar(data)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
+                              <Icon as={FiSlash} mr={2}/>
+                              Cancelar
+                            </MenuItem>
+                            : null
+                        }
+                        {
+                          data.status === 'Emitida' ?
+                            <MenuItem onClick={() => handleOpenModalCCe(data)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                              <Icon as={FiFile} mr={2}/>
+                              Carta de Correção
+                            </MenuItem>
+                            : null
+                        }
+                        {
+                          data.status === 'Emitida' && data.caminho_pdf_cce !== null ?
+                            <MenuItem onClick={() => handleImprimirCCe(data)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                              <Icon as={FiPrinter} mr={2}/>
+                              Imprimir Correção
+                            </MenuItem>
+                            : null
+                        }
+                        {
+                          data.status !== 'Emitida' && data.status !== 'Cancelada' ?
+                            <MenuItem onClick={() => handleOpenDialog(data.id)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
+                              <Icon as={FiTrash2} mr={2}/>
+                              Excluir
+                            </MenuItem>
+                            : null
+                        }
+                        <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                          <Icon as={FiFilePlus} mr={2}/>
+                          Duplicar
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
                   </TdCustom>
                 </Tr>
               ))
