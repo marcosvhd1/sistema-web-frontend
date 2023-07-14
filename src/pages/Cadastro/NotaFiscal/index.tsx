@@ -402,31 +402,21 @@ export function NotaFiscal() {
                     {data.cod}
                   </TdCustom>
                   <TdCustom style={{ width: '10%' }}>
-                    {formatDate(data.data_emissao.toString())}
+                    {data.data_emissao != undefined ? formatDate(data.data_emissao.toString()) : ''}
                   </TdCustom>
                   <TdCustom style={{ width: '20%' }}>
-                    {data.natureza_operacao}
+                    {data.natureza_operacao ?? ''}
                   </TdCustom>
-                  <TdCustom style={{ width: '20%' }}>
-                    {data.nome_destinatario}
-                  </TdCustom>
-                  <TdCustom style={{ width: '10%' }}>
-                    {data.status}
+                  <TdCustom style={{ width: '25%' }}>
+                    {data.nome_destinatario ?? ''}
                   </TdCustom>
                   <TdCustom style={{ width: '10%' }}>
-                    {'R$ ' + formatMoney(data.total_nota)}
+                    {data.status ?? ''}
                   </TdCustom>
-                  <TdCustom style={{ width: '20%', textAlign: 'end' }}>
-                    {
-                      data.status === 'Em digitação' ?
-                        <ActionButton 
-                          label='Emitir'
-                          colorScheme='green'
-                          action={() => handleOpenDialogEmitir(data.id)}
-                          icon={FiSend}
-                        />
-                        : null
-                    }
+                  <TdCustom style={{ width: '10%' }}>
+                    {'R$ ' + formatMoney(data.total_nota) ?? ''}
+                  </TdCustom>
+                  <TdCustom style={{ width: '15%', textAlign: 'end' }}>
                     {
                       data.status !== 'Inutilizada' ?
                         <ActionButton 
@@ -459,6 +449,14 @@ export function NotaFiscal() {
                         <Icon as={MdMenu} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}/>
                       </MenuButton>
                       <MenuList>
+                        {
+                          data.status === 'Em digitação' ?
+                            <MenuItem onClick={() => handleOpenDialogEmitir(data.id)} color={colorMode === 'light' ? 'green.600' : 'green.300'} my={1} py={2}>
+                              <Icon as={FiSend} mr={2}/>
+                              Emitir
+                            </MenuItem>
+                            : null
+                        }
                         {
                           data.status === 'Emitida' ?
                             <MenuItem onClick={() => handleOpenModalCancelar(data)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
