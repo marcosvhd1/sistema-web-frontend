@@ -1,6 +1,6 @@
 import { Button, Divider, Flex, Icon, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
-import { FormProvider, useFormContext } from 'react-hook-form';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
@@ -24,6 +24,7 @@ interface FormFormaPagtoProps {
 }
 
 export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata }: FormFormaPagtoProps) {
+  const methodsPag = useForm<INFFormaPagto>();
   const methods = useFormContext<INotaFiscal>();
 
   const [isEditingForma, setIsEditingForma] = useState<boolean>(false);
@@ -60,14 +61,14 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   };
 
   const loadFormaToEdit = (index: number) => {
-    methods.reset(formaPagtos[index]);
+    methodsPag.reset(formaPagtos[index]);
     setCurrentIndexForma(index);
     setIsEditingForma(true);
     onOpen();
   };
 
   const loadDupToEdit = (index: number) => {
-    methods.reset(duplicatas[index]);
+    methodsPag.reset(duplicatas[index]);
     setCurrentIndexDup(index);
     setIsEditingDup(true);
     openDuplicata();
@@ -107,7 +108,7 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   ];
 
   return (
-    <FormProvider {...methods}>
+    <FormProvider {...methodsPag}>
       <Flex w="100%" justify="center" align="center" direction="column" >
         <Flex w="100%" justify="flex-start" align="center" mb={2}>
           <FormContainer width='45%' label='Presença do comprador no momento da operação'>

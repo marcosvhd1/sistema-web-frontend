@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Tooltip, Tr, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Tag, Tooltip, Tr, useColorMode, useToast } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiFile, FiFilePlus, FiPrinter, FiSend, FiSlash, FiTrash2 } from 'react-icons/fi';
 
 import { MdMenu } from 'react-icons/md';
@@ -371,12 +371,12 @@ export function NotaFiscal() {
     setFormSubmitted(false);
   };
 
-  const rowColor = (status: string) => {
+  const tagColor = (status: string) => {
     switch (status) {
-    case 'Emitida': return colorMode === 'light' ? 'green.100' : 'green.900';
-    case 'Cancelada': return colorMode === 'light' ? 'red.100' : 'red.900';
-    case 'Inutilizada': return colorMode === 'light' ? 'gray.100' : 'gray.600';
-    default: return '';
+    case 'Emitida': return 'green';
+    case 'Cancelada': return 'red';
+    case 'Inutilizada': return 'gray';
+    case 'Em digitação': return 'blue';
     }
   };
 
@@ -397,7 +397,7 @@ export function NotaFiscal() {
           <DataTable headers={headers}>
             {data !== undefined
               ? data.map((data) => (
-                <Tr onDoubleClick={() => handleEditNF(data.id)} bgColor={rowColor(data.status)}  key={data.id}>
+                <Tr key={data.id}>
                   <TdCustom style={{ width: '5%' }}>
                     {data.cod}
                   </TdCustom>
@@ -407,11 +407,13 @@ export function NotaFiscal() {
                   <TdCustom style={{ width: '20%' }}>
                     {data.natureza_operacao ?? ''}
                   </TdCustom>
-                  <TdCustom style={{ width: '25%' }}>
+                  <TdCustom style={{ width: '20%' }}>
                     {data.nome_destinatario ?? ''}
                   </TdCustom>
                   <TdCustom style={{ width: '10%' }}>
-                    {data.status ?? ''}
+                    <Tag variant='outline' colorScheme={tagColor(data.status)}>
+                      {data.status}
+                    </Tag>
                   </TdCustom>
                   <TdCustom style={{ width: '10%' }}>
                     {'R$ ' + formatMoney(data.total_nota) ?? ''}
