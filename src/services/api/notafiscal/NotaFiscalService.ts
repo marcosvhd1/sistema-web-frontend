@@ -136,6 +136,14 @@ const deleteById = async (id: number, idEmissorSelecionado: number, HEADERS: any
   }
 };
 
+const duplicar = async (id: number, HEADERS: any): Promise<undefined | ApiException> => {
+  try {
+    await Api().get(`/notas/${id}`, HEADERS);
+  } catch (error) {
+    return new ApiException((error as ApiException).message || 'Erro ao duplicar o registro.');
+  }
+};
+
 const getLastCod = async (idEmissorSelecionado: number, HEADERS: any) => {
   const response = await Api().get(`/notas/max?id_emissor=${idEmissorSelecionado}`, HEADERS);
   const { max } = response.data[0];
