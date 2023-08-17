@@ -136,9 +136,9 @@ const deleteById = async (id: number, idEmissorSelecionado: number, HEADERS: any
   }
 };
 
-const duplicar = async (id: number, HEADERS: any): Promise<undefined | ApiException> => {
+const duplicar = async (id: number, idEmissorSelecionado: number, HEADERS: any): Promise<undefined | ApiException> => {
   try {
-    await Api().get(`/notas/${id}`, HEADERS);
+    await Api().get(`/notas/${id}?id_emissor=${idEmissorSelecionado}`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao duplicar o registro.');
   }
@@ -151,10 +151,11 @@ const getLastCod = async (idEmissorSelecionado: number, HEADERS: any) => {
 };
 
 export const NotaFiscalService = {
-  getNFByFilter,
   getNFDigitacao,
-  create,
+  getNFByFilter,
   updateById,
   deleteById,
   getLastCod,
+  duplicar,
+  create,
 };

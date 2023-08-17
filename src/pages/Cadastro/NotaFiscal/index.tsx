@@ -371,6 +371,10 @@ export function NotaFiscal() {
     setFormSubmitted(false);
   };
 
+  const handleDuplicarNF = async (idNfe: number) => {
+    await NotaFiscalService.duplicar(idNfe, idEmissorSelecionado, HEADERS);
+  };
+
   const tagColor = (status: string) => {
     switch (status) {
     case 'Emitida': return 'green';
@@ -491,7 +495,7 @@ export function NotaFiscal() {
                             </MenuItem>
                             : null
                         }
-                        <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                        <MenuItem onClick={() => handleDuplicarNF(data.id)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
                           <Icon as={FiFilePlus} mr={2}/>
                           Duplicar
                         </MenuItem>
