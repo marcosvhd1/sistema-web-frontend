@@ -1,4 +1,5 @@
 import { Button, Flex, Icon, Input, Select, useColorMode } from '@chakra-ui/react';
+import { ChangeEvent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiSearch } from 'react-icons/fi';
 import { FormContainer } from '../../../components/Form/FormContainer';
@@ -6,20 +7,39 @@ import { IConfig } from '../../../services/api/config/ConfigService';
 
 export function TabCertificado() {
   const methods = useFormContext<IConfig>();
+
   const { colorMode } = useColorMode();
+
+  const onClickFile = () => {
+    document.getElementById('fileInput')?.click();
+  };
+
+  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    
+    if (file) {
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        const base64Data = btoa(e.target!.result!.toString());
+        methods.setValue('n_serie', base64Data);
+      };
+      
+      reader.readAsBinaryString(file);
+    }
+  };
 
   return (
     <Flex w='100%' justify='center' align='center' direction='column'>
+      <Input id="fileInput" type="file" name="arquivo" onChange={handleFileUpload} display='none'/>
       <Flex w='100%' justify='center' align='flex-start'>
-        <FormContainer label='N° de série' mr='3'>
+        <FormContainer label='Certificado' mr='3'>
           <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' readOnly {...methods.register('n_serie')} />
         </FormContainer>
-        <Button mt={7} mr={7}>
-          <Icon as={FiSearch} />
+        <Button onClick={onClickFile} mt={7} w="15%" fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
+          <Icon as={FiSearch} mr={2}/>
+          Buscar
         </Button>
-        <FormContainer width='30%' label='Validade'>
-          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='date' readOnly {...methods.register('validade')} />
-        </FormContainer>
       </Flex>
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label='Ambiente de Destino' mr='3'>
