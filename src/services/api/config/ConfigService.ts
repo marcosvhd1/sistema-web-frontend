@@ -4,8 +4,7 @@ import { ApiException } from '../ApiException';
 export interface IConfig {
   id: number;
   id_emissor: number;
-  n_serie: string;
-  validade: string;
+  cert_base64: string;
   ambiente: string;
   tipo_imp: string;
   forma_emi: string;

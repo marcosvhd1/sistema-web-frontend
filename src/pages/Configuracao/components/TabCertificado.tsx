@@ -22,7 +22,7 @@ export function TabCertificado() {
       
       reader.onload = (e) => {
         const base64Data = btoa(e.target!.result!.toString());
-        methods.setValue('n_serie', base64Data);
+        methods.setValue('cert_base64', base64Data);
       };
       
       reader.readAsBinaryString(file);
@@ -34,7 +34,7 @@ export function TabCertificado() {
       <Input id="fileInput" type="file" name="arquivo" onChange={handleFileUpload} display='none'/>
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label='Certificado' mr='3'>
-          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' readOnly {...methods.register('n_serie')} />
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' readOnly {...methods.register('cert_base64')} />
         </FormContainer>
         <Button onClick={onClickFile} mt={7} w="15%" fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
           <Icon as={FiSearch} mr={2}/>

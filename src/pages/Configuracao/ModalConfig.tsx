@@ -89,8 +89,7 @@ export function ModalConfig() {
 
     const data = {
       'id_emissor': idEmissorSelecionado,
-      'n_serie': methods.getValues('n_serie'),
-      'validade': methods.getValues('validade'),
+      'cert_base64': methods.getValues('cert_base64'),
       'ambiente': methods.getValues('ambiente'),
       'tipo_imp': methods.getValues('tipo_imp'),
       'forma_emi': methods.getValues('forma_emi'),
