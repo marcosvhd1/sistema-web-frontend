@@ -372,7 +372,10 @@ export function NotaFiscal() {
   };
 
   const handleDuplicarNF = async (idNfe: number) => {
-    await NotaFiscalService.duplicar(idNfe, idEmissorSelecionado, HEADERS);
+    await NotaFiscalService.duplicar(idNfe, idEmissorSelecionado, HEADERS).then(() => {
+      getNF('');
+      setTotalNotas(totalNotas + 1);
+    });
   };
 
   const tagColor = (status: string) => {
