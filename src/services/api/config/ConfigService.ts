@@ -5,6 +5,7 @@ export interface IConfig {
   id: number;
   id_emissor: number;
   cert_base64: string;
+  cert_senha: string;
   ambiente: string;
   tipo_imp: string;
   forma_emi: string;

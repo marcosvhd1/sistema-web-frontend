@@ -90,6 +90,7 @@ export function ModalConfig() {
     const data = {
       'id_emissor': idEmissorSelecionado,
       'cert_base64': methods.getValues('cert_base64'),
+      'cert_senha': methods.getValues('cert_senha'),
       'ambiente': methods.getValues('ambiente'),
       'tipo_imp': methods.getValues('tipo_imp'),
       'forma_emi': methods.getValues('forma_emi'),
@@ -148,8 +149,8 @@ export function ModalConfig() {
               onChange={handleTabChange}
             >
               <TabList>
-                <Tab>Certificado</Tab>
-                <Tab>Token NFCe</Tab>
+                <Tab>NFe</Tab>
+                <Tab>NFCe</Tab>
                 <Tab>Email</Tab>
                 <Tab>CFOP</Tab>
                 <Tab>Tabela NCM</Tab>

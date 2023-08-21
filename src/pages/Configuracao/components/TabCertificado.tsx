@@ -33,8 +33,11 @@ export function TabCertificado() {
     <Flex w='100%' justify='center' align='center' direction='column'>
       <Input id="fileInput" type="file" name="arquivo" onChange={handleFileUpload} display='none'/>
       <Flex w='100%' justify='center' align='flex-start'>
-        <FormContainer label='Certificado' mr='3'>
+        <FormContainer label='Certificado' width='50%' mr='3'>
           <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' readOnly {...methods.register('cert_base64')} />
+        </FormContainer>
+        <FormContainer label='Senha' width='35%' mr='3'>
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('cert_senha')} />
         </FormContainer>
         <Button onClick={onClickFile} mt={7} w="15%" fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
           <Icon as={FiSearch} mr={2}/>
