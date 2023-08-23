@@ -54,6 +54,68 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
     setFormSubmitted(false);
   };
 
+  const hasErrors = () => {
+    const camposObrigatorios: any[] = ['regime', 'razao', 'cnpjcpf', 'endereco', 'numero', 'bairro', 'cep', 'uf', 'cidade', 'ie'];
+    
+    for (const campo of camposObrigatorios) {
+      if (methods.getValues(campo) === '') {
+        let msg = '';
+        switch (campo) {
+        case camposObrigatorios[0]: 
+          msg = 'Está faltando preencher o REGIME.';
+          methods.setFocus(camposObrigatorios[0]);
+          break;
+        case camposObrigatorios[1]: 
+          msg = 'Está faltando preencher a RAZÃO SOCIAL.';
+          methods.setFocus(camposObrigatorios[1]);
+          break;
+        case camposObrigatorios[2]: 
+          msg = 'Está faltando preencher o CPF / CNPJ.';
+          methods.setFocus(camposObrigatorios[2]);
+          break;
+        case camposObrigatorios[3]: 
+          msg = 'Está faltando preencher a RUA.';
+          methods.setFocus(camposObrigatorios[3]);
+          break;
+        case camposObrigatorios[4]: 
+          msg = 'Está faltando preencher o NÚMERO.';
+          methods.setFocus(camposObrigatorios[4]);
+          break;
+        case camposObrigatorios[5]: 
+          msg = 'Está faltando preencher o BAIRRO.';
+          methods.setFocus(camposObrigatorios[5]);
+          break;
+        case camposObrigatorios[6]: 
+          msg = 'Está faltando preencher o CEP.';
+          methods.setFocus(camposObrigatorios[6]);
+          break;
+        case camposObrigatorios[7]: 
+          msg = 'Está faltando selecionar a UF.';
+          methods.setFocus(camposObrigatorios[7]);
+          break;
+        case camposObrigatorios[8]: 
+          msg = 'Está faltando selecionar a CIDADE.';
+          methods.setFocus(camposObrigatorios[8]);
+          break;
+        case camposObrigatorios[9]: 
+          msg = 'Está faltando selecionar a IE.';
+          methods.setFocus(camposObrigatorios[9]);
+          break;
+        }
+
+        toast({
+          position: 'top',
+          description: msg,
+          status: 'error',
+          duration: 4000,
+        });
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   const handleCreateNewEmissor = (data: INewEmissor) => {
     const dataToCreate = {
       'cnpjcpf_principal': EMPRESA,
@@ -102,6 +164,8 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
   };
 
   const submitData = (data: any) => {
+    if (hasErrors()) return;
+    
     setFormSubmitted(true);
 
     if (isEditing) handleUpdateEmissor(data);
