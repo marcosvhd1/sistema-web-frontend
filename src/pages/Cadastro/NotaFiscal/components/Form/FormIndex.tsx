@@ -126,7 +126,6 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     setIsEditing(false);
     setFormSubmitted(false);
 
-    getNF('');
     onClose();
   };
 
@@ -272,6 +271,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     }
 
     clearData();
+    getNF('');
   };
 
   const handleUpdateNF = async (data: INotaFiscal) => {
@@ -309,6 +309,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     }
 
     clearData();
+    getNF('');
   };
 
   const handleTabChange = (index: number) => {

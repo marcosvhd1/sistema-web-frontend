@@ -8,10 +8,9 @@ import { useModalTransportadora } from '../../../../Contexts/Modal/Transportador
 import { MdAdd } from 'react-icons/md';
 import { FormContainer } from '../../../../components/Form/FormContainer';
 
-
-
 interface SearchBoxProps {
   children: ReactNode;
+  isLoading: boolean;
   getCod: () => void
   getTransportadora: (description: string) => void;
   changeEdit: (value: React.SetStateAction<any>) => void;
@@ -19,7 +18,7 @@ interface SearchBoxProps {
 
 }
 
-export function SearchBox({ children, changeEdit, stateFilter, getTransportadora, getCod}: SearchBoxProps) {
+export function SearchBox({ children, changeEdit, stateFilter, getTransportadora, getCod, isLoading}: SearchBoxProps) {
   const { onOpen } = useModalTransportadora();
   const { register, handleSubmit } = useForm();
   const { colorMode } = useColorMode();
@@ -44,7 +43,7 @@ export function SearchBox({ children, changeEdit, stateFilter, getTransportadora
           </Flex>
           <Text fontFamily="Poppins" fontSize="xl">Lista de Transportadoras</Text>
           <Flex w="20%" justify="flex-end" align="center">
-            <Button variant="solid" colorScheme="green" onClick={openModal}>
+            <Button disabled={isLoading} variant="solid" colorScheme="green" onClick={openModal}>
               <Icon mr={2} as={MdAdd}/>
               Cadastrar
             </Button>
@@ -66,7 +65,7 @@ export function SearchBox({ children, changeEdit, stateFilter, getTransportadora
             </Flex>
           </Flex>
           <Flex w="50%" justify="flex-start" align="center">
-            <Button type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
+            <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
               <Icon as={FiSearch} />
             </Button>
           </Flex>

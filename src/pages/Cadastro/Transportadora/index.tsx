@@ -1,4 +1,4 @@
-import { Button, Icon, Tr, useToast } from '@chakra-ui/react';
+import { Button, Center, Icon, Spinner, Tr, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -28,22 +28,21 @@ const headers: { key: string, label: string }[] = [
 
 export function Transportadora() {
   const methods = useForm<ITransportadora>();
-  const [data, setData] = useState<ITransportadora[]>([]);
   const [id, setId] = useState<number>(0);
+  const [data, setData] = useState<ITransportadora[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [editCod, setEditCod] = useState<number>(1);
-  const { onOpen, onClose, isOpen } = useAlertTransportadoraContext();
-  const { onOpen: openEditModal } = useModalTransportadora();
-  /// pagination and search by filter
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('cod');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
-  ///////////////////////////////////
-  const navigate = useNavigate();
-  const toast = useToast();
+  const { onOpen, onClose, isOpen } = useAlertTransportadoraContext();
+  const { onOpen: openEditModal } = useModalTransportadora();
   const { idEmissorSelecionado } = useEmissorContext();
+  const toast = useToast();
+  const navigate = useNavigate();
+  const [editCod, setEditCod] = useState<number>(1);
   const [cod, setCod] = useState<number>(1);
 
 
@@ -91,6 +90,7 @@ export function Transportadora() {
   };
 
   const getTransportadora = (description: string) => {
+    setIsLoading(true);
     TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
@@ -98,8 +98,10 @@ export function Transportadora() {
         } else {
           setData(result.data);
           setTotalClients(parseInt(result.headers['qtd']));
-          return true;
         }
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 700);
       });
   };
 
@@ -142,33 +144,45 @@ export function Transportadora() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox getCod={getLastCod} getTransportadora={getTransportadora} changeEdit={setIsEditing} stateFilter={setFilter}>
-          <DataTable headers={headers}>
-            {data !== undefined ? data.map((data) => (
-              <Tr onDoubleClick={() => handleEditTransportadora(data.id)} key={data.id}>
-                <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
-                <TdCustom>{data.razao}</TdCustom>
-                <TdCustom>{data.cnpjcpf}</TdCustom>
-                <TdCustom>{data.cidade}</TdCustom>
-                <TdCustom>{data.uf}</TdCustom>
-                <TdCustom style={{ 'textAlign': 'center' }}>
-                  <ActionButton 
-                    label='Editar'
-                    colorScheme='orange'
-                    action={() => handleEditTransportadora(data.id)}
-                    icon={FiEdit}
-                  />
-                  <ActionButton 
-                    label='Excluir'
-                    colorScheme='red'
-                    action={() => handleOpenDialog(data.id)}
-                    icon={FiTrash2}
-                  />
-                </TdCustom>
-              </Tr>
-            )) : ''}
-          </DataTable>
-          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
+        <SearchBox isLoading={isLoading} getCod={getLastCod} getTransportadora={getTransportadora} changeEdit={setIsEditing} stateFilter={setFilter}>
+          {
+            isLoading ?
+              <Center h='40vh'>
+                <Spinner
+                  thickness='4px'
+                  speed='0.65s'
+                  emptyColor='gray.200'
+                  color='blue.500'
+                  size='lg'
+                />
+              </Center> :
+              <DataTable headers={headers}>
+                {data !== undefined ? data.map((data) => (
+                  <Tr onDoubleClick={() => handleEditTransportadora(data.id)} key={data.id}>
+                    <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
+                    <TdCustom>{data.razao}</TdCustom>
+                    <TdCustom>{data.cnpjcpf}</TdCustom>
+                    <TdCustom>{data.cidade}</TdCustom>
+                    <TdCustom>{data.uf}</TdCustom>
+                    <TdCustom style={{ 'textAlign': 'center' }}>
+                      <ActionButton 
+                        label='Editar'
+                        colorScheme='orange'
+                        action={() => handleEditTransportadora(data.id)}
+                        icon={FiEdit}
+                      />
+                      <ActionButton 
+                        label='Excluir'
+                        colorScheme='red'
+                        action={() => handleOpenDialog(data.id)}
+                        icon={FiTrash2}
+                      />
+                    </TdCustom>
+                  </Tr>
+                )) : ''}
+              </DataTable>
+          }
+          <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>

@@ -1,8 +1,7 @@
 import { Button, Flex, Icon, Input, Menu, MenuButton, MenuItem, MenuList, Select, Text, useColorMode, useToast } from '@chakra-ui/react';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { FieldValues, useForm, useFormContext } from 'react-hook-form';
 import { FaInfoCircle, FaThList } from 'react-icons/fa';
-import { FcDocument } from 'react-icons/fc';
 import { FiSearch } from 'react-icons/fi';
 import { MdAdd, MdCancel, MdMenu } from 'react-icons/md';
 import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
@@ -15,20 +14,21 @@ import { userInfos } from '../../../../utils/header';
 import { ModalInutilizar } from './ModalInutilizar';
 
 interface SearchBoxProps {
+  endDate: any;
+  startDate: any;
+  isLoading: boolean;
   children: ReactNode;
-  getNotasFiscaisByFilter: (description: string) => void;
-  setIsEditing: (value: boolean) => void;
-  stateFilter: (value: React.SetStateAction<any>) => void;
   filterByDate: string;
+  setIsEditing: (value: boolean) => void;
+  getNotasFiscaisByFilter: (description: string) => void;
+  setEndDate: (value: React.SetStateAction<any>) => void;
+  stateFilter: (value: React.SetStateAction<any>) => void;
+  setStartDate: (value: React.SetStateAction<any>) => void;
   stateFilterByDate: (value: React.SetStateAction<any>) => void;
   stateFilterByStatus: (value: React.SetStateAction<any>) => void;
-  startDate: any;
-  setStartDate: (value: React.SetStateAction<any>) => void;
-  endDate: any;
-  setEndDate: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setIsEditing, stateFilterByStatus, filterByDate, stateFilterByDate, startDate, setStartDate, endDate, setEndDate }: SearchBoxProps) {
+export function SearchBox({ isLoading, children, stateFilter, getNotasFiscaisByFilter, setIsEditing, stateFilterByStatus, filterByDate, stateFilterByDate, startDate, setStartDate, endDate, setEndDate }: SearchBoxProps) {
   const methods = useFormContext<INotaFiscal>();
   const { register, handleSubmit } = useForm();
   const { colorMode } = useColorMode();
@@ -82,19 +82,18 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
           </Flex>
           <Text fontFamily="Poppins" fontSize="xl">Lista de Notas Fiscais</Text>
           <Flex w="20%" justify="flex-end" align="center">
-            <Button variant="solid" colorScheme="green" onClick={handleOpenModal} mr={3}>
+            <Button disabled={isLoading} variant="solid" colorScheme="green" onClick={handleOpenModal} mr={3}>
               <Icon mr={2} as={MdAdd}/>
               Cadastrar
             </Button>
             <Menu>
-              <MenuButton as={Button} w="25%" variant="solid" colorScheme="blue">
+              <MenuButton as={Button} disabled={isLoading} w="25%" variant="solid" colorScheme="blue">
                 <Icon as={MdMenu}/>
               </MenuButton>
               <MenuList>
                 <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'} onClick={handleStatusServidor}><Icon mr={2} as={FaInfoCircle}/>Status do Servidor</MenuItem>
                 <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={openInutilizar}><Icon mr={2} as={MdCancel}/>Inutilizar Faixa</MenuItem>
-                {/* <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaThList}/>Relatório Gerencial</MenuItem>
-                <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FcDocument}/>Importar XML</MenuItem> */}
+                <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaThList}/>Relatório Gerencial</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
@@ -137,7 +136,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
             <FormContainer label='Fim' width="30%" mr='3'>
               <Input maxLength={255} disabled={filterByDate === ''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
             </FormContainer>
-            <Button type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
+            <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
               <Icon as={FiSearch} />
             </Button>
           </Flex>

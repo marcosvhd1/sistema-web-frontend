@@ -6,10 +6,11 @@ interface IPagination {
   limitRegistros: number
   currentPage: number
   totalClients: number
+  visible?: boolean;
   changeLimitRegister: (value: number) => void
 }
 
-export function Pagination({ children, limitRegistros, currentPage, totalClients, changeLimitRegister }: IPagination) {
+export function Pagination({ children, limitRegistros, currentPage, totalClients, changeLimitRegister, visible = true }: IPagination) {
   const { colorMode } = useColorMode();
   
   return (
@@ -20,6 +21,7 @@ export function Pagination({ children, limitRegistros, currentPage, totalClients
       justify="flex-end"
       align="center"
       w="90%"
+      visibility={visible ? 'visible' : 'hidden'}
     >
       <Flex
         align="center"

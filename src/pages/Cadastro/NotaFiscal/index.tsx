@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Tag, Tooltip, Tr, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Center, Icon, Menu, MenuButton, MenuItem, MenuList, Spinner, Tag, Tooltip, Tr, useColorMode, useToast } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiFile, FiFilePlus, FiPrinter, FiSend, FiSlash, FiTrash2 } from 'react-icons/fi';
 
 import { MdMenu } from 'react-icons/md';
@@ -40,6 +40,7 @@ export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
   const { colorMode } = useColorMode();
 
+  const [id, setId] = useState<number>(0);
   const [data, setData] = useState<INotaFiscal[]>([]);
   const [dataToModal, setDataToModal] = useState<INotaFiscal>();
   
@@ -50,7 +51,7 @@ export function NotaFiscal() {
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
   
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [id, setId] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -149,6 +150,7 @@ export function NotaFiscal() {
   };
 
   const getNF = (description: string) => {
+    setIsLoading(true);
     NotaFiscalService.getNFByFilter(
       currentPage,
       limitRegistros,
@@ -168,6 +170,9 @@ export function NotaFiscal() {
         setTotalNotas(parseInt(result.headers['qtd']));
         getNFDigitacao();
       }
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 700);
     });
   };
 
@@ -390,172 +395,139 @@ export function NotaFiscal() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox
-          getNotasFiscaisByFilter={getNF}
-          stateFilter={setFilter}
-          stateFilterByStatus={setFilterByStatus}
-          filterByDate={filterByDate}
-          stateFilterByDate={setFilterByDate}
-          setIsEditing={setIsEditing}
-          startDate={startDate}
-          endDate={endDate}
-          setStartDate={setStartDate}
-          setEndDate={setEndDate}
-        >
-          <DataTable headers={headers}>
-            {data !== undefined
-              ? data.map((data) => (
-                <Tr key={data.id}>
-                  <TdCustom style={{ width: '5%' }}>
-                    {data.cod}
-                  </TdCustom>
-                  <TdCustom style={{ width: '10%' }}>
-                    {data.data_emissao != undefined ? formatDate(data.data_emissao.toString()) : ''}
-                  </TdCustom>
-                  <TdCustom style={{ width: '20%' }}>
-                    {data.natureza_operacao ?? ''}
-                  </TdCustom>
-                  <TdCustom style={{ width: '20%' }}>
-                    {data.nome_destinatario ?? ''}
-                  </TdCustom>
-                  <TdCustom style={{ width: '10%' }}>
-                    <Tag variant='outline' colorScheme={tagColor(data.status)}>
-                      {data.status}
-                    </Tag>
-                  </TdCustom>
-                  <TdCustom style={{ width: '10%' }}>
-                    {'R$ ' + formatMoney(data.total_nota) ?? ''}
-                  </TdCustom>
-                  <TdCustom style={{ width: '15%', textAlign: 'end' }}>
-                    {
-                      data.status !== 'Inutilizada' ?
-                        <ActionButton 
-                          label='Editar'
-                          colorScheme='orange'
-                          action={() => handleEditNF(data.id)}
-                          icon={FiEdit}
-                        />
-                        : null
-                    }
-                    {
-                      data.status !== 'Inutilizada' ?
-                        <ActionButton 
-                          label= {data.status === 'Em digitação' ? 'Pré visualizar' : 'Imprimir'}
-                          colorScheme='blue'
-                          action={() => handleImprimir(data)}
-                          icon={FiPrinter}
-                        />
-                        : null
-                    }
-                    <Menu>
-                      <MenuButton 
-                        as={Button}
-                        w="2rem"
-                        p={0}
-                        variant='ghost'
-                        colorScheme='blue'
-                        fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                      >
-                        <Icon as={MdMenu} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}/>
-                      </MenuButton>
-                      <MenuList>
+        <SearchBox isLoading={isLoading} getNotasFiscaisByFilter={getNF} stateFilter={setFilter} stateFilterByStatus={setFilterByStatus} filterByDate={filterByDate} stateFilterByDate={setFilterByDate} setIsEditing={setIsEditing} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}>
+          {
+            isLoading ?
+              <Center h='40vh'>
+                <Spinner
+                  thickness='4px'
+                  speed='0.65s'
+                  emptyColor='gray.200'
+                  color='blue.500'
+                  size='lg'
+                />
+              </Center> :
+              <DataTable headers={headers}>
+                {data !== undefined
+                  ? data.map((data) => (
+                    <Tr key={data.id}>
+                      <TdCustom style={{ width: '5%' }}>
+                        {data.cod}
+                      </TdCustom>
+                      <TdCustom style={{ width: '10%' }}>
+                        {data.data_emissao != undefined ? formatDate(data.data_emissao.toString()) : ''}
+                      </TdCustom>
+                      <TdCustom style={{ width: '20%' }}>
+                        {data.natureza_operacao ?? ''}
+                      </TdCustom>
+                      <TdCustom style={{ width: '20%' }}>
+                        {data.nome_destinatario ?? ''}
+                      </TdCustom>
+                      <TdCustom style={{ width: '10%' }}>
+                        <Tag variant='outline' colorScheme={tagColor(data.status)}>
+                          {data.status}
+                        </Tag>
+                      </TdCustom>
+                      <TdCustom style={{ width: '10%' }}>
+                        {'R$ ' + formatMoney(data.total_nota) ?? ''}
+                      </TdCustom>
+                      <TdCustom style={{ width: '15%', textAlign: 'end' }}>
                         {
-                          data.status === 'Em digitação' ?
-                            <MenuItem onClick={() => handleOpenDialogEmitir(data.id)} color={colorMode === 'light' ? 'green.600' : 'green.300'} my={1} py={2}>
-                              <Icon as={FiSend} mr={2}/>
-                              Emitir
-                            </MenuItem>
+                          data.status !== 'Inutilizada' ?
+                            <ActionButton 
+                              label='Editar'
+                              colorScheme='orange'
+                              action={() => handleEditNF(data.id)}
+                              icon={FiEdit}
+                            />
                             : null
                         }
                         {
-                          data.status === 'Emitida' ?
-                            <MenuItem onClick={() => handleOpenModalCancelar(data)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
-                              <Icon as={FiSlash} mr={2}/>
-                              Cancelar
-                            </MenuItem>
+                          data.status !== 'Inutilizada' ?
+                            <ActionButton 
+                              label= {data.status === 'Em digitação' ? 'Pré visualizar' : 'Imprimir'}
+                              colorScheme='blue'
+                              action={() => handleImprimir(data)}
+                              icon={FiPrinter}
+                            />
                             : null
                         }
-                        {
-                          data.status === 'Emitida' ?
-                            <MenuItem onClick={() => handleOpenModalCCe(data)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
-                              <Icon as={FiFile} mr={2}/>
-                              Carta de Correção
+                        <Menu>
+                          <MenuButton 
+                            as={Button}
+                            w="2rem"
+                            p={0}
+                            variant='ghost'
+                            colorScheme='blue'
+                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                          >
+                            <Icon as={MdMenu} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}/>
+                          </MenuButton>
+                          <MenuList>
+                            {
+                              data.status === 'Em digitação' ?
+                                <MenuItem onClick={() => handleOpenDialogEmitir(data.id)} color={colorMode === 'light' ? 'green.600' : 'green.300'} my={1} py={2}>
+                                  <Icon as={FiSend} mr={2}/>
+                                  Emitir
+                                </MenuItem>
+                                : null
+                            }
+                            {
+                              data.status === 'Emitida' ?
+                                <MenuItem onClick={() => handleOpenModalCancelar(data)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
+                                  <Icon as={FiSlash} mr={2}/>
+                                  Cancelar
+                                </MenuItem>
+                                : null
+                            }
+                            {
+                              data.status === 'Emitida' ?
+                                <MenuItem onClick={() => handleOpenModalCCe(data)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                                  <Icon as={FiFile} mr={2}/>
+                                  Carta de Correção
+                                </MenuItem>
+                                : null
+                            }
+                            {
+                              data.status === 'Emitida' && data.caminho_pdf_cce !== null ?
+                                <MenuItem onClick={() => handleImprimirCCe(data)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                                  <Icon as={FiPrinter} mr={2}/>
+                                  Imprimir Correção
+                                </MenuItem>
+                                : null
+                            }
+                            {
+                              data.status !== 'Emitida' && data.status !== 'Cancelada' ?
+                                <MenuItem onClick={() => handleOpenDialog(data.id)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
+                                  <Icon as={FiTrash2} mr={2}/>
+                                  Excluir
+                                </MenuItem>
+                                : null
+                            }
+                            <MenuItem onClick={() => handleDuplicarNF(data.id)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                              <Icon as={FiFilePlus} mr={2}/>
+                              Duplicar
                             </MenuItem>
-                            : null
-                        }
-                        {
-                          data.status === 'Emitida' && data.caminho_pdf_cce !== null ?
-                            <MenuItem onClick={() => handleImprimirCCe(data)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
-                              <Icon as={FiPrinter} mr={2}/>
-                              Imprimir Correção
-                            </MenuItem>
-                            : null
-                        }
-                        {
-                          data.status !== 'Emitida' && data.status !== 'Cancelada' ?
-                            <MenuItem onClick={() => handleOpenDialog(data.id)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
-                              <Icon as={FiTrash2} mr={2}/>
-                              Excluir
-                            </MenuItem>
-                            : null
-                        }
-                        <MenuItem onClick={() => handleDuplicarNF(data.id)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
-                          <Icon as={FiFilePlus} mr={2}/>
-                          Duplicar
-                        </MenuItem>
-                      </MenuList>
-                    </Menu>
-                  </TdCustom>
-                </Tr>
-              ))
-              : ''}
-          </DataTable>
-          <Pagination
-            currentPage={currentPage}
-            limitRegistros={limitRegistros}
-            totalClients={totalNotas}
-            changeLimitRegister={setLimitRegistros}
-          >
-            <Button
-              isDisabled={currentPage === 1}
-              variant="ghost"
-              size="sm"
-              fontSize="2xl"
-              width="4"
-              onClick={() => setCurrentPage(currentPage - 1)}
-            >
+                          </MenuList>
+                        </Menu>
+                      </TdCustom>
+                    </Tr>
+                  ))
+                  : ''}
+              </DataTable>
+          }
+          <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalNotas} changeLimitRegister={setLimitRegistros}>
+            <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}>
               <Icon as={FiChevronLeft} />
             </Button>
-            <Button
-              isDisabled={
-                currentPage === pages.length ||
-                data.length === 0 ||
-                limitRegistros >= totalNotas
-              }
-              variant="ghost"
-              size="sm"
-              fontSize="2xl"
-              width="4"
-              onClick={() => setCurrentPage(currentPage + 1)}
-            >
+            <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalNotas} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}>
               <Icon as={FiChevronRight} />
             </Button>
           </Pagination>
         </SearchBox>
-        <ModalNotaFiscal
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-          id={id}
-          getNF={getNF}
-        />
-        <ModalCancelar 
-          data={dataToModal!}
-          getNotas={getNF}
-        />
-        <ModalCCe 
-          getNotas={getNF}
-          data={dataToModal!}
-        />
+        <ModalNotaFiscal isEditing={isEditing} setIsEditing={setIsEditing} id={id} getNF={getNF}/>        
+        <ModalCancelar data={dataToModal!} getNotas={getNF}/>
+        <ModalCCe getNotas={getNF} data={dataToModal!}/>
         <DeleteAlertDialog label="NFe" deleteFunction={handleEmitirNF} onClose={onCloseEmitir} isOpen={isOpenEmitir} id={id} colorScheme='green' disabled={formSubmitted}/>
         <DeleteAlertDialog label="NFe" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>

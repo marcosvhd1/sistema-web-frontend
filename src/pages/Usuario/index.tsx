@@ -1,4 +1,4 @@
-import { Button, Icon, Tag, Tr, useDisclosure, useToast } from '@chakra-ui/react';
+import { Button, Center, Icon, Spinner, Tag, Tr, useDisclosure, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -25,25 +25,23 @@ const headers: { key: string, label: string }[] = [
 
 export function Usuarios() {
   const methods = useForm<IUsuario>();
+  const [id, setId] = useState<number>(0);
   const [data, setData] = useState<IUsuario[]>([]);
   const [admin, setAdmin] = useState<boolean>(false);
   const [ativo, setAtivo] = useState<boolean>(true);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-
-  const { onOpen: openModal } = useModalUser();
-  const { isOpen: isExcluirOpen, onOpen, onClose: onExcluirClose } = useDisclosure();
-  const { setIdEmissor, setIdUsuarioSelecionado, getIdEmissoresByUser} = useEmissorContext();
-  /// pagination and search by filter
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('email');
   const [totalUsers, setTotalUsers] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
-  ///////////////////////////////////
-  const [id, setId] = useState<number>(0);
+  const { onOpen: openModal } = useModalUser();
+  const { isOpen: isExcluirOpen, onOpen, onClose: onExcluirClose } = useDisclosure();
+  const { setIdUsuarioSelecionado, getIdEmissoresByUser} = useEmissorContext();
+  const toast = useToast();
   const userInfo = userInfos();
   const navigate = useNavigate();
-  const toast = useToast();
 
   const HEADERS = userInfo.header;
   const empresa = userInfo.infos?.empresa;
@@ -72,6 +70,7 @@ export function Usuarios() {
   };
 
   const getUsuarios = async (description: string) => {
+    setIsLoading(true);
     UsuarioService.getAllUsers(empresa, filter, description, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
@@ -80,6 +79,9 @@ export function Usuarios() {
           setData(result.data);
           setTotalUsers(parseInt(result.headers['qtd']));
         }
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 700);
       });
   };
 
@@ -119,40 +121,52 @@ export function Usuarios() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox changeEdit={setIsEditing} setFilter={setFilter} getUsuarios={getUsuarios}>
-          <DataTable headers={headers}>
-            {data != undefined ? data.map((data) => (
-              <Tr key={data.id}>
-                <TdCustom>{data.email}</TdCustom>
-                <TdCustom>
-                  <Tag variant='outline' colorScheme={data.tipo_admin === 1 ? 'blue' : 'red'}>
-                    {data.tipo_admin === 1 ? 'Admin' : 'Normal'}
-                  </Tag>
-                </TdCustom>
-                <TdCustom>
-                  <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
-                    {data.status}
-                  </Tag>
-                </TdCustom>
-                <TdCustom style={{ 'textAlign': 'center' }}>
-                  <ActionButton 
-                    label='Editar'
-                    colorScheme='orange'
-                    action={() => handleEditUser(data.id!)}
-                    icon={FiEdit}
-                  />
-                  <ActionButton 
-                    label='Excluir'
-                    colorScheme='red'
-                    action={() => handleOpenDialog(data.id!)}
-                    disabled={data.usuario_principal === 'Sim'}
-                    icon={FiTrash2}
-                  />
-                </TdCustom>
-              </Tr>
-            )) : ''}
-          </DataTable>
-          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalUsers} changeLimitRegister={setLimitRegistros}>
+        <SearchBox isLoading={isLoading} changeEdit={setIsEditing} setFilter={setFilter} getUsuarios={getUsuarios}>
+          {
+            isLoading ?
+              <Center h='40vh'>
+                <Spinner
+                  thickness='4px'
+                  speed='0.65s'
+                  emptyColor='gray.200'
+                  color='blue.500'
+                  size='lg'
+                />
+              </Center> :
+              <DataTable headers={headers}>
+                {data != undefined ? data.map((data) => (
+                  <Tr key={data.id}>
+                    <TdCustom>{data.email}</TdCustom>
+                    <TdCustom>
+                      <Tag variant='outline' colorScheme={data.tipo_admin === 1 ? 'blue' : 'red'}>
+                        {data.tipo_admin === 1 ? 'Admin' : 'Normal'}
+                      </Tag>
+                    </TdCustom>
+                    <TdCustom>
+                      <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
+                        {data.status}
+                      </Tag>
+                    </TdCustom>
+                    <TdCustom style={{ 'textAlign': 'center' }}>
+                      <ActionButton 
+                        label='Editar'
+                        colorScheme='orange'
+                        action={() => handleEditUser(data.id!)}
+                        icon={FiEdit}
+                      />
+                      <ActionButton 
+                        label='Excluir'
+                        colorScheme='red'
+                        action={() => handleOpenDialog(data.id!)}
+                        disabled={data.usuario_principal === 'Sim'}
+                        icon={FiTrash2}
+                      />
+                    </TdCustom>
+                  </Tr>
+                )) : ''}
+              </DataTable>
+          }
+          <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalUsers} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalUsers} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>

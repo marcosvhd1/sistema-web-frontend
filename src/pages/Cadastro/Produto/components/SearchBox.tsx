@@ -11,6 +11,7 @@ import { useGrupos } from '../../../../hooks/useGrupos';
 
 interface SearchBoxProps {
   children: ReactNode;
+  isLoading: boolean;
   getCod: () => void
   getProduct: (description: string, status: string) => void;
   changeEdit: (value: React.SetStateAction<any>) => void;
@@ -25,7 +26,7 @@ interface getProductProps {
   description: string;
 }
 
-export function SearchBox({ children, setFilter, setFilterGrupo, setFilterMarca, getProduct, getCod, changeEdit, seeActive, setSeeActive }: SearchBoxProps) {
+export function SearchBox({ children, setFilter, setFilterGrupo, setFilterMarca, getProduct, getCod, changeEdit, seeActive, setSeeActive, isLoading }: SearchBoxProps) {
   const { register, handleSubmit } = useForm<getProductProps>();
   const [active, setActive] = useState<boolean>(false);
 
@@ -57,7 +58,7 @@ export function SearchBox({ children, setFilter, setFilterGrupo, setFilterMarca,
           </Flex>
           <Text fontFamily="Poppins" fontSize="xl">Lista de Produtos</Text>
           <Flex w="20%" justify="flex-end" align="center">
-            <Button variant="solid" colorScheme="green" onClick={openModal}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
+            <Button disabled={isLoading} variant="solid" colorScheme="green" onClick={openModal}><Icon mr={2} as={MdAdd} />Cadastrar</Button>
           </Flex>
         </Flex>
         <Flex w="95%" m="4" align="center" justify="space-between">
@@ -89,7 +90,7 @@ export function SearchBox({ children, setFilter, setFilterGrupo, setFilterMarca,
                 {grupos.map((grupo, index) => grupo.tipo === 'Grupo' ? <option key={index} value={grupo.descricao}>{grupo.descricao}</option> : null)}
               </Select>
             </FormContainer>
-            <Button type="submit" w="10%" mt={7} variant="solid" colorScheme="blue" mr={3}>
+            <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue" mr={3}>
               <Icon as={FiSearch} />
             </Button>
             <Checkbox size='lg' mt={7} mr={2} onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>

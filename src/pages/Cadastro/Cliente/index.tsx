@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Tr, useToast } from '@chakra-ui/react';
+import { Button, Center, Icon, Spinner, Tr, useToast } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
 
 import MainContent from '../../../components/MainContent';
@@ -25,21 +25,22 @@ import { userInfos } from '../../../utils/header';
 
 export function Cliente() {
   const methods = useForm<IClient>();
-  const [data, setData] = useState<IClient[]>([]);
   const [id, setId] = useState<number>(0);
-  const [isEditing, setIsEditing] = useState(false);
+  const [data, setData] = useState<IClient[]>([]);
+  const [cod, setCod] = useState<number>(1);
   const [editCod, setEditCod] = useState<number>(1);
-  const { onOpen, onClose, isOpen } = useAlertClientContext();
-  const { onOpen: open } = useModalClient();
+  const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('cod');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState(5);
   const [pages, setPages] = useState<number[]>([]);
+  const { onOpen: open } = useModalClient();
+  const { onOpen, onClose, isOpen } = useAlertClientContext();
+  const { idEmissorSelecionado } = useEmissorContext();
   const navigate = useNavigate();
   const toast = useToast();
-  const { idEmissorSelecionado } = useEmissorContext();
-  const [cod, setCod] = useState<number>(1);
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
 
@@ -77,6 +78,7 @@ export function Cliente() {
   };
 
   const getClientsByFilter = (description: string) => {
+    setIsLoading(true);
     ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
@@ -85,6 +87,9 @@ export function Cliente() {
           setData(result.data);
           setTotalClients(parseInt(result.headers['qtd']));
         }
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 700);
       });
   };
 
@@ -135,33 +140,45 @@ export function Cliente() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox getCod={getLastCod} getClientsByFilter={getClientsByFilter} changeEdit={setIsEditing} stateFilter={setFilter}>
-          <DataTable headers={headers} >
-            {data !== undefined ? data.map((data) => (
-              <Tr key={data.id} onDoubleClick={() => handleEditClient(data.id)}>
-                <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
-                <TdCustom>{data.razao}</TdCustom>
-                <TdCustom>{data.cnpjcpf}</TdCustom>
-                <TdCustom>{data.cidade}</TdCustom>
-                <TdCustom>{data.uf}</TdCustom>
-                <TdCustom style={{ 'textAlign': 'center' }}>
-                  <ActionButton 
-                    label='Editar'
-                    colorScheme='orange'
-                    action={() => handleEditClient(data.id)}
-                    icon={FiEdit}
-                  />
-                  <ActionButton 
-                    label='Excluir'
-                    colorScheme='red'
-                    action={() => handleOpenDialog(data.id)}
-                    icon={FiTrash2}
-                  />
-                </TdCustom>
-              </Tr>
-            )) : ''}
-          </DataTable>
-          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
+        <SearchBox isLoading={isLoading} getCod={getLastCod} getClientsByFilter={getClientsByFilter} changeEdit={setIsEditing} stateFilter={setFilter}>
+          {
+            isLoading ?
+              <Center h='40vh'>
+                <Spinner
+                  thickness='4px'
+                  speed='0.65s'
+                  emptyColor='gray.200'
+                  color='blue.500'
+                  size='lg'
+                />
+              </Center> :
+              <DataTable headers={headers}>
+                {data !== undefined ? data.map((data) => (
+                  <Tr key={data.id} onDoubleClick={() => handleEditClient(data.id)}>
+                    <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
+                    <TdCustom>{data.razao}</TdCustom>
+                    <TdCustom>{data.cnpjcpf}</TdCustom>
+                    <TdCustom>{data.cidade}</TdCustom>
+                    <TdCustom>{data.uf}</TdCustom>
+                    <TdCustom style={{ 'textAlign': 'center' }}>
+                      <ActionButton 
+                        label='Editar'
+                        colorScheme='orange'
+                        action={() => handleEditClient(data.id)}
+                        icon={FiEdit}
+                      />
+                      <ActionButton 
+                        label='Excluir'
+                        colorScheme='red'
+                        action={() => handleOpenDialog(data.id)}
+                        icon={FiTrash2}
+                      />
+                    </TdCustom>
+                  </Tr>
+                )) : ''}
+              </DataTable>
+          }
+          <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>

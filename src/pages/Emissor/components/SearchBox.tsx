@@ -9,6 +9,7 @@ import { FormContainer } from '../../../components/Form/FormContainer';
 
 interface SearchBoxProps {
   children: ReactNode;
+  isLoading: boolean;
   getEmissores: (description: string, status: string) => void
   changeEdit: (value: React.SetStateAction<any>) => void;
   setFilter: (value: React.SetStateAction<any>) => void;
@@ -21,7 +22,7 @@ interface getEmissorProps {
 }
 
 
-export function SearchBox({ children, getEmissores, changeEdit, setFilter, seeActive, setSeeActive }: SearchBoxProps) {
+export function SearchBox({ children, getEmissores, changeEdit, setFilter, seeActive, setSeeActive, isLoading }: SearchBoxProps) {
   const { onOpen } = useModalNewEmissor();
   const { register, handleSubmit } = useForm<getEmissorProps>();
   const [active, setActive] = useState<boolean>(false);
@@ -46,7 +47,7 @@ export function SearchBox({ children, getEmissores, changeEdit, setFilter, seeAc
           </Flex>
           <Text fontFamily="Poppins" fontSize="xl">Lista de Emissores</Text>
           <Flex w="20%" justify="flex-end" align="center">
-            <Button variant="solid" colorScheme="green" onClick={onOpen}>
+            <Button disabled={isLoading} variant="solid" colorScheme="green" onClick={onOpen}>
               <Icon mr={2} as={MdAdd}/>
               Cadastrar
             </Button>
@@ -67,7 +68,7 @@ export function SearchBox({ children, getEmissores, changeEdit, setFilter, seeAc
             </Flex>
           </Flex>
           <Flex w="50%" justify="flex-start" align="center">
-            <Button type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
+            <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
               <Icon as={FiSearch} />
             </Button>
           </Flex>

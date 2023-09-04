@@ -9,6 +9,7 @@ import { FormContainer } from '../../../components/Form/FormContainer';
 
 interface SearchBoxProps {
   children: ReactNode;
+  isLoading: boolean;
   getUsuarios: (description: string) => void
   changeEdit: (value: React.SetStateAction<any>) => void;
   setFilter: (value: React.SetStateAction<any>) => void;
@@ -18,7 +19,7 @@ interface getUserProps {
   description: string;
 }
 
-export function SearchBox({ children, getUsuarios, setFilter }: SearchBoxProps) {
+export function SearchBox({ children, getUsuarios, setFilter, isLoading }: SearchBoxProps) {
   const { onOpen } = useModalUser();
   const { register, handleSubmit } = useForm<getUserProps>();
   const { colorMode } = useColorMode();
@@ -36,7 +37,7 @@ export function SearchBox({ children, getUsuarios, setFilter }: SearchBoxProps) 
           </Flex>
           <Text fontFamily="Poppins" fontSize="xl">Lista de Usuários</Text>
           <Flex w="20%" justify="flex-end" align="center">
-            <Button variant="solid" colorScheme="green" onClick={onOpen}>
+            <Button disabled={isLoading} variant="solid" colorScheme="green" onClick={onOpen}>
               <Icon mr={2} as={MdAdd}/>
               Cadastrar
             </Button>
@@ -56,7 +57,7 @@ export function SearchBox({ children, getUsuarios, setFilter }: SearchBoxProps) 
             </Flex>
           </Flex>
           <Flex w="50%" justify="flex-start" align="center">
-            <Button type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
+            <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
               <Icon as={FiSearch} />
             </Button>
           </Flex>
