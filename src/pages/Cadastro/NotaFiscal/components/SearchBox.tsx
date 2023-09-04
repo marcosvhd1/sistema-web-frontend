@@ -19,6 +19,7 @@ interface SearchBoxProps {
   getNotasFiscaisByFilter: (description: string) => void;
   setIsEditing: (value: boolean) => void;
   stateFilter: (value: React.SetStateAction<any>) => void;
+  filterByDate: string;
   stateFilterByDate: (value: React.SetStateAction<any>) => void;
   stateFilterByStatus: (value: React.SetStateAction<any>) => void;
   startDate: any;
@@ -27,7 +28,7 @@ interface SearchBoxProps {
   setEndDate: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setIsEditing, stateFilterByStatus, stateFilterByDate, startDate, setStartDate, endDate, setEndDate }: SearchBoxProps) {
+export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setIsEditing, stateFilterByStatus, filterByDate, stateFilterByDate, startDate, setStartDate, endDate, setEndDate }: SearchBoxProps) {
   const methods = useFormContext<INotaFiscal>();
   const { register, handleSubmit } = useForm();
   const { colorMode } = useColorMode();
@@ -131,10 +132,10 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
               </Select>
             </FormContainer>
             <FormContainer label='Início' width="30%" mr='3'>
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}/>
+              <Input maxLength={255} disabled={filterByDate === ''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}/>
             </FormContainer>
             <FormContainer label='Fim' width="30%" mr='3'>
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
+              <Input maxLength={255} disabled={filterByDate === ''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
             </FormContainer>
             <Button type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
               <Icon as={FiSearch} />

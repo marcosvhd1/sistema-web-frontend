@@ -394,6 +394,7 @@ export function NotaFiscal() {
           getNotasFiscaisByFilter={getNF}
           stateFilter={setFilter}
           stateFilterByStatus={setFilterByStatus}
+          filterByDate={filterByDate}
           stateFilterByDate={setFilterByDate}
           setIsEditing={setIsEditing}
           startDate={startDate}
