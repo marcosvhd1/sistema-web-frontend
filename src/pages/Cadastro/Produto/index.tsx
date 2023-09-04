@@ -19,6 +19,8 @@ import { userInfos } from '../../../utils/header';
 import { FormModal } from './components/Form/ModalProduct';
 import { SearchBox } from './components/SearchBox';
 
+const regex = new RegExp(/^\d+$/);
+
 const headers: { key: string, label: string }[] = [
   { key: 'id', label: 'Código' },
   { key: 'descricao', label: 'Descrição' },
@@ -28,12 +30,19 @@ const headers: { key: string, label: string }[] = [
   { key: 'status', label: 'Status' }
 ];
 
+function lpad(inputString: string) {
+  while (inputString.length < 4) {
+    inputString = '0' + inputString;
+  }
+
+  return inputString;
+}
+
 export function Produto() {
   const methods = useForm<IProduct>();
   const [data, setData] = useState<IProduct[]>([]);
   const [id, setId] = useState<number>(0);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [editCod, setEditCod] = useState<number>(1);
   const { onOpen, onClose, isOpen } = useAlertProductContext();
   const { onOpen: openEditModal } = useModalProduct();
   /// pagination and search by filter
@@ -48,7 +57,6 @@ export function Produto() {
   const navigate = useNavigate();
   const toast = useToast();
   const { idEmissorSelecionado } = useEmissorContext();
-  const [cod, setCod] = useState<number>(1);
   const [active, setActive] = useState<boolean>(true);
   const [seeActive, setSeeActive] = useState<string>('Ativo');
 
@@ -68,13 +76,14 @@ export function Produto() {
   const getLastCod = () => {
     ProductService.getLastCod(idEmissorSelecionado, HEADERS)
       .then((result) => {
-        if (isEditing) {
-          setCod(editCod);
-        } else {
-          if (result === null) {
-            setCod(1);
-          } else {
-            setCod(parseInt(result) + 1);
+        if (isEditing === false) {
+          if (result === null) methods.setValue('nprod', '0001');
+          else {
+            if (regex.test(result)) {
+              methods.setValue('nprod', lpad((parseInt(result) + 1).toString()));
+            } else {
+              methods.setValue('nprod', '');
+            }
           }
         }
       });
@@ -136,7 +145,6 @@ export function Produto() {
     if (productToUpdate) {
       setId(id);
       openEditModal();
-      setEditCod(productToUpdate.nprod);
       methods.reset(productToUpdate);
       setIsEditing(true);
       setActive(productToUpdate.status === 'Ativo' ? true : false);
@@ -191,7 +199,7 @@ export function Produto() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal seeActive={seeActive} active={active} setActive={setActive} getCod={getLastCod} header={HEADERS} editCod={editCod} cod={cod} refreshPage={getProduct} id={id} isEditing={isEditing} />
+        <FormModal seeActive={seeActive} active={active} setActive={setActive} getCod={getLastCod} header={HEADERS} refreshPage={getProduct} id={id} isEditing={isEditing} />
         <DeleteAlertDialog label="produto" deleteFunction={handleDeleteProduct} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

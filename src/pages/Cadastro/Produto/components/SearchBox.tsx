@@ -35,9 +35,8 @@ export function SearchBox({ children, setFilter, setFilterGrupo, setFilterMarca,
   const { colorMode } = useColorMode();
 
   const openModal = () => {
-    getCod();
-    onOpen();
     changeEdit(false);
+    onOpen();
   };
 
   const handleGetProductByFilter = (data: getProductProps) => {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useColorMode, useToast } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
@@ -12,10 +12,8 @@ import { DadosPrincipais } from './DadosPrincipais';
 interface ModalProps {
   refreshPage: (description: string, status: string) => void
   getCod: () => void
-  cod: number
   isEditing: boolean
   id: number
-  editCod: number
   header: any
   active: boolean
   setActive: (value: boolean) => void
@@ -23,7 +21,7 @@ interface ModalProps {
 }
 
 
-export function FormModal({isEditing, id, refreshPage, editCod, cod, header, getCod, setActive, active, seeActive }: ModalProps) {
+export function FormModal({isEditing, id, refreshPage, header, getCod, setActive, active, seeActive }: ModalProps) {
   const methods = useFormContext<IProduct>();
   const toast = useToast();
 
@@ -33,6 +31,10 @@ export function FormModal({isEditing, id, refreshPage, editCod, cod, header, get
 
   const [currentTab, setCurrentTab] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && !isEditing) getCod();
+  }, [isOpen]);
 
   const clearForm = () => {
     onClose();
@@ -210,11 +212,6 @@ export function FormModal({isEditing, id, refreshPage, editCod, cod, header, get
                     id={id}
                     active={active} 
                     setActive={setActive}  
-                    header={header} 
-                    getCod={getCod} 
-                    cod={cod} 
-                    editCod={editCod} 
-                    isEditing={isEditing} 
                   />
                 </TabPanel>
                 <TabPanel>

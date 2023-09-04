@@ -14,16 +14,11 @@ import { GroupModal } from './ModalGroup';
 
 interface IFormFields {
   id: number
-  editCod: number
-  getCod: () => void
-  cod: number
-  isEditing: boolean
-  header: any
   active: boolean
   setActive: (value: boolean) => void
 }
 
-export function DadosPrincipais({ id, editCod, isEditing, getCod, cod, setActive, active}: IFormFields) {
+export function DadosPrincipais({ id, setActive, active}: IFormFields) {
   const { register, setFocus, setValue } = useFormContext<IProduct>();
 
   const [isMarca, setIsMarca] = useState<boolean>(false);
@@ -38,8 +33,6 @@ export function DadosPrincipais({ id, editCod, isEditing, getCod, cod, setActive
   const HEADERS = userInfo.header;
 
   useEffect(() => {
-    getCod();
-    setFocus('nprod');
     setTimeout(() => {
       setFocus('descricao');
     }, 100);
@@ -76,7 +69,7 @@ export function DadosPrincipais({ id, editCod, isEditing, getCod, cod, setActive
         <Flex direction="column" w="50%" mr={6}>
           <Flex gap="2">
             <FormContainer label="Código" width="5rem">
-              <Input maxLength={255} id="nprod" type="text" w="5rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} isReadOnly value={isEditing ? editCod : cod} {...register('nprod')} />
+              <Input maxLength={255} id="nprod" type="text" w="5rem" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('nprod')} />
             </FormContainer>
             <FormContainer label="Descrição">
               <Input maxLength={500} id="descricao" type="text" borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('descricao')} />

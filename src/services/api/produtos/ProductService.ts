@@ -4,7 +4,7 @@ import { ApiException } from '../ApiException';
 export type IProduct = {
   id: number;
   id_emissor: number;
-  nprod: number;
+  nprod: string;
   descricao: string;
   referencia: string;
   codbarras: string;
@@ -53,7 +53,7 @@ const getProductByID = async (idProd: number, HEADERS: any): Promise<IProduct | 
   }
 };
 
-const create = async (dataToCreate: Omit<IProduct, 'id' | 'cod'>, HEADERS: any): Promise<IProduct | ApiException> => {
+const create = async (dataToCreate: Omit<IProduct, 'id'>, HEADERS: any): Promise<IProduct | ApiException> => {
   try {
     const { data } = await Api().post<IProduct>('/produtos', dataToCreate, HEADERS);
     return data;
