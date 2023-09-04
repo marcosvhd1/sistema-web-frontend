@@ -84,7 +84,7 @@ export function NotaFiscal() {
   }, [currentPage, limitRegistros]);
 
   const headers: { key: string; label: string }[] = [
-    { key: 'cod', label: 'Código' },
+    { key: 'cod', label: 'Nº da nota' },
     { key: 'data_emissao', label: 'Emissão' },
     { key: 'natureza_operacao', label: 'Natureza de Operação' },
     { key: 'destinatario', label: 'Destinatário' },

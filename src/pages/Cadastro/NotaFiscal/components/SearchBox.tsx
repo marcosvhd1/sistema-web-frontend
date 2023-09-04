@@ -104,7 +104,7 @@ export function SearchBox({ children, stateFilter, getNotasFiscaisByFilter, setI
               <FormContainer label='Buscar por' width="25%" mr='3'>
                 <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} onChange={(e) => stateFilter(e.target.value)}>
                   <option value=''>Nenhum</option>
-                  <option value='cod'>Código</option>
+                  <option value='cod'>Nº da nota</option>
                   <option value='nome_destinatario'>Destinatário</option>
                 </Select>
               </FormContainer>
