@@ -10,6 +10,16 @@ import { INotaFiscal, NotaFiscalService } from '../../../../../../../services/ap
 import { userInfos } from '../../../../../../../utils/header';
 import { ModalNFClient } from './ModalNFClient';
 
+const regex = new RegExp(/^\d+$/);
+
+function lpad(inputString: string) {
+  while (inputString.length < 4) {
+    inputString = '0' + inputString;
+  }
+
+  return inputString;
+}
+
 interface FormDadosPrincipaisProps {
   isEditing: boolean,
   cfops: ICFOP[],
@@ -30,18 +40,24 @@ export function FormDadosPrincipais({ isEditing, cfops, shareCFOP }: FormDadosPr
 
   const getCod = async () => {
     if (!isEditing) {
-      const respose = await NotaFiscalService.getLastCod(idEmissorSelecionado, HEADERS);
+      NotaFiscalService.getLastCod(idEmissorSelecionado, HEADERS).then((result) => {
+        if (result === null) {
+          methods.setValue('cod', '0001');
+        } else {
+          if (regex.test(result)) {
+            methods.setValue('cod', lpad((parseInt(result) + 1).toString()));
+          } else {
+            methods.setValue('cod', '');
+          }
+        }
 
-      const newNumber = parseInt(respose) + 1;
-
-      if (respose !== null) methods.setValue('cod', (`${newNumber}`));
-      else methods.setValue('cod', '0001');
+      });
     }
   };
 
   useEffect(() => {
     getCod();
-  }, [isEditing]);
+  }, []);
 
   const handleBlockCod = () => {
     setCodBlock(!codBlock);

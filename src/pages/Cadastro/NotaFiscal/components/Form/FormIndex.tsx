@@ -73,29 +73,8 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
   const HEADERS = userInfo.header;
 
   useEffect(() => {
-    if (isEditing) setProdutos(methods.getValues('produtos'));
-    if (isEditing) setFormaPagto(methods.getValues('forma_pagto'));
-    if (isEditing) setDuplicatas(methods.getValues('duplicata'));
-    if (isEditing) setChavesRef(methods.getValues('chaves_ref'));
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (isOpen === true && isEditing === false) {
-      ConfigService.getByEmissor(idEmissorSelecionado, HEADERS).then((result) => {
-        if (result !== null && result !== undefined) {
-          if (result.serie_padrao.length > 0) methods.setValue('serie', parseInt(result.serie_padrao));
-          else methods.setValue('serie', 0);
-        }
-      });
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (isOpen === true) setCurrentTab(0);
-  }, [isOpen]);
-
-  useEffect(() => {
     if (isOpen === true) {
+      setCurrentTab(0);
       ICFOPService.get(idEmissorSelecionado, HEADERS).then((result) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -110,6 +89,20 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
           }
         } 
       });
+
+      if (isEditing) {
+        setFormaPagto(methods.getValues('forma_pagto'));
+        setDuplicatas(methods.getValues('duplicata'));
+        setChavesRef(methods.getValues('chaves_ref'));
+        setProdutos(methods.getValues('produtos'));
+      } else {
+        ConfigService.getByEmissor(idEmissorSelecionado, HEADERS).then((result) => {
+          if (result !== null && result !== undefined) {
+            if (result.serie_padrao.length > 0) methods.setValue('serie', parseInt(result.serie_padrao));
+            else methods.setValue('serie', 0);
+          }
+        });
+      }
     }
   }, [isOpen]);
 
