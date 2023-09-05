@@ -4,10 +4,10 @@ export function TextLogo() {
   return (
     <Flex marginBottom={4} direction="column">
       <Flex justify="center">
-        <Text color="orange.300" fontSize={55} fontWeight="bold">
+        <Text color="orange.500" fontSize={55} fontWeight="bold">
           OS
         </Text>
-        <Text color="blue.500" fontSize={55} fontWeight="bold">
+        <Text color="blue.700" fontSize={55} fontWeight="bold">
           Mini
         </Text>
       </Flex>
