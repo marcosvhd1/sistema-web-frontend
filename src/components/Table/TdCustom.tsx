@@ -13,7 +13,7 @@ export function TdCustom({ children, style }: TdCustomProps) {
       textOverflow="ellipsis" 
       whiteSpace="nowrap"
       maxWidth="2rem"
-      fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+      fontSize={{ base: '.8rem', md: '.8rem', lg: '.9rem' }}
       style={style}
     >
       {children}

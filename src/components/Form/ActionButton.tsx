@@ -21,7 +21,7 @@ export function ActionButton({ label, variant = 'ghost', colorScheme, icon, acti
         variant={`${variant}`}
         onClick={() => action()}
         colorScheme={`${colorScheme}`}
-        fontSize={{ base: '.7rem', md: '.7rem', lg: '.9rem' }}
+        fontSize={{ base: '.7rem', md: '.9rem', lg: '.9rem' }}
       >
         <Icon color={colorMode === 'light' ? `${colorScheme}.400` : `${colorScheme}.300`} as={icon}/>
       </Button>

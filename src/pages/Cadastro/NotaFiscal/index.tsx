@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Center, Icon, Menu, MenuButton, MenuItem, MenuList, Spinner, Tag, Tooltip, Tr, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Center, Icon, Menu, MenuButton, MenuItem, MenuList, Spinner, Tag, Td, Tooltip, Tr, useColorMode, useToast } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiFile, FiFilePlus, FiPrinter, FiSend, FiSlash, FiTrash2 } from 'react-icons/fi';
 
 import { MdMenu } from 'react-icons/md';
@@ -411,27 +411,37 @@ export function NotaFiscal() {
                 {data !== undefined
                   ? data.map((data) => (
                     <Tr key={data.id}>
-                      <TdCustom style={{ width: '5%' }}>
+                      <Td width="5%">
                         {data.cod}
-                      </TdCustom>
-                      <TdCustom style={{ width: '10%' }}>
+                      </Td>
+                      <Td width="5%">
                         {data.data_emissao != undefined ? formatDate(data.data_emissao.toString()) : ''}
-                      </TdCustom>
-                      <TdCustom style={{ width: '20%' }}>
+                      </Td>
+                      <TdCustom style={{ width: '15%' }}>
                         {data.natureza_operacao ?? ''}
                       </TdCustom>
-                      <TdCustom style={{ width: '20%' }}>
+                      <TdCustom style={{ width: '15%' }}>
                         {data.nome_destinatario ?? ''}
                       </TdCustom>
-                      <TdCustom style={{ width: '10%' }}>
+                      <Td width="5%">
                         <Tag variant='outline' colorScheme={tagColor(data.status)}>
                           {data.status}
                         </Tag>
-                      </TdCustom>
-                      <TdCustom style={{ width: '10%' }}>
+                      </Td>
+                      <Td width="5%">
                         {'R$ ' + formatMoney(data.total_nota) ?? ''}
-                      </TdCustom>
-                      <TdCustom style={{ width: '15%', textAlign: 'end' }}>
+                      </Td>
+                      <Td width="5%" style={{ textAlign: 'end' }}>
+                        {
+                          data.status === 'Em digitação' ?
+                            <ActionButton 
+                              label='Emitir'
+                              colorScheme='green'
+                              action={() => handleOpenDialogEmitir(data.id)}
+                              icon={FiSend}
+                            /> 
+                            : null
+                        }
                         {
                           data.status !== 'Inutilizada' ?
                             <ActionButton 
@@ -464,14 +474,6 @@ export function NotaFiscal() {
                             <Icon as={MdMenu} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}/>
                           </MenuButton>
                           <MenuList>
-                            {
-                              data.status === 'Em digitação' ?
-                                <MenuItem onClick={() => handleOpenDialogEmitir(data.id)} color={colorMode === 'light' ? 'green.600' : 'green.300'} my={1} py={2}>
-                                  <Icon as={FiSend} mr={2}/>
-                                  Emitir
-                                </MenuItem>
-                                : null
-                            }
                             {
                               data.status === 'Emitida' ?
                                 <MenuItem onClick={() => handleOpenModalCancelar(data)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
@@ -510,7 +512,7 @@ export function NotaFiscal() {
                             </MenuItem>
                           </MenuList>
                         </Menu>
-                      </TdCustom>
+                      </Td>
                     </Tr>
                   ))
                   : ''}
