@@ -181,7 +181,7 @@ export function Produto() {
               </Center> :
               <DataTable headers={headers}>
                 {data != undefined ? data.map((data) => (
-                  <Tr onDoubleClick={() => handleEditProduct(data.id)} key={data.id}>
+                  <Tr key={data.id}>
                     <TdCustom style={{ width: '5%' }}>{data.nprod}</TdCustom>
                     <TdCustom>{data.descricao}</TdCustom>
                     <TdCustom>{'R$ ' + formatMoney(data.preco)}</TdCustom>

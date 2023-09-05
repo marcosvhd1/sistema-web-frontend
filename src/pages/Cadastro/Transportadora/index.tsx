@@ -158,7 +158,7 @@ export function Transportadora() {
               </Center> :
               <DataTable headers={headers}>
                 {data !== undefined ? data.map((data) => (
-                  <Tr onDoubleClick={() => handleEditTransportadora(data.id)} key={data.id}>
+                  <Tr key={data.id}>
                     <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
                     <TdCustom>{data.razao}</TdCustom>
                     <TdCustom>{data.cnpjcpf}</TdCustom>
