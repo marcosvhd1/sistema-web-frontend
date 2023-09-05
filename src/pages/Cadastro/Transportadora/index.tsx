@@ -28,10 +28,14 @@ const headers: { key: string, label: string }[] = [
 
 export function Transportadora() {
   const methods = useForm<ITransportadora>();
+
+  const [sortBy, setSortBy] = useState<keyof ITransportadora | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
   const [id, setId] = useState<number>(0);
   const [data, setData] = useState<ITransportadora[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('cod');
   const [totalClients, setTotalClients] = useState<number>(0);
@@ -44,7 +48,6 @@ export function Transportadora() {
   const navigate = useNavigate();
   const [editCod, setEditCod] = useState<number>(1);
   const [cod, setCod] = useState<number>(1);
-
 
   const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
   const TOKEN = LOCAL_DATA?.user.accessToken;
@@ -63,6 +66,32 @@ export function Transportadora() {
     getTransportadora('');
     handleChangeTotalPage();
   }, [currentPage, limitRegistros]);
+
+  useEffect(() => {
+    handleChangeTotalPage();
+  }, [totalClients]);
+
+  const handleSort = (columnName: keyof ITransportadora) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
 
   const getLastCod = () => {
     TransportadoraService.getLastCod(idEmissorSelecionado, HEADERS)
@@ -156,8 +185,13 @@ export function Transportadora() {
                   size='lg'
                 />
               </Center> :
-              <DataTable headers={headers}>
-                {data !== undefined ? data.map((data) => (
+              <DataTable 
+                headers={headers} 
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onTap={handleSort}
+              >
+                {sortedData !== undefined ? sortedData.map((data) => (
                   <Tr key={data.id}>
                     <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
                     <TdCustom>{data.razao}</TdCustom>

@@ -51,7 +51,6 @@ import { ModalNFInutilizarProvider } from '../Contexts/Modal/NotaFiscal/Sefaz/NF
 import { Cliente } from '../pages/Cadastro/Cliente';
 import { NotaFiscal } from '../pages/Cadastro/NotaFiscal';
 import { Produto } from '../pages/Cadastro/Produto';
-import { Servico } from '../pages/Cadastro/Servico';
 import { Transportadora } from '../pages/Cadastro/Transportadora';
 import { Emissor } from '../pages/Emissor';
 import { Home } from '../pages/Inicio';
@@ -125,7 +124,6 @@ export default function MainRoutes() {
                                                                                           <Route element={<RequireEmissor />}>
                                                                                             <Route path="/app/cadastro/clientes" element={<Cliente />} />
                                                                                             <Route path="/app/cadastro/produtos" element={<Produto />} />
-                                                                                            <Route path="/app/cadastro/servicos" element={<Servico />} />
                                                                                             <Route path="/app/cadastro/transportadora" element={<Transportadora />} />
                                                                                             <Route path="/app/fiscal/nfe" element={<NotaFiscal />} />
                                                                                           </Route>

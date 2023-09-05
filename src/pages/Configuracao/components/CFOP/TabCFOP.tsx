@@ -16,6 +16,9 @@ import { TdCustom } from '../../../../components/Table/TdCustom';
 export function TabCFOP() {
   const methods = useForm<ICFOP>();
 
+  const [sortBy, setSortBy] = useState<keyof ICFOP | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
   const [id, setId] = useState<number>(0);
   const [cfops, setCfops] = useState<ICFOP[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -36,6 +39,28 @@ export function TabCFOP() {
   useEffect(() => {
     loadData();
   }, []);
+
+  const handleSort = (columnName: keyof ICFOP) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...cfops].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
 
   const openModal = () => {
     methods.reset({});
@@ -106,8 +131,15 @@ export function TabCFOP() {
             Cadastrar
           </Button>
         </Flex>
-        <DataTable width='100%' headers={headers} mt="5">
-          {cfops !== undefined ? cfops.map((data) => (
+        <DataTable 
+          mt="5"
+          width='100%' 
+          headers={headers} 
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          onTap={handleSort}
+        >
+          {sortedData !== undefined ? sortedData.map((data) => (
             <Tr key={uuidv4()}>
               <TdCustom>{data.natureza}</TdCustom>
               <TdCustom>{data.cfop_dentro}</TdCustom>

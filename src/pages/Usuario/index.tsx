@@ -18,19 +18,23 @@ import { ModalUsuario } from './components/Modal/ModalUsuario';
 import { SearchBox } from './components/SearchBox';
 
 const headers: { key: string, label: string }[] = [
-  { key: 'login', label: 'Login' },
-  { key: 'tipo', label: 'Tipo' },
+  { key: 'email', label: 'Login' },
+  { key: 'tipo_admin', label: 'Tipo' },
   { key: 'status', label: 'Status' },
 ];
 
 export function Usuarios() {
   const methods = useForm<IUsuario>();
+
+  const [sortBy, setSortBy] = useState<keyof IUsuario | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
   const [id, setId] = useState<number>(0);
   const [data, setData] = useState<IUsuario[]>([]);
   const [admin, setAdmin] = useState<boolean>(false);
   const [ativo, setAtivo] = useState<boolean>(true);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('email');
   const [totalUsers, setTotalUsers] = useState<number>(0);
@@ -54,6 +58,32 @@ export function Usuarios() {
     getUsuarios('');
     handleChangeTotalPage();
   }, [currentPage, limitRegistros]);
+
+  useEffect(() => {
+    handleChangeTotalPage();
+  }, [totalUsers]);
+
+  const handleSort = (columnName: keyof IUsuario) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy]!;
+      const bValue = b[sortBy]!;
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalUsers / limitRegistros);
@@ -133,8 +163,13 @@ export function Usuarios() {
                   size='lg'
                 />
               </Center> :
-              <DataTable headers={headers}>
-                {data != undefined ? data.map((data) => (
+              <DataTable 
+                headers={headers} 
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onTap={handleSort}
+              >
+                {sortedData != undefined ? sortedData.map((data) => (
                   <Tr key={data.id}>
                     <TdCustom>{data.email}</TdCustom>
                     <TdCustom>

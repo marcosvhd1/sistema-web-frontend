@@ -40,6 +40,9 @@ export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
   const { colorMode } = useColorMode();
 
+  const [sortBy, setSortBy] = useState<keyof INotaFiscal | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
   const [id, setId] = useState<number>(0);
   const [data, setData] = useState<INotaFiscal[]>([]);
   const [dataToModal, setDataToModal] = useState<INotaFiscal>();
@@ -51,7 +54,7 @@ export function NotaFiscal() {
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
   
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [formSubmitted, setFormSubmitted] = useState(false);
   
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -84,11 +87,37 @@ export function NotaFiscal() {
     handleChangeTotalPage();
   }, [currentPage, limitRegistros]);
 
+  useEffect(() => {
+    handleChangeTotalPage();
+  }, [totalNotas]);
+
+  const handleSort = (columnName: keyof INotaFiscal) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
+
   const headers: { key: string; label: string }[] = [
     { key: 'cod', label: 'Nº da nota' },
     { key: 'data_emissao', label: 'Emissão' },
     { key: 'natureza_operacao', label: 'Natureza de Operação' },
-    { key: 'destinatario', label: 'Destinatário' },
+    { key: 'nome_destinatario', label: 'Destinatário' },
     { key: 'status', label: 'Status' },
     { key: 'total_nota', label: 'Valor Total' },
   ];
@@ -407,9 +436,14 @@ export function NotaFiscal() {
                   size='lg'
                 />
               </Center> :
-              <DataTable headers={headers}>
-                {data !== undefined
-                  ? data.map((data) => (
+              <DataTable 
+                headers={headers} 
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onTap={handleSort}
+              >
+                {sortedData !== undefined
+                  ? sortedData.map((data) => (
                     <Tr key={data.id}>
                       <Td width="5%">
                         {data.cod}

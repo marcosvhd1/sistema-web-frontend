@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import { Flex, Table, TableContainer, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
+import { Flex, Icon, Table, TableContainer, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
+import { FiArrowDown, FiArrowUp } from 'react-icons/fi';
 
 interface DataTableProps {
   children: ReactNode;
@@ -9,9 +10,12 @@ interface DataTableProps {
   mr?: string
   colorScheme?: string
   trailing?: boolean
+  sortBy: any;
+  sortOrder: 'asc' | 'desc';
+  onTap: (column: any) => void;
 }
 
-export function DataTable({ children, headers, width = '95%', mt = '5', mr, colorScheme, trailing = true }: DataTableProps) {
+export function DataTable({ children, headers, width = '95%', mt = '5', mr, colorScheme, trailing = true, sortBy, sortOrder, onTap }: DataTableProps) {
   return (
     <Flex w="100%" justify="center" mt={`${mt}`} mr={`${mr}`}>
       <TableContainer w={`${width}`} borderRadius={8} >
@@ -19,7 +23,27 @@ export function DataTable({ children, headers, width = '95%', mt = '5', mr, colo
           <Thead bg="whiteAlpha.100">
             <Tr style={{'height': '2rem'}}>
               {headers.map((row) => {
-                return (<Th fontSize="0.7rem"  key={row.key}>{row.label}</Th>);
+                return (
+                  <Th 
+                    key={row.key}
+                    cursor='pointer'
+                    fontSize="0.7rem"
+                    onClick={() => onTap(row.key)}
+                  >
+                    <Flex alignItems="center">
+                      {row.label}
+                      {sortBy === row.key ? (
+                        sortOrder === 'desc' ? (
+                          <Icon as={FiArrowDown} ml={1} w={4} h={4} />
+                        ) : (
+                          <Icon as={FiArrowUp} ml={1} w={4} h={4} />
+                        )
+                      ) : (
+                        ''
+                      )}
+                    </Flex>
+                  </Th>
+                );
               })}
               {trailing ? <Th style={{'textAlign': 'center'}} fontSize="0.7rem">Ações</Th> : null}
             </Tr>

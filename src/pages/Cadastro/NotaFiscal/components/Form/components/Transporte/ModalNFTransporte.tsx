@@ -16,7 +16,10 @@ import { FormContainer } from '../../../../../../../components/Form/FormContaine
 
 export function ModalNFTransporte() {
   const methods = useFormContext<INotaFiscal>();
-  const { register, handleSubmit, getValues } = useForm();
+  const { register, getValues } = useForm();
+
+  const [sortBy, setSortBy] = useState<keyof ITransportadora | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const { idEmissorSelecionado } = useEmissorContext();
   const { isOpen, onClose } = useModalNFTransporte();
@@ -70,6 +73,27 @@ export function ModalNFTransporte() {
     };
   }, [isOpen]);
 
+  const handleSort = (columnName: keyof ITransportadora) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
 
   const getTranspByFilter = (description: string) => {
     TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
@@ -143,8 +167,16 @@ export function ModalNFTransporte() {
         </Flex>
         <ModalCloseButton onClick={onClose}/>
         <ModalBody>
-          <DataTable headers={headers} mt="0" width='100%' trailing={false}>
-            {data !== undefined ? data.map((data) => (
+          <DataTable 
+            mt="0" 
+            width='100%' 
+            headers={headers} 
+            trailing={false}
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onTap={handleSort}
+          >
+            {sortedData !== undefined ? sortedData.map((data) => (
               <Tr key={data.id} onClick={() => handleSetTransp(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
                 <TdCustom>{data.cod}</TdCustom>
                 <TdCustom style={{ 'width': '1rem' }}>{data.razao}</TdCustom>

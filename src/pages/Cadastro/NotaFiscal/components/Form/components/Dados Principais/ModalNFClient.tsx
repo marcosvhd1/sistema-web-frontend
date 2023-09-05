@@ -16,7 +16,10 @@ import { FormContainer } from '../../../../../../../components/Form/FormContaine
 
 export function ModalNFClient() {
   const methods = useFormContext<INotaFiscal>();
-  const { register, handleSubmit, getValues } = useForm();
+  const { register, getValues } = useForm();
+
+  const [sortBy, setSortBy] = useState<keyof IClient | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const { idEmissorSelecionado } = useEmissorContext();
   const { isOpen, onClose } = useModalNFClient();
@@ -50,15 +53,12 @@ export function ModalNFClient() {
 
   useEffect(() => {
     getClientsByFilter('');
-  }, [currentPage]);
-
-  useEffect(() => {
-    getClientsByFilter('');
-  }, [limitRegistros]);
+    handleChangeTotalPage();
+  }, [currentPage, limitRegistros]);
 
   useEffect(() => {
     handleChangeTotalPage();
-  }, [totalClients, limitRegistros]);
+  }, [totalClients]);
 
   useEffect(() => {
     function handleKeyPress(event: KeyboardEvent) {
@@ -71,6 +71,28 @@ export function ModalNFClient() {
       document.removeEventListener('keydown', handleKeyPress);
     };
   }, [isOpen]);
+
+  const handleSort = (columnName: keyof IClient) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
 
   const getClientsByFilter = (description: string) => {
     ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
@@ -148,8 +170,16 @@ export function ModalNFClient() {
         </Flex>
         <ModalCloseButton onClick={onClose} />
         <ModalBody>
-          <DataTable headers={headers} mt="0" width='100%' trailing={false}>
-            {data !== undefined ? data.map((data) => (
+          <DataTable 
+            mt="0" 
+            width='100%' 
+            trailing={false}
+            headers={headers} 
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onTap={handleSort}
+          >
+            {sortedData !== undefined ? sortedData.map((data) => (
               <Tr key={data.id} onClick={() => handleSetClient(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
                 <TdCustom>{data.cod}</TdCustom>
                 <TdCustom style={{ 'width': '1rem' }}>{data.razao}</TdCustom>

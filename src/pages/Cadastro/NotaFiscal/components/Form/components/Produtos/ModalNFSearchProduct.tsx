@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Select, Tag, Text, Tr, useColorMode } from '@chakra-ui/react';
+import { Button, Center, Checkbox, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Select, Spinner, Tag, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiSearch } from 'react-icons/fi';
@@ -33,6 +33,11 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
 
   const { grupos } = useGrupos();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [sortBy, setSortBy] = useState<keyof IProduct | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
   const [data, setData] = useState<IProduct[]>([]);
   const [filter, setFilter] = useState<string>('nprod');
   const [filterGrupo, setFilterGrupo] = useState<string>('');
@@ -64,15 +69,8 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
 
   useEffect(() => {
     getProductsByFilter('');
-  }, [currentPage]);
-
-  useEffect(() => {
-    getProductsByFilter('');
-  }, [limitRegistros]);
-
-  useEffect(() => {
     handleChangeTotalPage();
-  }, [totalProducts, limitRegistros]);
+  }, [currentPage, limitRegistros]);
 
   useEffect(() => {
     function handleKeyPress(event: KeyboardEvent) {
@@ -86,13 +84,35 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
     };
   }, [isOpen]);
 
+  const handleSort = (columnName: keyof IProduct) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
+
   const handleSeeActiveProducts = () => {
     setSeeActive(active ? 'Ativo' : 'Inativo');
     setActive(!active);
   };
 
-
   const getProductsByFilter = (description: string) => {
+    setIsLoading(true);
     ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, filterGrupo, filterMarca,idEmissorSelecionado, seeActive, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
@@ -101,6 +121,9 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
           setData(result.data);
           setTotalProducts(parseInt(result.headers['qtd']));
         }
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 700);
       });
   };
 
@@ -183,7 +206,7 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
                   {grupos.map((grupo, index) => grupo.tipo === 'Grupo' ? <option key={index} value={grupo.descricao}>{grupo.descricao}</option> : null)}
                 </Select>
               </FormContainer>
-              <Button onClick={handleGetProductsByFilter} w="15%" mt={7} variant="solid" colorScheme="blue" mr={3}>
+              <Button disabled={isLoading} onClick={handleGetProductsByFilter} w="15%" mt={7} variant="solid" colorScheme="blue" mr={3}>
                 <Icon as={FiSearch} />
               </Button>
               <Checkbox size='lg' mt={7} mr={2} onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
@@ -193,23 +216,43 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
         </Flex>
         <ModalCloseButton onClick={onClose} />
         <ModalBody>
-          <DataTable headers={headers} mt="0" width='100%' trailing={false}>
-            {data !== undefined ? data.map((data) => (
-              <Tr key={data.id} onClick={() => handleSetProduct(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
-                <TdCustom style={{ 'width': '1rem' }}>{data.nprod}</TdCustom>
-                <TdCustom>{data.descricao}</TdCustom>
-                <TdCustom>{data.preco ? 'R$ ' + formatMoney(data.preco) : ''}</TdCustom>
-                <TdCustom>{data.un}</TdCustom>
-                <TdCustom>{data.ncm}</TdCustom>
-                <TdCustom>
-                  <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
-                    {data.status}
-                  </Tag>
-                </TdCustom>
-              </Tr>
-            )) : ''}
-          </DataTable>
-          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalProducts} changeLimitRegister={setLimitRegistros}>
+          {
+            isLoading ?
+              <Center h='10vh'>
+                <Spinner
+                  thickness='4px'
+                  speed='0.65s'
+                  emptyColor='gray.200'
+                  color='blue.500'
+                  size='lg'
+                />
+              </Center> :
+              <DataTable 
+                mt="0" 
+                width='100%' 
+                trailing={false} 
+                headers={headers} 
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onTap={handleSort}
+              >
+                {sortedData !== undefined ? sortedData.map((data) => (
+                  <Tr key={data.id} onClick={() => handleSetProduct(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
+                    <TdCustom style={{ 'width': '1rem' }}>{data.nprod}</TdCustom>
+                    <TdCustom>{data.descricao}</TdCustom>
+                    <TdCustom>{data.preco ? 'R$ ' + formatMoney(data.preco) : ''}</TdCustom>
+                    <TdCustom>{data.un}</TdCustom>
+                    <TdCustom>{data.ncm}</TdCustom>
+                    <TdCustom>
+                      <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
+                        {data.status}
+                      </Tag>
+                    </TdCustom>
+                  </Tr>
+                )) : ''}
+              </DataTable>
+          }
+          <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalProducts} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalProducts} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>

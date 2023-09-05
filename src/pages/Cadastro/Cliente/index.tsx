@@ -25,12 +25,16 @@ import { userInfos } from '../../../utils/header';
 
 export function Cliente() {
   const methods = useForm<IClient>();
+
+  const [sortBy, setSortBy] = useState<keyof IClient | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
   const [id, setId] = useState<number>(0);
   const [data, setData] = useState<IClient[]>([]);
   const [cod, setCod] = useState<number>(1);
   const [editCod, setEditCod] = useState<number>(1);
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('cod');
   const [totalClients, setTotalClients] = useState<number>(0);
@@ -52,6 +56,32 @@ export function Cliente() {
     getClientsByFilter('');
     handleChangeTotalPage();
   }, [currentPage, limitRegistros]);
+
+  useEffect(() => {
+    handleChangeTotalPage();
+  }, [totalClients]);
+
+  const handleSort = (columnName: keyof IClient) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
 
   const getLastCod = () => {
     ClientService.getLastCod(idEmissorSelecionado, HEADERS)
@@ -152,8 +182,13 @@ export function Cliente() {
                   size='lg'
                 />
               </Center> :
-              <DataTable headers={headers}>
-                {data !== undefined ? data.map((data) => (
+              <DataTable 
+                headers={headers} 
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onTap={handleSort}
+              >
+                {sortedData !== undefined ? sortedData.map((data) => (
                   <Tr key={data.id}>
                     <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
                     <TdCustom>{data.razao}</TdCustom>
@@ -179,12 +214,12 @@ export function Cliente() {
               </DataTable>
           }
           <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
-            <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
-            <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
+            <Button isDisabled={currentPage === 1} variant='ghost' size='sm' fontSize='2xl' width='4' onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
+            <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant='ghost' size='sm' fontSize='2xl' width='4' onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
         <FormModal getCod={getLastCod} header={HEADERS} refreshPage={getClientsByFilter} cod={cod} editCod={editCod} isEditing={isEditing} id={id} />
-        <DeleteAlertDialog label="cliente" deleteFunction={handleDeleteClient} onClose={onClose} isOpen={isOpen} id={id} />
+        <DeleteAlertDialog label='cliente' deleteFunction={handleDeleteClient} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>
   );

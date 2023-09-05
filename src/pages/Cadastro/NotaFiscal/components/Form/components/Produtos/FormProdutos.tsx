@@ -24,12 +24,37 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
   const methods = useForm<INFProduct>();
   const nfMethods = useFormContext<INotaFiscal>();
 
+  const [sortBy, setSortBy] = useState<keyof INFProduct | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
   const { onOpen: openModal } = useModalNFProduct();
   const { onOpen, onClose, isOpen } = useAlertNFProductContext();
 
   const [prodToDelete, setProdToDelete] = useState<INFProduct>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+
+  const handleSort = (columnName: keyof INFProduct) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...produtos].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy]!;
+      const bValue = b[sortBy]!;
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
 
   const openModalAdd = () => {
     methods.reset({});
@@ -231,9 +256,9 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
     { key: 'cfop', label: 'CFOP' },
     { key: 'cst_icms', label: 'CST / CSOSN' },
     { key: 'un', label: 'UN' },
-    { key: 'qtde_prod', label: 'Quantidade' },
-    { key: 'vlr_unit_prod', label: 'Valor Unitário' },
-    { key: 'vlr_total_prod', label: 'Valor Total' },
+    { key: 'quantidade', label: 'Quantidade' },
+    { key: 'valor_unitario', label: 'Valor Unitário' },
+    { key: 'valor_total', label: 'Valor Total' },
   ];
 
   return (
@@ -245,8 +270,15 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
             Adicionar
           </Button>
         </Flex>
-        <DataTable width='100%' headers={headers} mt="5">
-          {produtos !== undefined ? produtos.map((data, index) => (
+        <DataTable 
+          mt="5"
+          width='100%' 
+          headers={headers} 
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          onTap={handleSort}
+        >
+          {sortedData !== undefined ? sortedData.map((data, index) => (
             <Tr key={uuidv4()}>
               <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.produto.nprod}</Td>
               <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.produto.descricao}</Td>

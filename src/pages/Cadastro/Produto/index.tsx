@@ -40,10 +40,14 @@ function lpad(inputString: string) {
 
 export function Produto() {
   const methods = useForm<IProduct>();
+
+  const [sortBy, setSortBy] = useState<keyof IProduct | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
   const [id, setId] = useState<number>(0);
   const [data, setData] = useState<IProduct[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [active, setActive] = useState<boolean>(true);
   const [seeActive, setSeeActive] = useState<string>('Ativo');
   const [filter, setFilter] = useState<string>('nprod');
@@ -71,6 +75,32 @@ export function Produto() {
     getProduct('', seeActive);
     handleChangeTotalPage();
   }, [currentPage, limitRegistros]);
+
+  useEffect(() => {
+    handleChangeTotalPage();
+  }, [totalClients]);
+
+  const handleSort = (columnName: keyof IProduct) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
 
   const getLastCod = () => {
     if (isEditing === false) {
@@ -179,8 +209,13 @@ export function Produto() {
                   size='lg'
                 />
               </Center> :
-              <DataTable headers={headers}>
-                {data != undefined ? data.map((data) => (
+              <DataTable 
+                headers={headers} 
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onTap={handleSort}
+              >
+                {sortedData != undefined ? sortedData.map((data) => (
                   <Tr key={data.id}>
                     <TdCustom style={{ width: '5%' }}>{data.nprod}</TdCustom>
                     <TdCustom>{data.descricao}</TdCustom>

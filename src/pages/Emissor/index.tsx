@@ -20,15 +20,19 @@ import { SearchBox } from './components/SearchBox';
 
 const headers: { key: string, label: string }[] = [
   { key: 'razao', label: 'Razão Social' },
-  { key: 'cnpj', label: 'CNPJ' },
+  { key: 'cnpjcpf', label: 'CNPJ' },
   { key: 'status', label: 'Status' },
 ];
 
 export function Emissor() {
   const methods = useForm<IEmissor>();
+  
+  const [sortBy, setSortBy] = useState<keyof IEmissor | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  
   const [data, setData] = useState<IEmissor[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('razao');
   const [totalClients, setTotalClients] = useState<number>(0);
@@ -54,6 +58,32 @@ export function Emissor() {
     getEmissores('', seeActive);
     handleChangeTotalPage();
   }, [currentPage, limitRegistros]);
+
+  useEffect(() => {
+    handleChangeTotalPage();
+  }, [totalClients]);
+
+  const handleSort = (columnName: keyof IEmissor) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalClients / limitRegistros);
@@ -146,8 +176,13 @@ export function Emissor() {
                   size='lg'
                 />
               </Center> :
-              <DataTable headers={headers} >
-                {data != undefined ? data.map((data) => (
+              <DataTable 
+                headers={headers} 
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onTap={handleSort}
+              >
+                {sortedData != undefined ? sortedData.map((data) => (
                   <Tr key={data.id}>
                     <TdCustom>{data.razao}</TdCustom>
                     <TdCustom>{data.cnpjcpf}</TdCustom>

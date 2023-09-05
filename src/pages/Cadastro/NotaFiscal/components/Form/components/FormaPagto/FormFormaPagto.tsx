@@ -27,6 +27,12 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   const methodsPag = useForm<INFFormaPagto>();
   const methods = useFormContext<INotaFiscal>();
 
+  const [sortBy, setSortBy] = useState<keyof INFFormaPagto | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  const [sortByDup, setSortByDup] = useState<keyof INFDuplicata | null>(null);
+  const [sortOrderDup, setSortOrderDup] = useState<'asc' | 'desc'>('asc');
+
   const [isEditingForma, setIsEditingForma] = useState<boolean>(false);
   const [isEditingDup, setIsEditingDup] = useState<boolean>(false);
 
@@ -36,6 +42,50 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   const { onOpen } = useModalNFFormaPagto();
   const { onOpen: openDuplicata } = useModalNFDuplicata();
   const { colorMode } = useColorMode();
+
+  const handleSort = (columnName: keyof INFFormaPagto) => {
+    if (columnName === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(columnName);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...formaPagtos].sort((a, b) => {
+    if (sortBy) {
+      const aValue = a[sortBy]!;
+      const bValue = b[sortBy]!;
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
+
+  const handleSortDup = (columnName: keyof INFDuplicata) => {
+    if (columnName === sortByDup) {
+      setSortOrderDup(sortOrderDup === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortByDup(columnName);
+      setSortOrderDup('asc');
+    }
+  };
+
+  const sortedDataDup = [...duplicatas].sort((a, b) => {
+    if (sortByDup) {
+      const aValue = a[sortByDup]!;
+      const bValue = b[sortByDup]!;
+      if (sortOrderDup === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    }
+    return 0;
+  });
 
   const formatDate = (date: string) => {
     const aux = date.split('-');
@@ -134,8 +184,16 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
                 Adicionar
               </Button>
             </Flex>
-            <DataTable width='100%' headers={headersForma} trailing={false} mt='3'>
-              {formaPagtos !== undefined ? formaPagtos.map((data, index) => (
+            <DataTable 
+              mt='3'
+              width='100%' 
+              trailing={false} 
+              headers={headersForma}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+              onTap={handleSort}
+            >
+              {sortedData !== undefined ? sortedData.map((data, index) => (
                 <Tr key={uuidv4()}>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.forma}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor)}</Td>
@@ -169,8 +227,16 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
                 Adicionar
               </Button>
             </Flex>
-            <DataTable width='100%' headers={headersDuplicata} trailing={false} mt='3'>
-              {duplicatas !== undefined ? duplicatas.map((data, index) => (
+            <DataTable 
+              mt='3'
+              width='100%' 
+              trailing={false} 
+              headers={headersDuplicata}
+              sortBy={sortByDup}
+              sortOrder={sortOrderDup}
+              onTap={handleSortDup}
+            >
+              {sortedDataDup !== undefined ? sortedDataDup.map((data, index) => (
                 <Tr key={uuidv4()}>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.numero}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{formatDate(data.vencimento)}</Td>
