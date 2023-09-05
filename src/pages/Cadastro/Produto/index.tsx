@@ -73,9 +73,9 @@ export function Produto() {
   }, [currentPage, limitRegistros]);
 
   const getLastCod = () => {
-    ProductService.getLastCod(idEmissorSelecionado, HEADERS)
-      .then((result) => {
-        if (isEditing === false) {
+    if (isEditing === false) {
+      ProductService.getLastCod(idEmissorSelecionado, HEADERS)
+        .then((result) => {
           if (result === null) methods.setValue('nprod', '0001');
           else {
             if (regex.test(result)) {
@@ -84,8 +84,8 @@ export function Produto() {
               methods.setValue('nprod', '');
             }
           }
-        }
-      });
+        });
+    }
   };
 
   const handleChangeTotalPage = () => {
