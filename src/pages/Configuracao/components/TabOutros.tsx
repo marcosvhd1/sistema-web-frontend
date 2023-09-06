@@ -10,8 +10,11 @@ export function TabOutros() {
   return (
     <Flex w='100%' justify='center' align='flex-start' direction="column">
       <Flex w='100%' justify='center' align='center' >
-        <FormContainer label='Série Padrão' mr='3'>
+        <FormContainer label='Série Padrão NFe' mr='3'>
           <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('serie_padrao')}/>
+        </FormContainer>
+        <FormContainer label='Série Padrão NFCe' mr='3'>
+          <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('serie_padrao_nfce')}/>
         </FormContainer>
         <FormContainer label='Aliq. de Aproveitamento de ICMS'>
           <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('aliq_aprov_icms')}/>

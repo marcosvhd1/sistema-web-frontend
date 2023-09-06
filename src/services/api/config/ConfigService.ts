@@ -13,6 +13,7 @@ export interface IConfig {
   id_nfce: string;
   token_nfce: string;
   serie_padrao: string;
+  serie_padrao_nfce: string;
   justif: string;
   aliq_aprov_icms: string;
   email_remetente: string;

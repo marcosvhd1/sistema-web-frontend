@@ -1,63 +1,25 @@
 import { Button, Divider, Flex, Icon, Input, Select, Text, useColorMode } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { FiEdit2, FiSearch, FiShare } from 'react-icons/fi';
-import { useEmissorContext } from '../../../../../../../Contexts/EmissorProvider';
 import { useModalNFClient } from '../../../../../../../Contexts/Modal/NotaFiscal/NFClientContext';
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 import { ICFOP } from '../../../../../../../services/api/cfop/CFOPService';
-import { INotaFiscal, NotaFiscalService } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
-import { userInfos } from '../../../../../../../utils/header';
+import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ModalNFClient } from './ModalNFClient';
 
-const regex = new RegExp(/^\d+$/);
-
-function lpad(inputString: string) {
-  while (inputString.length < 4) {
-    inputString = '0' + inputString;
-  }
-
-  return inputString;
-}
-
 interface FormDadosPrincipaisProps {
-  isEditing: boolean,
   cfops: ICFOP[],
   shareCFOP: () => void;
 }
 
-export function FormDadosPrincipais({ isEditing, cfops, shareCFOP }: FormDadosPrincipaisProps) {
+export function FormDadosPrincipais({ cfops, shareCFOP }: FormDadosPrincipaisProps) {
   const methods = useFormContext<INotaFiscal>();
 
   const [codBlock, setCodBlock] = useState<boolean>(true);
 
   const { onOpen } = useModalNFClient();
   const { colorMode } = useColorMode();
-  const { idEmissorSelecionado } = useEmissorContext();
-
-  const userInfo = userInfos();
-  const HEADERS = userInfo.header;
-
-  const getCod = async () => {
-    if (!isEditing) {
-      NotaFiscalService.getLastCod(idEmissorSelecionado, HEADERS).then((result) => {
-        if (result === null) {
-          methods.setValue('cod', '0001');
-        } else {
-          if (regex.test(result)) {
-            methods.setValue('cod', lpad((parseInt(result) + 1).toString()));
-          } else {
-            methods.setValue('cod', '');
-          }
-        }
-
-      });
-    }
-  };
-
-  useEffect(() => {
-    getCod();
-  }, []);
 
   const handleBlockCod = () => {
     setCodBlock(!codBlock);

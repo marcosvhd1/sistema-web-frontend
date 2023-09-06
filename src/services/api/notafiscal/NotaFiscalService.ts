@@ -144,8 +144,8 @@ const duplicar = async (id: number, idEmissorSelecionado: number, HEADERS: any):
   }
 };
 
-const getLastCod = async (idEmissorSelecionado: number, HEADERS: any) => {
-  const response = await Api().get(`/notas/max?id_emissor=${idEmissorSelecionado}`, HEADERS);
+const getLastCod = async (idEmissorSelecionado: number, serie: number, HEADERS: any) => {
+  const response = await Api().get(`/notas/max?id_emissor=${idEmissorSelecionado}&serie=${serie}`, HEADERS);
   const { max } = response.data[0];
   return max;
 };

@@ -47,6 +47,16 @@ import { FormNFRef } from './components/NFRef/FormNFRef';
 import { FormProdutos } from './components/Produtos/FormProdutos';
 import { FormTransporte } from './components/Transporte/FormTransporte';
 
+const regex = new RegExp(/^\d+$/);
+
+function lpad(inputString: string) {
+  while (inputString.length < 4) {
+    inputString = '0' + inputString;
+  }
+
+  return inputString;
+}
+
 interface ModalNotaFiscalProps {
   id: number;
   isEditing: boolean;
@@ -98,13 +108,26 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
       } else {
         ConfigService.getByEmissor(idEmissorSelecionado, HEADERS).then((result) => {
           if (result !== null && result !== undefined) {
-            if (result.serie_padrao.length > 0) methods.setValue('serie', parseInt(result.serie_padrao));
+            if (result.serie_padrao.length > 0) {
+              methods.setValue('serie', parseInt(result.serie_padrao));
+              getCod(parseInt(result.serie_padrao));
+            }
             else methods.setValue('serie', 0);
           }
         });
       }
     }
   }, [isOpen]);
+
+  const getCod = async (serie: number) => {
+    NotaFiscalService.getLastCod(idEmissorSelecionado, serie, HEADERS).then((result) => {
+      if (result === null || result === undefined) methods.setValue('cod', '0001');
+      else {
+        if (regex.test(result)) methods.setValue('cod', lpad((parseInt(result) + 1).toString()));
+        else methods.setValue('cod', '');
+      }
+    });
+  };
 
   const clearData = () => {
     const auxForma: INFFormaPagto[] = [];
@@ -446,7 +469,6 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
               <TabPanels>
                 <TabPanel>
                   <FormDadosPrincipais 
-                    isEditing={isEditing} 
                     cfops={cfops}
                     shareCFOP={shareCFOP}
                   />

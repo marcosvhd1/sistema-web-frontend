@@ -99,6 +99,7 @@ export function ModalConfig() {
       'id_nfce': methods.getValues('id_nfce'),
       'token_nfce': methods.getValues('token_nfce'),
       'serie_padrao': methods.getValues('serie_padrao'),
+      'serie_padrao_nfce': methods.getValues('serie_padrao_nfce'),
       'aliq_aprov_icms': methods.getValues('aliq_aprov_icms'),
       'email_remetente': methods.getValues('email_remetente'),
       'email': methods.getValues('email'),
