@@ -29,6 +29,18 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
   const methods = useForm<IGroup>();
   const toast = useToast();
 
+  useEffect(() => {
+    function handleKeyPress(event: KeyboardEvent) {
+      if (isOpen === true && event.key === 'Enter') addGrupo();
+    }
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isOpen]);
+
   const clearForm = () => {
     setIsEditing(false);
     onClose();
