@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Td, Tr } from '@chakra-ui/react';
+import { Button, Flex, Icon, Td, Tr, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -13,6 +13,8 @@ import { INFProduct } from '../../../../../../../services/api/notafiscal/NFProdu
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import formatMoney from '../../../../../../../utils/formatarValor';
 import { ModalNFProduct } from './ModalNFProduct';
+import { useModalNFProductCST } from '../../../../../../../Contexts/Modal/NotaFiscal/NFProductCSTContext';
+import { ModalNFProductCST } from './ModalNFProductCST';
 
 interface FormProdutosProps {
   produtos: INFProduct[],
@@ -27,12 +29,15 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
   const [sortBy, setSortBy] = useState<keyof INFProduct | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const { onOpen: openModal } = useModalNFProduct();
-  const { onOpen, onClose, isOpen } = useAlertNFProductContext();
-
   const [prodToDelete, setProdToDelete] = useState<INFProduct>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+
+  const { onOpen: openModal } = useModalNFProduct();
+  const { onOpen: openModalCST } = useModalNFProductCST();
+  const { onOpen, onClose, isOpen } = useAlertNFProductContext();
+
+  const toast = useToast();
 
   const handleSort = (columnName: keyof INFProduct) => {
     if (columnName === sortBy) {
@@ -249,6 +254,35 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
     nfMethods.setValue('total_fcp_st', totFCPST);
   };
 
+  const shareCST = async (value: string) => {
+    if (produtos.length > 0) {
+      const updatedData = produtos.map(element => ({
+        ...element,
+        produto: {
+          ...element.produto,
+          cst_icms: value
+        }
+      }));
+  
+      addProduto(updatedData);
+  
+      toast({
+        position: 'top',
+        description: `O CST/CSOSN ${value} foi aplicado em todos os produtos.`,
+        status: 'success',
+        duration: 3000,
+      }); 
+    } else {
+      toast({
+        position: 'top',
+        description: 'A NFe não possui produtos.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      }); 
+    }
+  };
+
   const headers: { key: string, label: string }[] = [
     { key: 'nprod', label: 'Código' },
     { key: 'descricao', label: 'Descrição' },
@@ -264,7 +298,11 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
   return (
     <FormProvider {...methods}>
       <Flex w="100%" justify="center" align="center" direction="column" >
-        <Flex w="100%" justify="flex-end" align="center" mt={2}>
+        <Flex w="100%" justify="space-between" align="center" mt={2}>
+          <Button fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="outline" colorScheme="green" onClick={openModalCST}>
+            <Icon mr={2} as={FiEdit} />
+            CST
+          </Button>
           <Button fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue" onClick={openModalAdd}>
             <Icon mr={2} as={MdAdd} />
             Adicionar
@@ -306,6 +344,7 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
             </Tr>
           )) : ''}
         </DataTable>
+        <ModalNFProductCST shareCST={shareCST} />
         <ModalNFProduct addProduct={handleAddProduct} editProduct={handleEditProduct} index={currentIndex} isEditing={isEditing} setIsEditing={setIsEditing}/>
         <DeleteAlertDialog label="Produto" deleteFunction={handleDeleteProd} onClose={onClose} isOpen={isOpen} id={0}/>
       </Flex>
