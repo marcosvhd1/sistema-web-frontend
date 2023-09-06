@@ -11,6 +11,7 @@ export interface IClient {
   fantasia: string;
   cnpjcpf: string;
   rg: string;
+  datanasc: string;
   ie: string;
   im: string;
   suframa: string;
