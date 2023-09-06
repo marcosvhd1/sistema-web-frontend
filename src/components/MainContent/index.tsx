@@ -26,6 +26,7 @@ export default function MainContent({ children }: MainContentProps) {
       gridTemplateRows={'7vh 1fr 5vh'}
       gridTemplateColumns={!smSize[0] ? '0 1fr' : navSize == 'small' ? '4vw 1fr' : '14vw 1fr'}
       h='100vh'
+      transition='grid-template-columns 0.5s ease-in-out'
     >
       <GridItem area={'header'}>
         <Header />

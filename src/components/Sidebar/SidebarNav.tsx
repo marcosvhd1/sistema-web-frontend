@@ -59,6 +59,7 @@ export function SidebarNav() {
       align='flex-start'
       bg={!smSize[0] ? '' : 'whiteAlpha.100'}
       overflow='hidden'
+      transition='0.5s ease-in-out'
     >
       <Flex
         p='3%'
