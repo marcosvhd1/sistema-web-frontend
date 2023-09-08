@@ -64,6 +64,9 @@ export interface INotaFiscal {
     total_fcp: number;
     total_fcp_st: number;
     presenca_comprador: string;
+    ind_intermed: string;
+    cnpj_intermed: string;
+    id_intermed: string;
     duplicata: INFDuplicata[];
     forma_pagto: INFFormaPagto[];
     chaves_ref: INFReferenciada[];

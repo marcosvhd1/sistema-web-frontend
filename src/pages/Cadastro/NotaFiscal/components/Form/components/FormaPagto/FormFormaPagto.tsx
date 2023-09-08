@@ -1,5 +1,5 @@
-import { Button, Divider, Flex, Icon, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Button, Divider, Flex, Icon, Input, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';
@@ -27,6 +27,8 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   const methodsPag = useForm<INFFormaPagto>();
   const methods = useFormContext<INotaFiscal>();
 
+  const [isHidden, setIsHidden] = useState<boolean>(true);
+
   const [sortBy, setSortBy] = useState<keyof INFFormaPagto | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
@@ -42,6 +44,10 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   const { onOpen } = useModalNFFormaPagto();
   const { onOpen: openDuplicata } = useModalNFDuplicata();
   const { colorMode } = useColorMode();
+
+  useEffect(() => {
+    changeVisibility(methods.getValues('presenca_comprador'));
+  }, []);
 
   const handleSort = (columnName: keyof INFFormaPagto) => {
     if (columnName === sortBy) {
@@ -90,6 +96,11 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   const formatDate = (date: string) => {
     const aux = date.split('-');
     return `${aux[2]}/${aux[1]}/${aux[0]}`;
+  };
+
+  const changeVisibility = (e: string) => {
+    if (e == '2' || e == '3' || e == '9') setIsHidden(false);
+    else setIsHidden(true);
   };
 
   const openModalForma = () => {
@@ -161,16 +172,28 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
     <FormProvider {...methodsPag}>
       <Flex w="100%" justify="center" align="center" direction="column" >
         <Flex w="100%" justify="flex-start" align="center" mb={2}>
-          <FormContainer width='45%' label='Presença do comprador no momento da operação'>
-            <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('presenca_comprador')}>
+          <FormContainer width='35%' label='Presença do comprador' mr='3'>
+            <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('presenca_comprador')} onChange={(event) =>changeVisibility(event.target.value)}>
               <option value='0'>0 - Não se aplica (Para NF complementar ou de ajuste)</option>
               <option value='1'>1 - Operação presencial</option>
               <option value='2'>2 - Operação não presencial, pela Internet</option>
               <option value='3'>3 - Operação não presencial, Teleatendimento</option>
               <option value='4'>4 - NFCE-e em operação com entrega em domicílio</option>
               <option value='5'>5 - Operação presencial - fora do estabelecimento</option>
-              <option value='9'>5 - Operação não presencial, Outros</option>
+              <option value='9'>9 - Operação não presencial, Outros</option>
             </Select>
+          </FormContainer>
+          <FormContainer hidden={isHidden} width='25%' label='Indicativo de intermediador' mr='3'>
+            <Select isRequired borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('ind_intermed')}>
+              <option value='0'>0 - Operação sem intermediador</option>
+              <option value='1'>1 - Operação em site ou Plataformas de Terceiros</option>
+            </Select>
+          </FormContainer>
+          <FormContainer hidden={isHidden} width="20%" label='CNPJ Intermediador' mr='3' >
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cnpj_intermed')}/>
+          </FormContainer>
+          <FormContainer hidden={isHidden} width="20%" label='ID Intermediador' mr='3' >
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('id_intermed')}/>
           </FormContainer>
         </Flex>
         <Flex w="100%" align="flex-start" justify="center" mt={3}>
