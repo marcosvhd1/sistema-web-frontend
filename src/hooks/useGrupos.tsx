@@ -15,10 +15,6 @@ export function useGrupos() {
   useEffect(() => {
     getGrupos();
   }, []);
-
-  useEffect(() => {
-    getGrupos();
-  }, [grupos]);
   
   const getGrupos = () => {
     GroupService.getAll(idEmissorSelecionado, HEADERS)
