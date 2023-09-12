@@ -25,7 +25,7 @@ export function ContadorProvider({ children }: ContadorContextProps) {
   const HEADERS = userInfo.header;
 
   useEffect(() => {
-    getNFDigitacao();
+    if (idEmissorSelecionado > 0) getNFDigitacao();
   }, [idEmissorSelecionado]);
 
   const getNFDigitacao = () => {
