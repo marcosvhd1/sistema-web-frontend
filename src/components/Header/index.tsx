@@ -59,6 +59,7 @@ export function Header() {
       justify="space-between"
     >
       <IconButton
+        ml={3}
         alignSelf="center"
         aria-label="Botão de fechar e abrir a sidebar"
         background="none"
