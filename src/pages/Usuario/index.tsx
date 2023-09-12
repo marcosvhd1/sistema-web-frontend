@@ -109,9 +109,8 @@ export function Usuarios() {
           setData(result.data);
           setTotalUsers(parseInt(result.headers['qtd']));
         }
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 700);
+          
+        setIsLoading(false);
       });
   };
 
@@ -152,55 +151,43 @@ export function Usuarios() {
     <FormProvider {...methods}>
       <MainContent>
         <SearchBox isLoading={isLoading} changeEdit={setIsEditing} setFilter={setFilter} getUsuarios={getUsuarios}>
-          {
-            isLoading ?
-              <Center h='40vh'>
-                <Spinner
-                  thickness='4px'
-                  speed='0.65s'
-                  emptyColor='gray.200'
-                  color='blue.500'
-                  size='lg'
-                />
-              </Center> :
-              <DataTable 
-                headers={headers} 
-                sortBy={sortBy}
-                sortOrder={sortOrder}
-                onTap={handleSort}
-              >
-                {sortedData != undefined ? sortedData.map((data) => (
-                  <Tr key={data.id}>
-                    <TdCustom>{data.email}</TdCustom>
-                    <TdCustom>
-                      <Tag variant='outline' colorScheme={data.tipo_admin === 1 ? 'blue' : 'red'}>
-                        {data.tipo_admin === 1 ? 'Admin' : 'Normal'}
-                      </Tag>
-                    </TdCustom>
-                    <TdCustom>
-                      <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
-                        {data.status}
-                      </Tag>
-                    </TdCustom>
-                    <TdCustom style={{ 'textAlign': 'center' }}>
-                      <ActionButton 
-                        label='Editar'
-                        colorScheme='orange'
-                        action={() => handleEditUser(data.id!)}
-                        icon={FiEdit}
-                      />
-                      <ActionButton 
-                        label='Excluir'
-                        colorScheme='red'
-                        action={() => handleOpenDialog(data.id!)}
-                        disabled={data.usuario_principal === 'Sim'}
-                        icon={FiTrash2}
-                      />
-                    </TdCustom>
-                  </Tr>
-                )) : ''}
-              </DataTable>
-          }
+          <DataTable 
+            headers={headers} 
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onTap={handleSort}
+          >
+            {sortedData != undefined ? sortedData.map((data) => (
+              <Tr key={data.id}>
+                <TdCustom>{data.email}</TdCustom>
+                <TdCustom>
+                  <Tag variant='outline' colorScheme={data.tipo_admin === 1 ? 'blue' : 'red'}>
+                    {data.tipo_admin === 1 ? 'Admin' : 'Normal'}
+                  </Tag>
+                </TdCustom>
+                <TdCustom>
+                  <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
+                    {data.status}
+                  </Tag>
+                </TdCustom>
+                <TdCustom style={{ 'textAlign': 'center' }}>
+                  <ActionButton 
+                    label='Editar'
+                    colorScheme='orange'
+                    action={() => handleEditUser(data.id!)}
+                    icon={FiEdit}
+                  />
+                  <ActionButton 
+                    label='Excluir'
+                    colorScheme='red'
+                    action={() => handleOpenDialog(data.id!)}
+                    disabled={data.usuario_principal === 'Sim'}
+                    icon={FiTrash2}
+                  />
+                </TdCustom>
+              </Tr>
+            )) : ''}
+          </DataTable>
           <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalUsers} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalUsers} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>

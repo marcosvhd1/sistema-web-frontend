@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Button, Checkbox, Flex, Icon, Input, Select, Text, useColorMode } from '@chakra-ui/react';
+import { Button, Checkbox, Flex, Icon, Input, Select, Spinner, Text, useColorMode } from '@chakra-ui/react';
 
 import { FiSearch } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';
@@ -90,9 +90,15 @@ export function SearchBox({ children, setFilter, setFilterGrupo, setFilterMarca,
                 {grupos.map((grupo, index) => grupo.tipo === 'Grupo' ? <option key={index} value={grupo.descricao}>{grupo.descricao}</option> : null)}
               </Select>
             </FormContainer>
-            <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue" mr={3}>
-              <Icon as={FiSearch} />
-            </Button>
+            {
+              isLoading ?
+                <Button w="10%" mt={7} variant="solid" colorScheme="blue" mr={3}>
+                  <Spinner size='sm' /> 
+                </Button> :
+                <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue" mr={3}>
+                  <Icon as={FiSearch} />
+                </Button>
+            }
             <Checkbox size='lg' mt={7} mr={2} onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
             <Text w='20%' mt={7} onClick={handleSeeActiveProducts}>Visualizar inativos</Text>
           </Flex>

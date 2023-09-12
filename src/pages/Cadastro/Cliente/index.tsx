@@ -117,9 +117,8 @@ export function Cliente() {
           setData(result.data);
           setTotalClients(parseInt(result.headers['qtd']));
         }
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 700);
+
+        setIsLoading(false);
       });
   };
 
@@ -171,48 +170,36 @@ export function Cliente() {
     <FormProvider {...methods}>
       <MainContent>
         <SearchBox isLoading={isLoading} getCod={getLastCod} getClientsByFilter={getClientsByFilter} changeEdit={setIsEditing} stateFilter={setFilter}>
-          {
-            isLoading ?
-              <Center h='40vh'>
-                <Spinner
-                  thickness='4px'
-                  speed='0.65s'
-                  emptyColor='gray.200'
-                  color='blue.500'
-                  size='lg'
-                />
-              </Center> :
-              <DataTable 
-                headers={headers} 
-                sortBy={sortBy}
-                sortOrder={sortOrder}
-                onTap={handleSort}
-              >
-                {sortedData !== undefined ? sortedData.map((data) => (
-                  <Tr key={data.id}>
-                    <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
-                    <TdCustom>{data.razao}</TdCustom>
-                    <TdCustom>{data.cnpjcpf}</TdCustom>
-                    <TdCustom>{data.cidade}</TdCustom>
-                    <TdCustom>{data.uf}</TdCustom>
-                    <TdCustom style={{ 'textAlign': 'center' }}>
-                      <ActionButton 
-                        label='Editar'
-                        colorScheme='orange'
-                        action={() => handleEditClient(data.id)}
-                        icon={FiEdit}
-                      />
-                      <ActionButton 
-                        label='Excluir'
-                        colorScheme='red'
-                        action={() => handleOpenDialog(data.id)}
-                        icon={FiTrash2}
-                      />
-                    </TdCustom>
-                  </Tr>
-                )) : ''}
-              </DataTable>
-          }
+          <DataTable 
+            headers={headers} 
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onTap={handleSort}
+          >
+            {sortedData !== undefined ? sortedData.map((data) => (
+              <Tr key={data.id}>
+                <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
+                <TdCustom>{data.razao}</TdCustom>
+                <TdCustom>{data.cnpjcpf}</TdCustom>
+                <TdCustom>{data.cidade}</TdCustom>
+                <TdCustom>{data.uf}</TdCustom>
+                <TdCustom style={{ 'textAlign': 'center' }}>
+                  <ActionButton 
+                    label='Editar'
+                    colorScheme='orange'
+                    action={() => handleEditClient(data.id)}
+                    icon={FiEdit}
+                  />
+                  <ActionButton 
+                    label='Excluir'
+                    colorScheme='red'
+                    action={() => handleOpenDialog(data.id)}
+                    icon={FiTrash2}
+                  />
+                </TdCustom>
+              </Tr>
+            )) : ''}
+          </DataTable>
           <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant='ghost' size='sm' fontSize='2xl' width='4' onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant='ghost' size='sm' fontSize='2xl' width='4' onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>

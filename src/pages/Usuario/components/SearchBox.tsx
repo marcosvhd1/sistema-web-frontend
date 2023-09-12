@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Select, Text, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Select, Spinner, Text, useColorMode } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -57,9 +57,15 @@ export function SearchBox({ children, getUsuarios, setFilter, isLoading }: Searc
             </Flex>
           </Flex>
           <Flex w="50%" justify="flex-start" align="center">
-            <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
-              <Icon as={FiSearch} />
-            </Button>
+            {
+              isLoading ?
+                <Button w="10%" mt={7} variant="solid" colorScheme="blue">
+                  <Spinner size='sm' /> 
+                </Button> :
+                <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
+                  <Icon as={FiSearch} />
+                </Button>
+            }
           </Flex>
         </Flex>
         {children}

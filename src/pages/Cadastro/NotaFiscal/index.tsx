@@ -199,9 +199,8 @@ export function NotaFiscal() {
         setTotalNotas(parseInt(result.headers['qtd']));
         getNFDigitacao();
       }
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 700);
+      
+      setIsLoading(false);
     });
   };
 
@@ -425,133 +424,121 @@ export function NotaFiscal() {
     <FormProvider {...methods}>
       <MainContent>
         <SearchBox isLoading={isLoading} getNotasFiscaisByFilter={getNF} stateFilter={setFilter} stateFilterByStatus={setFilterByStatus} filterByDate={filterByDate} stateFilterByDate={setFilterByDate} setIsEditing={setIsEditing} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}>
-          {
-            isLoading ?
-              <Center h='40vh'>
-                <Spinner
-                  thickness='4px'
-                  speed='0.65s'
-                  emptyColor='gray.200'
-                  color='blue.500'
-                  size='lg'
-                />
-              </Center> :
-              <DataTable 
-                headers={headers} 
-                sortBy={sortBy}
-                sortOrder={sortOrder}
-                onTap={handleSort}
-              >
-                {sortedData !== undefined
-                  ? sortedData.map((data) => (
-                    <Tr key={data.id}>
-                      <Td width="5%">
-                        {data.cod}
-                      </Td>
-                      <Td width="5%">
-                        {data.data_emissao != undefined ? formatDate(data.data_emissao.toString()) : ''}
-                      </Td>
-                      <TdCustom style={{ width: '15%' }}>
-                        {data.natureza_operacao ?? ''}
-                      </TdCustom>
-                      <TdCustom style={{ width: '15%' }}>
-                        {data.nome_destinatario ?? ''}
-                      </TdCustom>
-                      <Td width="5%">
-                        <Tag variant='outline' colorScheme={tagColor(data.status)}>
-                          {data.status}
-                        </Tag>
-                      </Td>
-                      <Td width="5%">
-                        {'R$ ' + formatMoney(data.total_nota) ?? ''}
-                      </Td>
-                      <Td width="5%" style={{ textAlign: 'end' }}>
+          <DataTable 
+            headers={headers} 
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onTap={handleSort}
+          >
+            {sortedData !== undefined
+              ? sortedData.map((data) => (
+                <Tr key={data.id}>
+                  <Td width="5%">
+                    {data.cod}
+                  </Td>
+                  <Td width="5%">
+                    {data.data_emissao != undefined ? formatDate(data.data_emissao.toString()) : ''}
+                  </Td>
+                  <TdCustom style={{ width: '15%' }}>
+                    {data.natureza_operacao ?? ''}
+                  </TdCustom>
+                  <TdCustom style={{ width: '15%' }}>
+                    {data.nome_destinatario ?? ''}
+                  </TdCustom>
+                  <Td width="5%">
+                    <Tag variant='outline' colorScheme={tagColor(data.status)}>
+                      {data.status}
+                    </Tag>
+                  </Td>
+                  <Td width="5%">
+                    {'R$ ' + formatMoney(data.total_nota) ?? ''}
+                  </Td>
+                  <Td width="5%" style={{ textAlign: 'end' }}>
+                    {
+                      data.status === 'Em digitação' ?
+                        <ActionButton 
+                          label='Emitir'
+                          colorScheme='green'
+                          action={() => handleOpenDialogEmitir(data.id)}
+                          icon={FiSend}
+                        /> 
+                        : null
+                    }
+                    {
+                      data.status !== 'Inutilizada' ?
+                        <ActionButton 
+                          label='Editar'
+                          colorScheme='orange'
+                          action={() => handleEditNF(data.id)}
+                          icon={FiEdit}
+                        />
+                        : null
+                    }
+                    {
+                      data.status !== 'Inutilizada' ?
+                        <ActionButton 
+                          label= {data.status === 'Em digitação' ? 'Pré visualizar' : 'Imprimir'}
+                          colorScheme='blue'
+                          action={() => handleImprimir(data)}
+                          icon={FiPrinter}
+                        />
+                        : null
+                    }
+                    <Menu>
+                      <MenuButton 
+                        as={Button}
+                        w="2rem"
+                        p={0}
+                        variant='ghost'
+                        colorScheme='blue'
+                        fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
+                      >
+                        <Icon as={MdMenu} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}/>
+                      </MenuButton>
+                      <MenuList>
                         {
-                          data.status === 'Em digitação' ?
-                            <ActionButton 
-                              label='Emitir'
-                              colorScheme='green'
-                              action={() => handleOpenDialogEmitir(data.id)}
-                              icon={FiSend}
-                            /> 
-                            : null
-                        }
-                        {
-                          data.status !== 'Inutilizada' ?
-                            <ActionButton 
-                              label='Editar'
-                              colorScheme='orange'
-                              action={() => handleEditNF(data.id)}
-                              icon={FiEdit}
-                            />
-                            : null
-                        }
-                        {
-                          data.status !== 'Inutilizada' ?
-                            <ActionButton 
-                              label= {data.status === 'Em digitação' ? 'Pré visualizar' : 'Imprimir'}
-                              colorScheme='blue'
-                              action={() => handleImprimir(data)}
-                              icon={FiPrinter}
-                            />
-                            : null
-                        }
-                        <Menu>
-                          <MenuButton 
-                            as={Button}
-                            w="2rem"
-                            p={0}
-                            variant='ghost'
-                            colorScheme='blue'
-                            fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}
-                          >
-                            <Icon as={MdMenu} color={colorMode === 'light' ? 'blue.400' : 'blue.300'}/>
-                          </MenuButton>
-                          <MenuList>
-                            {
-                              data.status === 'Emitida' ?
-                                <MenuItem onClick={() => handleOpenModalCancelar(data)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
-                                  <Icon as={FiSlash} mr={2}/>
-                                  Cancelar
-                                </MenuItem>
-                                : null
-                            }
-                            {
-                              data.status === 'Emitida' ?
-                                <MenuItem onClick={() => handleOpenModalCCe(data)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
-                                  <Icon as={FiFile} mr={2}/>
-                                  Carta de Correção
-                                </MenuItem>
-                                : null
-                            }
-                            {
-                              data.status === 'Emitida' && data.caminho_pdf_cce !== null ?
-                                <MenuItem onClick={() => handleImprimirCCe(data)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
-                                  <Icon as={FiPrinter} mr={2}/>
-                                  Imprimir Correção
-                                </MenuItem>
-                                : null
-                            }
-                            {
-                              data.status !== 'Emitida' && data.status !== 'Cancelada' ?
-                                <MenuItem onClick={() => handleOpenDialog(data.id)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
-                                  <Icon as={FiTrash2} mr={2}/>
-                                  Excluir
-                                </MenuItem>
-                                : null
-                            }
-                            <MenuItem onClick={() => handleDuplicarNF(data.id)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
-                              <Icon as={FiFilePlus} mr={2}/>
-                              Duplicar
+                          data.status === 'Emitida' ?
+                            <MenuItem onClick={() => handleOpenModalCancelar(data)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
+                              <Icon as={FiSlash} mr={2}/>
+                              Cancelar
                             </MenuItem>
-                          </MenuList>
-                        </Menu>
-                      </Td>
-                    </Tr>
-                  ))
-                  : ''}
-              </DataTable>
-          }
+                            : null
+                        }
+                        {
+                          data.status === 'Emitida' ?
+                            <MenuItem onClick={() => handleOpenModalCCe(data)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                              <Icon as={FiFile} mr={2}/>
+                              Carta de Correção
+                            </MenuItem>
+                            : null
+                        }
+                        {
+                          data.status === 'Emitida' && data.caminho_pdf_cce !== null ?
+                            <MenuItem onClick={() => handleImprimirCCe(data)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                              <Icon as={FiPrinter} mr={2}/>
+                              Imprimir Correção
+                            </MenuItem>
+                            : null
+                        }
+                        {
+                          data.status !== 'Emitida' && data.status !== 'Cancelada' ?
+                            <MenuItem onClick={() => handleOpenDialog(data.id)} color={colorMode === 'light' ? 'red.600' : 'red.300'} my={1} py={2}>
+                              <Icon as={FiTrash2} mr={2}/>
+                              Excluir
+                            </MenuItem>
+                            : null
+                        }
+                        <MenuItem onClick={() => handleDuplicarNF(data.id)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                          <Icon as={FiFilePlus} mr={2}/>
+                          Duplicar
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </Td>
+                </Tr>
+              ))
+              : ''}
+          </DataTable>
           <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalNotas} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}>
               <Icon as={FiChevronLeft} />

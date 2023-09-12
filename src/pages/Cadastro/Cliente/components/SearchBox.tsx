@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
-import { Button, Flex, Icon, Input, Select, Text, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Select, Spinner, Text, useColorMode } from '@chakra-ui/react';
 
 import { FiSearch } from 'react-icons/fi';
 import { useModalClient } from '../../../../Contexts/Modal/ClientContext';
@@ -67,9 +67,15 @@ export function SearchBox({ children, changeEdit , stateFilter, getClientsByFilt
             </Flex>
           </Flex>
           <Flex w="50%" justify="flex-start" align="center">
-            <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
-              <Icon as={FiSearch} />
-            </Button>
+            {
+              isLoading ?
+                <Button w="10%" mt={7} variant="solid" colorScheme="blue">
+                  <Spinner size='sm' /> 
+                </Button> :
+                <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
+                  <Icon as={FiSearch} />
+                </Button> 
+            }
           </Flex>
         </Flex>
         {children}

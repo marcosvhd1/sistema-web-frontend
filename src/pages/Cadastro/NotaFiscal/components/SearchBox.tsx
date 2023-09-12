@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Menu, MenuButton, MenuItem, MenuList, Select, Text, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Menu, MenuButton, MenuItem, MenuList, Select, Spinner, Text, useColorMode, useToast } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { FieldValues, useForm, useFormContext } from 'react-hook-form';
 import { FaInfoCircle, FaThList } from 'react-icons/fa';
@@ -136,9 +136,15 @@ export function SearchBox({ isLoading, children, stateFilter, getNotasFiscaisByF
             <FormContainer label='Fim' width="30%" mr='3'>
               <Input maxLength={255} disabled={filterByDate === ''} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
             </FormContainer>
-            <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
-              <Icon as={FiSearch} />
-            </Button>
+            {
+              isLoading ?
+                <Button w="10%" mt={7} variant="solid" colorScheme="blue">
+                  <Spinner size='sm' /> 
+                </Button> :
+                <Button disabled={isLoading} type="submit" w="10%" mt={7} variant="solid" colorScheme="blue">
+                  <Icon as={FiSearch} />
+                </Button> 
+            }
           </Flex>
         </Flex>
         {children}

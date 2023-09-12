@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Select, Text, Tr, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Select, Spinner, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useForm, useFormContext } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiSearch } from 'react-icons/fi';
@@ -17,6 +17,8 @@ import { FormContainer } from '../../../../../../../components/Form/FormContaine
 export function ModalNFClient() {
   const methods = useFormContext<INotaFiscal>();
   const { register, getValues } = useForm();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [sortBy, setSortBy] = useState<keyof IClient | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -95,6 +97,7 @@ export function ModalNFClient() {
   });
 
   const getClientsByFilter = (description: string) => {
+    setIsLoading(true);
     ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
@@ -103,6 +106,8 @@ export function ModalNFClient() {
           setData(result.data);
           setTotalClients(parseInt(result.headers['qtd']));
         }
+
+        setIsLoading(false);
       });
   };
 
@@ -162,9 +167,15 @@ export function ModalNFClient() {
               </Flex>
             </Flex>
             <Flex w="30%" justify="flex-start" align="center">
-              <Button type="submit" w="25%" mt={7} variant="solid" colorScheme="blue">
-                <Icon as={FiSearch} />
-              </Button>
+              {
+                isLoading ?
+                  <Button w="25%" mt={7} variant="solid" colorScheme="blue">
+                    <Spinner size='sm' /> 
+                  </Button> :
+                  <Button onClick={handleGetClientsByFilter} w="25%" mt={7} variant="solid" colorScheme="blue">
+                    <Icon as={FiSearch} />
+                  </Button>
+              }
             </Flex>
           </Flex>
         </Flex>
@@ -192,7 +203,7 @@ export function ModalNFClient() {
               </Tr>
             )) : ''}
           </DataTable>
-          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
+          <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>

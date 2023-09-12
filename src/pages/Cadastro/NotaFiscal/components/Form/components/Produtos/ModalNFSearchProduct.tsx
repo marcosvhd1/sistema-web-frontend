@@ -121,9 +121,8 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
           setData(result.data);
           setTotalProducts(parseInt(result.headers['qtd']));
         }
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 700);
+
+        setIsLoading(false);
       });
   };
 
@@ -206,9 +205,15 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
                   {grupos.map((grupo, index) => grupo.tipo === 'Grupo' ? <option key={index} value={grupo.descricao}>{grupo.descricao}</option> : null)}
                 </Select>
               </FormContainer>
-              <Button disabled={isLoading} onClick={handleGetProductsByFilter} w="15%" mt={7} variant="solid" colorScheme="blue" mr={3}>
-                <Icon as={FiSearch} />
-              </Button>
+              {
+                isLoading ?
+                  <Button w="15%" mt={7} variant="solid" colorScheme="blue" mr={3}>
+                    <Spinner size='sm' /> 
+                  </Button> :
+                  <Button disabled={isLoading} onClick={handleGetProductsByFilter} w="15%" mt={7} variant="solid" colorScheme="blue" mr={3}>
+                    <Icon as={FiSearch} />
+                  </Button>
+              }
               <Checkbox size='lg' mt={7} mr={2} onChange={handleSeeActiveProducts} value={active ? 'Ativo' : 'Inativo'} isChecked={active}/>
               <Text w='40%' mt={7} onClick={handleSeeActiveProducts}>Visualizar inativos</Text>
             </Flex>
@@ -216,42 +221,30 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
         </Flex>
         <ModalCloseButton onClick={onClose} />
         <ModalBody>
-          {
-            isLoading ?
-              <Center h='10vh'>
-                <Spinner
-                  thickness='4px'
-                  speed='0.65s'
-                  emptyColor='gray.200'
-                  color='blue.500'
-                  size='lg'
-                />
-              </Center> :
-              <DataTable 
-                mt="0" 
-                width='100%' 
-                trailing={false} 
-                headers={headers} 
-                sortBy={sortBy}
-                sortOrder={sortOrder}
-                onTap={handleSort}
-              >
-                {sortedData !== undefined ? sortedData.map((data) => (
-                  <Tr key={data.id} onClick={() => handleSetProduct(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
-                    <TdCustom style={{ 'width': '1rem' }}>{data.nprod}</TdCustom>
-                    <TdCustom>{data.descricao}</TdCustom>
-                    <TdCustom>{data.preco ? 'R$ ' + formatMoney(data.preco) : ''}</TdCustom>
-                    <TdCustom>{data.un}</TdCustom>
-                    <TdCustom>{data.ncm}</TdCustom>
-                    <TdCustom>
-                      <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
-                        {data.status}
-                      </Tag>
-                    </TdCustom>
-                  </Tr>
-                )) : ''}
-              </DataTable>
-          }
+          <DataTable 
+            mt="0" 
+            width='100%' 
+            trailing={false} 
+            headers={headers} 
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onTap={handleSort}
+          >
+            {sortedData !== undefined ? sortedData.map((data) => (
+              <Tr key={data.id} onClick={() => handleSetProduct(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
+                <TdCustom style={{ 'width': '1rem' }}>{data.nprod}</TdCustom>
+                <TdCustom>{data.descricao}</TdCustom>
+                <TdCustom>{data.preco ? 'R$ ' + formatMoney(data.preco) : ''}</TdCustom>
+                <TdCustom>{data.un}</TdCustom>
+                <TdCustom>{data.ncm}</TdCustom>
+                <TdCustom>
+                  <Tag variant='outline' colorScheme={data.status === 'Ativo' ? 'green' : 'red'}>
+                    {data.status}
+                  </Tag>
+                </TdCustom>
+              </Tr>
+            )) : ''}
+          </DataTable>
           <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalProducts} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalProducts} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
