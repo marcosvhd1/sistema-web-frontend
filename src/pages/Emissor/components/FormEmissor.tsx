@@ -1,4 +1,5 @@
-import { Checkbox, Flex, Input, Select, useColorMode } from '@chakra-ui/react';
+import { Checkbox, Flex, Input, Select as ChakraSelect, useColorMode } from '@chakra-ui/react';
+import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../components/Form/FormContainer';
@@ -20,9 +21,10 @@ export function FormEmissor({ isEditing, setActive, active, id }: IFormFields) {
   const methods = useFormContext<IEmissor>();
   
   const [selectedEstado, setSelectedEstado] = useState(methods.getValues('uf'));
+  const [selectedCidade, setSelectedCidade] = useState(methods.getValues('cidade'));
   
   const { estados } = useEstados();
-  const { cidades } = useCidades({ uf: selectedEstado });
+  const { cidadeOptions } = useCidades({ uf: selectedEstado });
   
   const { colorMode } = useColorMode();
 
@@ -49,6 +51,11 @@ export function FormEmissor({ isEditing, setActive, active, id }: IFormFields) {
         }
       });
   }, [id]);
+
+  const onChangeCidade = (city: any) => {
+    setSelectedCidade(city.value);
+    methods.setValue('cidade', city.value);
+  };
 
   return (
     <Flex w='100%' justify='center' align='flex-start' direction='column'>
@@ -99,25 +106,23 @@ export function FormEmissor({ isEditing, setActive, active, id }: IFormFields) {
 
       <Flex w='100%' justify='center' align='flex-start'>
         <FormContainer label="UF" width='15%' mr='3'>
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('uf')} onChange={(event) => setSelectedEstado(event.target.value)}>
+          <ChakraSelect borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('uf')} onChange={(event) => setSelectedEstado(event.target.value)}>
             {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
-          </Select>
+          </ChakraSelect>
         </FormContainer>
-        <FormContainer label="Cidade" width='55%' mr='3'>
-          <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cidade')}>
-            {cidades.map((cidade, index) => <option key={index} value={cidade.nome}>{cidade.nome}</option>)}
-          </Select>
+        <FormContainer label="Cidade" mr='3'>
+          <Select placeholder=' ' options={cidadeOptions} defaultInputValue={selectedCidade} onChange={(event) => onChangeCidade(event)}/>
         </FormContainer>
         <FormContainer label='CEP' width='30%'>
           <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cep')}/>
         </FormContainer>
       </Flex>
       <FormContainer label='Regime Tributário'>
-        <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('regime')}>
+        <ChakraSelect borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('regime')}>
           <option value='1'>Simples Nacional</option>
           <option value='2'>Simples Nacional (excesso de sublimite de receita bruta)</option>
           <option value='3'>Regime Normal</option>
-        </Select>
+        </ChakraSelect>
       </FormContainer>
       <FormContainer label='Status'>
         <Checkbox size='md' id="status" value={active ? 'Ativo' : 'Inativo'} onChange={() => setActive(!active)} isChecked={active } colorScheme="green" fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>

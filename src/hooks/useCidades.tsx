@@ -7,7 +7,7 @@ interface ICidadeProps {
 }
 
 export function useCidades({ uf }: ICidadeProps) {
-  const [cidades, setCidades] = useState<ICidade[]>([]);
+  const [cidadeOptions, setCidadeOptions] = useState<any[]>([]);
 
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
@@ -15,14 +15,24 @@ export function useCidades({ uf }: ICidadeProps) {
   useEffect(() => {
     getCidadesByUF();
   }, [uf]);
+
+  const formatCidadesForSelect = (cities: ICidade[]) => {
+    return cities.map((cidade) => ({
+      value: cidade.nome,
+      label: cidade.nome,
+    }));
+  };
   
   const getCidadesByUF = () => {
     CidadeService.getByUF(uf, HEADERS).then((cities) => {
-      if (cities != null) setCidades(cities);
+      if (cities != null) {
+        const formattedCities = formatCidadesForSelect(cities);
+        setCidadeOptions(formattedCities);
+      }
     });
   };
 
   return {
-    cidades
+    cidadeOptions
   };
 }

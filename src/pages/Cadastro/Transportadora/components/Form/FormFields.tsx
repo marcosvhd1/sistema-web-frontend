@@ -1,4 +1,5 @@
-import { Divider, Flex, Input, Select, Stack, Text, Textarea, useColorMode } from '@chakra-ui/react';
+import { Divider, Flex, Input, Stack, Select as ChakraSelect, Text, Textarea, useColorMode } from '@chakra-ui/react';
+import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../../../components/Form/FormContainer';
@@ -22,9 +23,10 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
   const { colorMode } = useColorMode();
 
   const [selectedEstado, setSelectedEstado] = useState(getValues('uf'));
+  const [selectedCidade, setSelectedCidade] = useState(getValues('cidade'));
   
   const { estados } = useEstados();
-  const { cidades } = useCidades({ uf: selectedEstado });
+  const { cidadeOptions } = useCidades({ uf: selectedEstado });
 
   const { idEmissorSelecionado } = useEmissorContext();
   
@@ -50,6 +52,11 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
       });
   }, [id]);
 
+  const onChangeCidade = (city: any) => {
+    setSelectedCidade(city.value);
+    setValue('cidade', city.value);
+  };
+
   return (
     <Flex h="40rem" direction="column" justify="space-between">
       <Flex w="100%" >
@@ -60,9 +67,9 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('cod')} />
             </FormContainer>
             <FormContainer label="UF Placa">
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf_placa')}>
+              <ChakraSelect borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf_placa')}>
                 {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
-              </Select>
+              </ChakraSelect>
             </FormContainer>
             <FormContainer label="Placa">
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="text" {...register('placa')} />
@@ -96,21 +103,21 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
         <Divider />
         <Flex w="100%" gap={3}>
           <FormContainer label="Tipo">
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('tipo_telefone1')}>
+            <ChakraSelect borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('tipo_telefone1')}>
               <option>Celular</option>
               <option>Comercial</option>
               <option>Residencial</option>
-            </Select>
+            </ChakraSelect>
           </FormContainer>
           <FormContainer label="Número" mr='7'>
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone1')} />
           </FormContainer>
           <FormContainer label="Tipo">
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('tipo_telefone2')}>
+            <ChakraSelect borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('tipo_telefone2')}>
               <option>Celular</option>
               <option>Comercial</option>
               <option>Residencial</option>
-            </Select>
+            </ChakraSelect>
           </FormContainer>
           <FormContainer label="Número">
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="tel" {...register('telefone2')} />
@@ -144,14 +151,12 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
           <Flex direction="column" w="50%"  ml="6">
             <Flex justify="space-between">
               <FormContainer label="UF" width='30%' mr='3'>
-                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf')} onChange={(event) => setSelectedEstado(event.target.value)}>
+                <ChakraSelect borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf')} onChange={(event) => setSelectedEstado(event.target.value)}>
                   {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
-                </Select>
+                </ChakraSelect>
               </FormContainer>
-              <FormContainer label="Cidade" width='70%'>
-                <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('cidade')}>
-                  {cidades.map((cidade, index) => <option key={index} value={cidade.nome}>{cidade.nome}</option>)}
-                </Select>
+              <FormContainer label="Cidade">
+                <Select placeholder=' ' options={cidadeOptions} defaultInputValue={selectedCidade} onChange={(event) => onChangeCidade(event)}/>
               </FormContainer>
             </Flex>
             <FormContainer label="Complemento">

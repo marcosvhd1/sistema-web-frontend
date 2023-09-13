@@ -1,4 +1,5 @@
-import { Flex, Input, Select, useColorMode } from '@chakra-ui/react';
+import { Flex, Input, Select as ChakraSelect, useColorMode } from '@chakra-ui/react';
+import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../../../components/Form/FormContainer';
@@ -17,10 +18,11 @@ export function Adress({ id }: AdressProps) {
   const methods = useFormContext<IClient>();
 
   const [selectedEstado, setSelectedEstado] = useState(methods.getValues('uf'));
+  const [selectedCidade, setSelectedCidade] = useState(methods.getValues('cidade'));
   
   const { estados } = useEstados();
   const { colorMode } = useColorMode();
-  const { cidades } = useCidades({ uf: selectedEstado });
+  const { cidadeOptions } = useCidades({ uf: selectedEstado });
 
   const { idEmissorSelecionado } = useEmissorContext();
   
@@ -37,6 +39,11 @@ export function Adress({ id }: AdressProps) {
         }
       });
   }, [id]);
+
+  const onChangeCidade = (city: any) => {
+    setSelectedCidade(city.value);
+    methods.setValue('cidade', city.value);
+  };
 
   return (
     <Flex>
@@ -59,16 +66,14 @@ export function Adress({ id }: AdressProps) {
         </Flex>
       </Flex>
       <Flex direction="column" w="50%"  ml="6">
-        <Flex justify="space-between">
-          <FormContainer label="UF">
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('uf')} w="5rem" onChange={(event) => setSelectedEstado(event.target.value)}>
+        <Flex justify="center">
+          <FormContainer label="UF" width='30%' mr='3'>
+            <ChakraSelect borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('uf')} onChange={(event) => setSelectedEstado(event.target.value)}>
               {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
-            </Select>
+            </ChakraSelect>
           </FormContainer>
           <FormContainer label="Cidade">
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cidade')} w="22.5rem">
-              {cidades.map((cidade, index) => <option key={index} value={cidade.nome}>{cidade.nome}</option>)}
-            </Select>
+            <Select placeholder=' ' options={cidadeOptions} defaultInputValue={selectedCidade} onChange={(event) => onChangeCidade(event)}/>
           </FormContainer>
         </Flex>
         <FormContainer label="Complemento">
