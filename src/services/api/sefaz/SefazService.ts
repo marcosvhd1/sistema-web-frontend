@@ -28,9 +28,9 @@ const cancelar = async (idNfe: number, idEmissor: number, justificativa: string,
   }
 };
 
-const inutilizar = async (numeroIni: string, numeroFin: string, justificativa: string, idEmissor: number, HEADERS: any): Promise<any | ApiException> => {
+const inutilizar = async (serie: string, numeroIni: string, numeroFin: string, justificativa: string, idEmissor: number, HEADERS: any): Promise<any | ApiException> => {
   try {
-    const { data } =  await Api().get(`/sefaz/inutilizar?numero_inicial=${numeroIni}&numero_final=${numeroFin}&justificativa=${justificativa}&id_emissor=${idEmissor}`, HEADERS);
+    const { data } =  await Api().get(`/sefaz/inutilizar?serie=${serie}&numero_inicial=${numeroIni}&numero_final=${numeroFin}&justificativa=${justificativa}&id_emissor=${idEmissor}`, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');

@@ -115,6 +115,7 @@ export function NotaFiscal() {
 
   const headers: { key: string; label: string }[] = [
     { key: 'cod', label: 'Nº da nota' },
+    { key: 'serie', label: 'Série' },
     { key: 'data_emissao', label: 'Emissão' },
     { key: 'natureza_operacao', label: 'Natureza de Operação' },
     { key: 'nome_destinatario', label: 'Destinatário' },
@@ -435,6 +436,9 @@ export function NotaFiscal() {
                 <Tr key={data.id}>
                   <Td width="5%">
                     {data.cod}
+                  </Td>
+                  <Td width="5%">
+                    {data.serie}
                   </Td>
                   <Td width="5%">
                     {data.data_emissao != undefined ? formatDate(data.data_emissao.toString()) : ''}

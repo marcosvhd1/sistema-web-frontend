@@ -1,5 +1,5 @@
 import { Button, Flex, Icon, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorMode, useToast } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useEmissorContext } from '../../../../Contexts/EmissorProvider';
@@ -7,19 +7,21 @@ import { useModalNFInutilizar } from '../../../../Contexts/Modal/NotaFiscal/Sefa
 import { FormContainer } from '../../../../components/Form/FormContainer';
 import { SefazService } from '../../../../services/api/sefaz/SefazService';
 import { userInfos } from '../../../../utils/header';
+import { ConfigService } from '../../../../services/api/config/ConfigService';
 
 interface ModalInutilizarProps {
   getNotas: (description: string) => void;
 }
 
 interface getDados {
+  serie: string;
   numeroIni: string;
   numeroFin: string;
   description: string;
 }
 
 export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
-  const { register, getValues, reset, setFocus } = useForm<getDados>();
+  const { register, getValues, reset, setFocus, setValue } = useForm<getDados>();
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const { colorMode } = useColorMode();
@@ -31,8 +33,18 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
 
   const toast = useToast();
 
+  useEffect(() => {
+    if (isOpen) {
+      ConfigService.getByEmissor(idEmissorSelecionado, HEADERS).then((result) => {
+        if (result !== null && result !== undefined) {
+          if (result.serie_padrao.length > 0) setValue('serie', result.serie_padrao);
+        }
+      });
+    }
+  }, [isOpen]);
+
   const hasErrors = () => {
-    const camposObrigatorios: any[] = ['numeroIni', 'numeroFin', 'description'];
+    const camposObrigatorios: any[] = ['numeroIni', 'numeroFin', 'description', 'serie'];
 
     for (const campo of camposObrigatorios) {
       if (getValues(campo) === '') {
@@ -51,6 +63,12 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
             setFocus(camposObrigatorios[1]);
           }, 100);
           break;
+        case camposObrigatorios[3]: 
+          msg = 'Está faltando preencher a Série.';
+          setTimeout(() => {
+            setFocus(camposObrigatorios[3]);
+          }, 100);
+          break;
         }
 
         toast({
@@ -59,17 +77,20 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
           status: 'error',
           duration: 4000,
         });
+
         return true;
       } else if (getValues('description').length < 15) {
         setTimeout(() => {
           setFocus('description');
         }, 100);
+
         toast({
           position: 'top',
           description: 'A Justificativa precisa de no mínimo 15 caracteres.',
           status: 'error',
           duration: 4000,
         });
+
         return true;
       }
     }
@@ -82,11 +103,12 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
 
     setFormSubmitted(true);
 
+    const serie = getValues('serie');
     const numeroIni = getValues('numeroIni');
     const numeroFin = getValues('numeroFin');
     const description = getValues('description');
 
-    await SefazService.inutilizar(numeroIni, numeroFin, description, idEmissorSelecionado, HEADERS).then((resp) => {
+    await SefazService.inutilizar(serie, numeroIni, numeroFin, description, idEmissorSelecionado, HEADERS).then((resp) => {
       if (resp.type == 'success') {
         handleClose();
         getNotas('');
@@ -141,11 +163,14 @@ export function ModalInutilizar({ getNotas }: ModalInutilizarProps) {
         <ModalBody>
           <Flex w='100%' justify='flex-start' align='center' direction='column'>
             <Flex w='100%' justify='space-between' align='center'>
+              <FormContainer label='Série' width='30%' mr='3'>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('serie')}/>
+              </FormContainer>
               <FormContainer label='Faixa Inicial' mr='3'>
-                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="numer" {...register('numeroIni')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('numeroIni')}/>
               </FormContainer>
               <FormContainer label='Faixa Final'>
-                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="numer" {...register('numeroFin')}/>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('numeroFin')}/>
               </FormContainer>
             </Flex>
             <FormContainer label='Justificativa (min. 15 caracteres)'>
