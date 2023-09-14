@@ -66,7 +66,6 @@ export function FormFields({ id, editCod, isEditing, cod, getCod, setIErequired 
         if (response.return === 'OK') {
           methods.setValue('razao', response.result.nome);
           methods.setValue('fantasia', response.result.fantasia);
-          methods.setValue('ie', response.result.numero_de_inscricao);
           methods.setValue('logradouro', response.result.logradouro);
           methods.setValue('numero', response.result.numero);
           methods.setValue('cep', removePontuacaoCnpjCpf(response.result.cep));
