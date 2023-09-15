@@ -17,16 +17,14 @@ import { validaCpfCnpj } from '../../../../../utils/validaCnpjCpf';
 
 interface IFormFields {
   id: number
-  getCod: () => void
   setIErequired: (value: boolean) => void
 }
 
-export function FormFields({ id, getCod, setIErequired }: IFormFields) {
+export function FormFields({ id, setIErequired }: IFormFields) {
   const methods = useFormContext<IClient>();
   const { colorMode } = useColorMode();
 
   useEffect(() => {
-    getCod();
     methods.setFocus('razao');
   }, []);
 

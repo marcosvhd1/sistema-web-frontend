@@ -1,5 +1,5 @@
+import { Button, Flex, Icon, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { Button, Flex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useColorMode, useToast } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
@@ -20,13 +20,11 @@ interface ModalProps {
   seeActive: string
 }
 
-
 export function FormModal({isEditing, id, refreshPage, header, getCod, setActive, active, seeActive }: ModalProps) {
   const methods = useFormContext<IProduct>();
   const toast = useToast();
 
   const { isOpen, onClose } = useModalProduct();
-  const { colorMode } = useColorMode();
   const { idEmissorSelecionado } = useEmissorContext();
 
   const [currentTab, setCurrentTab] = useState(0);
@@ -232,6 +230,5 @@ export function FormModal({isEditing, id, refreshPage, header, getCod, setActive
         </ModalContent>
       </form>
     </Modal>
-
   );
 }

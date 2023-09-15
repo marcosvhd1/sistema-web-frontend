@@ -26,9 +26,6 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
   const methods = useForm<INFProduct>();
   const nfMethods = useFormContext<INotaFiscal>();
 
-  const [sortBy, setSortBy] = useState<keyof INFProduct | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-
   const [prodToDelete, setProdToDelete] = useState<INFProduct>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -38,28 +35,6 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
   const { onOpen, onClose, isOpen } = useAlertNFProductContext();
 
   const toast = useToast();
-
-  const handleSort = (columnName: keyof INFProduct) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
-    }
-  };
-
-  const sortedData = [...produtos].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy]!;
-      const bValue = b[sortBy]!;
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
 
   const openModalAdd = () => {
     methods.reset({});
@@ -310,13 +285,11 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
         </Flex>
         <DataTable 
           mt="5"
-          width='100%' 
+          width='100%'
+          trailing={false}
           headers={headers} 
-          sortBy={sortBy}
-          sortOrder={sortOrder}
-          onTap={handleSort}
         >
-          {sortedData !== undefined ? sortedData.map((data, index) => (
+          {produtos !== undefined ? produtos.map((data, index) => (
             <Tr key={uuidv4()}>
               <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.produto.nprod}</Td>
               <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.produto.descricao}</Td>

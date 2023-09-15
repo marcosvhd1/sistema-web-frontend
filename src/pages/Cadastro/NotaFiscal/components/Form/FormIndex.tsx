@@ -77,9 +77,8 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     if (isOpen === true) {
       setCurrentTab(0);
       ICFOPService.get(idEmissorSelecionado, HEADERS).then((result) => {
-        if (result instanceof ApiException) {
-          console.log(result.message);
-        } else {
+        if (result instanceof ApiException) console.log(result.message);
+        else {
           if (result.length > 0) {
             setCfops(result);
 
@@ -103,7 +102,6 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
               methods.setValue('serie', parseInt(result.serie_padrao));
               getCod(parseInt(result.serie_padrao));
             }
-            else methods.setValue('serie', 0);
           }
         });
       }

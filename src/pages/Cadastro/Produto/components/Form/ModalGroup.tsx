@@ -44,17 +44,13 @@ export function GroupModal({ isMarca, header, refreshData }: IGroupModal) {
   const clearForm = () => {
     setIsEditing(false);
     onClose();
-    methods.reset({
-      descricao: ''
-    });
+    methods.reset({descricao: ''});
     refreshData();
   };
 
   useEffect(() => {
     getGrupos();
-    setTimeout(() => {
-      methods.setFocus('descricao');
-    }, 100);
+    methods.setFocus('descricao');
   }, []);
 
   const submitData = async () => {

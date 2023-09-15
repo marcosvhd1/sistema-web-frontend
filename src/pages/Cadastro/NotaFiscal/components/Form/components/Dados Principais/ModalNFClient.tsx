@@ -20,9 +20,6 @@ export function ModalNFClient() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [sortBy, setSortBy] = useState<keyof IClient | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-
   const { idEmissorSelecionado } = useEmissorContext();
   const { isOpen, onClose } = useModalNFClient();
   const { colorMode } = useColorMode();
@@ -74,28 +71,6 @@ export function ModalNFClient() {
     };
   }, [isOpen]);
 
-  const handleSort = (columnName: keyof IClient) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
-    }
-  };
-
-  const sortedData = [...data].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy];
-      const bValue = b[sortBy];
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
-
   const getClientsByFilter = (description: string) => {
     setIsLoading(true);
     ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
@@ -118,7 +93,6 @@ export function ModalNFClient() {
 
   const handleSetClient = async (data: IClient) => {
     methods.setValue('destinatario', data);
-
     onClose();
   };
 
@@ -186,11 +160,8 @@ export function ModalNFClient() {
             width='100%' 
             trailing={false}
             headers={headers} 
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onTap={handleSort}
           >
-            {sortedData !== undefined ? sortedData.map((data) => (
+            {data !== undefined ? data.map((data) => (
               <Tr key={data.id} onClick={() => handleSetClient(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
                 <TdCustom>{data.cod}</TdCustom>
                 <TdCustom style={{ 'width': '1rem' }}>{data.razao}</TdCustom>

@@ -18,7 +18,7 @@ import { useModalTransportadora } from '../../../../../Contexts/Modal/Transporta
 import { ApiException } from '../../../../../services/api/ApiException';
 import { ITransportadora, TransportadoraService } from '../../../../../services/api/transportadora/TransportadoraService';
 import { FormFields } from './FormFields';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ModalProps {
   refreshPage: (description: string) => void
@@ -35,6 +35,10 @@ export function FormModal({ isEditing, id, refreshPage, getCod, header }: ModalP
   const { idEmissorSelecionado } = useEmissorContext();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && !isEditing) getCod();
+  }, [isOpen]);
 
   const clearForm = () => {
     onClose();
@@ -174,8 +178,6 @@ export function FormModal({ isEditing, id, refreshPage, getCod, header }: ModalP
           <ModalBody>
             <FormFields 
               id={id}
-              getCod={getCod}
-              isEditing={isEditing} 
             />
           </ModalBody>
           <ModalFooter>

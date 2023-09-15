@@ -10,9 +10,9 @@ interface DataTableProps {
   mr?: string
   colorScheme?: string
   trailing?: boolean
-  sortBy: any;
-  sortOrder: 'asc' | 'desc';
-  onTap: (column: any) => void;
+  sortBy?: any;
+  sortOrder?: 'asc' | 'desc';
+  onTap?: (column: any) => void;
 }
 
 export function DataTable({ children, headers, width = '95%', mt = '5', mr, colorScheme, trailing = true, sortBy, sortOrder, onTap }: DataTableProps) {
@@ -26,9 +26,9 @@ export function DataTable({ children, headers, width = '95%', mt = '5', mr, colo
                 return (
                   <Th 
                     key={row.key}
-                    cursor='pointer'
+                    cursor={onTap != undefined ? 'pointer' : ''}
                     fontSize="0.7rem"
-                    onClick={() => onTap(row.key)}
+                    onClick={() => onTap != undefined ? onTap(row.key) : null}
                   >
                     <Flex alignItems="center">
                       {row.label}

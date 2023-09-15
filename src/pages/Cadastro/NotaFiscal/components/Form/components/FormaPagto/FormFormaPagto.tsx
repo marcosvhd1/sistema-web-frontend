@@ -29,12 +29,6 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
 
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
-  const [sortBy, setSortBy] = useState<keyof INFFormaPagto | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-
-  const [sortByDup, setSortByDup] = useState<keyof INFDuplicata | null>(null);
-  const [sortOrderDup, setSortOrderDup] = useState<'asc' | 'desc'>('asc');
-
   const [isEditingForma, setIsEditingForma] = useState<boolean>(false);
   const [isEditingDup, setIsEditingDup] = useState<boolean>(false);
 
@@ -48,50 +42,6 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
   useEffect(() => {
     changeVisibility(methods.getValues('presenca_comprador'));
   }, []);
-
-  const handleSort = (columnName: keyof INFFormaPagto) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
-    }
-  };
-
-  const sortedData = [...formaPagtos].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy]!;
-      const bValue = b[sortBy]!;
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
-
-  const handleSortDup = (columnName: keyof INFDuplicata) => {
-    if (columnName === sortByDup) {
-      setSortOrderDup(sortOrderDup === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortByDup(columnName);
-      setSortOrderDup('asc');
-    }
-  };
-
-  const sortedDataDup = [...duplicatas].sort((a, b) => {
-    if (sortByDup) {
-      const aValue = a[sortByDup]!;
-      const bValue = b[sortByDup]!;
-      if (sortOrderDup === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
 
   const formatDate = (date: string) => {
     const aux = date.split('-');
@@ -212,11 +162,8 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
               width='100%' 
               trailing={false} 
               headers={headersForma}
-              sortBy={sortBy}
-              sortOrder={sortOrder}
-              onTap={handleSort}
             >
-              {sortedData !== undefined ? sortedData.map((data, index) => (
+              {formaPagtos !== undefined ? formaPagtos.map((data, index) => (
                 <Tr key={uuidv4()}>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.forma}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{'R$ ' + formatMoney(data.valor)}</Td>
@@ -255,11 +202,8 @@ export function FormFormaPagto({ formaPagtos, addForma, duplicatas, addDuplicata
               width='100%' 
               trailing={false} 
               headers={headersDuplicata}
-              sortBy={sortByDup}
-              sortOrder={sortOrderDup}
-              onTap={handleSortDup}
             >
-              {sortedDataDup !== undefined ? sortedDataDup.map((data, index) => (
+              {duplicatas !== undefined ? duplicatas.map((data, index) => (
                 <Tr key={uuidv4()}>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{data.numero}</Td>
                   <Td fontSize={{ base: '.8rem', md: '.8rem', lg: '1rem' }}>{formatDate(data.vencimento)}</Td>

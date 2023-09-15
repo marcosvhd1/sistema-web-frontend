@@ -33,9 +33,7 @@ export function DadosPrincipais({ id, setActive, active}: IFormFields) {
   const HEADERS = userInfo.header;
 
   useEffect(() => {
-    setTimeout(() => {
-      setFocus('descricao');
-    }, 100);
+    setFocus('descricao');
   }, []);
 
   useEffect(() => {

@@ -1,10 +1,11 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spinner, Text, Tr, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Select, Spinner, Text, Tr, useColorMode } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useForm, useFormContext } from 'react-hook-form';
-import { FiCheck, FiChevronLeft, FiChevronRight, FiSearch, FiSlash } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiSearch } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useEmissorContext } from '../../../../../../../Contexts/EmissorProvider';
 import { useModalNFTransporte } from '../../../../../../../Contexts/Modal/NotaFiscal/NFTransporteContext';
+import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 import { DataTable } from '../../../../../../../components/Table/DataTable';
 import { Pagination } from '../../../../../../../components/Table/Pagination';
 import { TdCustom } from '../../../../../../../components/Table/TdCustom';
@@ -12,16 +13,12 @@ import { ApiException } from '../../../../../../../services/api/ApiException';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ITransportadora, TransportadoraService } from '../../../../../../../services/api/transportadora/TransportadoraService';
 import { userInfos } from '../../../../../../../utils/header';
-import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 
 export function ModalNFTransporte() {
   const methods = useFormContext<INotaFiscal>();
   const { register, getValues } = useForm();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const [sortBy, setSortBy] = useState<keyof ITransportadora | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const { idEmissorSelecionado } = useEmissorContext();
   const { isOpen, onClose } = useModalNFTransporte();
@@ -74,28 +71,6 @@ export function ModalNFTransporte() {
       document.removeEventListener('keydown', handleKeyPress);
     };
   }, [isOpen]);
-
-  const handleSort = (columnName: keyof ITransportadora) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
-    }
-  };
-
-  const sortedData = [...data].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy];
-      const bValue = b[sortBy];
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
 
   const getTranspByFilter = (description: string) => {
     setIsLoading(true);
@@ -182,11 +157,8 @@ export function ModalNFTransporte() {
             width='100%' 
             headers={headers} 
             trailing={false}
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onTap={handleSort}
           >
-            {sortedData !== undefined ? sortedData.map((data) => (
+            {data !== undefined ? data.map((data) => (
               <Tr key={data.id} onClick={() => handleSetTransp(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
                 <TdCustom>{data.cod}</TdCustom>
                 <TdCustom style={{ 'width': '1rem' }}>{data.razao}</TdCustom>

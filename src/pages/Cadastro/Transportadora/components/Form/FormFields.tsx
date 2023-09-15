@@ -15,11 +15,9 @@ import { userInfos } from '../../../../../utils/header';
 
 interface IFormFields {
   id: number
-  isEditing: boolean
-  getCod: () => void
 }
 
-export function FormFields({ id, isEditing, getCod }:IFormFields) {
+export function FormFields({ id }:IFormFields) {
   const { register, setFocus, getValues, setValue } = useFormContext<ITransportadora>();
   const { colorMode } = useColorMode();
 
@@ -35,7 +33,6 @@ export function FormFields({ id, isEditing, getCod }:IFormFields) {
   const HEADERS = userInfo.header;
 
   useEffect(() => {
-    getCod();
     setFocus('razao');
   }, []);
 

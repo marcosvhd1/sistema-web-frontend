@@ -35,9 +35,6 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [sortBy, setSortBy] = useState<keyof IProduct | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-
   const [data, setData] = useState<IProduct[]>([]);
   const [filter, setFilter] = useState<string>('nprod');
   const [filterGrupo, setFilterGrupo] = useState<string>('');
@@ -83,28 +80,6 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
       document.removeEventListener('keydown', handleKeyPress);
     };
   }, [isOpen]);
-
-  const handleSort = (columnName: keyof IProduct) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
-    }
-  };
-
-  const sortedData = [...data].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy];
-      const bValue = b[sortBy];
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
 
   const handleSeeActiveProducts = () => {
     setSeeActive(active ? 'Ativo' : 'Inativo');
@@ -226,11 +201,8 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
             width='100%' 
             trailing={false} 
             headers={headers} 
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onTap={handleSort}
           >
-            {sortedData !== undefined ? sortedData.map((data) => (
+            {data !== undefined ? data.map((data) => (
               <Tr key={data.id} onClick={() => handleSetProduct(data)} _hover={{ bg: colorMode === 'light' ? 'gray.300' : 'gray.800' }} style={{'cursor': 'pointer'}}>
                 <TdCustom style={{ 'width': '1rem' }}>{data.nprod}</TdCustom>
                 <TdCustom>{data.descricao}</TdCustom>

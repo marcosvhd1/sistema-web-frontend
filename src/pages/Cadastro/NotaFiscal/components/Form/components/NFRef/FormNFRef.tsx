@@ -16,36 +16,11 @@ interface FormNFRefProps {
 export function FormNFRef({ chaves, addChave }: FormNFRefProps) {
   const methods = useForm<INFReferenciada>();
   
-  const [sortBy, setSortBy] = useState<keyof INFReferenciada | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   
   const { colorMode } = useColorMode();
   const toast = useToast();
-
-  const handleSort = (columnName: keyof INFReferenciada) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
-    }
-  };
-
-  const sortedData = [...chaves].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy]!;
-      const bValue = b[sortBy]!;
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
 
   const clearData = () => {
     methods.reset({descricao: ''});
@@ -121,11 +96,8 @@ export function FormNFRef({ chaves, addChave }: FormNFRefProps) {
           width='100%' 
           trailing={false} 
           headers={headers} 
-          sortBy={sortBy}
-          sortOrder={sortOrder}
-          onTap={handleSort}
         >
-          {sortedData !== undefined ? sortedData.map((chave, index) => (
+          {chaves !== undefined ? chaves.map((chave, index) => (
             <Tr key={uuidv4()}>
               <TdCustom>{chave.descricao}</TdCustom>
               <TdCustom style={{alignSelf: 'flex-end'}}>

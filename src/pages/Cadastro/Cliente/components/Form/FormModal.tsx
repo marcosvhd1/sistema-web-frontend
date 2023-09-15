@@ -1,5 +1,5 @@
 import { Button, Flex, Icon, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Textarea, useColorMode, useToast } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 import { FiCheck, FiSlash } from 'react-icons/fi';
@@ -29,6 +29,10 @@ export function FormModal({ isEditing, id, refreshPage, header, getCod }: ModalP
   const { isOpen, onClose } = useModalClient();
   const { colorMode } = useColorMode();
   const { idEmissorSelecionado } = useEmissorContext();
+
+  useEffect(() => {
+    if (isOpen && !isEditing) getCod();
+  }, [isOpen]);
 
   const clearForm = () => {
     onClose();
@@ -206,7 +210,6 @@ export function FormModal({ isEditing, id, refreshPage, header, getCod }: ModalP
               <TabPanels>
                 <TabPanel>
                   <FormFields 
-                    getCod={getCod} 
                     id={id}
                     setIErequired={setIErequired}
                   />
