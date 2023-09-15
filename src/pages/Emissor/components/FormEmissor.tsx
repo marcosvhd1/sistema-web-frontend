@@ -1,4 +1,4 @@
-import { Checkbox, Flex, Input, Select as ChakraSelect, useColorMode } from '@chakra-ui/react';
+import { Checkbox, Flex, Input, Select as ChakraSelect, useColorMode, Button, Icon } from '@chakra-ui/react';
 import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -9,6 +9,9 @@ import { ApiException } from '../../../services/api/ApiException';
 import { EmissorService, IEmissor } from '../../../services/api/emissor/EmissorService';
 import { EmpresaService } from '../../../services/api/empresas/EmpresaService';
 import { userInfos } from '../../../utils/header';
+import { removePontuacaoCnpjCpf } from '../../../utils/formatarCnpjCpf';
+import { ConsultaCNPJService } from '../../../services/api/cnpj/CNPJService';
+import { FiSearch } from 'react-icons/fi';
 
 interface IFormFields {
   isEditing: boolean
@@ -57,15 +60,35 @@ export function FormEmissor({ isEditing, setActive, active, id }: IFormFields) {
     methods.setValue('cidade', city.value);
   };
 
+  const consultaCNPJ = () => {
+    const cnpjcpf = removePontuacaoCnpjCpf(methods.getValues('cnpjcpf'));
+    
+    ConsultaCNPJService.consultarCNPJ(cnpjcpf).then((response) => {       
+      if (response.return === 'OK') {
+        methods.setValue('razao', response.result.nome);
+        methods.setValue('fantasia', response.result.fantasia);
+        methods.setValue('endereco', response.result.logradouro);
+        methods.setValue('numero', response.result.numero);
+        methods.setValue('cep', removePontuacaoCnpjCpf(response.result.cep));
+        methods.setValue('bairro', response.result.bairro);
+        methods.setValue('complemento', response.result.complemento);
+        methods.setValue('telefone', response.result.telefone);
+      }
+    });
+  };
+
   return (
     <Flex w='100%' justify='center' align='flex-start' direction='column'>
       <Flex w='100%' justify='center' align='flex-start'>
-        <FormContainer label='Razão Social' mr='3' width='70%'>
+        <FormContainer label='Razão Social' mr='3' width='65%'>
           <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('razao')}/>
         </FormContainer>
-        <FormContainer label='CPF / CNPJ'  width='30%'>
+        <FormContainer label='CPF / CNPJ' mr='3' width='35%'>
           <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cnpjcpf')}/>
         </FormContainer>
+        <Button mt={7} variant="solid" colorScheme="blue" onClick={consultaCNPJ}>
+          <Icon as={FiSearch} />
+        </Button>
       </Flex>
 
       <Flex w='100%' justify='center' align='flex-start'>

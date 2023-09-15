@@ -1,14 +1,17 @@
-import { Divider, Flex, Input, Stack, Select as ChakraSelect, Text, Textarea, useColorMode } from '@chakra-ui/react';
-import Select from 'react-select';
+import { Button, Select as ChakraSelect, Divider, Flex, Icon, Input, Stack, Text, Textarea, useColorMode } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { FormContainer } from '../../../../../components/Form/FormContainer';
-import { ITransportadora, TransportadoraService } from '../../../../../services/api/transportadora/TransportadoraService';
-import { useEstados } from '../../../../../hooks/useEstados';
-import { useCidades } from '../../../../../hooks/useCidades';
+import { FiSearch } from 'react-icons/fi';
+import Select from 'react-select';
 import { useEmissorContext } from '../../../../../Contexts/EmissorProvider';
-import { userInfos } from '../../../../../utils/header';
+import { FormContainer } from '../../../../../components/Form/FormContainer';
+import { useCidades } from '../../../../../hooks/useCidades';
+import { useEstados } from '../../../../../hooks/useEstados';
 import { ApiException } from '../../../../../services/api/ApiException';
+import { ConsultaCNPJService } from '../../../../../services/api/cnpj/CNPJService';
+import { ITransportadora, TransportadoraService } from '../../../../../services/api/transportadora/TransportadoraService';
+import { removePontuacaoCnpjCpf } from '../../../../../utils/formatarCnpjCpf';
+import { userInfos } from '../../../../../utils/header';
 
 interface IFormFields {
   id: number
@@ -57,6 +60,22 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
     setValue('cidade', city.value);
   };
 
+  const consultaCNPJ = () => {
+    const cnpjcpf = removePontuacaoCnpjCpf(getValues('cnpjcpf'));
+    
+    ConsultaCNPJService.consultarCNPJ(cnpjcpf).then((response) => {       
+      if (response.return === 'OK') {
+        setValue('razao', response.result.nome);
+        setValue('logradouro', response.result.logradouro);
+        setValue('numero', response.result.numero);
+        setValue('cep', removePontuacaoCnpjCpf(response.result.cep));
+        setValue('bairro', response.result.bairro);
+        setValue('complemento', response.result.complemento);
+        setValue('telefone1', response.result.telefone);
+      }
+    });
+  };
+
   return (
     <Flex h="40rem" direction="column" justify="space-between">
       <Flex w="100%" >
@@ -83,9 +102,14 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
         </Flex>
         {/*lado B */}
         <Flex direction="column" w="35%" ml="6">
-          <FormContainer label="CNPJ">
-            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" {...register('cnpjcpf')} />
-          </FormContainer>
+          <Flex>
+            <FormContainer label="CNPJ" mr='3'>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" {...register('cnpjcpf')} />
+            </FormContainer>
+            <Button mt={7} variant="solid" colorScheme="blue" onClick={consultaCNPJ}>
+              <Icon as={FiSearch} />
+            </Button>
+          </Flex>
           <Flex>
             <FormContainer label="Inscrição Estadual (IE)" mr='3' width='60%'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="number" {...register('ie')} />
