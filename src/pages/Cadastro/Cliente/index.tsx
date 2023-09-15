@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Center, Icon, Spinner, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tr, useToast } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
 
 import MainContent from '../../../components/MainContent';
@@ -21,7 +21,6 @@ import { useModalClient } from '../../../Contexts/Modal/ClientContext';
 import { ActionButton } from '../../../components/Form/ActionButton';
 import { TdCustom } from '../../../components/Table/TdCustom';
 import { userInfos } from '../../../utils/header';
-
 
 export function Cliente() {
   const methods = useForm<IClient>();
@@ -200,7 +199,7 @@ export function Cliente() {
               </Tr>
             )) : ''}
           </DataTable>
-          <Pagination visible={!isLoading} currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
+          <Pagination currentPage={currentPage} limitRegistros={limitRegistros} totalClients={totalClients} changeLimitRegister={setLimitRegistros}>
             <Button isDisabled={currentPage === 1} variant='ghost' size='sm' fontSize='2xl' width='4' onClick={() => setCurrentPage(currentPage - 1)}><Icon as={FiChevronLeft} /></Button>
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant='ghost' size='sm' fontSize='2xl' width='4' onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>

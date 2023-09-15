@@ -71,8 +71,6 @@ export function FormFields({ id, editCod, isEditing, cod, getCod, setIErequired 
           methods.setValue('cep', removePontuacaoCnpjCpf(response.result.cep));
           methods.setValue('bairro', response.result.bairro);
           methods.setValue('complemento', response.result.complemento);
-          methods.setValue('uf', response.result.uf);
-          methods.setValue('cidade', response.result.cidade);
           methods.setValue('email1', response.result.email);
           methods.setValue('telefone1', response.result.telefone);
         }
