@@ -4,7 +4,7 @@ import { ApiException } from '../ApiException';
 export interface ITransportadora {
   id: number
   id_emissor: number
-  cod: number
+  cod: string
   razao: string
   cnpjcpf: string
   ie: string
@@ -34,7 +34,7 @@ const getTransportadoraByFilter = async (currentPage: number, limitRegistros: nu
   }
 };
 
-const create = async (dataToCreate: Omit<ITransportadora, 'id' | 'nserv'>, HEADERS: any): Promise<ITransportadora | ApiException> => {
+const create = async (dataToCreate: Omit<ITransportadora, 'id'>, HEADERS: any): Promise<ITransportadora | ApiException> => {
   try {
     const { data } = await Api().post<ITransportadora>('/transportadoras', dataToCreate, HEADERS);
     return data;

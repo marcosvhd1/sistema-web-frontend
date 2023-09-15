@@ -25,12 +25,10 @@ interface ModalProps {
   getCod: () => void
   isEditing: boolean
   id: number
-  cod: number
-  editCod: number
   header: any
 }
 
-export function FormModal({ isEditing, id, refreshPage, editCod, cod, getCod, header }: ModalProps) {
+export function FormModal({ isEditing, id, refreshPage, getCod, header }: ModalProps) {
   const methods = useFormContext<ITransportadora>();
   const toast = useToast();
   const { isOpen, onClose } = useModalTransportadora();
@@ -174,7 +172,11 @@ export function FormModal({ isEditing, id, refreshPage, editCod, cod, getCod, he
         <ModalContent>
           <ModalHeader>Cadastro de Transportadora</ModalHeader>
           <ModalBody>
-            <FormFields getCod={getCod} cod={cod} editCod={editCod} isEditing={isEditing} id={id}/>
+            <FormFields 
+              id={id}
+              getCod={getCod}
+              isEditing={isEditing} 
+            />
           </ModalBody>
           <ModalFooter>
             <Flex w="100%" justify="space-between">

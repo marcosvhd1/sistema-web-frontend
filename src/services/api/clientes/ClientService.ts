@@ -4,7 +4,7 @@ import { Api } from '../ApiConfig';
 export interface IClient {
   id: number;
   id_emissor: number;
-  cod: number;
+  cod: string;
   tipo: string;
   categoria: string;
   razao: string;
@@ -44,7 +44,7 @@ const getClientsByFilter = async (currentPage: number, limitRegistros: number, f
   }
 };
 
-const create = async (dataToCreate: Omit<IClient, 'id' | 'cod'>, HEADERS: any): Promise<IClient | ApiException> => {
+const create = async (dataToCreate: Omit<IClient, 'id'>, HEADERS: any): Promise<IClient | ApiException> => {
   try {
     const { data } = await Api().post<IClient>('/clientes', dataToCreate, HEADERS);
     return data;

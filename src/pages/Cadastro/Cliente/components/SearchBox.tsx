@@ -11,19 +11,17 @@ import { FormContainer } from '../../../../components/Form/FormContainer';
 interface SearchBoxProps {
   children: ReactNode;
   isLoading: boolean;
-  getCod: () => void
   getClientsByFilter: (description: string) => void;
   changeEdit: (value: React.SetStateAction<any>) => void;
   stateFilter: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ children, changeEdit , stateFilter, getClientsByFilter, getCod, isLoading}: SearchBoxProps) {
+export function SearchBox({ children, changeEdit , stateFilter, getClientsByFilter, isLoading}: SearchBoxProps) {
   const { onOpen } = useModalClient();
   const { register, handleSubmit } = useForm();
   const { colorMode } = useColorMode();
 
   const openModal = () => {
-    getCod();
     onOpen();
     changeEdit(false);
   };

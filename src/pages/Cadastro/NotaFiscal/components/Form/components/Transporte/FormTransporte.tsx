@@ -20,7 +20,7 @@ export function FormTransporte() {
       cep: '',
       cidade: '',
       cnpjcpf: '',
-      cod: 0,
+      cod: '',
       complemento: '',
       id: 0,
       id_emissor: 0,

@@ -1,13 +1,4 @@
-import {
-  Button,
-  Divider,
-  Flex,
-  Icon,
-  Input,
-  Select,
-  Stack,
-  Text
-} from '@chakra-ui/react';
+import { Button, Divider, Flex, Icon, Input, Select, Stack, Text } from '@chakra-ui/react';
 import { useEffect } from 'react';
 
 import { useFormContext } from 'react-hook-form';
@@ -20,29 +11,23 @@ import { useColorMode } from '@chakra-ui/react';
 import moment from 'moment';
 import { FiSearch } from 'react-icons/fi';
 import { IClient } from '../../../../../services/api/clientes/ClientService';
+import { ConsultaCNPJService } from '../../../../../services/api/cnpj/CNPJService';
 import { formatCnpjCpf, formatarData, removePontuacaoCnpjCpf } from '../../../../../utils/formatarCnpjCpf';
 import { validaCpfCnpj } from '../../../../../utils/validaCnpjCpf';
-import { ConsultaCNPJService } from '../../../../../services/api/cnpj/CNPJService';
 
 interface IFormFields {
   id: number
-  editCod: number
   getCod: () => void
-  cod: number
-  isEditing: boolean
   setIErequired: (value: boolean) => void
 }
 
-export function FormFields({ id, editCod, isEditing, cod, getCod, setIErequired }: IFormFields) {
+export function FormFields({ id, getCod, setIErequired }: IFormFields) {
   const methods = useFormContext<IClient>();
   const { colorMode } = useColorMode();
 
   useEffect(() => {
     getCod();
-    methods.setFocus('cod');
-    setTimeout(() => {
-      methods.setFocus('razao');
-    }, 100);
+    methods.setFocus('razao');
   }, []);
 
   const validarCampo = () => {
@@ -93,7 +78,7 @@ export function FormFields({ id, editCod, isEditing, cod, getCod, setIErequired 
         <Flex direction="column" w="50%">
           <Flex w="100%" justify="space-between">
             <FormContainer label="Código" width="5rem">
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" w="5rem" isReadOnly value={isEditing ? editCod : cod} {...methods.register('cod')} />
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" w="5rem" {...methods.register('cod')} />
             </FormContainer>
             <FormContainer label="Tipo" width="4rem">
               <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="4rem" {...methods.register('tipo')}>

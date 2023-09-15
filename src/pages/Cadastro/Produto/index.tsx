@@ -18,8 +18,7 @@ import formatMoney from '../../../utils/formatarValor';
 import { userInfos } from '../../../utils/header';
 import { FormModal } from './components/Form/ModalProduct';
 import { SearchBox } from './components/SearchBox';
-
-const regex = new RegExp(/^\d+$/);
+import { lpad, regex } from '../../../utils/formatarCnpjCpf';
 
 const headers: { key: string, label: string }[] = [
   { key: 'id', label: 'Código' },
@@ -29,14 +28,6 @@ const headers: { key: string, label: string }[] = [
   { key: 'grupo', label: 'Grupo' },
   { key: 'status', label: 'Status' }
 ];
-
-function lpad(inputString: string) {
-  while (inputString.length < 4) {
-    inputString = '0' + inputString;
-  }
-
-  return inputString;
-}
 
 export function Produto() {
   const methods = useForm<IProduct>();
@@ -190,7 +181,6 @@ export function Produto() {
           isLoading={isLoading}
           seeActive={seeActive} 
           setSeeActive={setSeeActive} 
-          getCod={getLastCod} 
           getProduct={getProduct} 
           changeEdit={setIsEditing} 
           setFilter={setFilter}

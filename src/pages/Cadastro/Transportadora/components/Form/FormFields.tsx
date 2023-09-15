@@ -15,13 +15,11 @@ import { userInfos } from '../../../../../utils/header';
 
 interface IFormFields {
   id: number
-  editCod: number
   isEditing: boolean
   getCod: () => void
-  cod: number
 }
 
-export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) {
+export function FormFields({ id, isEditing, getCod }:IFormFields) {
   const { register, setFocus, getValues, setValue } = useFormContext<ITransportadora>();
   const { colorMode } = useColorMode();
 
@@ -38,10 +36,7 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
 
   useEffect(() => {
     getCod();
-    setFocus('cod');
-    setTimeout(() => {
-      setFocus('razao');
-    }, 100);
+    setFocus('razao');
   }, []);
 
   useEffect(() => {
@@ -83,7 +78,7 @@ export function FormFields({ id, editCod, isEditing, cod, getCod }:IFormFields) 
         <Flex direction="column" w="65%">
           <Flex gap={3} w="100%" justify="space-between">
             <FormContainer label="Código">
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" isReadOnly value={(`0000${isEditing ? editCod : cod}`).slice(-4)} {...register('cod')} />
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" {...register('cod')} />
             </FormContainer>
             <FormContainer label="UF Placa">
               <ChakraSelect borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('uf_placa')}>

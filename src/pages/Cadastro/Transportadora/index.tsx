@@ -17,6 +17,7 @@ import { ITransportadora, TransportadoraService } from '../../../services/api/tr
 import { getDecrypted } from '../../../utils/crypto';
 import { FormModal } from './components/Form/FormModal';
 import { SearchBox } from './components/SearchBox';
+import { lpad, regex } from '../../../utils/formatarCnpjCpf';
 
 const headers: { key: string, label: string }[] = [
   { key: 'cod', label: 'Código' },
@@ -46,8 +47,6 @@ export function Transportadora() {
   const { idEmissorSelecionado } = useEmissorContext();
   const toast = useToast();
   const navigate = useNavigate();
-  const [editCod, setEditCod] = useState<number>(1);
-  const [cod, setCod] = useState<number>(1);
 
   const LOCAL_DATA = getDecrypted(localStorage.getItem('user'));
   const TOKEN = LOCAL_DATA?.user.accessToken;
@@ -94,20 +93,20 @@ export function Transportadora() {
   });
 
   const getLastCod = () => {
-    TransportadoraService.getLastCod(idEmissorSelecionado, HEADERS)
-      .then((result) => {
-        if (isEditing) {
-          setCod(editCod);
-        } else {
-          if (result === null) {
-            setCod(1);
-          } else {
-            setCod(parseInt(result) + 1);
+    if (isEditing === false) {
+      TransportadoraService.getLastCod(idEmissorSelecionado, HEADERS)
+        .then((result) => {
+          if (result === null) methods.setValue('cod', '0001');
+          else {
+            if (regex.test(result)) {
+              methods.setValue('cod', lpad((parseInt(result) + 1).toString()));
+            } else {
+              methods.setValue('cod', '');
+            }
           }
-        }
-      });
+        });
+    }
   };
-
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalClients / limitRegistros);
@@ -163,7 +162,6 @@ export function Transportadora() {
     if (transportadoraToUpdate) {
       setId(id);
       openEditModal();
-      setEditCod(transportadoraToUpdate.cod);
       methods.reset(transportadoraToUpdate);
       setIsEditing(true);
     }
@@ -172,7 +170,7 @@ export function Transportadora() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox isLoading={isLoading} getCod={getLastCod} getTransportadora={getTransportadora} changeEdit={setIsEditing} stateFilter={setFilter}>
+        <SearchBox isLoading={isLoading} getTransportadora={getTransportadora} changeEdit={setIsEditing} stateFilter={setFilter}>
           <DataTable 
             headers={headers} 
             sortBy={sortBy}
@@ -208,7 +206,7 @@ export function Transportadora() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant="ghost" size="sm" fontSize="2xl" width="4" onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal getCod={getLastCod} header={HEADERS} cod={cod} editCod={editCod} refreshPage={getTransportadora} id={id} isEditing={isEditing} />
+        <FormModal getCod={getLastCod} header={HEADERS} refreshPage={getTransportadora} id={id} isEditing={isEditing} />
         <DeleteAlertDialog label="transportadora" deleteFunction={handleDeleteTransp} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

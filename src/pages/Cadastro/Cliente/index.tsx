@@ -21,6 +21,7 @@ import { useModalClient } from '../../../Contexts/Modal/ClientContext';
 import { ActionButton } from '../../../components/Form/ActionButton';
 import { TdCustom } from '../../../components/Table/TdCustom';
 import { userInfos } from '../../../utils/header';
+import { lpad, regex } from '../../../utils/formatarCnpjCpf';
 
 export function Cliente() {
   const methods = useForm<IClient>();
@@ -30,8 +31,6 @@ export function Cliente() {
 
   const [id, setId] = useState<number>(0);
   const [data, setData] = useState<IClient[]>([]);
-  const [cod, setCod] = useState<number>(1);
-  const [editCod, setEditCod] = useState<number>(1);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -83,18 +82,19 @@ export function Cliente() {
   });
 
   const getLastCod = () => {
-    ClientService.getLastCod(idEmissorSelecionado, HEADERS)
-      .then((result) => {
-        if (isEditing) {
-          setCod(editCod);
-        } else {
-          if (result === null) {
-            setCod(1);
-          } else {
-            setCod(parseInt(result) + 1);
+    if (isEditing === false) {
+      ClientService.getLastCod(idEmissorSelecionado, HEADERS)
+        .then((result) => {
+          if (result === null) methods.setValue('cod', '0001');
+          else {
+            if (regex.test(result)) {
+              methods.setValue('cod', lpad((parseInt(result) + 1).toString()));
+            } else {
+              methods.setValue('cod', '');
+            }
           }
-        }
-      });
+        });
+    }
   };
 
   const handleChangeTotalPage = () => {
@@ -150,9 +150,8 @@ export function Cliente() {
     const clientToUpdate = data.find((client) => client.id === id);
     if (clientToUpdate) {
       setId(id);
-      setEditCod(clientToUpdate?.cod);
-      methods.reset(clientToUpdate);
       open();
+      methods.reset(clientToUpdate);
       setIsEditing(true);
     }
   };
@@ -168,7 +167,7 @@ export function Cliente() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox isLoading={isLoading} getCod={getLastCod} getClientsByFilter={getClientsByFilter} changeEdit={setIsEditing} stateFilter={setFilter}>
+        <SearchBox isLoading={isLoading} getClientsByFilter={getClientsByFilter} changeEdit={setIsEditing} stateFilter={setFilter}>
           <DataTable 
             headers={headers} 
             sortBy={sortBy}
@@ -204,7 +203,7 @@ export function Cliente() {
             <Button isDisabled={currentPage === pages.length || data.length === 0 || limitRegistros >= totalClients} variant='ghost' size='sm' fontSize='2xl' width='4' onClick={() => setCurrentPage(currentPage + 1)}><Icon as={FiChevronRight} /></Button>
           </Pagination>
         </SearchBox>
-        <FormModal getCod={getLastCod} header={HEADERS} refreshPage={getClientsByFilter} cod={cod} editCod={editCod} isEditing={isEditing} id={id} />
+        <FormModal getCod={getLastCod} header={HEADERS} refreshPage={getClientsByFilter} isEditing={isEditing} id={id} />
         <DeleteAlertDialog label='cliente' deleteFunction={handleDeleteClient} onClose={onClose} isOpen={isOpen} id={id} />
       </MainContent>
     </FormProvider>

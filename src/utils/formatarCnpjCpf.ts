@@ -22,3 +22,13 @@ export function formatarData(data: string) {
     return `${dia}/${mes}/${ano}`;
   } else return data;
 }
+
+export const regex = new RegExp(/^\d+$/);
+
+export function lpad(inputString: string) {
+  while (inputString.length < 4) {
+    inputString = '0' + inputString;
+  }
+
+  return inputString;
+}

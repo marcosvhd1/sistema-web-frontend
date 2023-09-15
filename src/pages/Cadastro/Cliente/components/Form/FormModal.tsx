@@ -14,14 +14,12 @@ import { ClientService, IClient } from '../../../../../services/api/clientes/Cli
 interface ModalProps {
   refreshPage: (description: string) => void
   getCod: () => void
-  cod: number
   isEditing: boolean
   id: number
-  editCod: number
   header: any
 }
 
-export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, getCod }: ModalProps) {
+export function FormModal({ isEditing, id, refreshPage, header, getCod }: ModalProps) {
   const methods = useFormContext<IClient>();
   const toast = useToast();
 
@@ -209,9 +207,6 @@ export function FormModal({ isEditing, id, editCod, cod, refreshPage, header, ge
                 <TabPanel>
                   <FormFields 
                     getCod={getCod} 
-                    cod={cod} 
-                    editCod={editCod} 
-                    isEditing={isEditing} 
                     id={id}
                     setIErequired={setIErequired}
                   />

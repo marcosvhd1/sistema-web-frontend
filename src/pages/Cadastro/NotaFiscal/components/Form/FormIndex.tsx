@@ -46,16 +46,7 @@ import { FormFormaPagto } from './components/FormaPagto/FormFormaPagto';
 import { FormNFRef } from './components/NFRef/FormNFRef';
 import { FormProdutos } from './components/Produtos/FormProdutos';
 import { FormTransporte } from './components/Transporte/FormTransporte';
-
-const regex = new RegExp(/^\d+$/);
-
-function lpad(inputString: string) {
-  while (inputString.length < 4) {
-    inputString = '0' + inputString;
-  }
-
-  return inputString;
-}
+import { lpad, regex } from '../../../../../utils/formatarCnpjCpf';
 
 interface ModalNotaFiscalProps {
   id: number;

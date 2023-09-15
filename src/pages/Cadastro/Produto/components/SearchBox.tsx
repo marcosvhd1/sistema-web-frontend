@@ -12,7 +12,6 @@ import { useGrupos } from '../../../../hooks/useGrupos';
 interface SearchBoxProps {
   children: ReactNode;
   isLoading: boolean;
-  getCod: () => void
   getProduct: (description: string, status: string) => void;
   changeEdit: (value: React.SetStateAction<any>) => void;
   setFilter: (value: React.SetStateAction<any>) => void;
@@ -26,7 +25,7 @@ interface getProductProps {
   description: string;
 }
 
-export function SearchBox({ children, setFilter, setFilterGrupo, setFilterMarca, getProduct, getCod, changeEdit, seeActive, setSeeActive, isLoading }: SearchBoxProps) {
+export function SearchBox({ children, setFilter, setFilterGrupo, setFilterMarca, getProduct, changeEdit, seeActive, setSeeActive, isLoading }: SearchBoxProps) {
   const { register, handleSubmit } = useForm<getProductProps>();
   const [active, setActive] = useState<boolean>(false);
 
