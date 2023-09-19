@@ -10,12 +10,12 @@ interface DataTableProps {
   mr?: string
   colorScheme?: string
   trailing?: boolean
-  sortBy?: any;
-  sortOrder?: 'asc' | 'desc';
+  orderBy?: any;
+  orderDirection?: 'asc' | 'desc';
   onTap?: (column: any) => void;
 }
 
-export function DataTable({ children, headers, width = '95%', mt = '5', mr, colorScheme, trailing = true, sortBy, sortOrder, onTap }: DataTableProps) {
+export function DataTable({ children, headers, width = '95%', mt = '5', mr, colorScheme, trailing = true, orderBy, orderDirection, onTap }: DataTableProps) {
   return (
     <Flex w="100%" justify="center" mt={`${mt}`} mr={`${mr}`}>
       <TableContainer w={`${width}`} borderRadius={8} >
@@ -32,8 +32,8 @@ export function DataTable({ children, headers, width = '95%', mt = '5', mr, colo
                   >
                     <Flex alignItems="center">
                       {row.label}
-                      {sortBy === row.key ? (
-                        sortOrder === 'desc' ? (
+                      {orderBy === row.key ? (
+                        orderDirection === 'desc' ? (
                           <Icon as={FiArrowDown} ml={1} w={4} h={4} />
                         ) : (
                           <Icon as={FiArrowUp} ml={1} w={4} h={4} />
