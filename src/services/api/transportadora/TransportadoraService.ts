@@ -26,9 +26,9 @@ export interface ITransportadora {
   antt: string
 }
 
-const getTransportadoraByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, idEmissorSelecionado: number, HEADERS: any): Promise<ITransportadora[] | ApiException> => {
+const getTransportadoraByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, orderBy: string, orderDirection: string, idEmissorSelecionado: number, HEADERS: any): Promise<ITransportadora[] | ApiException> => {
   try {
-    return await Api().get(`/transportadoras?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&id_emissor=${idEmissorSelecionado}`, HEADERS);
+    return await Api().get(`/transportadoras?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&orderBy=${orderBy}&orderDirection=${orderDirection}&id_emissor=${idEmissorSelecionado}`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }

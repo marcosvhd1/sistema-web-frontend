@@ -20,9 +20,9 @@ const getAll = async () => {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }
 };
-const getAllUsers = async (cnpjcpf: string, filter: string, description: string, headers: any) => {
+const getAllUsers = async (cnpjcpf: string, filter: string, description: string, orderBy: string, orderDirection: string, headers: any) => {
   try {
-    return await Api().get(`/usuarios?emp=${cnpjcpf}&filter=${filter}&description=${description}`, headers);
+    return await Api().get(`/usuarios?emp=${cnpjcpf}&filter=${filter}&description=${description}&orderBy=${orderBy}&orderDirection=${orderDirection}`, headers);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }

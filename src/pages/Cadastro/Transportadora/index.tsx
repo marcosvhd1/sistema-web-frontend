@@ -30,8 +30,8 @@ const headers: { key: string, label: string }[] = [
 export function Transportadora() {
   const methods = useForm<ITransportadora>();
 
-  const [sortBy, setSortBy] = useState<keyof ITransportadora | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [orderBy, setOrderBy] = useState<string>('razao');
+  const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
 
   const [id, setId] = useState<number>(0);
   const [data, setData] = useState<ITransportadora[]>([]);
@@ -39,6 +39,7 @@ export function Transportadora() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('cod');
+  const [description, setDescription] = useState<string>('');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
@@ -70,27 +71,18 @@ export function Transportadora() {
     handleChangeTotalPage();
   }, [totalClients]);
 
-  const handleSort = (columnName: keyof ITransportadora) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  useEffect(() => {
+    getTransportadora(description);
+  }, [orderBy, orderDirection]);
+
+  const handleChangeOrder = (columnName: string) => {
+    if (columnName === orderBy) {
+      setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
+      setOrderBy(columnName);
+      setOrderDirection('asc');
     }
   };
-
-  const sortedData = [...data].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy];
-      const bValue = b[sortBy];
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
 
   const getLastCod = () => {
     if (isEditing === false) {
@@ -117,9 +109,10 @@ export function Transportadora() {
     setPages(arrayPages);
   };
 
-  const getTransportadora = (description: string) => {
+  const getTransportadora = (desc: string) => {
     setIsLoading(true);
-    TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
+    setDescription(desc);
+    TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, filter, desc, orderBy, orderDirection, idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -173,11 +166,11 @@ export function Transportadora() {
         <SearchBox isLoading={isLoading} getTransportadora={getTransportadora} changeEdit={setIsEditing} stateFilter={setFilter}>
           <DataTable 
             headers={headers} 
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onTap={handleSort}
+            orderBy={orderBy}
+            orderDirection={orderDirection}
+            onTap={handleChangeOrder}
           >
-            {sortedData !== undefined ? sortedData.map((data) => (
+            {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
                 <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
                 <TdCustom>{data.razao}</TdCustom>

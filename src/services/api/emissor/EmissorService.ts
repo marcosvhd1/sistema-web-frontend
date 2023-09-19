@@ -55,9 +55,9 @@ const getEmissores = async (idUser: number, HEADERS: any): Promise<IEmissor[] | 
   }
 };
 
-const getAll = async (currentPage: number, limitRegistros: number, filter: string, description: string, idEmpresa: number, status: string, HEADERS: any): Promise<IEmissor[] | ApiException> => {
+const getAll = async (currentPage: number, limitRegistros: number, filter: string, description: string, orderBy: string, orderDirection: string, idEmpresa: number, status: string, HEADERS: any): Promise<IEmissor[] | ApiException> => {
   try {
-    return await Api().get(`/emissores/all?empresa=${idEmpresa}&page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&status=${status}`, HEADERS);
+    return await Api().get(`/emissores/all?empresa=${idEmpresa}&page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&orderBy=${orderBy}&orderDirection=${orderDirection}&status=${status}`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }

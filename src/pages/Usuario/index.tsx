@@ -1,4 +1,4 @@
-import { Button, Center, Icon, Spinner, Tag, Tr, useDisclosure, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tag, Tr, useDisclosure, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -26,8 +26,8 @@ const headers: { key: string, label: string }[] = [
 export function Usuarios() {
   const methods = useForm<IUsuario>();
 
-  const [sortBy, setSortBy] = useState<keyof IUsuario | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [orderBy, setOrderBy] = useState<string>('email');
+  const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
 
   const [id, setId] = useState<number>(0);
   const [data, setData] = useState<IUsuario[]>([]);
@@ -37,6 +37,7 @@ export function Usuarios() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('email');
+  const [description, setDescription] = useState<string>('');
   const [totalUsers, setTotalUsers] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
@@ -63,27 +64,18 @@ export function Usuarios() {
     handleChangeTotalPage();
   }, [totalUsers]);
 
-  const handleSort = (columnName: keyof IUsuario) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  useEffect(() => {
+    getUsuarios(description);
+  }, [orderBy, orderDirection]);
+
+  const handleChangeOrder = (columnName: string) => {
+    if (columnName === orderBy) {
+      setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
+      setOrderBy(columnName);
+      setOrderDirection('asc');
     }
   };
-
-  const sortedData = [...data].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy]!;
-      const bValue = b[sortBy]!;
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalUsers / limitRegistros);
@@ -99,9 +91,10 @@ export function Usuarios() {
     setId(id);
   };
 
-  const getUsuarios = async (description: string) => {
+  const getUsuarios = async (desc: string) => {
     setIsLoading(true);
-    UsuarioService.getAllUsers(empresa, filter, description, HEADERS)
+    setDescription(desc);
+    UsuarioService.getAllUsers(empresa, filter, desc, orderBy, orderDirection, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -153,11 +146,11 @@ export function Usuarios() {
         <SearchBox isLoading={isLoading} changeEdit={setIsEditing} setFilter={setFilter} getUsuarios={getUsuarios}>
           <DataTable 
             headers={headers} 
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onTap={handleSort}
+            orderBy={orderBy}
+            orderDirection={orderDirection}
+            onTap={handleChangeOrder}
           >
-            {sortedData != undefined ? sortedData.map((data) => (
+            {data != undefined ? data.map((data) => (
               <Tr key={data.id}>
                 <TdCustom>{data.email}</TdCustom>
                 <TdCustom>

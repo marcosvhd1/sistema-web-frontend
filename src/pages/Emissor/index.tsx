@@ -1,4 +1,4 @@
-import { Button, Center, Icon, Spinner, Tag, Tr, useToast } from '@chakra-ui/react';
+import { Button, Icon, Tag, Tr, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -27,14 +27,15 @@ const headers: { key: string, label: string }[] = [
 export function Emissor() {
   const methods = useForm<IEmissor>();
   
-  const [sortBy, setSortBy] = useState<keyof IEmissor | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [orderBy, setOrderBy] = useState<string>('razao');
+  const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
   
   const [data, setData] = useState<IEmissor[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('razao');
+  const [description, setDescription] = useState<string>('');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState<number>(5);
   const [pages, setPages] = useState<number[]>([]);
@@ -63,27 +64,18 @@ export function Emissor() {
     handleChangeTotalPage();
   }, [totalClients]);
 
-  const handleSort = (columnName: keyof IEmissor) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  useEffect(() => {
+    getEmissores(description, seeActive);
+  }, [orderBy, orderDirection]);
+
+  const handleChangeOrder = (columnName: string) => {
+    if (columnName === orderBy) {
+      setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
+      setOrderBy(columnName);
+      setOrderDirection('asc');
     }
   };
-
-  const sortedData = [...data].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy];
-      const bValue = b[sortBy];
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalClients / limitRegistros);
@@ -94,15 +86,16 @@ export function Emissor() {
     setPages(arrayPages);
   };
 
-  const getEmissores = (description: string, status: string) => {
+  const getEmissores = (desc: string, status: string) => {
     setIsLoading(true);
+    setDescription(desc);
     EmpresaService.getId(empresa, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
         } else {
           const idEmpresa = result.data[0].id;
-          EmissorService.getAll(currentPage, limitRegistros, filter, description, idEmpresa, status, HEADERS)
+          EmissorService.getAll(currentPage, limitRegistros, filter, desc, orderBy, orderDirection, idEmpresa, status, HEADERS)
             .then((result: any) => {
               if (result instanceof ApiException) {
                 console.log(result.message);
@@ -166,11 +159,11 @@ export function Emissor() {
         <SearchBox isLoading={isLoading} changeEdit={setIsEditing} setFilter={setFilter} seeActive={seeActive} setSeeActive={setSeeActive} getEmissores={getEmissores}>
           <DataTable 
             headers={headers} 
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onTap={handleSort}
+            orderBy={orderBy}
+            orderDirection={orderDirection}
+            onTap={handleChangeOrder}
           >
-            {sortedData != undefined ? sortedData.map((data) => (
+            {data != undefined ? data.map((data) => (
               <Tr key={data.id}>
                 <TdCustom>{data.razao}</TdCustom>
                 <TdCustom>{data.cnpjcpf}</TdCustom>

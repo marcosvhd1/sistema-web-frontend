@@ -21,7 +21,7 @@ import { SearchBox } from './components/SearchBox';
 import { lpad, regex } from '../../../utils/formatarCnpjCpf';
 
 const headers: { key: string, label: string }[] = [
-  { key: 'id', label: 'Código' },
+  { key: 'nprod', label: 'Código' },
   { key: 'descricao', label: 'Descrição' },
   { key: 'preco', label: 'Preço' },
   { key: 'marca', label: 'Marca' },
@@ -32,8 +32,8 @@ const headers: { key: string, label: string }[] = [
 export function Produto() {
   const methods = useForm<IProduct>();
 
-  const [sortBy, setSortBy] = useState<keyof IProduct | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [orderBy, setOrderBy] = useState<string>('descricao');
+  const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
 
   const [id, setId] = useState<number>(0);
   const [data, setData] = useState<IProduct[]>([]);
@@ -42,6 +42,7 @@ export function Produto() {
   const [active, setActive] = useState<boolean>(true);
   const [seeActive, setSeeActive] = useState<string>('Ativo');
   const [filter, setFilter] = useState<string>('nprod');
+  const [description, setDescription] = useState<string>('');
   const [filterGrupo, setFilterGrupo] = useState<string>('');
   const [filterMarca, setFilterMarca] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -71,27 +72,18 @@ export function Produto() {
     handleChangeTotalPage();
   }, [totalClients]);
 
-  const handleSort = (columnName: keyof IProduct) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  useEffect(() => {
+    getProduct(description, seeActive);
+  }, [orderBy, orderDirection]);
+
+  const handleChangeOrder = (columnName: string) => {
+    if (columnName === orderBy) {
+      setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
+      setOrderBy(columnName);
+      setOrderDirection('asc');
     }
   };
-
-  const sortedData = [...data].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy];
-      const bValue = b[sortBy];
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
 
   const getLastCod = () => {
     if (isEditing === false) {
@@ -118,9 +110,10 @@ export function Produto() {
     setPages(arrayPages);
   };
 
-  const getProduct = (description: string, status: string) => {
+  const getProduct = (desc: string, status: string) => {
     setIsLoading(true);
-    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, filterGrupo, filterMarca, idEmissorSelecionado, status, HEADERS)
+    setDescription(desc);
+    ProductService.getProductByFilter(currentPage, limitRegistros, filter, desc, filterGrupo, filterMarca, orderBy, orderDirection, idEmissorSelecionado, status, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -190,11 +183,11 @@ export function Produto() {
           
           <DataTable 
             headers={headers} 
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onTap={handleSort}
+            orderBy={orderBy}
+            orderDirection={orderDirection}
+            onTap={handleChangeOrder}
           >
-            {sortedData != undefined ? sortedData.map((data) => (
+            {data != undefined ? data.map((data) => (
               <Tr key={data.id}>
                 <TdCustom style={{ width: '5%' }}>{data.nprod}</TdCustom>
                 <TdCustom>{data.descricao}</TdCustom>

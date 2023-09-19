@@ -96,9 +96,9 @@ export interface INotaFiscal {
     data_di: Date;
 }
 
-const getNFByFilter = async (currentPage: number, limitRegistros: number, filter: string, filterStatus: string, filterDate: string, description: string, dataIni: string, dataFinal: string, idEmissorSelecionado: number, HEADERS: any): Promise<INotaFiscal[] | ApiException> => {
+const getNFByFilter = async (currentPage: number, limitRegistros: number, filter: string, filterStatus: string, filterDate: string, description: string, orderBy: string, orderDirection: string,dataIni: string, dataFinal: string, idEmissorSelecionado: number, HEADERS: any): Promise<INotaFiscal[] | ApiException> => {
   try {
-    return await Api().get(`/notas?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&filter_status=${filterStatus}&filter_date=${filterDate}&data_inicial=${dataIni}&data_final=${dataFinal}&id_emissor=${idEmissorSelecionado}`, HEADERS);
+    return await Api().get(`/notas?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&orderBy=${orderBy}&orderDirection=${orderDirection}&filter_status=${filterStatus}&filter_date=${filterDate}&data_inicial=${dataIni}&data_final=${dataFinal}&id_emissor=${idEmissorSelecionado}`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }

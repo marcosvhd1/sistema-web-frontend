@@ -36,9 +36,9 @@ export type IProduct = {
   peso_liquido: number;
 };
 
-const getProductByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, group: string, marca: string, idEmissorSelecionado: number, status: string, HEADERS: any): Promise<IProduct[] | ApiException> => {
+const getProductByFilter = async (currentPage: number, limitRegistros: number, filter: string, description: string, group: string, marca: string, orderBy: string, orderDirection: string, idEmissorSelecionado: number, status: string, HEADERS: any): Promise<IProduct[] | ApiException> => {
   try {
-    return await Api().get(`/produtos?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&group=${group}&marca=${marca}&id_emissor=${idEmissorSelecionado}&status=${status}`, HEADERS);
+    return await Api().get(`/produtos?page=${currentPage}&limit=${limitRegistros}&filter=${filter}&description=${description}&group=${group}&marca=${marca}&orderBy=${orderBy}&orderDirection=${orderDirection}&id_emissor=${idEmissorSelecionado}&status=${status}`, HEADERS);
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
   }

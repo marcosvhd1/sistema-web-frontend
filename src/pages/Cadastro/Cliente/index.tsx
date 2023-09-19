@@ -23,11 +23,19 @@ import { TdCustom } from '../../../components/Table/TdCustom';
 import { userInfos } from '../../../utils/header';
 import { lpad, regex } from '../../../utils/formatarCnpjCpf';
 
+const headers: { key: string, label: string }[] = [
+  { key: 'cod', label: 'Código' },
+  { key: 'razao', label: 'Nome / Razão Social' },
+  { key: 'cnpjcpf', label: 'CPF / CNPJ' },
+  { key: 'cidade', label: 'Cidade' },
+  { key: 'uf', label: 'UF' },
+];
+
 export function Cliente() {
   const methods = useForm<IClient>();
 
-  const [sortBy, setSortBy] = useState<keyof IClient | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [orderBy, setOrderBy] = useState<string>('razao');
+  const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
 
   const [id, setId] = useState<number>(0);
   const [data, setData] = useState<IClient[]>([]);
@@ -35,13 +43,17 @@ export function Cliente() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>('cod');
+  const [description, setDescription] = useState<string>('');
   const [totalClients, setTotalClients] = useState<number>(0);
   const [limitRegistros, setLimitRegistros] = useState(5);
   const [pages, setPages] = useState<number[]>([]);
+
   const { onOpen: open } = useModalClient();
   const { onOpen, onClose, isOpen } = useAlertClientContext();
   const { idEmissorSelecionado } = useEmissorContext();
+
   const navigate = useNavigate();
+
   const toast = useToast();
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
@@ -59,27 +71,18 @@ export function Cliente() {
     handleChangeTotalPage();
   }, [totalClients]);
 
-  const handleSort = (columnName: keyof IClient) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  useEffect(() => {
+    getClientsByFilter(description);
+  }, [orderBy, orderDirection]);
+
+  const handleChangeOrder = (columnName: string) => {
+    if (columnName === orderBy) {
+      setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
+      setOrderBy(columnName);
+      setOrderDirection('asc');
     }
   };
-
-  const sortedData = [...data].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy];
-      const bValue = b[sortBy];
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
 
   const getLastCod = () => {
     if (isEditing === false) {
@@ -106,9 +109,10 @@ export function Cliente() {
     setPages(arrayPages);
   };
 
-  const getClientsByFilter = (description: string) => {
+  const getClientsByFilter = (desc: string) => {
     setIsLoading(true);
-    ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
+    setDescription(desc);
+    ClientService.getClientsByFilter(currentPage, limitRegistros, filter, desc, orderBy, orderDirection, idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
@@ -156,25 +160,17 @@ export function Cliente() {
     }
   };
 
-  const headers: { key: string, label: string }[] = [
-    { key: 'cod', label: 'Código' },
-    { key: 'razao', label: 'Nome / Razão Social' },
-    { key: 'cnpjcpf', label: 'CPF / CNPJ' },
-    { key: 'cidade', label: 'Cidade' },
-    { key: 'uf', label: 'UF' },
-  ];
-
   return (
     <FormProvider {...methods}>
       <MainContent>
         <SearchBox isLoading={isLoading} getClientsByFilter={getClientsByFilter} changeEdit={setIsEditing} stateFilter={setFilter}>
           <DataTable 
             headers={headers} 
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onTap={handleSort}
+            orderBy={orderBy}
+            orderDirection={orderDirection}
+            onTap={handleChangeOrder}
           >
-            {sortedData !== undefined ? sortedData.map((data) => (
+            {data !== undefined ? data.map((data) => (
               <Tr key={data.id}>
                 <TdCustom style={{ width: '5%' }}>{data.cod}</TdCustom>
                 <TdCustom>{data.razao}</TdCustom>

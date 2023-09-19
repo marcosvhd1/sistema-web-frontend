@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Center, Icon, Menu, MenuButton, MenuItem, MenuList, Spinner, Tag, Td, Tooltip, Tr, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Tag, Td, Tr, useColorMode, useToast } from '@chakra-ui/react';
 import { FiChevronLeft, FiChevronRight, FiEdit, FiFile, FiFilePlus, FiPrinter, FiSend, FiSlash, FiTrash2 } from 'react-icons/fi';
 
 import { MdMenu } from 'react-icons/md';
@@ -36,18 +36,29 @@ import { ModalCCe } from './components/ModalCCe';
 import { ModalCancelar } from './components/ModalCancelar';
 import { SearchBox } from './components/SearchBox';
 
+const headers: { key: string; label: string }[] = [
+  { key: 'cod', label: 'Nº da nota' },
+  { key: 'serie', label: 'Série' },
+  { key: 'data_emissao', label: 'Emissão' },
+  { key: 'natureza_operacao', label: 'Natureza de Operação' },
+  { key: 'nome_destinatario', label: 'Destinatário' },
+  { key: 'status', label: 'Status' },
+  { key: 'total_nota', label: 'Valor Total' },
+];
+
 export function NotaFiscal() {
   const methods = useForm<INotaFiscal>();
   const { colorMode } = useColorMode();
 
-  const [sortBy, setSortBy] = useState<keyof INotaFiscal | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [orderBy, setOrderBy] = useState<string>('cod');
+  const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
 
   const [id, setId] = useState<number>(0);
   const [data, setData] = useState<INotaFiscal[]>([]);
   const [dataToModal, setDataToModal] = useState<INotaFiscal>();
   
-  const [filter, setFilter] = useState<string>('');
+  const [filter, setFilter] = useState<string>('cod');
+  const [description, setDescription] = useState<string>('');
   const [filterByStatus, setFilterByStatus] = useState<string>('');
   const [filterByDate, setFilterByDate] = useState<string>('');
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
@@ -91,37 +102,18 @@ export function NotaFiscal() {
     handleChangeTotalPage();
   }, [totalNotas]);
 
-  const handleSort = (columnName: keyof INotaFiscal) => {
-    if (columnName === sortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  useEffect(() => {
+    getNF(description);
+  }, [orderBy, orderDirection]);
+
+  const handleChangeOrder = (columnName: string) => {
+    if (columnName === orderBy) {
+      setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      setSortBy(columnName);
-      setSortOrder('asc');
+      setOrderBy(columnName);
+      setOrderDirection('asc');
     }
   };
-
-  const sortedData = [...data].sort((a, b) => {
-    if (sortBy) {
-      const aValue = a[sortBy];
-      const bValue = b[sortBy];
-      if (sortOrder === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-      }
-    }
-    return 0;
-  });
-
-  const headers: { key: string; label: string }[] = [
-    { key: 'cod', label: 'Nº da nota' },
-    { key: 'serie', label: 'Série' },
-    { key: 'data_emissao', label: 'Emissão' },
-    { key: 'natureza_operacao', label: 'Natureza de Operação' },
-    { key: 'nome_destinatario', label: 'Destinatário' },
-    { key: 'status', label: 'Status' },
-    { key: 'total_nota', label: 'Valor Total' },
-  ];
 
   const handleChangeTotalPage = () => {
     const totalPages = Math.ceil(totalNotas / limitRegistros);
@@ -179,15 +171,18 @@ export function NotaFiscal() {
     return `${aux[2]}/${aux[1]}/${aux[0]}`;
   };
 
-  const getNF = (description: string) => {
+  const getNF = (desc: string) => {
     setIsLoading(true);
+    setDescription(desc);
     NotaFiscalService.getNFByFilter(
       currentPage,
       limitRegistros,
       filter,
       filterByStatus,
       filterByDate,
-      description,
+      desc,
+      orderBy, 
+      orderDirection,
       startDate,
       endDate,
       idEmissorSelecionado,
@@ -215,7 +210,7 @@ export function NotaFiscal() {
       setProds(aux);
 
       //Carrega o cliente da nota
-      await ClientService.getClientsByFilter(currentPage, limitRegistros, 'id', nfToUpdate.id_destinatario, idEmissorSelecionado, HEADERS)
+      await ClientService.getClientsByFilter(currentPage, limitRegistros, 'id', nfToUpdate.id_destinatario, 'cod', 'desc', idEmissorSelecionado, HEADERS)
         .then((result: any) => {
           if (result instanceof ApiException) {
             console.log(result.message);
@@ -225,7 +220,7 @@ export function NotaFiscal() {
         });
 
       //Carrega a transportadora da nota
-      await TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, 'id', nfToUpdate.id_transportadora, idEmissorSelecionado, HEADERS)
+      await TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, 'id', nfToUpdate.id_transportadora, 'cod', 'desc', idEmissorSelecionado, HEADERS)
         .then((result: any) => {
           if (result instanceof ApiException) {
             console.log(result.message);
@@ -427,12 +422,12 @@ export function NotaFiscal() {
         <SearchBox isLoading={isLoading} getNotasFiscaisByFilter={getNF} stateFilter={setFilter} stateFilterByStatus={setFilterByStatus} filterByDate={filterByDate} stateFilterByDate={setFilterByDate} setIsEditing={setIsEditing} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}>
           <DataTable 
             headers={headers} 
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onTap={handleSort}
+            orderBy={orderBy}
+            orderDirection={orderDirection}
+            onTap={handleChangeOrder}
           >
-            {sortedData !== undefined
-              ? sortedData.map((data) => (
+            {data !== undefined
+              ? data.map((data) => (
                 <Tr key={data.id}>
                   <Td width="5%">
                     {data.cod}
