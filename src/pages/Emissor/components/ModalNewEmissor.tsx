@@ -190,7 +190,7 @@ export function ModalNewEmissor({isEditing, refreshPage, setActive, active, seeA
           <ModalHeader>Cadastro Emissor</ModalHeader>
           <ModalCloseButton/>
           <ModalBody>
-            <FormEmissor isEditing={isEditing} active={active} setActive={setActive} id={id}/>
+            <FormEmissor active={active} setActive={setActive} id={id}/>
           </ModalBody>
           <ModalFooter>
             <Flex justify='space-between' w='100%'>

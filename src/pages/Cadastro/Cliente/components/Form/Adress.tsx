@@ -30,7 +30,7 @@ export function Adress({ id }: AdressProps) {
   const HEADERS = userInfo.header;
 
   useEffect(() => {
-    ClientService.getClientsByFilter(1, 1, 'id', `${id}`, idEmissorSelecionado, HEADERS)
+    ClientService.getClientsByFilter(1, 1, 'id', `${id}`, 'cod', 'desc', idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);

@@ -88,7 +88,7 @@ export function ModalNFSearchProduct({ methods }: ModalNFSearchProductProps) {
 
   const getProductsByFilter = (description: string) => {
     setIsLoading(true);
-    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, filterGrupo, filterMarca,idEmissorSelecionado, seeActive, HEADERS)
+    ProductService.getProductByFilter(currentPage, limitRegistros, filter, description, filterGrupo, filterMarca, 'nprod', 'desc', idEmissorSelecionado, seeActive, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);

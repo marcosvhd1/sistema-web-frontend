@@ -38,7 +38,7 @@ export function DadosPrincipais({ id, setActive, active}: IFormFields) {
 
   useEffect(() => {
     setTimeout(() => {
-      ProductService.getProductByFilter(1, 1, 'id', `${id}`, '', '', idEmissorSelecionado, 'Ativo', HEADERS)
+      ProductService.getProductByFilter(1, 1, 'id', `${id}`, '', '', 'nprod', 'desc', idEmissorSelecionado, 'Ativo', HEADERS)
         .then((result: any) => {
           if (result instanceof ApiException) console.log(result.message);
           else {

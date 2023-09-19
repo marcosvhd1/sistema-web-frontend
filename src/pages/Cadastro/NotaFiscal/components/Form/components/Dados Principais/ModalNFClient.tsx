@@ -73,7 +73,7 @@ export function ModalNFClient() {
 
   const getClientsByFilter = (description: string) => {
     setIsLoading(true);
-    ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
+    ClientService.getClientsByFilter(currentPage, limitRegistros, filter, description, 'cod', 'desc', idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);

@@ -74,7 +74,7 @@ export function ModalNFTransporte() {
 
   const getTranspByFilter = (description: string) => {
     setIsLoading(true);
-    TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, filter, description, idEmissorSelecionado, HEADERS)
+    TransportadoraService.getTransportadoraByFilter(currentPage, limitRegistros, filter, description, 'cod', 'desc', idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);

@@ -14,13 +14,12 @@ import { ConsultaCNPJService } from '../../../services/api/cnpj/CNPJService';
 import { FiSearch } from 'react-icons/fi';
 
 interface IFormFields {
-  isEditing: boolean
   active: boolean
   setActive: (value: boolean) => void
   id: number
 }
 
-export function FormEmissor({ isEditing, setActive, active, id }: IFormFields) {
+export function FormEmissor({ setActive, active, id }: IFormFields) {
   const methods = useFormContext<IEmissor>();
   
   const [selectedEstado, setSelectedEstado] = useState(methods.getValues('uf'));
@@ -43,7 +42,7 @@ export function FormEmissor({ isEditing, setActive, active, id }: IFormFields) {
           console.log(result.message);
         } else {
           const idEmpresa = result.data[0].id;
-          EmissorService.getAll(1, 1, 'id', `${id}`, idEmpresa, 'Ativo', HEADERS)
+          EmissorService.getAll(1, 1, 'id', `${id}`, 'razao', 'desc', idEmpresa, 'Ativo', HEADERS)
             .then((result: any) => {
               if (result instanceof ApiException) {
                 console.log(result.message);

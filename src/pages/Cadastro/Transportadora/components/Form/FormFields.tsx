@@ -37,7 +37,7 @@ export function FormFields({ id }:IFormFields) {
   }, []);
 
   useEffect(() => {
-    TransportadoraService.getTransportadoraByFilter(1, 1, 'id', `${id}`, idEmissorSelecionado, HEADERS)
+    TransportadoraService.getTransportadoraByFilter(1, 1, 'id', `${id}`, 'cod', 'desc', idEmissorSelecionado, HEADERS)
       .then((result: any) => {
         if (result instanceof ApiException) {
           console.log(result.message);
