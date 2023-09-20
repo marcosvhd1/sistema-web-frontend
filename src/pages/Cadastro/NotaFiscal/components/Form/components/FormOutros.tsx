@@ -12,6 +12,11 @@ export function FormOutros() {
 
       {/* COLUNA 1 */}
       <Flex w="50%" justify="center" align="center" direction="column" mr={5}>
+        <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap">
+          <Divider w="20%" />
+          <Text w="max" ml={5}>Tributos/ECF</Text>
+          <Divider w="80%" ml={5} />
+        </Flex>
         <FormContainer width='100%' label='Vlr. Aprox. dos Tributos (Fonte)'>
           <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w='40%' {...register('fonte_valor_aprox_tributos')}>
             <option value='0'>IBPT</option>
@@ -33,6 +38,11 @@ export function FormOutros() {
 
       {/* COLUNA 2 */}
       <Flex w="50%" justify="center" align="center" direction="column" alignSelf="flex-end">
+        <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap">
+          <Divider w="20%" />
+          <Text w="max" ml={5}>Importação/Exportação</Text>
+          <Divider w="80%" ml={5} />
+        </Flex>
         <Flex w="100%" justify="center" align="center">
           <FormContainer width='20%' label='UF Emb.' mr='3'>
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('uf_embarque')}/>

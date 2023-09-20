@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Select, useColorMode } from '@chakra-ui/react';
+import { Button, Divider, Flex, Icon, Input, Select, Text, useColorMode } from '@chakra-ui/react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { FiSearch, FiSlash } from 'react-icons/fi';
 import { useModalNFTransporte } from '../../../../../../../Contexts/Modal/NotaFiscal/NFTransporteContext';
@@ -47,7 +47,12 @@ export function FormTransporte() {
       <Flex w="100%" justify="center" align="center">
         {/* COLUNA 1 */}
         <Flex w="50%" justify="center" align="center" direction="column" mr={5}>
-          <FormContainer label='Modalidade do Frete'>
+          <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap">
+            <Divider w="20%" />
+            <Text w="max" ml={5}>Transportadora</Text>
+            <Divider w="80%" ml={5} />
+          </Flex>
+          <FormContainer label='Frete'>
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('modalidade_frete')}>
               <option value='9'>Sem frete</option>
               <option value='0'>Por conta do remetente (CIF)</option>
@@ -57,7 +62,7 @@ export function FormTransporte() {
               <option value='4'>Transporte próprio - por conta do destinatário</option>
             </Select>
           </FormContainer>
-          <FormContainer label='Transportadora'>
+          <FormContainer label='Razão Social'>
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.razao')}/>
           </FormContainer>
           <Flex w="100%" justify="center" align="center">
@@ -103,6 +108,11 @@ export function FormTransporte() {
 
         {/* COLUNA 2 */}
         <Flex w="50%" justify="center" align="center" direction="column" alignSelf="flex-start">
+          <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap">
+            <Divider w="20%" />
+            <Text w="max" ml={5}>Carga</Text>
+            <Divider w="80%" ml={5} />
+          </Flex>
           <Flex w="100%" justify="center" align="center">
             <FormContainer width='25%' label='Quantidade' mr='3'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('quantidade_transporte')}/>
