@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { Flex, IconButton, useColorMode, useColorModeValue, useToast } from '@chakra-ui/react';
+import { Flex, IconButton, Tooltip, useColorMode, useColorModeValue, useToast } from '@chakra-ui/react';
 
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { FiLogOut, FiMenu } from 'react-icons/fi';
@@ -22,10 +22,10 @@ export function Header() {
   const { smSize } = useContext(SizeContext);
   const { toggleColorMode } = useColorMode();
   const { changeNavSize } = useContext(SidebarContext);
+  const { quantidadeRegistros } = useContadorContext();
   
   const toast = useToast();
   const navigate = useNavigate();
-  const { quantidadeRegistros } = useContadorContext();
   const isEmissorSelected = getDecrypted(localStorage.getItem('emissor')) !== undefined;
 
   const handleOnBellClick = () => {
@@ -33,7 +33,9 @@ export function Header() {
       if (quantidadeRegistros > 0) navigate('/app/fiscal/nfe');
       toast({
         position: 'top',
-        description: quantidadeRegistros > 0 ? `Existem ${quantidadeRegistros} nota(s) em digitação!` : 'Não há notas em digitação.',
+        description: quantidadeRegistros > 0 ? 
+          `Existem ${quantidadeRegistros} nota(s) em digitação!` 
+          : 'Não há notas em digitação.',
         status: 'info',
         duration: 2000,
         isClosable: false,
@@ -58,16 +60,17 @@ export function Header() {
       align="center"
       justify="space-between"
     >
-      <IconButton
-        ml={3}
-        alignSelf="center"
-        aria-label="Botão de fechar e abrir a sidebar"
-        background="none"
-        fontSize={25}
-        _hover={{ background: 'none' }}
-        icon={<FiMenu />}
-        onClick={!smSize[0] ? onOpen: changeNavSize}
-      />
+      <Tooltip label='Abrir/Fechar sidebar' placement="auto-start" hasArrow>
+        <IconButton
+          ml={3}
+          alignSelf="center"
+          aria-label="Botão de fechar e abrir a sidebar"
+          background="none"
+          fontSize={25}
+          icon={<FiMenu />}
+          onClick={!smSize[0] ? onOpen: changeNavSize}
+        />
+      </Tooltip>
       <Flex>
         <IconButton
           aria-label="Trocar entre modo claro e escuro"
