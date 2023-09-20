@@ -5,9 +5,12 @@ import { useModalNFTransporte } from '../../../../../../../Contexts/Modal/NotaFi
 import { FormContainer } from '../../../../../../../components/Form/FormContainer';
 import { INotaFiscal } from '../../../../../../../services/api/notafiscal/NotaFiscalService';
 import { ModalNFTransporte } from './ModalNFTransporte';
+import { useEstados } from '../../../../../../../hooks/useEstados';
 
 export function FormTransporte() {
   const methods = useFormContext<INotaFiscal>();
+
+  const { estados } = useEstados();
   
   const { onOpen } = useModalNFTransporte();
   const { colorMode } = useColorMode();
@@ -81,7 +84,7 @@ export function FormTransporte() {
           <Flex w="100%" justify="center" align="center">
             <FormContainer width='30%' label='UF' mr='3'>
               <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('transportadora.uf_placa')}>
-                <option value='0'></option>
+                {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
               </Select>
             </FormContainer>
             <FormContainer width='70%' label='Código ANTT'>
@@ -90,7 +93,7 @@ export function FormTransporte() {
           </Flex>
           <Flex w="100%" justify="center" align="center">
             <FormContainer width='40%' label='Placa do Veículo' mr='3'>
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('transportadora.placa')}/>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.placa')}/>
             </FormContainer>
             <Button onClick={onOpen} w="30%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue" mr='3'>
               <Icon mr={2} as={FiSearch} />

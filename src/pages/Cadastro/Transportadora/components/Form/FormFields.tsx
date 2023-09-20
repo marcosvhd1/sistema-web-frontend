@@ -77,8 +77,8 @@ export function FormFields({ id }:IFormFields) {
     <Flex h="40rem" direction="column" justify="space-between">
       <Flex w="100%" >
         {/*lado A */}
-        <Flex direction="column" w="65%">
-          <Flex gap={3} w="100%" justify="space-between">
+        <Flex direction="column" w="55%">
+          <Flex gap={3} w="100%">
             <FormContainer label="Código">
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" {...register('cod')} />
             </FormContainer>
@@ -91,14 +91,12 @@ export function FormFields({ id }:IFormFields) {
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="text" {...register('placa')} />
             </FormContainer>
           </Flex>
-          <Flex direction="column">
-            <FormContainer label="Razão Social" >
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="nome" type="text" {...register('razao')} />
-            </FormContainer>
-          </Flex>
+          <FormContainer label="Razão Social" >
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="nome" type="text" {...register('razao')} />
+          </FormContainer>
         </Flex>
         {/*lado B */}
-        <Flex direction="column" w="35%" ml="6">
+        <Flex direction="column" w="45%" ml="5">
           <Flex>
             <FormContainer label="CNPJ" mr='3'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" {...register('cnpjcpf')} />
@@ -114,13 +112,16 @@ export function FormFields({ id }:IFormFields) {
             }
           </Flex>
           <Flex>
-            <FormContainer label="Inscrição Estadual (IE)" mr='3' width='60%'>
+            <FormContainer label="Inscrição Estadual (IE)" mr='3'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="ie" type="number" {...register('ie')} />
             </FormContainer>
-            <FormContainer label="RNTRC" width='40%'>
+            <FormContainer label="RNTRC">
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('rntrc')} />
             </FormContainer>
           </Flex>
+          <FormContainer label="ANTT" >
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...register('antt')} />
+          </FormContainer>
         </Flex>
       </Flex>
 
