@@ -41,7 +41,7 @@ import { userInfos } from '../../../../../utils/header';
 import { FormDadosPrincipais } from './components/Dados Principais/FormDadosPrincipais';
 import { FormInfoAdicional } from './components/FormInfoAdicional';
 import { FormOutros } from './components/FormOutros';
-import { FormTotais } from './components/FormTotais';
+import { FormTotais } from './components/Totais/FormTotais';
 import { FormFormaPagto } from './components/FormaPagto/FormFormaPagto';
 import { FormNFRef } from './components/NFRef/FormNFRef';
 import { FormProdutos } from './components/Produtos/FormProdutos';
