@@ -1,4 +1,4 @@
-import { Button, Select as ChakraSelect, Divider, Flex, Icon, Input, Stack, Text, Textarea, useColorMode } from '@chakra-ui/react';
+import { Button, Select as ChakraSelect, Divider, Flex, Icon, Input, Spinner, Stack, Text, Textarea, useColorMode } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiSearch } from 'react-icons/fi';
@@ -23,6 +23,8 @@ export function FormFields({ id }:IFormFields) {
 
   const [selectedEstado, setSelectedEstado] = useState(getValues('uf'));
   const [selectedCidade, setSelectedCidade] = useState(getValues('cidade'));
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   
   const { estados } = useEstados();
   const { cidadeOptions } = useCidades({ uf: selectedEstado });
@@ -53,6 +55,7 @@ export function FormFields({ id }:IFormFields) {
   };
 
   const consultaCNPJ = () => {
+    setIsLoading(true);
     const cnpjcpf = removePontuacaoCnpjCpf(getValues('cnpjcpf'));
     
     ConsultaCNPJService.consultarCNPJ(cnpjcpf).then((response) => {       
@@ -65,6 +68,8 @@ export function FormFields({ id }:IFormFields) {
         setValue('complemento', response.result.complemento);
         setValue('telefone1', response.result.telefone);
       }
+
+      setIsLoading(false);
     });
   };
 
@@ -98,9 +103,15 @@ export function FormFields({ id }:IFormFields) {
             <FormContainer label="CNPJ" mr='3'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" {...register('cnpjcpf')} />
             </FormContainer>
-            <Button mt={7} variant="solid" colorScheme="blue" onClick={consultaCNPJ}>
-              <Icon as={FiSearch} />
-            </Button>
+            {
+              isLoading ?
+                <Button mt={7} w="20%" variant="solid" colorScheme="blue">
+                  <Spinner size='sm' /> 
+                </Button> :
+                <Button mt={7} w="20%" variant="solid" colorScheme="blue" onClick={consultaCNPJ}>
+                  <Icon as={FiSearch} />
+                </Button>
+            }
           </Flex>
           <Flex>
             <FormContainer label="Inscrição Estadual (IE)" mr='3' width='60%'>

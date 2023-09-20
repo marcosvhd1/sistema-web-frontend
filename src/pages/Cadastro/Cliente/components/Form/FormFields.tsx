@@ -1,5 +1,5 @@
-import { Button, Divider, Flex, Icon, Input, Select, Stack, Text } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { Button, Divider, Flex, Icon, Input, Select, Spinner, Stack, Text } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -22,6 +22,7 @@ interface IFormFields {
 
 export function FormFields({ id, setIErequired }: IFormFields) {
   const methods = useFormContext<IClient>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { colorMode } = useColorMode();
 
   useEffect(() => {
@@ -31,9 +32,7 @@ export function FormFields({ id, setIErequired }: IFormFields) {
   const validarCampo = () => {
     const data = methods.getValues('cnpjcpf');
     const formatado = formatCnpjCpf(data);
-    if (validaCpfCnpj(formatado)) {
-      methods.setValue('cnpjcpf', formatado);
-    }
+    if (validaCpfCnpj(formatado)) methods.setValue('cnpjcpf', formatado);
   };
 
   const IERequired = (value: any) => {
@@ -42,6 +41,7 @@ export function FormFields({ id, setIErequired }: IFormFields) {
   };
 
   const consultaCNPJ = () => {
+    setIsLoading(true);
     const cnpjcpf = removePontuacaoCnpjCpf(methods.getValues('cnpjcpf'));
     
     if (cnpjcpf.length === 14) {
@@ -57,14 +57,15 @@ export function FormFields({ id, setIErequired }: IFormFields) {
           methods.setValue('email1', response.result.email);
           methods.setValue('telefone1', response.result.telefone);
         }
+
+        setIsLoading(false);
       });
     } else {
       const datanasc = formatarData(methods.getValues('datanasc'));
 
       ConsultaCNPJService.consultarCPF(cnpjcpf, datanasc).then((response) => {
-        if (response.return === 'OK') {
-          methods.setValue('razao', response.result.nome_da_pf);
-        }
+        if (response.return === 'OK') methods.setValue('razao', response.result.nome_da_pf);
+        setIsLoading(false);
       });
     }
   };
@@ -113,9 +114,15 @@ export function FormFields({ id, setIErequired }: IFormFields) {
                 onBlur: (event) => validarCampo()
               })} />
             </FormContainer>
-            <Button mt={7} variant="solid" colorScheme="blue" onClick={consultaCNPJ}>
-              <Icon as={FiSearch} />
-            </Button>
+            {
+              isLoading ?
+                <Button mt={7} w="15%" variant="solid" colorScheme="blue">
+                  <Spinner size='sm' /> 
+                </Button> :
+                <Button mt={7} w="15%" variant="solid" colorScheme="blue" onClick={consultaCNPJ}>
+                  <Icon as={FiSearch} />
+                </Button>
+            }
           </Flex>
           <Flex>
             <FormContainer label="RG" mr='3'>

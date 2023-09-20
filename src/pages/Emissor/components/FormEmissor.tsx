@@ -1,4 +1,4 @@
-import { Checkbox, Flex, Input, Select as ChakraSelect, useColorMode, Button, Icon } from '@chakra-ui/react';
+import { Checkbox, Flex, Input, Select as ChakraSelect, useColorMode, Button, Icon, Spinner } from '@chakra-ui/react';
 import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -24,6 +24,8 @@ export function FormEmissor({ setActive, active, id }: IFormFields) {
   
   const [selectedEstado, setSelectedEstado] = useState(methods.getValues('uf'));
   const [selectedCidade, setSelectedCidade] = useState(methods.getValues('cidade'));
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   
   const { estados } = useEstados();
   const { cidadeOptions } = useCidades({ uf: selectedEstado });
@@ -60,6 +62,7 @@ export function FormEmissor({ setActive, active, id }: IFormFields) {
   };
 
   const consultaCNPJ = () => {
+    setIsLoading(true);
     const cnpjcpf = removePontuacaoCnpjCpf(methods.getValues('cnpjcpf'));
     
     ConsultaCNPJService.consultarCNPJ(cnpjcpf).then((response) => {       
@@ -73,6 +76,7 @@ export function FormEmissor({ setActive, active, id }: IFormFields) {
         methods.setValue('complemento', response.result.complemento);
         methods.setValue('telefone', response.result.telefone);
       }
+      setIsLoading(false);
     });
   };
 
@@ -85,9 +89,15 @@ export function FormEmissor({ setActive, active, id }: IFormFields) {
         <FormContainer label='CPF / CNPJ' mr='3' width='35%'>
           <Input maxLength={255} type='text' borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('cnpjcpf')}/>
         </FormContainer>
-        <Button mt={7} variant="solid" colorScheme="blue" onClick={consultaCNPJ}>
-          <Icon as={FiSearch} />
-        </Button>
+        {
+          isLoading ?
+            <Button mt={7} w="10%" variant="solid" colorScheme="blue">
+              <Spinner size='sm' /> 
+            </Button> :
+            <Button mt={7} w="10%" variant="solid" colorScheme="blue" onClick={consultaCNPJ}>
+              <Icon as={FiSearch} />
+            </Button>
+        }
       </Flex>
 
       <Flex w='100%' justify='center' align='flex-start'>
