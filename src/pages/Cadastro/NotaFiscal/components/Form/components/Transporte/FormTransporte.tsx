@@ -57,11 +57,9 @@ export function FormTransporte() {
               <option value='4'>Transporte próprio - por conta do destinatário</option>
             </Select>
           </FormContainer>
-          <Flex w="100%" justify="center" align="center">
-            <FormContainer label='Transportadora'>
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.razao')}/>
-            </FormContainer>
-          </Flex>
+          <FormContainer label='Transportadora'>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.razao')}/>
+          </FormContainer>
           <Flex w="100%" justify="center" align="center">
             <FormContainer label='CNPJ' mr='3'>
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.cnpjcpf')}/>
@@ -82,18 +80,18 @@ export function FormTransporte() {
             </FormContainer>
           </Flex>
           <Flex w="100%" justify="center" align="center">
-            <FormContainer width='30%' label='UF' mr='3'>
+            <FormContainer label='UF Placa' width='40%' mr='3'>
               <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('transportadora.uf_placa')}>
                 {estados.map((estado, index) => <option key={index} value={estado}>{estado}</option>)}
               </Select>
             </FormContainer>
-            <FormContainer width='70%' label='Código ANTT'>
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.antt')}/>
+            <FormContainer label='Placa do Veículo' width='60%'>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.placa')}/>
             </FormContainer>
           </Flex>
           <Flex w="100%" justify="center" align="center">
-            <FormContainer width='40%' label='Placa do Veículo' mr='3'>
-              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.placa')}/>
+            <FormContainer label='Código ANTT' mr='3'>
+              <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('transportadora.antt')}/>
             </FormContainer>
             <Button onClick={onOpen} w="30%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue" mr='3'>
               <Icon mr={2} as={FiSearch} />
