@@ -12,6 +12,8 @@ import { INotaFiscal } from '../../../../services/api/notafiscal/NotaFiscalServi
 import { SefazService } from '../../../../services/api/sefaz/SefazService';
 import { userInfos } from '../../../../utils/header';
 import { ModalInutilizar } from './ModalInutilizar';
+import { useModalNFRelatorio } from '../../../../Contexts/Modal/NotaFiscal/NFRelatorioContext';
+import { ModalRelatorio } from './ModalRelatorio';
 
 interface SearchBoxProps {
   endDate: any;
@@ -34,6 +36,7 @@ export function SearchBox({ isLoading, children, stateFilter, getNotasFiscaisByF
   const { colorMode } = useColorMode();
   const { onOpen } = useModalNotaFiscal();
   const { onOpen: openInutilizar } = useModalNFInutilizar();
+  const { onOpen: openRelatorio } = useModalNFRelatorio();
   const { idEmissorSelecionado } = useEmissorContext();
 
   const userInfo = userInfos();
@@ -93,7 +96,7 @@ export function SearchBox({ isLoading, children, stateFilter, getNotasFiscaisByF
               <MenuList>
                 <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'} onClick={handleStatusServidor}><Icon mr={2} as={FaInfoCircle}/>Status do Servidor</MenuItem>
                 <MenuItem color={colorMode === 'light' ? 'red.600' : 'red.300'} onClick={openInutilizar}><Icon mr={2} as={MdCancel}/>Inutilizar Faixa</MenuItem>
-                <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'}><Icon mr={2} as={FaThList}/>Relatório Gerencial</MenuItem>
+                <MenuItem color={colorMode === 'light' ? 'blue.600' : 'blue.300'} onClick={openRelatorio}><Icon mr={2} as={FaThList}/>Relatório Gerencial</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
@@ -150,6 +153,7 @@ export function SearchBox({ isLoading, children, stateFilter, getNotasFiscaisByF
         {children}
       </Flex>
       <ModalInutilizar getNotas={getNotasFiscaisByFilter} />
+      <ModalRelatorio />
     </form>
   );
 }
