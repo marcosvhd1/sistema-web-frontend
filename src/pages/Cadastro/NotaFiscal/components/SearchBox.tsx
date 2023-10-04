@@ -13,7 +13,7 @@ import { SefazService } from '../../../../services/api/sefaz/SefazService';
 import { userInfos } from '../../../../utils/header';
 import { ModalInutilizar } from './ModalInutilizar';
 import { useModalNFRelatorio } from '../../../../Contexts/Modal/NotaFiscal/NFRelatorioContext';
-import { ModalRelatorio } from './ModalRelatorio';
+import { ModalRelatorio } from './Relatorio/ModalRelatorio';
 
 interface SearchBoxProps {
   endDate: any;
