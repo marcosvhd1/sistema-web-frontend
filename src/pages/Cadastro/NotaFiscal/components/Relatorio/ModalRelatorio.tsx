@@ -1,4 +1,4 @@
-import { Button, Center, Checkbox, Flex, Icon, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Text, useColorMode } from '@chakra-ui/react';
+import { Button, Center, Checkbox, Flex, Icon, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spinner, Text, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaThList } from 'react-icons/fa';
@@ -20,6 +20,8 @@ interface DadosRelatorio {
 
 export function ModalRelatorio() {
   const methods = useForm<DadosRelatorio>();
+
+  const [estilo, setEstilo] = useState<string>('0');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPDF, setShowPDF] = useState<boolean>(false);
@@ -52,7 +54,7 @@ export function ModalRelatorio() {
     const dataIni = methods.getValues('dataIni');
     const dataFim = methods.getValues('dataFim');
 
-    RelatoriosService.gerencial(cliente, cfop, dataIni, dataFim, modelo55, modelo65, entrada, saida, enviada, digitacao, cancelada, inutilizada, idEmissorSelecionado, HEADERS)
+    RelatoriosService.gerencial(cliente, cfop, dataIni, dataFim, modelo55, modelo65, entrada, saida, enviada, digitacao, cancelada, inutilizada, estilo, idEmissorSelecionado, HEADERS)
       .then((response) => {
         setData(response);
         setIsLoading(false);
@@ -99,7 +101,7 @@ export function ModalRelatorio() {
                     <Center w='100%'>
                       <Spinner size='lg' /> 
                     </Center> :
-                    <PDFRelatorio data={data} /> 
+                    <PDFRelatorio data={data} estilo={estilo} /> 
                 }
               </Flex>
               :
@@ -120,6 +122,12 @@ export function ModalRelatorio() {
                     <Input type="date" maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('dataFim')}/>
                   </FormContainer>
                 </Flex>
+                <FormContainer label='Estilo'>
+                  <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} value={estilo} onChange={(e) => setEstilo(e.target.value)} >
+                    <option value="1">Relatório Gerencial Modelo 1</option>
+                    <option value="2">Relatório Gerencial Modelo 2</option>
+                  </Select>
+                </FormContainer>
                 <Flex w='100%' justify='center' align='center'>
                   <FormContainer label='Modelo' width='15%'>
                     <Flex w='100%' justify='flex-start' align='center'>
