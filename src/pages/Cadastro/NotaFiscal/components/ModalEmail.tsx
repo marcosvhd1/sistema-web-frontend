@@ -34,7 +34,13 @@ export function ModalEmail() {
     const destinatario_cco = methods.getValues('destinatario_cco');
 
     EmailService.sendEmail(destinatario, destinatario_cc, destinatario_cco, assunto, mensagem, idEmissorSelecionado, HEADERS).then((response) => {
-      console.log(response);
+      toast({
+        position: 'top',
+        description: response.status === 201 ? 'Email enviado!' : 'Erro ao enviar email.',
+        status: response.status === 201 ? 'info' : 'error',
+        duration: 2000,
+        isClosable: true,
+      });
     });
   };
 
