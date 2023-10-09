@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Tag, Td, Tr, useColorMode, useToast } from '@chakra-ui/react';
-import { FiChevronLeft, FiChevronRight, FiEdit, FiFile, FiFilePlus, FiPrinter, FiSend, FiSlash, FiTrash2 } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiEdit, FiFile, FiFilePlus, FiMail, FiPrinter, FiSend, FiSlash, FiTrash2 } from 'react-icons/fi';
 
 import { MdMenu } from 'react-icons/md';
 import { useAlertEmitirNFContext } from '../../../Contexts/AlertDialog/NotaFiscal/AlertEmitirNFContext';
@@ -35,6 +35,8 @@ import { ModalNotaFiscal } from './components/Form/FormIndex';
 import { ModalCCe } from './components/ModalCCe';
 import { ModalCancelar } from './components/ModalCancelar';
 import { SearchBox } from './components/SearchBox';
+import { ModalEmail } from './components/ModalEmail';
+import { useModalEmail } from '../../../Contexts/Modal/EmailContext';
 
 const headers: { key: string; label: string }[] = [
   { key: 'cod', label: 'Nº da nota' },
@@ -79,6 +81,7 @@ export function NotaFiscal() {
   const { idEmissorSelecionado } = useEmissorContext();
   const { onOpen: openAlertEmitir, onClose: onCloseEmitir, isOpen: isOpenEmitir } = useAlertEmitirNFContext();
   const { onOpen: openAlert, onClose, isOpen } = useAlertNotaFiscalContext();
+  const { onOpen: openEmail } = useModalEmail();
   const { onOpen: openCancelar } = useModalNFCancelar();
   const { onOpen: openCCe } = useModalNFCCe();
   const { onOpen } = useModalNotaFiscal();
@@ -137,6 +140,10 @@ export function NotaFiscal() {
   const handleOpenModalCancelar = (nota: INotaFiscal) => {
     openCancelar();
     setDataToModal(nota);
+  };
+
+  const handleOpenModalEmail = () => {
+    openEmail();
   };
 
   const handleOpenModalCCe = (nota: INotaFiscal) => {
@@ -504,6 +511,14 @@ export function NotaFiscal() {
                             : null
                         }
                         {
+                          // data.status === 'Emitida' ?
+                          <MenuItem onClick={handleOpenModalEmail} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                            <Icon as={FiMail} mr={2}/>
+                              Enviar Email
+                          </MenuItem>
+                          // : null
+                        }
+                        {
                           data.status === 'Emitida' ?
                             <MenuItem onClick={() => handleOpenModalCCe(data)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
                               <Icon as={FiFile} mr={2}/>
@@ -549,6 +564,7 @@ export function NotaFiscal() {
         </SearchBox>
         <ModalNotaFiscal isEditing={isEditing} setIsEditing={setIsEditing} id={id} getNF={getNF}/>        
         <ModalCancelar data={dataToModal!} getNotas={getNF}/>
+        <ModalEmail />
         <ModalCCe getNotas={getNF} data={dataToModal!}/>
         <DeleteAlertDialog label="NFe" deleteFunction={handleEmitirNF} onClose={onCloseEmitir} isOpen={isOpenEmitir} id={id} colorScheme='green' disabled={formSubmitted}/>
         <DeleteAlertDialog label="NFe" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />
