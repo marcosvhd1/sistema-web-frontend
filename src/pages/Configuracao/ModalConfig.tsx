@@ -22,8 +22,6 @@ export function ModalConfig() {
 
   const [currentTab, setCurrentTab] = useState(0);
   const [autenticacao, setAutenticacao] = useState<boolean>(false);
-  const [ssl, setSSL] = useState<boolean>(false);
-  const [tls, setTLS] = useState<boolean>(false);
   
   const userInfo = userInfos();
   const HEADERS = userInfo.header;
@@ -43,12 +41,7 @@ export function ModalConfig() {
 
     if (response != null) {
       methods.reset(response);
-      
-      if (isOpen === true) {
-        setAutenticacao(methods.getValues('autenticacao'));
-        setSSL(methods.getValues('ssl'));
-        setTLS(methods.getValues('tls')); 
-      } 
+      if (isOpen === true) setAutenticacao(methods.getValues('autenticacao'));
     }
   };
 
@@ -111,8 +104,6 @@ export function ModalConfig() {
       'assunto': methods.getValues('assunto'),
       'mensagem': methods.getValues('mensagem'),
       'autenticacao': autenticacao,
-      'ssl': ssl,
-      'tls': tls,
     };
 
     ConfigService.create(data, HEADERS)
@@ -165,7 +156,7 @@ export function ModalConfig() {
                   <TabToken />
                 </TabPanel>
                 <TabPanel>
-                  <TabEmail isOpen={isOpen} autenticacao={autenticacao} setAutenticacao={setAutenticacao} ssl={ssl} setSSL={setSSL} tls={tls} setTLS={setTLS}/>
+                  <TabEmail isOpen={isOpen} autenticacao={autenticacao} setAutenticacao={setAutenticacao}/>
                 </TabPanel>
                 <TabPanel>
                   <TabCFOP />

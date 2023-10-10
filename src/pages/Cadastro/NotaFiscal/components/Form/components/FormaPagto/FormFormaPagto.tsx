@@ -1,5 +1,5 @@
 import { Button, Divider, Flex, Icon, Input, Select, Td, Text, Tr, useColorMode } from '@chakra-ui/react';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { MdAdd } from 'react-icons/md';

@@ -35,7 +35,7 @@ import { ModalNotaFiscal } from './components/Form/FormIndex';
 import { ModalCCe } from './components/ModalCCe';
 import { ModalCancelar } from './components/ModalCancelar';
 import { SearchBox } from './components/SearchBox';
-import { ModalEmail } from './components/ModalEmail';
+import { ModalEmail } from './components/Email/ModalEmail';
 import { useModalEmail } from '../../../Contexts/Modal/EmailContext';
 
 const headers: { key: string; label: string }[] = [
@@ -142,8 +142,9 @@ export function NotaFiscal() {
     setDataToModal(nota);
   };
 
-  const handleOpenModalEmail = () => {
+  const handleOpenModalEmail = (id: string) => {
     openEmail();
+    setId(parseInt(id));
   };
 
   const handleOpenModalCCe = (nota: INotaFiscal) => {
@@ -512,7 +513,7 @@ export function NotaFiscal() {
                         }
                         {
                           // data.status === 'Emitida' ?
-                          <MenuItem onClick={handleOpenModalEmail} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                          <MenuItem onClick={() => handleOpenModalEmail(data.id_destinatario)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
                             <Icon as={FiMail} mr={2}/>
                               Enviar Email
                           </MenuItem>
@@ -564,7 +565,7 @@ export function NotaFiscal() {
         </SearchBox>
         <ModalNotaFiscal isEditing={isEditing} setIsEditing={setIsEditing} id={id} getNF={getNF}/>        
         <ModalCancelar data={dataToModal!} getNotas={getNF}/>
-        <ModalEmail />
+        <ModalEmail idCliente={id}/>
         <ModalCCe getNotas={getNF} data={dataToModal!}/>
         <DeleteAlertDialog label="NFe" deleteFunction={handleEmitirNF} onClose={onCloseEmitir} isOpen={isOpenEmitir} id={id} colorScheme='green' disabled={formSubmitted}/>
         <DeleteAlertDialog label="NFe" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />

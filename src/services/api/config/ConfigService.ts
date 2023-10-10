@@ -25,9 +25,7 @@ export interface IConfig {
   copia: string;
   assunto: string;
   mensagem: string;
-  autenticacao: boolean
-  ssl: boolean;
-  tls: boolean;
+  autenticacao: boolean;
 }
 
 const create = async (dataToCreate: Omit<IConfig, 'id'>, HEADERS: any): Promise<IConfig | ApiException> => {
