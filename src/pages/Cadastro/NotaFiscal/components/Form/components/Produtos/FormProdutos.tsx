@@ -268,6 +268,7 @@ export function FormProdutos({ produtos, addProduto, calcTotalNota }: FormProdut
     { key: 'quantidade', label: 'Quantidade' },
     { key: 'valor_unitario', label: 'Valor Unitário' },
     { key: 'valor_total', label: 'Valor Total' },
+    { key: 'acoes', label: 'Ações' },
   ];
 
   return (

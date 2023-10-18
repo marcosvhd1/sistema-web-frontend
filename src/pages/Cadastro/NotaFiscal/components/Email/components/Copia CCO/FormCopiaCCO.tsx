@@ -66,6 +66,7 @@ export function FormCopiaCCO({ copiaCCO, setCopiaCCO }: FormCopiaCCOProps) {
 
   const headers: { key: string, label: string }[] = [
     { key: 'emails', label: 'Emails' },
+    { key: 'acoes', label: 'Ações' },
   ];
 
   return (

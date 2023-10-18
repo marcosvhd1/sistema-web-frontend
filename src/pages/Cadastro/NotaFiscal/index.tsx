@@ -56,6 +56,7 @@ export function NotaFiscal() {
   const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
 
   const [id, setId] = useState<number>(0);
+  const [idEmail, setIdEmail] = useState<number>(0);
   const [data, setData] = useState<INotaFiscal[]>([]);
   const [dataToModal, setDataToModal] = useState<INotaFiscal>();
   
@@ -142,9 +143,10 @@ export function NotaFiscal() {
     setDataToModal(nota);
   };
 
-  const handleOpenModalEmail = (id: string) => {
+  const handleOpenModalEmail = (idCliente: string, idNfe: number) => {
     openEmail();
-    setId(parseInt(id));
+    setId(parseInt(idCliente));
+    setIdEmail(idNfe);
   };
 
   const handleOpenModalCCe = (nota: INotaFiscal) => {
@@ -513,7 +515,7 @@ export function NotaFiscal() {
                         }
                         {
                           // data.status === 'Emitida' ?
-                          <MenuItem onClick={() => handleOpenModalEmail(data.id_destinatario)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
+                          <MenuItem onClick={() => handleOpenModalEmail(data.id_destinatario, data.id)} color={colorMode === 'light' ? 'blue.600' : 'blue.300'} my={1} py={2}>
                             <Icon as={FiMail} mr={2}/>
                               Enviar Email
                           </MenuItem>
@@ -565,7 +567,7 @@ export function NotaFiscal() {
         </SearchBox>
         <ModalNotaFiscal isEditing={isEditing} setIsEditing={setIsEditing} id={id} getNF={getNF}/>        
         <ModalCancelar data={dataToModal!} getNotas={getNF}/>
-        <ModalEmail idCliente={id}/>
+        <ModalEmail idNfe={idEmail} idCliente={id}/>
         <ModalCCe getNotas={getNF} data={dataToModal!}/>
         <DeleteAlertDialog label="NFe" deleteFunction={handleEmitirNF} onClose={onCloseEmitir} isOpen={isOpenEmitir} id={id} colorScheme='green' disabled={formSubmitted}/>
         <DeleteAlertDialog label="NFe" deleteFunction={handleDeleteNF} onClose={onClose} isOpen={isOpen} id={id} />

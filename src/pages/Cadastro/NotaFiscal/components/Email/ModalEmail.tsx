@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Textarea, useColorMode, useToast } from '@chakra-ui/react';
+import { Button, Checkbox, Flex, Icon, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Textarea, useColorMode, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiMail, FiSlash } from 'react-icons/fi';
@@ -13,7 +13,8 @@ import { userInfos } from '../../../../../utils/header';
 import { FormCopia } from './components/Copia/FormCopia';
 
 interface ModalEmailProps {
-  idCliente: number
+  idNfe: number,
+  idCliente: number,
 }
 
 interface IEmail {
@@ -22,11 +23,15 @@ interface IEmail {
   mensagem: string,
 }
 
-export function ModalEmail({ idCliente }: ModalEmailProps) {
+export function ModalEmail({ idNfe, idCliente }: ModalEmailProps) {
   const methods = useForm<IEmail>();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [copiaCC, setCopiaCC] = useState<string[]>([]);
   const [copiaCCO, setCopiaCCO] = useState<string[]>([]);
+
+  const [enviaPDF, setEnviaPDF] = useState<boolean>(true);
 
   const { colorMode } = useColorMode();
   const { isOpen, onClose } = useModalEmail();
@@ -56,12 +61,13 @@ export function ModalEmail({ idCliente }: ModalEmailProps) {
   }, [isOpen]);
 
   const handleSendEmail = () => {
+    setIsLoading(true);
+
     const assunto = methods.getValues('assunto');
     const mensagem = methods.getValues('mensagem');
     const destinatario = methods.getValues('destinatario');
 
-    EmailService.sendEmail(destinatario, copiaCC, copiaCCO, assunto, mensagem, idEmissorSelecionado, HEADERS).then((response) => {
-      console.log(response);
+    EmailService.sendEmail(destinatario, copiaCC, copiaCCO, assunto, mensagem, idNfe, enviaPDF, idEmissorSelecionado, HEADERS).then((response) => {
       toast({
         position: 'top',
         description: response.status === 201 ? 'Email enviado!' : 'Erro ao enviar email.',
@@ -69,6 +75,8 @@ export function ModalEmail({ idCliente }: ModalEmailProps) {
         duration: 2000,
         isClosable: true,
       });
+
+      setIsLoading(false);
     });
   };
 
@@ -112,6 +120,10 @@ export function ModalEmail({ idCliente }: ModalEmailProps) {
                   <FormContainer label='Mensagem'>
                     <Textarea borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('mensagem')}/>
                   </FormContainer>
+                  <Flex w='100%' mt={5}>
+                    <Checkbox size='lg' mr='2' isChecked={enviaPDF} onChange={() => setEnviaPDF(!enviaPDF)} />
+                    <Text cursor='pointer' onClick={() => setEnviaPDF(!enviaPDF)}>Enviar PDF</Text>
+                  </Flex>
                 </Flex>
               </TabPanel>
               <TabPanel>
@@ -125,7 +137,11 @@ export function ModalEmail({ idCliente }: ModalEmailProps) {
         </ModalBody>
         <ModalFooter>
           <Flex w='100%' justify='space-between' align='center'>
-            <Button w='15%' variant='solid' colorScheme='blue' onClick={handleSendEmail}><Icon as={FiMail} mr={2}/>Enviar</Button>
+            {
+              isLoading ? 
+                <Button w='15%' variant='solid' colorScheme='blue'><Spinner size='sm' /> </Button> :
+                <Button w='15%' variant='solid' colorScheme='blue' onClick={handleSendEmail}><Icon as={FiMail} mr={2}/>Enviar</Button>
+            }
             <Button w='15%' onClick={onClose}><Icon as={FiSlash} mr={2}/>Fechar</Button>
           </Flex>
         </ModalFooter>
