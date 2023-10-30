@@ -22,6 +22,7 @@ interface SearchBoxProps {
   children: ReactNode;
   filterByDate: string;
   setIsEditing: (value: boolean) => void;
+  setModel: (value: string) => void;
   getNotasFiscaisByFilter: (description: string) => void;
   setEndDate: (value: React.SetStateAction<any>) => void;
   stateFilter: (value: React.SetStateAction<any>) => void;
@@ -30,7 +31,7 @@ interface SearchBoxProps {
   stateFilterByStatus: (value: React.SetStateAction<any>) => void;
 }
 
-export function SearchBox({ isLoading, children, stateFilter, getNotasFiscaisByFilter, setIsEditing, stateFilterByStatus, filterByDate, stateFilterByDate, startDate, setStartDate, endDate, setEndDate }: SearchBoxProps) {
+export function SearchBox({ isLoading, children, setModel, stateFilter, getNotasFiscaisByFilter, setIsEditing, stateFilterByStatus, filterByDate, stateFilterByDate, startDate, setStartDate, endDate, setEndDate }: SearchBoxProps) {
   const methods = useFormContext<INotaFiscal>();
   const { register, handleSubmit } = useForm();
   const { colorMode } = useColorMode();
@@ -47,6 +48,11 @@ export function SearchBox({ isLoading, children, stateFilter, getNotasFiscaisByF
   const handleGetNotasFiscaisByFilter = async (data: FieldValues) => {
     const { description } = data;
     getNotasFiscaisByFilter(description);
+  };
+
+  const changeModel = (value: string) => {
+    setModel(value);
+    handleOpenModal();
   };
 
   const handleOpenModal = () => {
@@ -85,9 +91,13 @@ export function SearchBox({ isLoading, children, stateFilter, getNotasFiscaisByF
           </Flex>
           <Text fontFamily="Poppins" fontSize="xl">Lista de Notas Fiscais</Text>
           <Flex w="20%" justify="flex-end" align="center">
-            <Button disabled={isLoading} variant="solid" colorScheme="green" onClick={handleOpenModal} mr={3}>
+            <Button disabled={isLoading} variant="solid" colorScheme="green" onClick={() => changeModel('55')} mr={3}>
               <Icon mr={2} as={MdAdd}/>
-              Cadastrar
+              NFe
+            </Button>
+            <Button disabled={isLoading} variant="solid" colorScheme="green" onClick={() => changeModel('65')} mr={3}>
+              <Icon mr={2} as={MdAdd}/>
+              NFCe
             </Button>
             <Menu>
               <MenuButton as={Button} disabled={isLoading} w="25%" variant="solid" colorScheme="blue">

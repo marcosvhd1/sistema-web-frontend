@@ -51,11 +51,12 @@ import { lpad, regex } from '../../../../../utils/formatarCnpjCpf';
 interface ModalNotaFiscalProps {
   id: number;
   isEditing: boolean;
+  model: string;
   setIsEditing: (value: boolean) => void;
   getNF: (description: string) => void;
 }
 
-export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaFiscalProps) {
+export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF, model}: ModalNotaFiscalProps) {
   const toast = useToast();
   const methods = useFormContext<INotaFiscal>();
 
@@ -138,7 +139,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
     const camposObrigatorios: any[] = ['cod', 'serie', 'natureza_operacao', 'cfop'];
     const cliente = methods.getValues('destinatario');
 
-    if (cliente.razao.length == 0) {
+    if (cliente.razao.length == 0 && model === '55') {
       setCurrentTab(0);
       setTimeout(() => {
         methods.setFocus('destinatario.razao');
@@ -232,7 +233,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
 
     data.nome_destinatario = data.destinatario.razao;
     data.id_destinatario = `${data.destinatario.id}`;
-    data.modelo = 55;
+    data.modelo = parseInt(model);
 
     if (isEditing) handleUpdateNF(data);
     else handleCreateNF(data);
@@ -436,7 +437,11 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF}: ModalNotaF
       <ModalOverlay />
       <form onSubmit={methods.handleSubmit(submitData)}>
         <ModalContent>
-          <ModalHeader>Cadastro Nota Fiscal</ModalHeader>
+          <ModalHeader>
+            {
+              model === '55' ? 'Cadastro NFe' : 'Cadastro de NFCe'
+            }
+          </ModalHeader>
           <ModalBody>
             <Tabs
               index={currentTab}

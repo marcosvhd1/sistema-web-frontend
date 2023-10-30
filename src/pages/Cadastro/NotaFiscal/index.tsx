@@ -67,6 +67,8 @@ export function NotaFiscal() {
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
   
+  const [model, setModel] = useState<string>('55');
+
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -384,7 +386,7 @@ export function NotaFiscal() {
   const handleEmitirNF = async (idNfe: number) => {
     setFormSubmitted(true);
 
-    await SefazService.emitir(idNfe, idEmissorSelecionado, HEADERS).then((resp) => {
+    await SefazService.emitir(idNfe, idEmissorSelecionado, model, HEADERS).then((resp) => {
       if (resp.type == 'error') {
         toast({
           position: 'top',
@@ -429,7 +431,7 @@ export function NotaFiscal() {
   return (
     <FormProvider {...methods}>
       <MainContent>
-        <SearchBox isLoading={isLoading} getNotasFiscaisByFilter={getNF} stateFilter={setFilter} stateFilterByStatus={setFilterByStatus} filterByDate={filterByDate} stateFilterByDate={setFilterByDate} setIsEditing={setIsEditing} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}>
+        <SearchBox isLoading={isLoading} getNotasFiscaisByFilter={getNF} setModel={setModel} stateFilter={setFilter} stateFilterByStatus={setFilterByStatus} filterByDate={filterByDate} stateFilterByDate={setFilterByDate} setIsEditing={setIsEditing} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}>
           <DataTable 
             headers={headers} 
             orderBy={orderBy}
@@ -565,7 +567,7 @@ export function NotaFiscal() {
             </Button>
           </Pagination>
         </SearchBox>
-        <ModalNotaFiscal isEditing={isEditing} setIsEditing={setIsEditing} id={id} getNF={getNF}/>        
+        <ModalNotaFiscal isEditing={isEditing} setIsEditing={setIsEditing} id={id} getNF={getNF} model={model}/>        
         <ModalCancelar data={dataToModal!} getNotas={getNF}/>
         <ModalEmail idNfe={idEmail} idCliente={id}/>
         <ModalCCe getNotas={getNF} data={dataToModal!}/>
