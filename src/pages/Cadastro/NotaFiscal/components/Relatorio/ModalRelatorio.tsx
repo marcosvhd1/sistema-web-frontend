@@ -21,7 +21,7 @@ interface DadosRelatorio {
 export function ModalRelatorio() {
   const methods = useForm<DadosRelatorio>();
 
-  const [estilo, setEstilo] = useState<string>('0');
+  const [estilo, setEstilo] = useState<string>('1');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPDF, setShowPDF] = useState<boolean>(false);

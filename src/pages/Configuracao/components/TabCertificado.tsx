@@ -37,7 +37,7 @@ export function TabCertificado() {
           <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' readOnly {...methods.register('cert_base64')} />
         </FormContainer>
         <FormContainer label='Senha' width='35%' mr='3'>
-          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='text' {...methods.register('cert_senha')} />
+          <Input borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type='password' {...methods.register('cert_senha')} />
         </FormContainer>
         <Button onClick={onClickFile} mt={7} w="15%" fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">
           <Icon as={FiSearch} mr={2}/>

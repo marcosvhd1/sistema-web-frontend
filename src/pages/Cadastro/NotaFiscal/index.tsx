@@ -158,7 +158,7 @@ export function NotaFiscal() {
 
   const handleImprimir = (nota: INotaFiscal) => {
     if (nota.caminho_pdf == null) {
-      SefazService.preview(nota.id, idEmissorSelecionado, HEADERS).then((response) => {
+      SefazService.preview(nota.id, idEmissorSelecionado, `${nota.modelo}`, HEADERS).then((response) => {
         if (response.type == 'success') window.open(response.caminhoPDF, '_blank');
         
       });

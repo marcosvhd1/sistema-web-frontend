@@ -1,9 +1,9 @@
 import { Api } from '../ApiConfig';
 import { ApiException } from '../ApiException';
 
-const preview = async (idNfe: number, idEmissor: number, HEADERS: any): Promise<any | ApiException> => {
+const preview = async (idNfe: number, idEmissor: number, modelo: string, HEADERS: any): Promise<any | ApiException> => {
   try {
-    const { data } =  await Api().get(`/sefaz/preview?id_nfe=${idNfe}&id_emissor=${idEmissor}`, HEADERS);
+    const { data } =  await Api().get(`/sefaz/preview?id_nfe=${idNfe}&id_emissor=${idEmissor}&model=${modelo}`, HEADERS);
     return data;
   } catch (error) {
     return new ApiException((error as ApiException).message || 'Erro ao buscar os registros.');
