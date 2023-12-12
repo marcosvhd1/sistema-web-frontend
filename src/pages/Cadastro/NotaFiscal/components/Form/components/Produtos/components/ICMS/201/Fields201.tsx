@@ -16,7 +16,7 @@ export function Fields201() {
         {/* LADO 1 */}
         <Flex w="50%" align="center" justify="flex-start" direction="column">
           <FormContainer label='Origem' mr='3'>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('produto.origem')}>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...register('origem')}>
               <option value="0">0 - Nacional, exceto as indicadas nos códigos 3 a 5</option>
               <option value="1">1 - Estrangeira - Importação direta, exceto a indicada no código 6</option>
               <option value="2">2 - Estrangeira - Adquirida no mercado interno, exceto a indicada no código 7</option>

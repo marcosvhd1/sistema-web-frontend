@@ -54,6 +54,7 @@ export interface INFProduct {
   partilha_icms_p_partilha: string
   partilha_icms_valor_icms_uf_dest: number
   partilha_icms_valor_icms_uf_ori: number
+  origem: string
   cod_anp: string
   descricao_anp: string
   uf_consumo: string

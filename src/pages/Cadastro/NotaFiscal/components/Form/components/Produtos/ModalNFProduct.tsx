@@ -410,6 +410,7 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
       'partilha_icms_p_partilha': partICMSpPart,
       'partilha_icms_valor_icms_uf_dest': partICMSvalorICMSUFDest,
       'partilha_icms_valor_icms_uf_ori': partICMSvalorICMSUFOri,
+      'origem': methods.getValues('origem'),
       'cod_anp': codANP,
       'descricao_anp': descANP,
       'uf_consumo': ufCons,

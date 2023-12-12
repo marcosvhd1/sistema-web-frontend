@@ -157,7 +157,7 @@ export function NotaFiscal() {
   };
 
   const handleImprimir = (nota: INotaFiscal) => {
-    if (nota.status == 'Emitida') {
+    if (nota.status != 'Em digitação') {
       window.open(nota.caminho_pdf, '_blank');
     } else {
       SefazService.preview(nota.id, idEmissorSelecionado, `${nota.modelo}`, HEADERS).then((response) => {
@@ -323,6 +323,7 @@ export function NotaFiscal() {
                   partilha_icms_p_partilha: element.partilha_icms_p_partilha,
                   partilha_icms_valor_icms_uf_dest: element.partilha_icms_valor_icms_uf_dest,
                   partilha_icms_valor_icms_uf_ori: element.partilha_icms_valor_icms_uf_ori,
+                  origem: element.origem,
                   cod_anp: element.cod_anp,
                   descricao_anp: element.descricao_anp,
                   uf_consumo: element.uf_consumo,
