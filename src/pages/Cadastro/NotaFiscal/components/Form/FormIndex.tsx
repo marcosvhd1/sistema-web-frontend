@@ -439,7 +439,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF, model}: Mod
         <ModalContent>
           <ModalHeader>
             {
-              model === '55' ? 'Cadastro NFe' : 'Cadastro de NFCe'
+              model === '55' ? 'Cadastro de Nota Fiscal' : 'Cadastro de Nota Fiscal de Consumidor'
             }
           </ModalHeader>
           <ModalBody>
@@ -465,6 +465,7 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF, model}: Mod
                   <FormDadosPrincipais 
                     cfops={cfops}
                     shareCFOP={shareCFOP}
+                    model={model}
                   />
                 </TabPanel>
                 <TabPanel>

@@ -11,9 +11,10 @@ import { ModalNFClient } from './ModalNFClient';
 interface FormDadosPrincipaisProps {
   cfops: ICFOP[],
   shareCFOP: () => void;
+  model: string;
 }
 
-export function FormDadosPrincipais({ cfops, shareCFOP }: FormDadosPrincipaisProps) {
+export function FormDadosPrincipais({ cfops, shareCFOP, model }: FormDadosPrincipaisProps) {
   const methods = useFormContext<INotaFiscal>();
 
   const [codBlock, setCodBlock] = useState<boolean>(true);
@@ -70,7 +71,7 @@ export function FormDadosPrincipais({ cfops, shareCFOP }: FormDadosPrincipaisPro
               <option value='0'>Entrada</option>
             </Select>
           </FormContainer>
-          <FormContainer width='30%' label='Finalidade' mr='3'>
+          <FormContainer width='25%' label='Finalidade' mr='3'>
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('finalidade')}>
               <option value='1'>NFe normal</option>
               <option value='2'>NFe complementar</option>
@@ -78,11 +79,14 @@ export function FormDadosPrincipais({ cfops, shareCFOP }: FormDadosPrincipaisPro
               <option value='4'>Devolução/Retorno</option>
             </Select>
           </FormContainer>
-          <FormContainer width='25%' label='Status' mr='3'>
+          <FormContainer width='20%' label='Status' mr='3'>
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" defaultValue={'Em digitação'} readOnly {...methods.register('status')} />
           </FormContainer>
-          <FormContainer width='20%' label='Consumidor Final'>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('consumidor_final')}>
+          <FormContainer width='15%' label='Modelo' mr='3'>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly value={model} />
+          </FormContainer>
+          <FormContainer width='15%' label='Consumidor Final'>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('consumidor_final')} defaultValue={ model == '55' ? 0 : 1}>
               <option value='0'>Não</option>
               <option value='1'>Sim</option>
             </Select>
@@ -94,7 +98,7 @@ export function FormDadosPrincipais({ cfops, shareCFOP }: FormDadosPrincipaisPro
           <Flex w="100%" direction="column" mr='5'>
             <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap" mb={2} mt={2}>
               <Divider w="20%" />
-              <Text w="max" mr={3} ml={3}>Dados do Destinatário / Remetente</Text>
+              <Text w="max" mr={3} ml={3}>{ model == '55' ? 'Dados do Destinatário / Remetente' : 'Consumidor (Opcional)'}</Text>
               <Divider />
             </Flex>
             <Flex align="center" justify="space-between">
