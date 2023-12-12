@@ -55,7 +55,7 @@ export function ModalCancelar({ data, getNotas }: ModalCancelarProps) {
 
     const justify = getValues('description');
 
-    await SefazService.cancelar(data.id, idEmissorSelecionado, justify, HEADERS).then((resp) => {
+    await SefazService.cancelar(data.id, idEmissorSelecionado, `${data.modelo}`, justify, HEADERS).then((resp) => {
       if (resp.type == 'success') {
         handleClose();
         getNotas('');
