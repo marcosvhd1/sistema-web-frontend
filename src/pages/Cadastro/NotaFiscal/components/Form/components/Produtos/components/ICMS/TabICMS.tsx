@@ -58,7 +58,7 @@ export function FormTabICMS() {
           console.log(result.message);
         } else {
           const idEmpresa = result.data[0].id;
-          EmissorService.getAll(1, 1, 'id', 'razao', 'desc', `${idEmissorSelecionado}`, idEmpresa, 'Ativo', HEADERS)
+          EmissorService.getAll(1, 1, 'id', `${idEmissorSelecionado}`, 'razao', 'desc', idEmpresa, 'Ativo', HEADERS)
             .then((result: any) => {
               if (result instanceof ApiException) {
                 console.log(result.message);
