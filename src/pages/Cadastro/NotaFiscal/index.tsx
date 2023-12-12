@@ -157,12 +157,13 @@ export function NotaFiscal() {
   };
 
   const handleImprimir = (nota: INotaFiscal) => {
-    if (nota.caminho_pdf == null) {
+    if (nota.status == 'Emitida') {
+      window.open(nota.caminho_pdf, '_blank');
+    } else {
       SefazService.preview(nota.id, idEmissorSelecionado, `${nota.modelo}`, HEADERS).then((response) => {
         if (response.type == 'success') window.open(response.caminhoPDF, '_blank');
-        
       });
-    } else window.open(nota.caminho_pdf, '_blank');
+    } 
   };
 
   const handleImprimirCCe = (nota: INotaFiscal) => {

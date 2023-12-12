@@ -33,6 +33,7 @@ export interface IClient {
   email1: string;
   email2: string;
   site: string;
+  cod_pais: string;
   pais: string;
 }
 

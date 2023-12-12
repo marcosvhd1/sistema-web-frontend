@@ -43,9 +43,9 @@ export function FormFields({ id, setIErequired }: IFormFields) {
   const consultaCNPJ = () => {
     setIsLoading(true);
     const cnpjcpf = removePontuacaoCnpjCpf(methods.getValues('cnpjcpf'));
-    
+
     if (cnpjcpf.length === 14) {
-      ConsultaCNPJService.consultarCNPJ(cnpjcpf).then((response) => {       
+      ConsultaCNPJService.consultarCNPJ(cnpjcpf).then((response) => {
         if (response.return === 'OK') {
           methods.setValue('razao', response.result.nome);
           methods.setValue('fantasia', response.result.fantasia);
@@ -80,7 +80,7 @@ export function FormFields({ id, setIErequired }: IFormFields) {
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="id" type="text" w="5rem" {...methods.register('cod')} />
             </FormContainer>
             <FormContainer label="Tipo" width="4rem">
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="4rem" {...methods.register('tipo')}>
+              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="4rem" {...methods.register('tipo')}>
                 <option value='f'>F</option>
                 <option value='j'>J</option>
               </Select>
@@ -103,11 +103,19 @@ export function FormFields({ id, setIErequired }: IFormFields) {
             <FormContainer label="Nome Fantasia">
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="fantasia" type="text" {...methods.register('fantasia')} />
             </FormContainer>
+            <Flex>
+              <FormContainer label="Código do País" mr='3'>
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('cod_pais')} />
+              </FormContainer>
+              <FormContainer label="País">
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('pais')} />
+              </FormContainer>
+            </Flex>
           </Flex>
         </Flex>
 
         {/*lado B */}
-        <Flex direction="column" w="50%" ml="6">
+        <Flex direction="column" w="50%" ml="5">
           <Flex>
             <FormContainer label="CPF / CNPJ" mr="3">
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="cnpjcpf" type="text" {...methods.register('cnpjcpf', {
@@ -117,7 +125,7 @@ export function FormFields({ id, setIErequired }: IFormFields) {
             {
               isLoading ?
                 <Button mt={7} w="15%" variant="solid" colorScheme="blue">
-                  <Spinner size='sm' /> 
+                  <Spinner size='sm' />
                 </Button> :
                 <Button mt={7} w="15%" variant="solid" colorScheme="blue" onClick={consultaCNPJ}>
                   <Icon as={FiSearch} />
@@ -145,7 +153,7 @@ export function FormFields({ id, setIErequired }: IFormFields) {
               <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} id="suframa" type="text" w="14rem" {...methods.register('suframa')} mr="3" />
             </FormContainer>
             <FormContainer label="Tipo de Contribuinte">
-              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}  w="14rem" {...methods.register('tipo_contribuinte')} onChange={(event) => IERequired(event.target.value)}>
+              <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} w="14rem" {...methods.register('tipo_contribuinte')} onChange={(event) => IERequired(event.target.value)}>
                 <option value='1'>Contribuinte ICMS</option>
                 <option value='2'>Contribuinte ISENTO</option>
                 <option value='9'>Não Contribuinte</option>
@@ -166,7 +174,7 @@ export function FormFields({ id, setIErequired }: IFormFields) {
       <Stack mt="5">
         <Text fontSize="xl" >Endereço</Text>
         <Divider />
-        <Adress id={id}/>
+        <Adress id={id} />
       </Stack>
     </Flex>
   );

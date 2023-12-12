@@ -103,7 +103,7 @@ export function FormDadosPrincipais({ cfops, shareCFOP, model }: FormDadosPrinci
             </Flex>
             <Flex align="center" justify="space-between">
 
-              <FormContainer width="20%" label='* Cód' mr='3'>
+              <FormContainer width="20%" label='* Código' mr='3'>
                 <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.cod')}/>
               </FormContainer>
 
@@ -149,7 +149,7 @@ export function FormDadosPrincipais({ cfops, shareCFOP, model }: FormDadosPrinci
                 <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.telefone1')}/>
               </FormContainer>
 
-              <FormContainer width="25%" label='Inscrição Estadual' >
+              <FormContainer width="25%" label='* Inscrição Estadual' >
                 <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.ie')}/>
               </FormContainer>
 
@@ -160,12 +160,12 @@ export function FormDadosPrincipais({ cfops, shareCFOP, model }: FormDadosPrinci
                 <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.complemento')}/>
               </FormContainer>
 
-              <FormContainer width="15%" label='País' mr='3' >
-                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.pais')}/>
+              <FormContainer width="15%" label='SUFRAMA' mr='3' >
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.suframa')}/>
               </FormContainer>
 
-              <FormContainer width="20%" label='SUFRAMA' mr='3' >
-                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.suframa')}/>
+              <FormContainer width="20%" label='País' mr='3' >
+                <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" readOnly {...methods.register('destinatario.pais')}/>
               </FormContainer>
 
               <Button onClick={onOpen} w="25%" mt={7} fontSize={{ base: '.9rem', md: '.9rem', lg: '1rem' }} variant="solid" colorScheme="blue">

@@ -69,10 +69,18 @@ export function FormModal({ isEditing, id, refreshPage, header, getCod }: ModalP
   };
 
   const hasErrors = () => {
-    const camposObrigatorios: any[] = ['cod', 'razao', 'cnpjcpf', 'logradouro', 'numero', 'bairro', 'cep', 'uf', 'cidade'];
+    const camposObrigatorios: any[] = ['cod', 'razao', 'cnpjcpf', 'logradouro', 'numero', 'bairro', 'cep', 'uf'];
     
     for (const campo of camposObrigatorios) {
-      if (methods.getValues(campo) === '') {
+      if (methods.getValues('uf') !== 'EX' && methods.getValues('cidade') === '') {
+        toast({
+          position: 'top',
+          description: 'Está faltando preencher a CIDADE.',
+          status: 'error',
+          duration: 4000,
+        });
+        return true;
+      } else if (methods.getValues(campo) === '') {
         let msg = '';
         switch (campo) {
         case camposObrigatorios[0]: 
@@ -106,10 +114,6 @@ export function FormModal({ isEditing, id, refreshPage, header, getCod }: ModalP
         case camposObrigatorios[7]: 
           msg = 'Está faltando selecionar a UF.';
           methods.setFocus(camposObrigatorios[7]);
-          break;
-        case camposObrigatorios[8]: 
-          msg = 'Está faltando selecionar a CIDADE.';
-          methods.setFocus(camposObrigatorios[8]);
           break;
         }
 
