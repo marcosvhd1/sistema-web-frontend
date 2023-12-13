@@ -47,6 +47,7 @@ import { FormNFRef } from './components/NFRef/FormNFRef';
 import { FormProdutos } from './components/Produtos/FormProdutos';
 import { FormTransporte } from './components/Transporte/FormTransporte';
 import { lpad, regex } from '../../../../../utils/formatarCnpjCpf';
+import { FormExterior } from './components/Exterior/FormExterior';
 
 interface ModalNotaFiscalProps {
   id: number;
@@ -451,13 +452,14 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF, model}: Mod
               onChange={handleTabChange}
             >
               <TabList>
-                <Tab>Dados Principais</Tab>
+                <Tab>Dados</Tab>
                 <Tab>Produtos</Tab>
                 <Tab>Totais</Tab>
-                <Tab>Formas de Pagto</Tab>
+                <Tab>Pagamento</Tab>
                 <Tab>Transporte</Tab>
-                <Tab>Info Adicional</Tab>
-                <Tab>Chaves Referenciadas</Tab>
+                <Tab>Info. Adicionais</Tab>
+                <Tab>Referenciadas</Tab>
+                <Tab>Exterior</Tab>
                 <Tab>Outros</Tab>
               </TabList>
               <TabPanels>
@@ -499,6 +501,9 @@ export function ModalNotaFiscal({isEditing, setIsEditing, id, getNF, model}: Mod
                     addChave={setChavesRef}
                     chaves={chavesRef}
                   />
+                </TabPanel>
+                <TabPanel>
+                  <FormExterior />
                 </TabPanel>
                 <TabPanel>
                   <FormOutros />

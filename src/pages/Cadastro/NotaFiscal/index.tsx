@@ -40,6 +40,7 @@ import { useModalEmail } from '../../../Contexts/Modal/EmailContext';
 
 const headers: { key: string; label: string }[] = [
   { key: 'cod', label: 'Nº da nota' },
+  { key: 'modelo', label: 'Modelo' },
   { key: 'serie', label: 'Série' },
   { key: 'data_emissao', label: 'Emissão' },
   { key: 'natureza_operacao', label: 'Natureza de Operação' },
@@ -445,6 +446,9 @@ export function NotaFiscal() {
                 <Tr key={data.id}>
                   <Td width="5%">
                     {data.cod}
+                  </Td>
+                  <Td width="5%">
+                    {data.modelo}
                   </Td>
                   <Td width="5%">
                     {data.serie}
