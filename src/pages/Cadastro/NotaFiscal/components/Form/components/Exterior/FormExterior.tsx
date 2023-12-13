@@ -49,8 +49,8 @@ export function FormExterior() {
           <FormContainer width='35%' label='Data da DI' mr='3'>
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('data_di')} />
           </FormContainer>
-          <FormContainer width='30%' label='Transporte' {...methods.register('transporte')}>
-            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'}>
+          <FormContainer width='30%' label='Transporte'>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('transporte')}>
               <option value='1'>Marítima</option>
               <option value='2'>Fluvial</option>
               <option value='3'>Lacustre</option>
