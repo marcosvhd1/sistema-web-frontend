@@ -9,7 +9,7 @@ export function FormExterior() {
   const { colorMode } = useColorMode();
 
   return (
-    <Flex w="100%" align="center" justify="center">
+    <Flex w="100%" align="flex-start" justify="center">
       <Flex w="50%" direction="column" mr={5}>
         <Flex w="100%" align="center" justify="space-between" whiteSpace="nowrap">
           <Divider w="10%" />
@@ -43,13 +43,26 @@ export function FormExterior() {
           <Divider mr={3} ml={3} />
         </Flex>
         <Flex w="100%" justify="center" align="center">
-          <FormContainer width='35%' label='N° da DI' mr='3'>
+          <FormContainer label='N° da DI' mr='3'>
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('num_di')} />
           </FormContainer>
-          <FormContainer width='35%' label='Data da DI' mr='3'>
+          <FormContainer label='Data da DI'>
             <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('data_di')} />
           </FormContainer>
-          <FormContainer width='30%' label='Transporte'>
+        </Flex>
+        <Flex w="100%" justify="center" align="center">
+          <FormContainer width='20%' label='UF Desemb.' mr='3'>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('uf_desembaraco')} />
+          </FormContainer>
+          <FormContainer width='40%' label='Local Desembaraço' mr='3'>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('local_desembaraco')} />
+          </FormContainer>
+          <FormContainer width='40%' label='Data Desembarço'>
+            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('data_desembaraco')} />
+          </FormContainer>
+        </Flex>
+        <Flex w="100%" justify="center" align="center">
+          <FormContainer label='Transporte' mr='3'>
             <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('transporte')}>
               <option value='1'>Marítima</option>
               <option value='2'>Fluvial</option>
@@ -65,16 +78,12 @@ export function FormExterior() {
               <option value='12'>HandCarry</option>
             </Select>
           </FormContainer>
-        </Flex>
-        <Flex w="100%" justify="center" align="center">
-          <FormContainer width='20%' label='UF Desemb.' mr='3'>
-            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('uf_desembaraco')} />
-          </FormContainer>
-          <FormContainer width='40%' label='Local Desembaraço' mr='3'>
-            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="text" {...methods.register('local_desembaraco')} />
-          </FormContainer>
-          <FormContainer width='40%' label='Data Desembarço'>
-            <Input maxLength={255} borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} type="date" {...methods.register('data_desembaraco')} />
+          <FormContainer label='Tipo Intermediação'>
+            <Select borderColor={colorMode === 'light' ? 'blackAlpha.600' : 'gray.600'} {...methods.register('tp_intermed')}>
+              <option value='1'>Conta Própria</option>
+              <option value='2'>Conta e Ordem</option>
+              <option value='3'>Encomenda</option>
+            </Select>
           </FormContainer>
         </Flex>
       </Flex>

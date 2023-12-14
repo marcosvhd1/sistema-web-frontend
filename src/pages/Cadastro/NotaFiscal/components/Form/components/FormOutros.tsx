@@ -1,4 +1,4 @@
-import { Divider, Flex, Input, Select, Text, useColorMode } from '@chakra-ui/react';
+import { Flex, Input, Select, useColorMode } from '@chakra-ui/react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../../../../../../components/Form/FormContainer';
 import { INotaFiscal } from '../../../../../../services/api/notafiscal/NotaFiscalService';

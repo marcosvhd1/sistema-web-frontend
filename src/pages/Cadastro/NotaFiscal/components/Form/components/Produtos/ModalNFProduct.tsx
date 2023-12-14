@@ -154,6 +154,13 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
     let codANP = '';
     let descANP = '';
     let ufCons = '';
+    let codif = '';
+    let nAdicao = '';
+    let seqItem = '';
+    let codFab = '';
+    let registroExp = '';
+    let chaveExp = '';
+    let qtdeExp = '';
 
     if (verify(methods.getValues('quantidade'))) {
       qtd = methods.getValues('quantidade');
@@ -347,16 +354,44 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
       partICMSvalorICMSUFOri = methods.getValues('partilha_icms_valor_icms_uf_ori');
     }
     
-    if (verify(methods.getValues('cod_anp'))) {
-      codANP = methods.getValues('cod_anp');
+    if (verify(methods.getValues('cod_anp_comb'))) {
+      codANP = methods.getValues('cod_anp_comb');
     }
     
-    if (verify(methods.getValues('descricao_anp'))) {
-      descANP = methods.getValues('descricao_anp');
+    if (verify(methods.getValues('descricao_anp_comb'))) {
+      descANP = methods.getValues('descricao_anp_comb');
     }
     
-    if (verify(methods.getValues('uf_consumo'))) {
-      ufCons = methods.getValues('uf_consumo');
+    if (verify(methods.getValues('uf_consumo_comb'))) {
+      ufCons = methods.getValues('uf_consumo_comb');
+    }
+
+    if (verify(methods.getValues('codif_comb'))) {
+      codif = methods.getValues('codif_comb');
+    }
+
+    if (verify(methods.getValues('n_adicao_imp'))) {
+      nAdicao = methods.getValues('n_adicao_imp');
+    }
+
+    if (verify(methods.getValues('seq_item_imp'))) {
+      seqItem = methods.getValues('seq_item_imp');
+    }
+
+    if (verify(methods.getValues('fabricante_imp'))) {
+      codFab = methods.getValues('fabricante_imp');
+    }
+
+    if (verify(methods.getValues('registro_exp'))) {
+      registroExp = methods.getValues('registro_exp');
+    }
+
+    if (verify(methods.getValues('chave_exp'))) {
+      chaveExp = methods.getValues('chave_exp');
+    }
+
+    if (verify(methods.getValues('qtde_exp'))) {
+      qtdeExp = methods.getValues('qtde_exp');
     }
 
     const data: INFProduct = {
@@ -411,9 +446,16 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
       'partilha_icms_valor_icms_uf_dest': partICMSvalorICMSUFDest,
       'partilha_icms_valor_icms_uf_ori': partICMSvalorICMSUFOri,
       'origem': methods.getValues('origem'),
-      'cod_anp': codANP,
-      'descricao_anp': descANP,
-      'uf_consumo': ufCons,
+      'cod_anp_comb': codANP,
+      'descricao_anp_comb': descANP,
+      'uf_consumo_comb': ufCons,
+      'codif_comb': codif,
+      'n_adicao_imp': nAdicao,
+      'seq_item_imp': seqItem,
+      'fabricante_imp': codFab,
+      'registro_exp': registroExp,
+      'chave_exp': chaveExp,
+      'qtde_exp': qtdeExp,
     };
 
     if (isEditing) {
@@ -557,8 +599,8 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
                     <Tab>ICMS</Tab>
                     <Tab>IPI / II / PIS / COFINS</Tab>
                     <Tab>Devolução IPI / Partilha ICMS / FCP</Tab>
-                    <Tab>Outros</Tab>
                     <Tab>Informações Adicionais</Tab>
+                    <Tab>Outros</Tab>
                   </TabList>
                   <TabPanels>
                     <TabPanel>
@@ -571,10 +613,10 @@ export function ModalNFProduct({ addProduct, editProduct, setIsEditing, isEditin
                       <FormTabDevolucao />
                     </TabPanel>
                     <TabPanel>
-                      <FormTabOutros />
+                      <FormTabInfoAdicional />
                     </TabPanel>
                     <TabPanel>
-                      <FormTabInfoAdicional />
+                      <FormTabOutros />
                     </TabPanel>
                   </TabPanels>
                 </Tabs>

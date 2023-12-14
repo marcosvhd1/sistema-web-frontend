@@ -325,9 +325,16 @@ export function NotaFiscal() {
                   partilha_icms_valor_icms_uf_dest: element.partilha_icms_valor_icms_uf_dest,
                   partilha_icms_valor_icms_uf_ori: element.partilha_icms_valor_icms_uf_ori,
                   origem: element.origem,
-                  cod_anp: element.cod_anp,
-                  descricao_anp: element.descricao_anp,
-                  uf_consumo: element.uf_consumo,
+                  cod_anp_comb: element.cod_anp_comb,
+                  descricao_anp_comb: element.descricao_anp_comb,
+                  uf_consumo_comb: element.uf_consumo_comb,
+                  codif_comb: element.codif_comb,
+                  n_adicao_imp: element.n_adicao_imp,
+                  seq_item_imp: element.seq_item_imp,
+                  fabricante_imp: element.fabricante_imp,
+                  registro_exp: element.registro_exp,
+                  chave_exp: element.chave_exp,
+                  qtde_exp: element.qtde_exp,
                 };
   
                 prods.push(NFprod);

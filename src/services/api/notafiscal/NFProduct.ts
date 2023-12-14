@@ -55,9 +55,16 @@ export interface INFProduct {
   partilha_icms_valor_icms_uf_dest: number
   partilha_icms_valor_icms_uf_ori: number
   origem: string
-  cod_anp: string
-  descricao_anp: string
-  uf_consumo: string
+  cod_anp_comb: string
+  descricao_anp_comb: string
+  uf_consumo_comb: string
+  codif_comb: string
+  n_adicao_imp: string
+  seq_item_imp: string
+  fabricante_imp: string
+  registro_exp: string
+  chave_exp: string
+  qtde_exp: string
 }
 
 const getNFProdByNF = async (idNF: number, HEADERS: any): Promise<INFProduct[] | ApiException> => {

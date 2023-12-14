@@ -98,6 +98,7 @@ export interface INotaFiscal {
     uf_desembaraco: string;
     local_desembaraco: string;
     data_desembaraco: Date;
+    tp_intermed: string;
 }
 
 const getNFByFilter = async (currentPage: number, limitRegistros: number, filter: string, filterStatus: string, filterDate: string, description: string, orderBy: string, orderDirection: string,dataIni: string, dataFinal: string, idEmissorSelecionado: number, HEADERS: any): Promise<INotaFiscal[] | ApiException> => {
